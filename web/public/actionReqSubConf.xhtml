@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+     
+    <h:head>
+        <title>Confirmed: Code Enforcement Action Request</title>
+          <h:outputStylesheet name="style.css" library="css"/>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'/>
+       
+    </h:head>
+    <h:body>
+        <h:graphicImage name="cedbHeader.jpg" width="1030" styleClass="header"/>
+        <div class="mainContainer">
+            <h1>Turtle Creek Valley Code Enforcement Management System (CEMS)</h1>
+            <h2>Your most recent request submission</h2>
+            <f:view>
+                
+                <h:messages globalOnly="true"></h:messages>
+              
+                
+                
+                <h3>Your Request Control Code:</h3>
+                   <h:outputText
+                        styleClass="plainText" 
+                        value="#{actionRequestBean.submittedRequest.requestPublicCC}" />
+                   <h4>Please save this number for your records (snap a pic, write it down, etc.)</h4>
+                
+                
+                <h3>Copy of submitted request</h3>
+                
+                    <h4>Violation Type:</h4>
+                        <p>
+                           <h:outputText
+                           styleClass="plainText" 
+                           value="#{actionRequestBean.submittedRequest.issueTypeString}" />
+                        </p>
+                    <h4>Municipality: </h4>
+                        <p><h:outputText
+                           styleClass="plainText" 
+                           value="#{actionRequestBean.submittedRequest.muniNameString}" /></p>
+
+                    <h4>Address of Concern: </h4>
+                        <p><h:outputText
+                           styleClass="plainText" 
+                           value="#{actionRequestBean.submittedRequest.addressOfConcern}" /></p>
+
+                    <h4>Request Description: </h4>
+                        <p><h:outputText
+                           styleClass="plainText" 
+                           value="#{actionRequestBean.submittedRequest.requestDescription}" /></p>
+                    
+                    <h4>Rquestor Type: </h4>
+                        <p><h:outputText
+                           styleClass="plainText" 
+                           value="#{actionRequestBean.submittedRequest.actionRequestorType}" /></p>
+
+                    <h4>Notes on case made for public viewing: </h4>
+                        <p><h:outputText
+                           styleClass="plainText" 
+                           value="#{actionRequestBean.submittedRequest.publicExternalNotes}" /></p>
+
+
+              
+             <p>
+            <h:outputLink value="index.xhtml">Return to code enforcement home</h:outputLink>
+            </p>
+            </f:view>
+            
+            <hr />
+            <div><p class="footer">This system is mainted by the Turtle Creek Valley Council of Governments | (c) 2017</p></div>
+            <br />
+        </div>
+    </h:body>
+</html>
+

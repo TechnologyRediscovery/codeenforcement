@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>TCVCOG Code Enforcement System</title>
+        <h:outputStylesheet name="style.css" library="css"/>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'/>
+    </h:head>
+    <h:body>
+        <h:graphicImage name="cedbHeader.jpg" width="1030" styleClass="header"/>
+        <div class="mainContainer">
+            
+            <h1>Turtle Creek Valley COG: Code Enforcement</h1>
+            <p>Welcome to the prototype version of the Turtle Creek Valley Council fo Goverments Code Enformcent program's online management system.</p>
+            <p>Select an available action:</p>
+            <p>
+            <h:outputLink value="submitCERequest.xhtml">Create a new code enforcement request</h:outputLink>
+            </p>
+            <p>
+            <h:outputLink value="checkRequestStatus.xhtml">Check on the status of a submitted request</h:outputLink>
+            </p>
+            <p>
+            <h:outputLink value="../ce/codeSourceManagement.xhtml">Manage municipal code sources</h:outputLink>
+            </p>
+            <p>
+            <h:outputLink value="../login.xhtml">Login to management portal</h:outputLink>
+            
+            </p>
+        </div>
+    </h:body>
+</html>
+

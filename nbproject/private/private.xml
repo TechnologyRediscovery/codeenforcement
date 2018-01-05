@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/requestManagement.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/public/submitCERequest.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Property.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/mangeActionRequest.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PropSearchBean.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/PropertyIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ActionRequestBean.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/faces-config.xml</file>
+        </group>
+    </open-files>
+</project-private>

@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Code Enforcement Case Details</title>
+         <link rel="stylesheet" type="text/css" href="../css/style.css"></link>
+    </h:head>
+    <h:body>
+         <div class="mainContainer">
+            
+             
+             <div id="header">
+                <img src="../resources/cedbHeader.jpg" class="headerImg"/>
+                <div id="headerLinks">
+                    <div class="headerLinkCont">Current User: Gary Hitchens</div>
+                    <div class="headerLinkCont"><a href="" class="headerLink">settings</a></div>
+                    <div class="headerLinkCont"><a href="" class="headerLink">dashboard</a></div>
+                    <div class="headerLinkCont"><a href="" class="headerLink">property search</a></div>
+                    <div class="headerLinkCont"><a href="" class="headerLink">cases</a></div>
+                    <div class="headerLinkCont"><a href="" class="headerLink">events</a></div>
+                    <div class="headerLinkCont"><a href="" class="headerLink">active property</a></div>
+                </div>
+            </div>
+            <hr />
+            
+            <h1>Code Enforcement Case Profile</h1>
+            <h4>View and manage a code enforcement case</h4>
+            
+            <!-- CE Case details -->
+            <h2>Case summary</h2>
+            <h3>Case Status</h3>
+            <p>Under Investiation</p>
+            
+            <h3>Property Information</h3>
+            <table class="borders">
+                <tr>
+                    <th>Municipality</th>
+                    <th>Address</th>
+                    <th>Parcel ID</th>
+                    <th>Property ID</th>
+                    <th>Lot and block</th>
+                    <th>Unit no</th>
+                    <th>Use Type</th>
+                </tr>
+                <tr>
+                    <td>Pitcairn</td>
+                    <td>302 PRINCETON DR</td>
+                    <td>0541G00262000100</td>
+                    <td>11972.0</td>
+                    <td>541-G-262-1</td>
+                    <td>-</td>
+                    <td>Single Family</td>
+                </tr>
+            </table>
+            
+            <h3>Owner Information</h3>
+            <table class="borders">
+                <tr>
+                    <th>Owner Name</th>
+                    <th>Owner Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>ZipCODE</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Last Update</th>
+                </tr>
+                <tr>
+                    <td>ADAMS JEAN L</td>
+                    <td>972 ELIZABETH ST</td>
+                    <td>PITTSBURGH</td>
+                    <td>PA</td>
+                    <td>15221</td>
+                    <td>412.222.7778</td>
+                    <td>JEANADAMS@ADAMS.COM</td>
+                    <td>3/1/2017</td>
+                </tr>
+            </table>
+            
+            
+             
+            
+            
+            <!-- CE case violations -->
+            <h2>Code Violations</h2>
+            <p><a href="">Create new violation for case</a></p>
+            
+            <table class="borders">
+                <tr>
+                    <th>Status</th>
+                    <th>Violation ID</th>
+                    <th>Code Number</th>
+                    <th>Violation Name</th>
+                    <th>Record date</th>
+                    <th>Compliance Deadline</th>
+                    <th>Date Resolved</th>
+                    <th>Actions</th>
+                </tr>
+                <tr class="resolved">
+                    <td>Resolved</td>
+                    <td>456</td>
+                    <td>307.2</td>
+                    <td>Disposal of rubbish</td>
+                    <td>4/13/17</td>
+                    <td>4/20/2017</td>
+                    <td><input value="4/19/2017"></input></td>
+                    <td><a href="">Update</a> <a href="">Remove</a></td>
+                </tr>
+                <tr class="pending">
+                    <td>Pending</td>
+                    <td>457</td>
+                    <td>307.2.1</td>
+                    <td>Rubbish storage facilities</td>
+                    <td>4/13/17</td>
+                    <td>4/20/2017</td>
+                    <td><input value=""></input></td>
+                    <td><a href="">Update</a> <a href="">Remove</a></td>
+                </tr>
+                <tr class="pending">
+                    <td>Pending</td>
+                    <td>458</td>
+                    <td>307.3.2</td>
+                    <td>Containers</td>
+                    <td>4/13/17</td>
+                    <td>4/25/2017</td>
+                    <td><input value=""></input></td>
+                    <td><a href="">Update</a> <a href="">Remove</a></td>
+                </tr>
+                <tr class="pastdeadline">
+                    <td>Past Deadline</td>
+                    <td>433</td>
+                    <td>302.7</td>
+                    <td>Accessory Structures</td>
+                    <td>4/13/2017</td>
+                    <td>5/12/2017</td>
+                    <td><input value=""></input></td>
+                    <td><a href="">Update</a> <a href="">Remove</a></td>
+                </tr>
+            </table>
+            
+            
+            <!-- CE case events -->
+            
+             <h2>Case Events</h2>
+             <p><a href="">Create new case event</a></p>
+            <table class="borders">
+                <tr>
+                    <th>Event Type</th>
+                    <th>Event Date</th>
+                    <th>Details</th>
+                    <th>Actions</th>
+                    
+                </tr>
+                <tr>
+                    <td>Note</td>
+                    <td>4/13/2017</td>
+                    <td><p>On 4/13/17, it was observed that an accumulation of garbage and rubbish were present along the side of the house as well as in the parking area of the premises. Please dispose of the garbage and rubbish or store indoors if being saved for a future use. Also in the event that the refridgerator is stored out doors while awaiting disposal/collection, please remove the doors in accordance with the code below.</p></td>
+                    <td><a href="">Edit Event</a></td>
+                </tr>
+                <tr>
+                    <td>Onsite Follow Up</td>
+                    <td>4/19/20</td>
+                    <td><p>An on-site visit was made at 3:20 pm. Visual inspection of property showed that rubbish has been removed</p></td>
+                    <td><a href="">Edit Event</a></td>
+                </tr>
+                <tr>
+                    <td>Violation Resolved</td>
+                    <td>4/19/2017</td>
+                    <td><p>Violation ID 456 was updated with a resolved date and has been marked as resolved as of 4/19/2017</p></td>
+                    <td><a href="">Edit Event</a></td>
+                </tr>
+                <tr>
+                    <td>Phone Communication</td>
+                    <td>5/1/2017</td>
+                    <td><p>Received phone call from owner at 12:40pm concerning accessory structures violation. Owner said that he planned to fix the broken guard rail on front porch on the upcoming weekend. Agreed to extend compliance deadline by two weeks.</p></td>
+                    <td><a href="">Edit Event</a></td>
+                </tr>
+                <tr>
+                    <td>Event Details Change</td>
+                    <td>5/1/2017</td>
+                    <td><p>Violation ID 433 record update: Compliance deadline Previous Value: 5/1/2017<br/>Compliance deadline new value: 5/12/17</p></td>
+                    <td><a href="">Edit Event</a></td>
+                </tr>
+            </table>
+             
+             <hr/>
+             
+             <a href="">Return to dashboard</a>
+             
+           
+            
+            
+            
+            
+         </div>
+    </h:body>
+</html>
+
