@@ -26,9 +26,14 @@ import java.sql.Connection;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import javax.el.ValueExpression;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 
 
 /**
@@ -36,10 +41,15 @@ import java.util.Date;
  * @author cedba
  */
 //@ApplicationScoped
+@ManagedBean
+@SessionScoped
 public class BackingBeanUtils implements Serializable{
-
+    
+    //@ManagedProperty(value="#{visit}")
     private Visit visit;
     private UserCoordinator userCoordinator;
+    private MunicipalityIntegrator muniIntegrator;
+    private SessionManager sessionManager;
  
     // private Connection postgresCon;
     
@@ -52,7 +62,7 @@ public class BackingBeanUtils implements Serializable{
         // MBCF but doesn't seem to be--this is not a solid object-oriented
         // design concept that works well with the bean model
         // it should be made by the MBCF
-        System.out.println("Constructing BackingBean Utils");
+        //System.out.println("Constructing BackingBean Utils");
         //userCoordinator = new UserCoordinator();
         
        
@@ -74,6 +84,7 @@ public class BackingBeanUtils implements Serializable{
     }
     
     public Visit getVisit(){
+        System.out.println("BackingBeanUtils.getVisit | gotten visit: " + visit.getEceList().peek().getOrdsecTitle());
         return visit;
     }
     
@@ -105,7 +116,7 @@ public class BackingBeanUtils implements Serializable{
        // return factory.getCon();
        
              
-         System.out.println("BackingBeanUtils.getPostgresCon- Getting con through backing bean");
+         //System.out.println("BackingBeanUtils.getPostgresCon- Getting con through backing bean");
          FacesContext context = getFacesContext();
          PostgresConnectionFactory dbCon = context.getApplication()
                  .evaluateExpressionGet(
@@ -151,6 +162,59 @@ public class BackingBeanUtils implements Serializable{
         
         return codeInt;
         
+    }
+    
+    public MunicipalityIntegrator getMunicipalityIntegrator(){
+        FacesContext context = getFacesContext();
+        muniIntegrator = context. getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{municipalityIntegrator}", 
+                        MunicipalityIntegrator.class);
+        return muniIntegrator;
+    }
+    
+    
+
+    /**
+     * @return the userCoordinator
+     */
+    public UserCoordinator getUserCoordinator() {
+        return userCoordinator;
+    }
+
+    /**
+     * @return the muniIntegrator
+     */
+    public MunicipalityIntegrator getMuniIntegrator() {
+        return muniIntegrator;
+    }
+
+    /**
+     * @param muniIntegrator the muniIntegrator to set
+     */
+    public void setMuniIntegrator(MunicipalityIntegrator muniIntegrator) {
+        this.muniIntegrator = muniIntegrator;
+    }
+
+    /**
+     * @return the sessionManager
+     */
+    public SessionManager getSessionManager() {
+         FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), 
+                        "#{sessionManager}", SessionManager.class);
+        sessionManager = (SessionManager) ve.getValue(context.getELContext());
+   
+        return sessionManager;
+    }
+
+    /**
+     * @param sessionManager the sessionManager to set
+     */
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
 }

@@ -14,39 +14,41 @@
     </h:head>
 
     <h:body>
-
         <div id="top">
             <ui:insert name="top">
-               <div class="header">
-                <h:graphicImage name="cedbHeader.jpg" width="1030" styleClass="header"/>
-                <div class="headerLinks">
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Dashboard</a>
-                    </div>
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Property</a>
-                    </div>
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Code Enforcement</a>
-                    </div>
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Occ Inspections</a>
-                    </div>
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Rentals</a>
-                    </div>
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Settings</a>
-                    </div>
-                    <div class="headerLinkCont">
-                        <a class="headerLink" href="">Logout</a>
-                    </div>
+                <f:view id="navview">
+                    
+                
+                <div class="header">
+                    <h:graphicImage name="cedbHeader.jpg" width="1030" styleClass="header"/>
+                    <h:form id="navForm">
 
+                        <div class="headerLinks">
+                            <div class="headerLinkCont">
+                                <h:commandLink action="dashboard" value="Dashboard"/>
+                            </div>
+                            <div class="headerLinkCont">
+                                <a class="headerLink" href="">Property</a>
+                            </div>
+                            <div class="headerLinkCont">
+                                <a class="headerLink" href="">Code Enforcement</a>
+                            </div>
+                            <div class="headerLinkCont">
+                                <a class="headerLink" href="">Occ Inspections</a>
+                            </div>
+                            <div class="headerLinkCont">
+                                <a class="headerLink" href="">Rentals</a>
+                            </div>
+                            <div class="headerLinkCont">
+                                <a class="headerLink" href="">Settings</a>
+                            </div>
+                            <div class="headerLinkCont">
+                                <a class="headerLink" href="">Logout</a>
+                            </div>
+                        </div>
+                    </h:form>
                 </div>
-
-            </div>
-                
-                
+                </f:view>
             </ui:insert>
         </div>
 

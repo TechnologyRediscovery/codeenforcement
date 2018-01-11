@@ -46,6 +46,9 @@ public class CodeElementTypeBB extends BackingBeanUtils implements Serializable 
     private String formCodeElementTypeName;
     private String formCodeElementTypeDescription;
     
+    private String newCodeElementTypeName;
+    private String newCodeElementTypeDesc;
+    
     /**
      * Creates a new instance of CodeElementTypeBB
      */
@@ -87,15 +90,33 @@ public class CodeElementTypeBB extends BackingBeanUtils implements Serializable 
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                         "Unable to update code elment type, sorry.", 
                         "This must be corrected by the System Administrator"));
-
         }
-        
         
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                         "Updated Code Source Type", ""));
+    }
+    
+    public String addCodeElementType(){
+        System.out.println("CodeSourceBB.addCodeElementType");
+        CodeElementType newType = new CodeElementType();
+        newType.setName(newCodeElementTypeName);
+        newType.setDescription(newCodeElementTypeDesc);
         
+         try {
+            getCodeIntegrator().insertNewCodeElementType(newType);
+        } catch (IntegrationException ex) {
+            System.out.println(ex.toString());
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to add code elment type, sorry.", 
+                        "This must be corrected by the System Administrator"));
+        }
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "New Code Source Type Added!", ""));
         
+        return "";
     }
     
 
@@ -233,6 +254,34 @@ public class CodeElementTypeBB extends BackingBeanUtils implements Serializable 
      */
     public void setFormCodeElementTypeID(int formCodeElementTypeID) {
         this.formCodeElementTypeID = formCodeElementTypeID;
+    }
+
+    /**
+     * @return the newCodeElementTypeName
+     */
+    public String getNewCodeElementTypeName() {
+        return newCodeElementTypeName;
+    }
+
+    /**
+     * @param newCodeElementTypeName the newCodeElementTypeName to set
+     */
+    public void setNewCodeElementTypeName(String newCodeElementTypeName) {
+        this.newCodeElementTypeName = newCodeElementTypeName;
+    }
+
+    /**
+     * @return the newCodeElementTypeDesc
+     */
+    public String getNewCodeElementTypeDesc() {
+        return newCodeElementTypeDesc;
+    }
+
+    /**
+     * @param newCodeElementTypeDesc the newCodeElementTypeDesc to set
+     */
+    public void setNewCodeElementTypeDesc(String newCodeElementTypeDesc) {
+        this.newCodeElementTypeDesc = newCodeElementTypeDesc;
     }
     
 }

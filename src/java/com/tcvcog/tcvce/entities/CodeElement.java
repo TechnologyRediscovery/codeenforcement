@@ -26,12 +26,10 @@ import java.time.LocalDateTime;
 public class CodeElement {
     
     private int elementID;
-    private int codeElementTypeID;
-    private String codeElementTypeName;
     
-    private int sourceID;
-    private String sourceName;
-    private int sourceYear;
+    private CodeElementType type;
+    private int typeID;
+    private CodeSource source;
     
     private int ordchapterNo;
     
@@ -48,12 +46,11 @@ public class CodeElement {
     private boolean isActive;
     
     private boolean isEnforcementPriority;
-    private int defaultDaysToComply;
     private String resourceURL;
-    
     private String inspectionTips;
-    private LocalDateTime dateCreated;
     
+    private LocalDateTime dateCreated;
+
     
     /**
      * @return the elementID
@@ -69,49 +66,7 @@ public class CodeElement {
         this.elementID = elementID;
     }
 
-    /**
-     * @return the codeElementTypeName
-     */
-    public String getCodeElementTypeName() {
-        return codeElementTypeName;
-    }
-
-    /**
-     * @param codeElementTypeName the codeElementTypeName to set
-     */
-    public void setCodeElementTypeName(String codeElementTypeName) {
-        this.codeElementTypeName = codeElementTypeName;
-    }
-
   
-    /**
-     * @return the sourceName
-     */
-    public String getSourceName() {
-        return sourceName;
-    }
-
-    /**
-     * @param sourceName the sourceName to set
-     */
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName;
-    }
-
-    /**
-     * @return the sourceYear
-     */
-    public int getSourceYear() {
-        return sourceYear;
-    }
-
-    /**
-     * @param sourceYear the sourceYear to set
-     */
-    public void setSourceYear(int sourceYear) {
-        this.sourceYear = sourceYear;
-    }
-
  
 
     /**
@@ -268,19 +223,6 @@ public class CodeElement {
         this.isEnforcementPriority = isEnforcementPriority;
     }
 
-    /**
-     * @return the defaultDaysToComply
-     */
-    public int getDefaultDaysToComply() {
-        return defaultDaysToComply;
-    }
-
-    /**
-     * @param defaultDaysToComply the defaultDaysToComply to set
-     */
-    public void setDefaultDaysToComply(int defaultDaysToComply) {
-        this.defaultDaysToComply = defaultDaysToComply;
-    }
 
     /**
      * @return the resourceURL
@@ -324,32 +266,48 @@ public class CodeElement {
         this.dateCreated = dateCreated;
     }
 
+  
+
     /**
-     * @return the sourceID
+     * @return the source
      */
-    public int getSourceID() {
-        return sourceID;
+    public CodeSource getSource() {
+        return source;
     }
 
     /**
-     * @param sourceID the sourceID to set
+     * @param source the source to set
      */
-    public void setSourceID(int sourceID) {
-        this.sourceID = sourceID;
+    public void setSource(CodeSource source) {
+        this.source = source;
     }
 
     /**
-     * @return the codeElementTypeID
+     * @return the type
      */
-    public int getCodeElementTypeID() {
-        return codeElementTypeID;
+    public CodeElementType getType() {
+        return type;
     }
 
     /**
-     * @param codeElementTypeID the codeElementTypeID to set
+     * @param type the type to set
      */
-    public void setCodeElementTypeID(int codeElementTypeID) {
-        this.codeElementTypeID = codeElementTypeID;
+    public void setType(CodeElementType type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the typeID
+     */
+    public int getTypeID() {
+        return typeID;
+    }
+
+    /**
+     * @param typeID the typeID to set
+     */
+    public void setTypeID(int typeID) {
+        this.typeID = typeID;
     }
     
 }

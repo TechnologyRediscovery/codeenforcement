@@ -177,12 +177,6 @@ INSERT INTO public.enforcementofficial(
     VALUES (DEFAULT, 100, '9999-6666', 'ORI12345', 'SYSTEM ALERT: This is likely an imposter code enforcement official!');
 -- first val is 100
 
-INSERT INTO public.citation(
-            citationid, citationno, origin_courtentity_entityid, cecase_caseid, enforcementofficial_officialID, 
-            dateofrecord, transtimestamp, isactive, notes)
-    VALUES (DEFAULT, '999-1000',100 ,1000 ,100,
-            now(), now(), TRUE, 'Sample citation to demonstrate system functionality.');
--- first default id val is 1000
 
 INSERT INTO public.codesource(
             sourceid, name, year, description, isactive, url, notes)
@@ -208,22 +202,26 @@ INSERT INTO public.codeelement(
             elementid, codeelementtype_cdeltypeid, codesource_sourceid, ordchapterno, 
             ordchaptertitle, ordsecnum, ordsectitle, ordsubsecnum, ordsubsectitle, 
             ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, isactive, 
-            isenforcementpriority, defaultdaystocomply, resourceurl, inspectiontips, dateCreated)
+            isenforcementpriority, resourceurl, inspectiontips, dateCreated)
     VALUES (DEFAULT, 1001, 10, 5, 
             'Plumping facilities and fixutre requirements', '502', 'Required Facilities', '502.1', 'Dwelling Units', 
             'Every dwelling unit shall contain its own bathtub or shower, lavatory, water closet and kitchen sink which shall be maintained in a sanitary, safe working condition', 'All dwelling units need a bathroom and kitchen with basic amenities', 3.5, TRUE, 
-            TRUE, 30, 'www.kitchen.com', 'Ask property owner to see the ''bathroom'' and ''kitchen''', now());
+            TRUE, 'www.kitchen.com', 'Ask property owner to see the ''bathroom'' and ''kitchen''', now());
 --Default is 100
 
 
 INSERT INTO public.codesetelement(
-            codeset_codesetid, codelement_elementid)
-    VALUES (10, 100);
+            codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, 
+            elementminpenalty, elementnormpenalty, penaltynotes, normdaystocomply, 
+            daystocomplynotes)
+    VALUES (DEFAULT, 10, 100, 1000, 
+            100, 600, 'Usually reduced by magistrate to 400', 30, 
+            'Start with 30 but folks usually take longer');
 
 INSERT INTO public.codeviolation(
-            violationid, cdel_elementid, cecase_caseid, stipulatedcompliancedate, 
+            violationid, codeSetElement_elementID, cecase_caseid, stipulatedcompliancedate, 
             actualcompliancdate, description)
-    VALUES (DEFAULT, 100, 1000, '2018-01-20 14:49:06.219519-05' , 
+    VALUES (DEFAULT, 1, 1000, '2018-01-20 14:49:06.219519-05' , 
             NULL, 'No Bathroom in dwelling unit, only a closet with a bucket in it with a sign that reads ''wc''');
 
 INSERT INTO public.coglog(
@@ -233,6 +231,14 @@ INSERT INTO public.coglog(
 INSERT INTO public.propertyperson(
             property_propertyid, person_personid)
     VALUES (11997, 101);
+
+INSERT INTO public.citation(
+            citationid, citationno, origin_courtentity_entityid, cecase_caseid, enforcementofficial_officialID, 
+            dateofrecord, transtimestamp, isactive, notes)
+    VALUES (DEFAULT, '999-1000',100 ,1000 ,100,
+            now(), now(), TRUE, 'Sample citation to demonstrate system functionality.');
+-- first default id val is 1000
+
 
 INSERT INTO public.propertyunit(
             unitid, unitnumber, property_propertyid, notes)

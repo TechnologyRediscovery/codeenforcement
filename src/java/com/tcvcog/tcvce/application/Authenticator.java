@@ -24,16 +24,22 @@ import com.tcvcog.tcvce.entities.User;
 
 
 import com.tcvcog.tcvce.domain.*;
+import java.io.Serializable;
+import javax.faces.bean.ManagedProperty;
 
 
 /**
  *
  * @author cedba
  */
-public class Authenticator extends BackingBeanUtils{
+public class Authenticator extends BackingBeanUtils implements Serializable{
     
+   
     private String loginName;
     private String loginPassword;
+    
+    @ManagedProperty("#{sessionManager}")
+    private SessionManager sessionManager;
 
     /**
      * Creates a new instance of Authentication
@@ -59,6 +65,18 @@ public class Authenticator extends BackingBeanUtils{
             return "failure";
             
         }
+        
+        sessionManager = new SessionManager();
+        Visit visit = new Visit();
+        sessionManager.setVisit(visit);
+        
+  
+        
+        
+        
+//        getApplication().createValueBinding("#{session.visit}")
+//                .setValue(facesContext, visit);
+//        getApplication().cr
         
         return "success";
         
@@ -92,6 +110,20 @@ public class Authenticator extends BackingBeanUtils{
      */
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
+    }
+
+    /**
+     * @return the sessionManager
+     */
+    public SessionManager getSessionManager() {
+        return sessionManager;
+    }
+
+    /**
+     * @param sessionManager the sessionManager to set
+     */
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
     
     

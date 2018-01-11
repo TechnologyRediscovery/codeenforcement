@@ -19,6 +19,7 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import javax.servlet.ServletContext;
@@ -66,6 +67,8 @@ public class Initializer implements ServletContextListener{
         CodeIntegrator codeIntegrator = new CodeIntegrator();
         servletContext.setAttribute("codeIntegrator", codeIntegrator);
         
+        MunicipalityIntegrator munigrator = new MunicipalityIntegrator();
+        servletContext.setAttribute("municipalitygrator", munigrator);
     }
     
     @Override

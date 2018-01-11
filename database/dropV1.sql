@@ -49,7 +49,7 @@ DROP SEQUENCE IF EXISTS codeelement_elementID_seq;
 DROP SEQUENCE IF EXISTS citation_citationID_seq;
 DROP SEQUENCE IF EXISTS courtentity_entityID_seq;
 DROP SEQUENCE IF EXISTS propertyexternaldata_extDataID_seq;
-DROP SEQUENCE IF EXISTS codeviolation_violationID_seq ;
+DROP SEQUENCE IF EXISTS codesetelement_elementid_seq ;
 
 
 DROP TYPE IF EXISTS personType;

@@ -16,6 +16,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.Date;
 import java.io.Serializable;
 import com.tcvcog.tcvce.entities.CEActionRequest;
@@ -23,7 +24,9 @@ import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import java.time.ZoneId;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.PersonType;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
+import java.util.HashMap;
 import javax.faces.application.FacesMessage;
 /**
  *
@@ -47,6 +50,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     
     private int muniID;
     private String muniName;
+    private HashMap muniMap;
     
     private String form_addressOfConcern;
     
@@ -497,5 +501,20 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      */
     public PersonType[] getSubmittingPersonTypes() {
         return PersonType.values();
+    }
+
+    /**
+     * @return the muniMap
+     */
+    public HashMap getMuniMap() throws IntegrationException {
+        MunicipalityIntegrator muniInt = getMuniIntegrator();
+        return muniInt.getMunicipalityMap();
+    }
+
+    /**
+     * @param muniMap the muniMap to set
+     */
+    public void setMuniMap(HashMap muniMap) {
+        this.muniMap = muniMap;
     }
 }

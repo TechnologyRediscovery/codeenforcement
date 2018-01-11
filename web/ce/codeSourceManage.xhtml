@@ -37,15 +37,15 @@
                                 styleClass="buttonOwnLine"
                                 action="#{codeSourceBB.lookUpSource}"/>
                         
-                        <p>The code source name is:</p>
-                        <h:outputText 
-                            value="#{codeSourceBB.codeSource.sourceName}"/>
+                       
                         
                          <h:commandButton 
                                 id="completeCodeSourceList" 
                                 value="Retrieve All Code Sources" 
                                 styleClass="buttonOwnLine"
                                 action="#{codeSourceBB.retrieveAllCodeSources}"/>
+                         
+                        
                         
                         <p:dataTable
                             id="codeSourceTable"
@@ -100,11 +100,25 @@
                         </p:dataTable>
                          
                         <p:spacer height="5"/>
+                        
                         <h:commandButton 
                             id="getDetails" 
                             value="Get Info on Selected Source" 
                             styleClass="buttonOwnLine"
                             actionListener="#{codeSourceBB.lookUpSource}"/>
+                        
+                         <h:commandButton
+                             id="addElementToSource"
+                             value="Add Element to Source"
+                             styleClass="buttonOwnLine"
+                             action="#{codeSourceBB.addElementToSource}" />
+                         
+                          <h:commandButton
+                             id="viewElementsInSource"
+                             value="View list of elements in source"
+                             styleClass="buttonOwnLine"
+                             action="#{codeSourceBB.viewElementsInSource}" />
+                        
                         </h:form>
                     
                         <p:spacer height="10"/>

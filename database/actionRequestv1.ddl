@@ -11,6 +11,7 @@ CREATE TABLE municipality
   (
     muniCode             INTEGER NOT NULL,
     muniName             character varying (50) NOT NULL ,
+    -- need municipal title here, too
     address_street       character varying (100) ,
     address_city         character varying (100) ,
     address_state        character varying (2) DEFAULT 'PA',
@@ -654,7 +655,7 @@ CREATE SEQUENCE IF NOT EXISTS codesetelement_elementid_seq
 -- bridging table to allow for codeset and codelement many-many relationships
 CREATE TABLE codesetelement
 (
-    codeSetElementID            INTEGER NOT NULL, --pk
+    codeSetElementID            INTEGER DEFAULT nextval('codesetelement_elementid_seq') NOT NULL, --pk
     codeset_codeSetID           INTEGER NOT NULL, --fk
     codelement_elementID        INTEGER NOT NULL, --fk
     elementMaxPenalty           NUMERIC,
@@ -670,36 +671,7 @@ ALTER TABLE codesetelement ADD CONSTRAINT codesetelement_codeSetElementID_pk PRI
 ALTER TABLE codesetelement ADD CONSTRAINT codeseetelement_setID_fk FOREIGN KEY (codeset_codeSetID) REFERENCES codeset (codeSetID) ;
 
 ALTER TABLE codesetelement ADD CONSTRAINT codeseetelement_elementID_fk FOREIGN KEY (codelement_elementID) REFERENCES codeelement (elementID) ;
--- Stores information related to which code sections are violated in each cecase item
--- this is a briding table to facilitate many-to-many relationships between case and codeelement
--- with some extra attributes to flesh out the association
-CREATE SEQUENCE IF NOT EXISTS codeviolation_violationID_seq
-    START WITH 1000
-    INCREMENT BY 1
-    MINVALUE 1000
-    NO MAXVALUE
-    CACHE 1;
 
-CREATE TABLE codeviolation
-  (
-    violationID                 INTEGER DEFAULT nextval('codeviolation_violationID_seq') NOT NULL,
-    codeSetElement_elementID    INTEGER NOT NULL , -- foreign key from codeelement
-    cecase_caseID               INTEGER NOT NULL , -- foreign key from cecase
-    citation_citationID         INTEGER, --fk
-    stipulatedComplianceDate    TIMESTAMP WITH TIME ZONE , -- auto generated base on the default compliance timeframe for each violation
-    actualCompliancDate         TIMESTAMP WITH TIME ZONE , -- entered when a violationComplianceEvent is generated
-    penalty                     NUMERIC,
-    description                 character varying (2000),
-    notes                       character varying (1000)
-  ) ;
-
-ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_pk PRIMARY KEY ( violationID ) ;
-
-ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_cdsetel_elementID_fk FOREIGN KEY (cdel_elementID) REFERENCES codesetelement ( codeSetElementID ) ;
-
-ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_caseID_fk FOREIGN KEY (cecase_caseID) REFERENCES cecase (caseID) ;
-
-ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_citationID_fk FOREIGN KEY ( citation_citationID ) REFERECES citation (citationID) ;
 
 
 CREATE SEQUENCE IF NOT EXISTS courtentity_entityID_seq
@@ -761,6 +733,37 @@ ALTER TABLE citation ADD CONSTRAINT citation_cecase_caseID_fk FOREIGN KEY ( ceca
 
 ALTER TABLE citation ADD CONSTRAINT citation_officialID_fk FOREIGN KEY (enforcementofficial_officialID) REFERENCES enforcementofficial (officialID);
 
+-- Stores information related to which code sections are violated in each cecase item
+-- this is a briding table to facilitate many-to-many relationships between case and codeelement
+-- with some extra attributes to flesh out the association
+CREATE SEQUENCE IF NOT EXISTS codeviolation_violationID_seq
+    START WITH 1000
+    INCREMENT BY 1
+    MINVALUE 1000
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE codeviolation
+  (
+    violationID                 INTEGER DEFAULT nextval('codeviolation_violationID_seq') NOT NULL,
+    codeSetElement_elementID    INTEGER NOT NULL , -- foreign key from codeelement
+    cecase_caseID               INTEGER NOT NULL , -- foreign key from cecase
+    citation_citationID         INTEGER, --fk
+    stipulatedComplianceDate    TIMESTAMP WITH TIME ZONE , -- auto generated base on the default compliance timeframe for each violation
+    actualCompliancDate         TIMESTAMP WITH TIME ZONE , -- entered when a violationComplianceEvent is generated
+    penalty                     NUMERIC,
+    description                 character varying (2000),
+    notes                       character varying (1000)
+  ) ;
+
+ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_pk PRIMARY KEY ( violationID ) ;
+
+ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_cdsetel_elementID_fk FOREIGN KEY (codeSetElement_elementID) REFERENCES codesetelement ( codeSetElementID ) ;
+
+ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_caseID_fk FOREIGN KEY (cecase_caseID) REFERENCES cecase (caseID) ;
+
+ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_citationID_fk FOREIGN KEY ( citation_citationID ) REFERENCES citation (citationID) ;
+
 
 -- Photos and document blob tables and connectors
 
@@ -790,6 +793,7 @@ CREATE TABLE propertyphotodoc
     photodoc_photoDocID INTEGER NOT NULL ,
     property_propertyID INTEGER NOT NULL
   ) ;
+
 ALTER TABLE propertyPhotoDoc ADD CONSTRAINT propertyPhotoDoc_pk PRIMARY KEY ( photoDoc_photoDocID, property_propertyID ) ;
 
 ALTER TABLE propertyphotodoc ADD CONSTRAINT propertyphotodoc_pdid_fk FOREIGN KEY (photodoc_photoDocID) REFERENCES photodoc (photoDocID);

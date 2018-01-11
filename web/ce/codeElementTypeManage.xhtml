@@ -38,43 +38,82 @@
                     <hr/>
                     <p:spacer height="15"/>
                     <h:form id="codeElementUpdate">
-                        
-                        <div>
-                            <span>Selected Element Type ID Number:</span>
-                            <h:outputText id="codeElementTypeID"
-                                          value="#{codeElementTypeBB.formCodeElementTypeID}"/>
-                        </div>
                             
-                        <p:spacer height="15"/>
+                        <p:fieldset legend="Update Code Source"
+                                    toggleable="true">
+                            <div>
+                                <span>Selected Element Type ID Number:</span>
+                                <h:outputText id="codeElementTypeID"
+                                              value="#{codeElementTypeBB.formCodeElementTypeID}"/>
+                            </div>
+
+                            <p:spacer height="15"/>
+
+                            <p:outputLabel for="selectedSourceTypeName">
+                                <h:outputText value="Code Source Name"/>
+                            </p:outputLabel>
+                            <p:inputText id="selectedSourceTypeName" value="#{codeElementTypeBB.formCodeElementTypeName}" 
+                                      style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
+                            <h:message for="selectedSourceTypeName" showDetail="false" showSummary="true" 
+                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <p:outputLabel for="selectedSourceTypeDesc">
+                                <h:outputText value="Code Source Description"/>
+                            </p:outputLabel>
+                            <p:inputText id="selectedSourceTypeDesc" value="#{codeElementTypeBB.formCodeElementTypeDescription}" 
+                                      style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
+                            <h:message for="selectedSourceTypeDesc" showDetail="false" showSummary="true" 
+                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                             <h:commandButton 
+                                id="updateCodeElementType" 
+                                value="Update type" 
+                                styleClass="buttonOwnLine" 
+                                actionListener="#{codeElementTypeBB.updateCodeElementType}"/>
+                        </p:fieldset>
                         
-                        <p:outputLabel for="selectedSourceTypeName">
-                            <h:outputText value="Code Source Name"/>
-                        </p:outputLabel>
-                        <p:inputText id="selectedSourceTypeName" value="#{codeElementTypeBB.formCodeElementTypeName}" 
-                                  style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
-                        <h:message for="selectedSourceTypeName" showDetail="false" showSummary="true" 
-                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                        
-                        <p:outputLabel for="selectedSourceTypeDesc">
-                            <h:outputText value="Code Source Description"/>
-                        </p:outputLabel>
-                        <p:inputText id="selectedSourceTypeDesc" value="#{codeElementTypeBB.formCodeElementTypeDescription}" 
-                                  style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
-                        <h:message for="selectedSourceTypeDesc" showDetail="false" showSummary="true" 
-                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                        
-                         <h:commandButton 
-                            id="updateCodeElementType" 
-                            value="Update code element type" 
-                            styleClass="buttonOwnLine" 
-                            actionListener="#{codeElementTypeBB.updateCodeElementType}"/>
                         
                         
+                        <p:spacer height="15px"/>
                         
+                        
+                    </h:form>
+                    
+                    <h:form id="insertCodeElementTYpe">
+                        <p:fieldset legend="Add Code Element Type"
+                                    toggleable="true"
+                                    collapsed="true">
+                            
+                            <p:outputLabel for="newTypeName">
+                                <h:outputText value="Code Source Name"/>
+                            </p:outputLabel>
+                            <p:inputText id="newTypeName" value="#{codeElementTypeBB.newCodeElementTypeName}" 
+                                      style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
+                            <h:message for="newTypeName" showDetail="false" showSummary="true" 
+                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <p:outputLabel for="newTypeDesc">
+                                <h:outputText value="Code Source Description"/>
+                            </p:outputLabel>
+                            <p:inputText id="newTypeDesc" value="#{codeElementTypeBB.newCodeElementTypeDesc}" 
+                                      style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
+                            <h:message for="newTypeDesc" showDetail="false" showSummary="true" 
+                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <h:commandButton 
+                                id="newCodeElementType" 
+                                value="Add type" 
+                                styleClass="buttonOwnLine" 
+                                action="#{codeElementTypeBB.addCodeElementType}"/>
+
+                            
+                            
+                        </p:fieldset>
                         
                         
                         
                     </h:form>
+                    
                             
                     
                 </f:view>

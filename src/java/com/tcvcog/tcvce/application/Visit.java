@@ -10,11 +10,18 @@ import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.entities.CEActionRequest;
+import com.tcvcog.tcvce.entities.CodeSet;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import java.util.LinkedList;
+import javax.annotation.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author cedba
  */
+@ManagedBean
+@SessionScoped
 public class Visit {
 
     private Property activeProp;
@@ -22,6 +29,8 @@ public class Visit {
     private Event activeEvent;
     private User currentUser;
     private CEActionRequest actionRequest;
+    private CodeSet activeCodeSet;
+    private LinkedList<EnforcableCodeElement> eceList;
     
     /**
      * Creates a new instance of Visit
@@ -97,6 +106,34 @@ public class Visit {
      */
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    /**
+     * @return the activeCodeSet
+     */
+    public CodeSet getActiveCodeSet() {
+        return activeCodeSet;
+    }
+
+    /**
+     * @param activeCodeSet the activeCodeSet to set
+     */
+    public void setActiveCodeSet(CodeSet activeCodeSet) {
+        this.activeCodeSet = activeCodeSet;
+    }
+
+    /**
+     * @return the eceList
+     */
+    public LinkedList<EnforcableCodeElement> getEceList() {
+        return eceList;
+    }
+
+    /**
+     * @param eceList the eceList to set
+     */
+    public void setEceList(LinkedList<EnforcableCodeElement> eceList) {
+        this.eceList = eceList;
     }
     
     

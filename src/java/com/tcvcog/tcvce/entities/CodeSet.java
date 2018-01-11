@@ -26,10 +26,11 @@ import java.util.LinkedList;
 public class CodeSet {
     
     private int codeSetID;
+    private int muniCode;
     private Municipality muni;
     private String codeSetName;
     private String codeSetDescription;
-    private LinkedList<CodeElement> codeElements;
+    private LinkedList<EnforcableCodeElement> codeElementList;
 
     /**
      * @return the codeSetID
@@ -87,18 +88,33 @@ public class CodeSet {
         this.codeSetDescription = codeSetDescription;
     }
 
+   
     /**
-     * @return the codeElements
+     * @return the muniCode
      */
-    public LinkedList<CodeElement> getCodeElements() {
-        return codeElements;
+    public int getMuniCode() {
+        return muniCode;
     }
 
     /**
-     * @param codeElements the codeElements to set
+     * @param muniCode the muniCode to set
      */
-    public void setCodeElements(LinkedList<CodeElement> codeElements) {
-        this.codeElements = codeElements;
+    public void setMuniCode(int muniCode) {
+        this.muniCode = muniCode;
+    }
+
+    /**
+     * @return the codeElementList
+     */
+    public LinkedList<EnforcableCodeElement> getCodeElementList() {
+        return codeElementList;
+    }
+
+    /**
+     * @param codeElementList the codeElementList to set
+     */
+    public void setCodeElementList(LinkedList<EnforcableCodeElement> codeElementList) {
+        this.codeElementList = codeElementList;
     }
     
 }

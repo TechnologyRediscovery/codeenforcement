@@ -34,6 +34,7 @@ public class Municipality {
     private String email;
     private String managerName;
     private String managerPhone;
+    private int population;
     private boolean activeInProgram;
 
     /**
@@ -202,6 +203,20 @@ public class Municipality {
      */
     public void setActiveInProgram(boolean activeInProgram) {
         this.activeInProgram = activeInProgram;
+    }
+
+    /**
+     * @return the population
+     */
+    public int getPopulation() {
+        return population;
+    }
+
+    /**
+     * @param population the population to set
+     */
+    public void setPopulation(int population) {
+        this.population = population;
     }
     
 }

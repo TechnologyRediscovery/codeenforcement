@@ -24,7 +24,10 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 
 /**
@@ -42,7 +45,7 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
     
     private int formSourceID;
     private String formSourceName;
-    private int formSourceYear;
+    private int formSourceYear; 
     private String formSourceDescription;
     private boolean formSourceIsActive;
     private String formSourceURL;
@@ -52,7 +55,12 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
      * Creates a new instance of CodeSourceBB
      */
     public CodeSourceBB() {
+        
+        // default value settings for form
+        formSourceIsActive = true;
     }
+    
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
     public String lookUpSource(){
         System.out.println("CodeSourceBB.lookUpSource");
@@ -139,7 +147,7 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
     }
     
     public String addNewSource(){
-        
+        System.out.println("codesourceBB.addNewSource");
         CodeSource newCodeSource = new CodeSource();
         newCodeSource.setSourceName(formSourceName);
         newCodeSource.setSourceYear(formSourceYear);
@@ -160,10 +168,22 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Unable to Add Source", 
                             "This error will require administrator attention"));
-             return null;
+             return "";
         }
+    }
+    
+    public String addElementToSource(){
         
+        SessionManager sessionManager = getSessionManager();
+        sessionManager.setActiveCodeSource(selectedCodeSource);
         
+        return "codeElementAdd";
+    }
+    
+    public String viewElementsInSource(){
+        SessionManager sessionManager = getSessionManager();
+        sessionManager.setActiveCodeSource(selectedCodeSource);
+        return "codeElementList";
     }
 
 

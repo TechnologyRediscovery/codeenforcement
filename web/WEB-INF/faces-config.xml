@@ -18,12 +18,12 @@
     </managed-bean>
     
     
-    <managed-bean>
+<!--    <managed-bean>
         <description>Manages a user's visit to the site, particularly it coordinates an active Property entity and related objects that the user might interact with, edit, update, report, etc. during the session.</description>
         <managed-bean-name>visit</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.Visit</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>-->
     
     <managed-bean>
         <managed-bean-name>login</managed-bean-name>
@@ -63,14 +63,18 @@
         <managed-bean-name>propertyCoordinator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.coordinators.PropertyCoordinator</managed-bean-class>
     
-        <managed-bean-scope>request</managed-bean-scope></managed-bean>
-    <managed-bean>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+<!--    <managed-bean>
         <description>Bean for providing basic bean utility methods, such as retrieving the FacesContext object </description>
         <managed-bean-name>backingBeanUtils</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.BackingBeanUtils</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
-        
-    </managed-bean>
+        <managed-property>
+            <property-name>visit</property-name>
+            <value>#{session.visit}</value>
+        </managed-property>
+    </managed-bean>-->
 
     
     <managed-bean>
@@ -110,14 +114,14 @@
     </managed-bean>
    
     
-     <managed-bean>
+     
+    
+    <managed-bean>
         <description>Models a request for code enforcement action</description>
         <managed-bean-name>actionRequestBean</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
+    </managed-bean><managed-bean>
         <description>Utility class for producting a hash map of action requestor types</description>
         <managed-bean-name>requestorTypesMap</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.resultsets.RequestorTypesMap</managed-bean-class>
@@ -293,15 +297,44 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <navigation-rule>
-        <from-view-id>/ce/addCodeSource.xhtml</from-view-id>
+        <from-view-id>/ce/codeSourceAdd.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/ce/codeSourceManagement.xhtml</to-view-id>
+            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>codeElementTypeBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementTypeBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>codeSetBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>codeSetElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>codeElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>codeElementListBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeElementListBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

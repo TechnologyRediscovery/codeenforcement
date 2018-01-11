@@ -52,7 +52,7 @@ public class PostgresConnectionFactory implements Serializable{
      */
     public Connection getCon() {
         
-        System.out.println("DBConnection.getCon");
+        //System.out.println("PostGresConnectionFactor.getCon");
         
 //        source.setDataSourceName("cogpgnew");
        

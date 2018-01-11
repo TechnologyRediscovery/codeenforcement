@@ -3,14 +3,33 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/requestManagement.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/public/submitCERequest.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Property.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/mangeActionRequest.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PropSearchBean.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/PropertyIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/public/index.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeElementTypeManage.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/CodeSet.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSetManage.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CodeSetElementBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EnforcableCodeElement.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/CodeCoordinator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/CodeElement.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/resources/css/style.css</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CodeElementTypeBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeElementManage.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ActionRequestBean.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSetElementManage.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/dashboard.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/public/submitCERequest.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/BackingBeanUtils.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CodeIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/mangeActionRequest.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/Visit.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/MunicipalityIntegrator.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/faces-config.xml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSourceAdd.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/SessionManager.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/Authenticator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSourceManage.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/codeSetElementManageBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CodeSetBB.java</file>
         </group>
     </open-files>
 </project-private>
