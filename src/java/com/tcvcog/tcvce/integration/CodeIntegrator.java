@@ -651,8 +651,58 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     }
     
-    public int updateCodeElement(CodeElement element) throws IntegrationException{
-       return 0;
+    public void updateCodeElement(CodeElement element) throws IntegrationException{
+        System.out.println("CodeIntegrator.udpateCodeElement | element to insert chapter name: " + element.getOrdchapterTitle());
+          String query = "UPDATE public.codeelement\n" +
+                "SET codeelementtype_cdeltypeid=?, \n" +
+                "ordchapterno=?, ordchaptertitle=?, ordsecnum=?, ordsectitle=?, \n" +
+                "ordsubsecnum=?, ordsubsectitle=?, ordtechnicaltext=?, ordhumanfriendlytext=?, \n" +
+                "defaultpenalty=?, isactive=?, isenforcementpriority=?, resourceurl=?, \n" +
+                "inspectiontips=?, datecreated=now()\n" +
+                " WHERE elementid=?;";
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+         try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, element.getTypeID());
+            
+            // no source changes on element update
+            //stmt.setInt(2, element.getSource().getSourceID());
+            
+            stmt.setInt(2, element.getOrdchapterNo());
+            stmt.setString(3, element.getOrdchapterTitle());
+            stmt.setString(4, element.getOrdSecNum());
+            
+            stmt.setString(5, element.getOrdsecTitle());
+            stmt.setString(6, element.getOrdSubSecNum());
+            stmt.setString(7, element.getOrdSubSecTitle());
+            
+            stmt.setString(8, element.getOrdTechnicalText());
+            stmt.setString(9, element.getOrdHumanFriendlyText());
+            stmt.setDouble(10, element.getDefaultPenalty());
+            
+            stmt.setBoolean(11, element.isIsActive());
+            stmt.setBoolean(12, element.isIsEnforcementPriority());
+            stmt.setString(13, element.getResourceURL());
+            
+            stmt.setString(14, element.getInspectionTips());
+            
+            stmt.setInt(15, element.getElementID());
+            
+            System.out.println("CodeIntegrator.updateCodeElement | update statement: " + stmt.toString());
+            
+            stmt.execute();
+             
+        } catch (SQLException ex) { 
+             System.out.println(ex.toString());
+             throw new IntegrationException("Error inserting code element", ex);
+        } finally{
+            if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
     }
     
     public void deleteCodeElement(CodeElement element) throws IntegrationException{

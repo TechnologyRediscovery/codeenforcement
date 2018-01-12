@@ -47,11 +47,11 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     private CodeSource activeCodeSource;
     private int formType;
     
-    private int formOrdchapterNo;
+    private int formOrdChapterNo;
     
-    private String formOrdchapterTitle;
+    private String formOrdChapterTitle;
     private String formOrdSecNum;
-    private String formOrdsecTitle;
+    private String formOrdSecTitle;
     
     private String formOrdSubSecNum;
     private String formOrdSubSecTitle;
@@ -65,6 +65,8 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     private String formResourceURL;
     private String formInspectionTips;
     
+    
+    
     public String insertCodeElement(){
         
         
@@ -75,11 +77,11 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         newCE.setSource(activeCodeSource);
         newCE.setTypeID(formType);
         
-        newCE.setOrdchapterNo(formOrdchapterNo);
+        newCE.setOrdchapterNo(formOrdChapterNo);
         
-        newCE.setOrdchapterTitle(formOrdchapterTitle);
+        newCE.setOrdchapterTitle(formOrdChapterTitle);
         newCE.setOrdSecNum(formOrdSecNum);
-        newCE.setOrdsecTitle(formOrdsecTitle);
+        newCE.setOrdsecTitle(formOrdSecTitle);
         
         newCE.setOrdSubSecNum(formOrdSecNum);
         newCE.setOrdSubSecTitle(formOrdSubSecTitle);
@@ -111,31 +113,31 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     
 
     /**
-     * @return the formOrdchapterNo
+     * @return the formOrdChapterNo
      */
-    public int getFormOrdchapterNo() {
-        return formOrdchapterNo;
+    public int getFormOrdChapterNo() {
+        return formOrdChapterNo;
     }
 
     /**
-     * @param formOrdchapterNo the formOrdchapterNo to set
+     * @param formOrdChapterNo the formOrdChapterNo to set
      */
-    public void setFormOrdchapterNo(int formOrdchapterNo) {
-        this.formOrdchapterNo = formOrdchapterNo;
+    public void setFormOrdChapterNo(int formOrdChapterNo) {
+        this.formOrdChapterNo = formOrdChapterNo;
     }
 
     /**
-     * @return the formOrdchapterTitle
+     * @return the formOrdChapterTitle
      */
-    public String getFormOrdchapterTitle() {
-        return formOrdchapterTitle;
+    public String getFormOrdChapterTitle() {
+        return formOrdChapterTitle;
     }
 
     /**
-     * @param formOrdchapterTitle the formOrdchapterTitle to set
+     * @param formOrdChapterTitle the formOrdChapterTitle to set
      */
-    public void setFormOrdchapterTitle(String formOrdchapterTitle) {
-        this.formOrdchapterTitle = formOrdchapterTitle;
+    public void setFormOrdChapterTitle(String formOrdChapterTitle) {
+        this.formOrdChapterTitle = formOrdChapterTitle;
     }
 
     /**
@@ -153,17 +155,17 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the formOrdsecTitle
+     * @return the formOrdSecTitle
      */
-    public String getFormOrdsecTitle() {
-        return formOrdsecTitle;
+    public String getFormOrdSecTitle() {
+        return formOrdSecTitle;
     }
 
     /**
-     * @param formOrdsecTitle the formOrdsecTitle to set
+     * @param formOrdSecTitle the formOrdSecTitle to set
      */
-    public void setFormOrdsecTitle(String formOrdsecTitle) {
-        this.formOrdsecTitle = formOrdsecTitle;
+    public void setFormOrdSecTitle(String formOrdSecTitle) {
+        this.formOrdSecTitle = formOrdSecTitle;
     }
 
     /**

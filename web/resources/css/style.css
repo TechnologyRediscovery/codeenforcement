@@ -136,6 +136,10 @@ div.headerLinks{
 }
 
 
+span.bold {
+    font-weight: bold;
+}
+
 /* TABLE STYLES */
 
 table.primeDataTable td{
@@ -276,19 +280,19 @@ div.checkBoxLabel{
 /* Error Styling */
 
 .msgWarn{
-    color: #00cc99;
+    color: yellow;
 }
 
 .msgInfo{
-    color: #999999;
+    color: blue;
 }
 
 .msgFatal{
-    color: #ff0066;
+    color: orange;
 }
 
-span.msgError{
-    color: #6666ff;
+.msgError{
+    color: orangered;
 }
 
 /* Property Profile Styling */

@@ -335,6 +335,6 @@
     <managed-bean>
         <managed-bean-name>codeElementListBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementListBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>

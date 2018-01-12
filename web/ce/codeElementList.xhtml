@@ -13,61 +13,75 @@
         <ui:composition template="./../tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
+                    <h:outputLink value="codeSourceManage.xhtml">&lt;-- Back to code source manager</h:outputLink>
                     <h1>Code Elements by Source</h1>
                     <f:view>
                         <h:form id="codeElementsBySource">
                             
-                        <p:dataTable
-                            id="codeElementTable"
-                            var="element"
-                            value="#{codeElementListBB.codeElementList}"
-                            selectionMode="single"
-                            selection="#{codeElementListBB.selectedElement}"
-                            rowKey="#{element.elementID}"
-                            tableStyleClass="primeDataTable">
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Type" />
-                                </f:facet>
-                                <h:outputText value="#{element.type.name}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Chapt. No" />
-                                </f:facet>
-                                <h:outputText value="#{element.ordchapterNo}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Sec. No" />
-                                </f:facet>
-                                <h:outputText value="#{element.ordSecNum}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Sec. Title" />
-                                </f:facet>
-                                <h:outputText value="#{element.ordsecTitle}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="SubSec. No" />
-                                </f:facet>
-                                <h:outputText value="#{element.ordSubSecNum}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="SubSec. Title" />
-                                </f:facet>
-                                <h:outputText value="#{element.ordSubSecTitle}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Active?" />
-                                </f:facet>
-                                <h:outputText value="#{element.isActive}"/>
-                            </p:column>
-                        </p:dataTable>
+                            <h:messages globalOnly="false"
+                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError"/>
+                            
+                            <p:dataTable
+                                id="codeElementTable"
+                                var="element"
+                                value="#{codeElementListBB.codeElementList}"
+                                selectionMode="single"
+                                selection="#{codeElementListBB.selectedElement}"
+                                rowKey="#{element.elementID}"
+                                tableStyleClass="primeDataTable">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Type" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.type.name}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Chapt. No" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.ordchapterNo}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Sec. No" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.ordSecNum}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Sec. Title" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.ordsecTitle}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="SubSec. No" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.ordSubSecNum}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="SubSec. Title" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.ordSubSecTitle}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Active?" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.isActive}"/>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <p:commandButton
+                                id="updateCodeElement" value="Update Selected Element"
+                                styleClass="multiButtonLineButton"
+                                action="#{codeElementListBB.moveToUpdateCodeElement}"/>
+
+                            <p:commandButton
+                                id="deleteCodeElement" value="Delete Selected Element"
+                                styleClass="multiButtonLineButton"
+                                actionListener="#{codeElementListBB.deleteCodeElement}"/>
 
                         </h:form>
                     </f:view>

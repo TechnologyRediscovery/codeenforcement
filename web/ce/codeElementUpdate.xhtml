@@ -7,19 +7,19 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <link rel="stylesheet" type="text/css" href="css/style.css"></link>
-        <title></title>
+        <title>Update Code Element</title>
     </h:head>
     <h:body>
         <ui:composition template="./../tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
-                     <h:outputLink value="codeSourceManage.xhtml">&lt;-- Back to code source manager</h:outputLink>
-                    <h1>Add code element to code source</h1>
+                     <h:outputLink value="codeElementList.xhtml">&lt;-- Back to element manager</h:outputLink>
+                    <h1>Update existing code element</h1>
                     <f:view>
                         
                         <h:messages globalOnly="false"></h:messages>
 
-                        <h2>Current code source data:</h2>
+                        <h2>This Element's Code Source:</h2>
                         
                         <p><span class="bold">Source ID: </span><h:outputText value="#{codeElementBB.activeCodeSource.sourceID}"/> |
                         <span class="bold">Source Name: </span> <h:outputText value="#{codeElementBB.activeCodeSource.sourceName}"/></p>
@@ -32,11 +32,16 @@
                         <hr/>
                         
                         <h:form id="addCodeElement">
-                            <h2>New Element Form:</h2>
-                            <p>Populate the following fields to add an element to the above code source</p>
+                            <h2>Update Code Element:</h2>
+                            <p>Adjust the fields as needed and click "Update" at the bottom. 
+                                All fields will be overwritten, so leave untouched those you wish to remain unchanged.</p>
                             
-                            <p>Select an appropriate type for this element</p>
-                            <p:selectOneListbox value="#{codeElementBB.formType}"
+                            <p> <span class="bold">Element ID:</span><h:outputText value="#{codeElementListBB.selectedElement.elementID}"/></p>
+                            
+                            <p> <span class="bold">Current Type: </span><h:outputText value="#{codeElementListBB.selectedElement.type.name}"/></p>
+                            
+                            <p>If you wish to change the current type, select a new one from this list:</p>
+                            <p:selectOneListbox value="#{codeElementListBB.formType}"
                                             id="elementTypes" style="width: 400px"
                                             tabindex="1">
                                 <f:selectItems value="#{codeElementTypeBB.codeElementTypesMap}"/>
@@ -46,7 +51,7 @@
                             <h:outputLabel for="cdelOrdChapterNo" >
                                 <h:outputText value="Ordiance chapter number (numbers only)" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelOrdChapterNo" value="#{codeElementBB.formOrdChapterNo}" 
+                            <p:inputText id="cdelOrdChapterNo" value="#{codeElementListBB.formOrdChapterNo}" 
                                          style="width: 10%;" tabindex="2" required="true" styleClass="inputText"/>
                             <h:message for="cdelOrdChapterNo" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -56,7 +61,7 @@
                             <h:outputLabel for="cdelOrdChapterTitle" >
                                 <h:outputText value="Chapter title" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelOrdChapterTitle" value="#{codeElementBB.formOrdChapterTitle}" 
+                            <p:inputText id="cdelOrdChapterTitle" value="#{codeElementListBB.formOrdChapterTitle}" 
                                          style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
                             <h:message for="cdelOrdChapterTitle" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -66,7 +71,7 @@
                             <h:outputLabel for="cdelOrdSecNum" >
                                 <h:outputText value="Section number (may contain letters)" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelOrdSecNum" value="#{codeElementBB.formOrdSecNum}" 
+                            <p:inputText id="cdelOrdSecNum" value="#{codeElementListBB.formOrdSecNum}" 
                                          style="width: 10%;" tabindex="4" required="true" styleClass="inputText"/>
                             <h:message for="cdelOrdSecNum" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -76,7 +81,7 @@
                             <h:outputLabel for="ccdelOrdSecTitle" >
                                 <h:outputText value="Section title" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="ccdelOrdSecTitle" value="#{codeElementBB.formOrdSecTitle}" 
+                            <p:inputText id="ccdelOrdSecTitle" value="#{codeElementListBB.formOrdSecTitle}" 
                                          style="width: 50%;" tabindex="5" required="true" styleClass="inputText"/>
                             <h:message for="ccdelOrdSecTitle" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -86,7 +91,7 @@
                             <h:outputLabel for="cdelordSubSecNum" >
                                 <h:outputText value="Subsection number (may contain letters)" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelordSubSecNum" value="#{codeElementBB.formOrdSubSecNum}" 
+                            <p:inputText id="cdelordSubSecNum" value="#{codeElementListBB.formOrdSubSecNum}" 
                                          style="width: 10%;" tabindex="6" required="false" styleClass="inputText"/>
                             <h:message for="cdelordSubSecNum" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -96,7 +101,7 @@
                             <h:outputLabel for="cdelOrdSubSecTitle" >
                                 <h:outputText value="Subsection title" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelOrdSubSecTitle" value="#{codeElementBB.formOrdSubSecTitle}" 
+                            <p:inputText id="cdelOrdSubSecTitle" value="#{codeElementListBB.formOrdSubSecTitle}" 
                                          style="width: 50%;" tabindex="7" required="false" styleClass="inputText"/>
                             <h:message for="cdelOrdSubSecTitle" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -106,7 +111,7 @@
                             <h:outputLabel for="cdelOrdTechnicalText" >
                                 <h:outputText value="Enter the technical text of this ordinance" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputTextarea id="cdelOrdTechnicalText" value="#{codeElementBB.formOrdTechnicalText}" 
+                            <p:inputTextarea id="cdelOrdTechnicalText" value="#{codeElementListBB.formOrdTechnicalText}" 
                                          style="width: 100%;" tabindex="8" required="true" styleClass="inputText"/>
                             <h:message for="cdelOrdTechnicalText" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -116,7 +121,7 @@
                             <h:outputLabel for="cdelOrdHumanFriendlyText" >
                                 <h:outputText value="Compose a human-friendly version of this ordinance" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputTextarea id="cdelOrdHumanFriendlyText" value="#{codeElementBB.formOrdHumanFriendlyText}" 
+                            <p:inputTextarea id="cdelOrdHumanFriendlyText" value="#{codeElementListBB.formOrdHumanFriendlyText}" 
                                          style="width: 100%;" tabindex="9" required="false" styleClass="inputText"/>
                             <h:message for="cdelOrdHumanFriendlyText" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -126,7 +131,7 @@
                             <h:outputLabel for="cdelDefaultPenalty" >
                                 <h:outputText value="Enter the default penalty for violating this ordinance" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelDefaultPenalty" value="#{codeElementBB.formDefaultPenalty}" 
+                            <p:inputText id="cdelDefaultPenalty" value="#{codeElementListBB.formDefaultPenalty}" 
                                          style="width: 10%;" tabindex="10" required="true" styleClass="inputText"/>
                             <h:message for="cdelDefaultPenalty" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -136,7 +141,7 @@
                             <h:outputLabel for="cdelIsActive" >
                                 <h:outputText value="Toggle active element'" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:selectBooleanCheckbox id="cdelIsActive" value="#{codeElementBB.formIsActive}" 
+                            <p:selectBooleanCheckbox id="cdelIsActive" value="#{codeElementListBB.formIsActive}" 
                                        tabindex="11" required="true" styleClass="selectOneRadio"/>
                             <h:message for="cdelIsActive" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -146,7 +151,7 @@
                             <h:outputLabel for="cdelEnfPriority" >
                                 <h:outputText value="Toggle code enforcement priority." styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:selectBooleanCheckbox id="cdelEnfPriority" value="#{codeElementBB.formIsEnforcementPriority}" 
+                            <p:selectBooleanCheckbox id="cdelEnfPriority" value="#{codeElementListBB.formIsEnforcementPriority}" 
                                        tabindex="12" required="true" styleClass="selectOneRadio"/>
                             <h:message for="cdelEnfPriority" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -156,7 +161,7 @@
                             <h:outputLabel for="cdelUrl" >
                                 <h:outputText value="Web address of element resource" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputText id="cdelUrl" value="#{codeElementBB.formResourceURL}" 
+                            <p:inputText id="cdelUrl" value="#{codeElementListBB.formResourceURL}" 
                                          style="width: 100%;" tabindex="13" required="false" styleClass="inputText"/>
                             <h:message for="cdelUrl" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -166,7 +171,7 @@
                             <h:outputLabel for="cdelInspectionTips" >
                                 <h:outputText value="Inspection procedure or best practices" styleClass="uiLabel" />
                             </h:outputLabel>
-                            <p:inputTextarea id="cdelInspectionTips" value="#{codeElementBB.formInspectionTips}" 
+                            <p:inputTextarea id="cdelInspectionTips" value="#{codeElementListBB.formInspectionTips}" 
                                          style="width: 100%;" tabindex="14" required="false" styleClass="inputText"/>
                             <h:message for="cdelInspectionTips" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -175,10 +180,10 @@
                             
                             <h:commandButton 
                              id="insertCodeElement" 
-                             value="Add code element" 
+                             value="Update code element" 
                              styleClass="buttonOwnLine"
                              tabindex="15"
-                             action="#{codeElementListBB.commitUpdatesToCodeElement}"/>
+                             action="#{codeElementListBB.commitUpdatesToCodeElement()}"/>
                             
                         </h:form>
                     </f:view>
