@@ -39,7 +39,7 @@
                         
                         <p:commandButton
                             id="loadCodeSets" 
-                            value="Retrieve Code Sets" 
+                            value="Retrieve all Code Sets" 
                             ajax="false"
                             styleClass="buttonOwnLine"
                             actionListener="#{codeSetBB.retrieveCodeSetsByMuni}"/>
@@ -49,7 +49,7 @@
                             var="set"
                             value="#{codeSetBB.codeSetList}"
                             selectionMode="single"
-                            selection="#{sessionManager.visit.activeCodeSet}"
+                            selection="#{codeSetBB.selectedCodeSet}"
                             rowKey="#{set.codeSetID}"
                             tableStyleClass="primeDataTable">
                             <p:column>
@@ -89,6 +89,10 @@
                             id="viewCodeElementsInSet" 
                             value="View &amp; edit code set elements" 
                             action="#{codeSetBB.manageCodeSetElements}"/>
+                         <h:commandButton 
+                            id="codeSetBuilderButton" 
+                            value="Build code set" 
+                            action="#{codeSetBB.buildCodeSet}"/>
                         
                       
                         

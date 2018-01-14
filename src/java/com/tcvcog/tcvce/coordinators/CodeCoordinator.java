@@ -42,7 +42,7 @@ public class CodeCoordinator extends BackingBeanUtils implements Serializable {
         CodeIntegrator integrator = getCodeIntegrator();
         
         
-        CodeSource s = integrator.getCodeSourceBySourceID(sourceID);
+        CodeSource s = integrator.getCodeSource(sourceID);
         System.out.println("CodeCoordinator.retrieveCodeSourceByID: sourceName: " + s.getSourceName());
         if(s.getSourceName() == null){
             

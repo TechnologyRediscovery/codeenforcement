@@ -155,7 +155,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         CodeSource source = sm.getActiveCodeSource();
         CodeIntegrator codeIntegrator = getCodeIntegrator();
         try {
-            codeElementList = codeIntegrator.getCodeElementsBySourceID(source.getSourceID());
+            codeElementList = codeIntegrator.getCodeElements(source.getSourceID());
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 

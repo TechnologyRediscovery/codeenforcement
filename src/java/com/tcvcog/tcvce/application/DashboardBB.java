@@ -17,68 +17,27 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.entities.CodeSource;
 import java.io.Serializable;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author sylvia
  */
-@ManagedBean
-@SessionScoped
-public class SessionManager implements Serializable{
+public class DashboardBB extends BackingBeanUtils implements Serializable {
 
     /**
-     * Creates a new instance of SessionManager
+     * Creates a new instance of DashboardBB
      */
-    public SessionManager() {
-        System.out.println("SessionManager.SessionManager | Adding a visit to session");
-        Visit v = new Visit();
-        visit = v;
+    public DashboardBB() {
     }
     
-    private Visit visit;
-    private CodeSource activeCodeSource;
     private String sessionManagerVersion;
-    
-
-    /**
-     * @return the visit
-     */
-    public Visit getVisit() {
-        return visit;
-    }
-
-    /**
-     * @param visit the visit to set
-     */
-    public void setVisit(Visit visit) {
-        this.visit = visit;
-    }
-
-    /**
-     * @return the activeCodeSource
-     */
-    public CodeSource getActiveCodeSource() {
-        return activeCodeSource;
-    }
-
-    /**
-     * @param activeCodeSource the activeCodeSource to set
-     */
-    public void setActiveCodeSource(CodeSource activeCodeSource) {
-        this.activeCodeSource = activeCodeSource;
-    }
 
     /**
      * @return the sessionManagerVersion
      */
     public String getSessionManagerVersion() {
-        sessionManagerVersion = "M0.9";
+        
         return sessionManagerVersion;
     }
 
@@ -88,5 +47,7 @@ public class SessionManager implements Serializable{
     public void setSessionManagerVersion(String sessionManagerVersion) {
         this.sessionManagerVersion = sessionManagerVersion;
     }
+    
+    
     
 }

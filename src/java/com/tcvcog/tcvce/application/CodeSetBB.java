@@ -49,8 +49,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     public CodeSetBB() {
     }
     
-    @ManagedProperty(value="#{sessionManager}")
-    private SessionManager sessionManager;
+   
     
     private HashMap muniMap;
     private Municipality selectedMuni;
@@ -80,13 +79,27 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     private int formMuniCode;
     private int formNewMuniCode;
     
+    public String buildCodeSet(){
+        System.out.println("CodeSetBB.buildCodeSet");
+        SessionManager sm = getSessionManager();
+        if (selectedCodeSet != null){
+            sm.getVisit().setActiveCodeSet(selectedCodeSet);
+            System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
+            return "codeSetBuilder";
+        } else {
+            return "";
+        }
+        
+    }
+    
+    
     public void retrieveCodeSetsByMuni(ActionEvent event){
         CodeIntegrator codeInt = getCodeIntegrator();
         LinkedList<CodeSet> retrievedCodeSetList;
         try {
             System.out.println("CodeSetBB.retrieveCodeSetsByMuniID | selected Muni Code:  "+ selectedMuniCode);
             
-            retrievedCodeSetList = codeInt.getCodeSetsByMuniCode(selectedMuniCode);
+            retrievedCodeSetList = codeInt.getCodeSets(selectedMuniCode);
             if(!retrievedCodeSetList.isEmpty()){
                 codeSetList = retrievedCodeSetList;
                 getFacesContext().addMessage(null,
@@ -135,36 +148,14 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     public String manageCodeSetElements(){
         System.out.println("CodeSetBB.manageCodeSetElements");
-        //CodeIntegrator codeInt = getCodeIntegrator();
-        
-//        if(selectedCodeSet != null){
-//            Visit visit = new Visit();
-//            visit.setActiveCodeSet(selectedCodeSet);
-//            sessionManager.setVisit(visit);
-//            
-//            //try {
-//                //sessionManager.getVisit().setActiveCodeSet(selectedCodeSet);
-//                //System.out.println("CodeSetBB.manageCodeSetElements | activeCodeSet: " + sessionManager.getVisit().getActiveCodeSet().getCodeSetName());
-////            } catch (IntegrationException ex) {
-////                System.out.println(ex.toString());
-////                getFacesContext().addMessage(null,
-////                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-////                            "Unable to find Enforcable Code Elements, sorry.", 
-////                            "There may be no Enforcable Code Elements in this set"));
-////
-////            }
-//            
-//        } else {
-//                getFacesContext().addMessage(null,
-//                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-//                            "Hark! No code set selected--Please select a code set", ""));
-//            
-//        }
-//        Visit visit = new Visit();
-//        visit.setEceList(eceList);
-//        setVisit(visit);
-//        System.out.println("CodeSetBB.manageCodeSetElements | gotten visit: " + getVisit().getEceList().peek().getOrdsecTitle());
-        return "codeSetElementManage";
+        SessionManager sm = getSessionManager();
+        if (selectedCodeSet != null){
+            sm.getVisit().setActiveCodeSet(selectedCodeSet);
+            System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
+            return "codeSetElementManage";
+        } else {
+            return "";
+        }
     }
     
     
@@ -345,7 +336,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         
         CodeIntegrator codeInt = getCodeIntegrator();
         try {
-            codeSetList = codeInt.getCodeSetsByMuniCode(selectedMuniCode);
+            codeSetList = codeInt.getCodeSets(selectedMuniCode);
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
@@ -464,20 +455,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
 
    
 
-    /**
-     * @return the sessionManager
-     */
-    public SessionManager getSessionManager() {
-        return sessionManager;
-    }
-
-    /**
-     * @param sessionManager the sessionManager to set
-     */
-    public void setSessionManager(SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
-
+  
     /**
      * @return the selectedEnforcableCodeElement
      */

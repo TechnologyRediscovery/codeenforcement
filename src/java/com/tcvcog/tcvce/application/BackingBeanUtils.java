@@ -201,7 +201,7 @@ public class BackingBeanUtils implements Serializable{
      * @return the sessionManager
      */
     public SessionManager getSessionManager() {
-         FacesContext context = getFacesContext();
+        FacesContext context = getFacesContext();
         ValueExpression ve = context.getApplication().getExpressionFactory()
                 .createValueExpression(context.getELContext(), 
                         "#{sessionManager}", SessionManager.class);

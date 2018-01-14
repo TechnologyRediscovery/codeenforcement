@@ -17,7 +17,9 @@
                 <f:view>
                     <h:form id="codeElementTypes">
                         
-                        <h:messages globalOnly="true"></h:messages>
+                        <h:messages globalOnly="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
                             
                             <h3>Current Code Element Types</h3>
                             <p:selectOneListbox value="#{codeElementTypeBB.selectedType}"

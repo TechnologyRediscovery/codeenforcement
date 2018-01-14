@@ -58,7 +58,7 @@ public class CodeElementTypeBB extends BackingBeanUtils implements Serializable 
     public void editCodeElement(ActionEvent event){
         System.out.println("CodeElementTypeBB.editCodeElement - TypeID: " + selectedType);
         try {
-            elementTypeToUpdate = getCodeIntegrator().getCodeElementTypeByID(selectedType);
+            elementTypeToUpdate = getCodeIntegrator().getCodeElementType(selectedType);
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,

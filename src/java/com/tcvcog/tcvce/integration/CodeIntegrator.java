@@ -32,6 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -87,8 +88,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @return the CodeSource object built from the DB read
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public CodeSource getCodeSourceBySourceID(int sourceID) throws IntegrationException{
-        System.out.println("CodeIntegrator.getCodeSourceBySourceID");
+    public CodeSource getCodeSource(int sourceID) throws IntegrationException{
         CodeSource source = new CodeSource();
 
         String query = "SELECT sourceid, name, year, "
@@ -204,6 +204,32 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         // TODO: Write guts
     }
     
+    /**
+     * Utility method for converting a LinkedList of CodeSource objects
+     * into a map with the name of the CodeSource as the key and the 
+     * CodeSource object as the value. Designed for selectItem components
+     * that the view likes to eat for breakfast.
+     * @return fully-baked hasmap of CodeSource names and CodeSource objects
+     * @throws IntegrationException 
+     */
+    public HashMap getCodeSourceMap() throws IntegrationException{
+        LinkedList<CodeSource> csList = getCompleteCodeSourceList();
+        HashMap<String, Integer> csMap = new HashMap();
+        
+        ListIterator li = csList.listIterator();
+        while(li.hasNext()){
+            CodeSource cs = (CodeSource) li.next();
+            csMap.put(cs.getSourceName(), cs.getSourceID());
+        }
+        return csMap;
+    }
+    
+    /**
+     * Retrieves all existing code sources from the DB and builds CodeSource
+     * objects for each one, populating all the fields
+     * @return all code sources in the DB as CodeSource objects
+     * @throws IntegrationException 
+     */
     public LinkedList getCompleteCodeSourceList() throws IntegrationException{
         String query = "SELECT sourceid, name, year, "
               + "description, isactive, url, "
@@ -246,11 +272,11 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public LinkedList getCodeSetsByMuniCode(int muniCode) throws IntegrationException{
+    public LinkedList getCodeSets(int muniCode) throws IntegrationException{
          String query = "SELECT codesetid, name, description, municipality_municode \n" +
                         "FROM public.codeset WHERE municipality_municode = ?";
         
-         System.out.println("CodeIntegrator.getCodeSetsByMuniCode | MuniCode: "+ muniCode);
+         //System.out.println("CodeIntegrator.getCodeSets | MuniCode: "+ muniCode);
         
         Connection con = null;
         PreparedStatement stmt = null;
@@ -270,7 +296,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 set.setCodeSetID(rs.getInt(1));
                 set.setCodeSetName(rs.getString(2));
                 set.setCodeSetDescription(rs.getString(3));
-                set.setCodeElementList(getEnforcableCodeElementListByCodeSetID(rs.getInt(1)));
+                set.setCodeElementList(getEnforcableCodeElementList(rs.getInt(1)));
                 int muniCodeTest = rs.getInt(4);
                 set.setMuni(muniInt.getMuniFromMuniCode(muniCodeTest));
                 if (set.getMuni() == null){
@@ -330,8 +356,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.execute();
             
         } catch (SQLException ex) {
-            System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | " + ex.toString());
-            throw new IntegrationException("Exception in MunicipalityIntegrator.getMuniFromMuniCode", ex);
+            System.out.println(ex.toString());
+            throw new IntegrationException("Exception in CodeIntegrator.addEnforcableCodeElementToCodeSet", ex);
         } finally{
            if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
@@ -380,7 +406,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @return the fully-baked EnforcableCodeElement
      * @throws IntegrationException 
      */
-    public EnforcableCodeElement getEnforcableCodeElementByCodeSetElementID(int codeSetElementID) throws IntegrationException{
+    public EnforcableCodeElement getEnforcableCodeElement(int codeSetElementID) throws IntegrationException{
         EnforcableCodeElement newEce = new EnforcableCodeElement();
         PreparedStatement stmt = null;
         Connection con = null;
@@ -397,7 +423,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             while(rs.next()){
                 
-                newEce.setCodeElement(getCodeElementByElementID(rs.getInt("codeset_codesetid")));
+                newEce.setCodeElement(getCodeElement(rs.getInt("codeset_codesetid")));
                 newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
                 newEce.setMinPenalty(rs.getInt("elementminpenalty"));
                 newEce.setNormPenalty(rs.getInt("elementnormpenalty"));
@@ -427,7 +453,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
    * @return all CodeElement objects kicked out by postgres with that setID
    * @throws com.tcvcog.tcvce.domain.IntegrationException
    */
-    public LinkedList getEnforcableCodeElementListByCodeSetID(int setID) throws IntegrationException{
+    public LinkedList getEnforcableCodeElementList(int setID) throws IntegrationException{
         PreparedStatement stmt = null;
         Connection con = null;
         String query = "SELECT codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, \n" +
@@ -445,7 +471,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             while(rs.next()){
                 EnforcableCodeElement newEce = new EnforcableCodeElement();
-                newEce.setCodeElement(getCodeElementByElementID(rs.getInt("codelement_elementid")));
+                newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
                 newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
                 newEce.setMinPenalty(rs.getInt("elementminpenalty"));
                 newEce.setNormPenalty(rs.getInt("elementnormpenalty"));
@@ -477,14 +503,14 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @param e an empty CodeElement. Client class is responsible for instantiation
      * @return a populated CodeElement extracted from that row in the ResultSet
      */
-    private CodeElement populateCodeElementFromRS(ResultSet rs, CodeElement e) throws SQLException, IntegrationException{
+    private CodeElement populateCodeElement(ResultSet rs, CodeElement e) throws SQLException, IntegrationException{
                 
                 // to ease the eyes, line spacing corresponds to the field spacing in CodeElement
         
                 e.setElementID(rs.getInt("elementid"));
                 
-                e.setType(getCodeElementTypeByID(rs.getInt("codeelementtype_cdeltypeid")));
-                e.setSource(getCodeSourceBySourceID(rs.getInt("codesource_sourceid")));
+                e.setType(getCodeElementType(rs.getInt("codeelementtype_cdeltypeid")));
+                e.setSource(getCodeSource(rs.getInt("codesource_sourceid")));
                 
                 e.setOrdchapterNo(rs.getInt("ordchapterno"));
                 
@@ -517,8 +543,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @return the loaded up CodeElement with database data
      * @throws IntegrationException 
      */
-    public CodeElement getCodeElementByElementID(int elementID) throws IntegrationException{
-        System.out.println("CodeIntegrator.getCodeElementByElementID | fetching code element by ID");
+    public CodeElement getCodeElement(int elementID) throws IntegrationException{
+        //System.out.println("CodeIntegrator.getCodeElement | fetching code element by ID");
         CodeElement newCodeElement = new CodeElement();
         PreparedStatement stmt = null;
         Connection con = null;
@@ -538,7 +564,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             // this query will only return 1 row since the WHERE clause selects from an PK column
             while(rs.next()){
-                newCodeElement = populateCodeElementFromRS(rs, newCodeElement);
+                newCodeElement = populateCodeElement(rs, newCodeElement);
                  
             }
         } catch (SQLException ex) {
@@ -567,7 +593,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @throws IntegrationException Caught by backing beans and converted into
      * user messages
      */
-    public LinkedList getCodeElementsBySourceID(int sourceID) throws IntegrationException{
+    public LinkedList getCodeElements(int sourceID) throws IntegrationException{
         String query = "SELECT elementid from codeelement where codesource_sourceID = ?;";
         Connection con = null;
         PreparedStatement stmt = null;
@@ -582,7 +608,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                elementList.add(getCodeElementByElementID(rs.getInt("elementid")));
+                System.out.println("CodeIntegrator.getCodeElementsBySourceID | getting code element!");
+                elementList.add(getCodeElement(rs.getInt("elementid")));
             }
              
         } catch (SQLException ex) { 
@@ -595,7 +622,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
         
          return elementList;
-    } // close getCodeElementsBySourceID
+    } // close getCodeElements
     
     public void insertCodeElement(CodeElement element) throws IntegrationException{
          String query = "INSERT INTO public.codeelement( " 
@@ -889,7 +916,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         return map;
     }
     
-    public CodeElementType getCodeElementTypeByID(int typeId) throws IntegrationException{
+    public CodeElementType getCodeElementType(int typeId) throws IntegrationException{
         String query = "SELECT cdeltypeid, name, description\n" +
                         "  FROM public.codeelementtype WHERE cdeltypeid=?;";
         Connection con = null;

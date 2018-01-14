@@ -15,12 +15,17 @@
                 <div class="mainContainer">
                     
                 <f:view id="enforcableCodeElementsInsSetManage">
-                   <h2>Enforceable code elements in set</h2>
+                   <h:outputLink value="codeSetManage.xhtml">&lt;--Return to set manager</h:outputLink>
+                    <h2>Enforceable code elements in set</h2>
+                   <h:messages globalOnly="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                    <p>The following table displays Enforcable Code Elements, meaning code elements added to a municipality-specific code set with enforcement data (e.g. max penalty).</p>
                         <h:form id="enforcableCodeElementsForm">
                             <p:dataTable
                             id="enforcableCodeElementTable"
                             var="cs"
-                            value="#{sessionManager.visit.activeCodeSet.codeElementList}"
+                            value="#{codeSetElementBB.eceList}"
                             selectionMode="single"
                             selection="#{codeSetElementBB.selectedEce}"
                             rowKey="#{cs.codeSetElementID}"
@@ -64,6 +69,9 @@
                         </p:dataTable>
                             
                         </h:form>
+                   
+                   
+                 
                 </f:view>
                 </div>
             </ui:define>

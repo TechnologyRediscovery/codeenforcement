@@ -17,13 +17,20 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
-/**
+/** 
  *
  * @author sylvia
  */
@@ -36,24 +43,12 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     public CodeSetElementBB() {
     }
     
-    @ManagedProperty("#{sessionManager}")
-    private SessionManager sessionManager;
+   
     
     private EnforcableCodeElement selectedEce;
+    private LinkedList<EnforcableCodeElement> eceList;
 
-    /**
-     * @return the sessionManager
-     */
-    public SessionManager getSessionManager() {
-        return sessionManager;
-    }
-
-    /**
-     * @param sessionManager the sessionManager to set
-     */
-    public void setSessionManager(SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
+   
 
     /**
      * @return the selectedEce
@@ -67,6 +62,39 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      */
     public void setSelectedEce(EnforcableCodeElement selectedEce) {
         this.selectedEce = selectedEce;
+    }
+
+    /**
+     * @return the eceList
+     */
+    public LinkedList<EnforcableCodeElement> getEceList() {
+        SessionManager sm = getSessionManager();
+        CodeIntegrator integrator = getCodeIntegrator();
+        CodeSet codeSet = sm.getVisit().getActiveCodeSet();
+        
+        if(codeSet != null){
+            System.out.println("CodeSetElementBB.getEceList | active code set name: " + codeSet.getCodeSetName());
+            int setID = codeSet.getCodeSetID();
+            try {
+                eceList =  integrator.getEnforcableCodeElementList(setID);
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
+            } catch (IntegrationException ex) {
+                System.out.println(ex.toString());
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                                "No Enforcable Code Elements were found with SetID: " + setID, ""));
+            }
+        } 
+        return eceList;
+    }
+
+    /**
+     * @param eceList the eceList to set
+     */
+    public void setEceList(LinkedList<EnforcableCodeElement> eceList) {
+        this.eceList = eceList;
     }
     
     

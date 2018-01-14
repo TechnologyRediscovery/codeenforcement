@@ -88,9 +88,7 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
                 
                 User user = new User();
                 
-                // if we can make a user, make a visit
-//                Visit visit = new Visit();
-//                setVisit(visit);
+            
                 con.close();
                 return user;
             } else {

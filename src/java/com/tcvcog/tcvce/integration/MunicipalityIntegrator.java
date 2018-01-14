@@ -59,7 +59,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
             stmt.setInt(1, muniCode);
-            System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | query: " + stmt.toString());
+            //System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | query: " + stmt.toString());
             rs = stmt.executeQuery();
             
             while(rs.next()){

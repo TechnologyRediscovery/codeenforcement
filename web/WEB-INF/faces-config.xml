@@ -311,13 +311,13 @@
     <managed-bean>
         <managed-bean-name>codeSetBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeSetBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
         <managed-bean-name>codeSetElementBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeSetElementBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
     <navigation-rule>
@@ -337,4 +337,30 @@
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementListBB</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>codeSetBuilderBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetBuilderBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>dashboardBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.DashboardBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/dashboard.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>codeSourceManage</from-outcome>
+            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>elementTypeManager</from-outcome>
+            <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>codeSetManage</from-outcome>
+            <to-view-id>/ce/codeSetManage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
