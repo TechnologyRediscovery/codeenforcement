@@ -19,91 +19,85 @@
                         
                         <hr/>
                         
-                        <h2>Essential Entities Toolbox: Property &amp; People</h2>
-                        <p:spacer height="15px"/>
+                        <h2>Essential Entities Toolbox: Properties &amp; People</h2>
+                        <p:spacer height="8px"/>
                         
-                        <h:form id="dashboardCaseLinksForm">
+                        <h:form id="dashboardPropertiesAndPeopleLinksForm">
                         
-                            <p:commandLink ajax="false" value="Property Central" action=""/>
-                            <p>Manipulate property-level characteristics such as identification numbers, zoning, and associated persons.</p>
-                            <p:spacer height="15px"/>
+                            <p:commandLink ajax="false" value="Property Central" action="propertyProfiler"/>
+                            <p>Manipulate property-level characteristics such as identification numbers, zoning, and associated persons.
+                            Configure dwelling units on multi-unit properties.</p>
+                            <p:spacer height="8px"/>
                             
-                            <p:commandLink ajax="false" value="Human Resources" action=""/>
+                            <p:commandLink ajax="false" value="Human Resources" action="personManage"/>
                             <p>Add, adjust, and coordinate person-level information for use by modules across the system.</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
                             
                         </h:form>
                         <hr/>
                         
                         <h2>Code enforcement toolbox: </h2>
-                        <p:spacer height="15px"/>
+                        <p:spacer height="8px"/>
                         
-                        <h:form id="dashboardCaseLinksForm">
+                        <h:form id="dashboardCodeEnforcementLinksForm">
                         
-                            <p:commandLink ajax="false" value="Case Manager" action=""/>
+                            <p:commandLink ajax="false" value="Case Manager" action="caseManage"/>
                             <p>Browse code enforcement cases and their phases. Initiate case-related action, such as a monitoring visit. 
                             Record case-related interactions, such as phone calls, in-person visits, and emails.</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
                             
-                            <p:commandLink ajax="false" value="Event Coordinator" action=""/>
+                            <p:commandLink ajax="false" value="Event Coordinator" action="eventManage"/>
                             <p>Manipulate settings related to case-level events (e.g. communication events, case origination events, etc.)</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
                             
-                            <p:commandLink ajax="false" value="Litigiation Closet" action=""/>
+                            <p:commandLink ajax="false" value="Litigiation Closet" action="litigationManage"/>
                             <p>View data relating to code non-compliance ciations and their progress through the court system.
                             Create court-related reports and documents.</p>
-                            <p:spacer height="15px"/>
-                            
-                           
+                            <p:spacer height="8px"/>
 
                         </h:form>
                         <hr/>
                         
-                        
                         <h2>Municipal Code Tools:</h2>
-                        <p:spacer height="15px"/>
+                        <p:spacer height="8px"/>
                         
-                        <h:form id="dashboardCodeLinksForm">
+                        <h:form id="dashboardMuniCodeToolsLinkForm">
                         
                             <p:commandLink ajax="false" value="Code Source and Element Manager" action="codeSourceManage"/>
                             <p>Add code sources to the database, add individual code elements to the sources, and edit existing source-related information.</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
 
                             <p:commandLink ajax="false" value="Element Types Manager" action="elementTypeManage"/>
                             <p>A code element is associated with a type (e.g. heating/cooling, yard/walkways). Create, edit, and remove types. Once a type is 
                             created, code elements can be tagged with this type for easy access during day-to-day work.</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
 
                             <p:commandLink ajax="false" value="Code Set Manager" action="codeSetManage"/>
                             <p>Muncipalities have their own code sets. A Code Set is a list of "Enforcable code elements" which are plain code 
                                 elements with additional information about enforcing that particular element in that particular place. (e.g. "Enforcing 2.3.4b: grass height" in Pitcairn)</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
                         
                         </h:form>
-                        
+                        <hr/>
                         <h2>EnforceIt! System and Settings</h2>
-                        <p:spacer height="15px"/>
+                        <p:spacer height="8px"/>
                         
-                        <h:form id="dashboardCaseLinksForm">
+                        <h:form id="dashboardSystemSettingsLinkForm">
                         
-                            <p:commandLink ajax="false" value="User Manager" action=""/>
+                            <p:commandLink ajax="false" value="User Manager" action="userManage"/>
                             <p>Create, manage, and inactivate EnforceIt users</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
                             
-                            <p:commandLink ajax="false" value="Log Jams" action=""/>
+                            <p:commandLink ajax="false" value="Log Jams" action="logManage"/>
                             <p>Various system and activity logs related to all system modules</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
                             
-                            <p:commandLink ajax="false" value="Municipality Clients" action=""/>
+                            <p:commandLink ajax="false" value="Municipality Manager" action="muniManage"/>
                             <p>Adjust municipality-related data and system access settings</p>
-                            <p:spacer height="15px"/>
+                            <p:spacer height="8px"/>
 
                         </h:form>
                         <hr/>
-                        
-                        
-                        
-                        
                         
                     </f:view>
                 </div>

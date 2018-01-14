@@ -138,8 +138,8 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         currentPerson = new Person();
         
         currentPerson.setPersonType(submittingPersonType);
-        currentPerson.setfName(form_requestorFName);
-        currentPerson.setlName(form_requestorLName);
+        currentPerson.setFirstName(form_requestorFName);
+        currentPerson.setLastName(form_requestorLName);
         currentPerson.setPhoneCell(form_requestor_phoneCell);
         currentPerson.setPhoneHome(form_requestor_phoneHome);
         currentPerson.setPhoneWork(form_requestor_phoneWork);
@@ -153,7 +153,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         
         // Commit the sin of creating an integrator here and using it
         PersonIntegrator personIntegrator = new PersonIntegrator();
-        int newPersonId = personIntegrator.storeNewPerson(currentPerson);
+        int newPersonId = personIntegrator.insertPerson(currentPerson);
         currentPerson.setPersonid(newPersonId);
         
     } // close storePerson 

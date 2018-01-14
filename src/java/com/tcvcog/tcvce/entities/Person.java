@@ -29,8 +29,9 @@ import java.time.LocalDateTime;
 public class Person {
     private int personid;
     private PersonType personType;
-    private String fName;
-    private String lName;
+    private Municipality muni;
+    private String firstName;
+    private String lastName;
     private String jobTitle;
     private String phoneCell;
     private String phoneHome;
@@ -60,34 +61,7 @@ public class Person {
         this.personid = personid;
     }
 
-    /**
-     * @return the fName
-     */
-    public String getfName() {
-        return fName;
-    }
-
-    /**
-     * @param fName the fName to set
-     */
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    /**
-     * @return the lName
-     */
-    public String getlName() {
-        return lName;
-    }
-
-    /**
-     * @param lName the lName to set
-     */
-    public void setlName(String lName) {
-        this.lName = lName;
-    }
-
+  
     /**
      * @return the phoneCell
      */
@@ -297,5 +271,47 @@ public class Person {
     public void setIsUnder18(boolean isUnder18) {
         this.isUnder18 = isUnder18;
     }
-    
+
+    /**
+     * @return the muni
+     */
+    public Municipality getMuni() {
+        return muni;
+    }
+
+    /**
+     * @param muni the muni to set
+     */
+    public void setMuni(Municipality muni) {
+        this.muni = muni;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
 }

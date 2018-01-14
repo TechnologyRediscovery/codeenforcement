@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title></title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./tempHeadFoot.xhtml">
+            <ui:define name="content">
+                <div class="mainContainer">
+                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                            
+                    <f:view>
+                        <h1>Property Profile</h1>
+                        <h:form id="propertyprofileForm">
+                        <h:panelGrid columns="1" cellpadding="5" border="0" width="100%">
+                                <h2>Property Info</h2>
+
+                                    <h:graphicImage url="resources/oldHouse.jpg" width="150px" />
+                                    <h:outputLabel for="propertyID" >
+                                        <h:outputText styleClass="uiLabel" value="Property ID (For internal system)" />
+                                    </h:outputLabel>
+                                    <h:inputText id="propertyID" size="20" value="34443" styleClass="inputText" required="false"/>
+                                    <h:message for="propertyID" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="parcelID" >
+                                        <h:outputText styleClass="uiLabel" value="Parcel ID Number" />
+                                    </h:outputLabel>
+                                    <h:inputText id="parcelID" size="20" value="2332343F324" styleClass="inputText" required="false"/>
+                                    <h:message for="parcelID" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="lotAndBlock" >
+                                        <h:outputText styleClass="uiLabel" value="Lot and Block" />
+                                    </h:outputLabel>
+                                    <h:inputText id="lotAndBlock" size="20" value="454-A-89" styleClass="inputText" required="false"/>
+                                    <h:message for="lotAndBlock" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="address" >
+                                        <h:outputText styleClass="uiLabel" value="Address" />
+                                    </h:outputLabel>
+                                    <h:inputText id="address" size="20" value="1235 RODI RD" styleClass="inputText" required="false"/>
+                                    <h:message for="address" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="unitNo" >
+                                        <h:outputText styleClass="uiLabel" value="Unit or apartment number" />
+                                    </h:outputLabel>
+                                    <h:inputText id="unitNo" size="20" value="2" styleClass="inputText" required="false"/>
+                                    <h:message for="unitNo" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="Rental" >
+                                        <h:outputText styleClass="uiLabel" value="Rental property?" />
+                                    </h:outputLabel>
+                                    <h:selectBooleanCheckbox id="retnal" styleClass="selectBooleanCheckbox" value="true"/> 
+                                    <div class="checkBoxLabel">
+                                        <span> Rental property?</span>
+                                    </div>                 
+
+
+
+                                    <h:outputLabel for="ownerName" >
+                                        <h:outputText styleClass="uiLabel" value="Owner name" />
+                                    </h:outputLabel>
+                                    <h:inputText id="ownerName" size="20" value="Leona Lewis" styleClass="inputText" required="false"/>
+                                    <h:message for="ownerName" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="ownerAdd" >
+                                        <h:outputText styleClass="uiLabel" value="Owner address" />
+                                    </h:outputLabel>
+                                    <h:inputText id="ownerAdd" size="20" value="18 Shade Ave" styleClass="inputText" required="false"/>
+                                    <h:message for="ownerAdd" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="ownerPhone" >
+                                        <h:outputText styleClass="uiLabel" value="Owner phone" />
+                                    </h:outputLabel>
+                                    <h:inputText id="ownerPhone" size="20" value="333-444-5555" styleClass="inputText" required="false"/>
+                                    <h:message for="ownerPhone" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    <p class="note">last updated on 21 Aug 2017</p>
+                        </h:panelGrid>
+
+
+
+                            <h2>Existing Permits &amp; Inspections</h2>
+
+                            <h2>Residents/Tenants</h2>
+
+                            <h2>Action Requests</h2>
+
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

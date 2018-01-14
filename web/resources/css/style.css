@@ -181,6 +181,13 @@ tr.reinspect{
     background-color: lightpink
 }
 
+td.gridTd {
+    border: none;
+}
+
+td.gridFooter {
+    border: none;
+}
 
 /* ------------------------------------- */
 

@@ -12,6 +12,7 @@ import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.Person;
 import java.util.LinkedList;
 import javax.annotation.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,6 +28,7 @@ public class Visit {
     private Property activeProp;
     private CECase activeCase;
     private Event activeEvent;
+    private Person activePerson;
     private User currentUser;
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
@@ -134,6 +136,20 @@ public class Visit {
      */
     public void setEceList(LinkedList<EnforcableCodeElement> eceList) {
         this.eceList = eceList;
+    }
+
+    /**
+     * @return the activePerson
+     */
+    public Person getActivePerson() {
+        return activePerson;
+    }
+
+    /**
+     * @param activePerson the activePerson to set
+     */
+    public void setActivePerson(Person activePerson) {
+        this.activePerson = activePerson;
     }
     
     

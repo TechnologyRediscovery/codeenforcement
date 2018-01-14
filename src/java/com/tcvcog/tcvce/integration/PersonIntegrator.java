@@ -17,6 +17,7 @@
 package com.tcvcog.tcvce.integration;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.PersonType;
 import java.io.Serializable;
@@ -24,10 +25,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.FacesMessage;
 
 
 /**
@@ -50,7 +51,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @param personId the id of the person to look up
      * @return a Person object with all of the available data loaded
      */
-    public Person getPersonById(int personId){
+    public Person getPerson(int personId) throws IntegrationException{
         
         Connection con = getPostgresCon();
         
@@ -72,24 +73,15 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             if(rs.next()){
                 // note that rs.next() is called and the cursor
                 // is advanced to the first row in the rs
-                person = createPersonFromResultSet(rs);
+                person = generatePersonFromResultSet(rs);
             }
             
         } catch (SQLException ex) {
-            // call logger on backingbeanutils
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot search for person", ex);
         } finally{
-             if (rs != null) {
-                try {
-                    System.out.println("CEActionRequestorIntegrator.submitCEActionRequest - close rs");
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-             }
-            if (con != null) {
-                try {
-                    System.out.println("CEActionRequestorIntegrator.submitCEActionRequest - close con");
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-             }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         return person;
     }
@@ -107,15 +99,15 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @param rs the result set from which to extract data for creating a person
      * @return the new person object created from this single row of the rs
      */
-    public Person createPersonFromResultSet(ResultSet rs){
+    private Person generatePersonFromResultSet(ResultSet rs) throws IntegrationException{
         // Instantiates the new person object
         Person newPerson = new Person();
             
         try {
             newPerson.setPersonid(rs.getInt("personid"));
             newPerson.setPersonType(PersonType.valueOf(rs.getString("personType")));
-            newPerson.setfName(rs.getString("fName"));
-            newPerson.setlName(rs.getString("lName"));
+            newPerson.setFirstName(rs.getString("fName"));
+            newPerson.setLastName(rs.getString("lName"));
             newPerson.setPhoneCell(rs.getString("phoneCell"));
             newPerson.setPhoneHome(rs.getString("phoneHome"));
             newPerson.setPhoneWork(rs.getString("phoneWork"));
@@ -126,7 +118,8 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             newPerson.setNotes(rs.getString("notes"));
             //newPerson.setLastUpdated(rs.getDate("lastUpdated").toLocalDate());
         } catch (SQLException ex) {
-            Logger.getLogger(PersonIntegrator.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+            throw new IntegrationException("Error adding new person to DB", ex);
         }
         return newPerson;
     } // close method
@@ -142,50 +135,41 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @param lname a last name fragment to use in the query
      * @return the new Person() object generated from the query
      */
-    public Person getPersonByName(String fname, String lname){
+    public LinkedList searchForPerson(String fname, String lname) throws IntegrationException{
         Connection con = getPostgresCon();
-        
+        LinkedList ll = new LinkedList();
         ResultSet rs = null;
-        Person person = null;
         
         try {
             String s =  "SELECT personid, personType, fName, lName, "
                     + "phoneCell, phoneHome, phoneWork, "
                     + "email, address_street, address_city, "
                     + "address_zip, notes \n"
-                    + "FROM public.person"
-                    + "WHERE fname LIKE '%"
-                    + fname + "%' AND lname LIKE '%"
+                    + "FROM public.person "
+                    + "WHERE fname ILIKE '%"
+                    + fname + "%' AND lname ILIKE '%"
                     + lname + "%';";
             PreparedStatement stmt = con.prepareStatement(s);
-            
+            System.out.println("PersonIntegrator.searchForPerson | sql: " + stmt.toString());
             rs = stmt.executeQuery();
             
             if(rs.next()){
                 // note that rs.next() is called and the cursor
                 // is advanced to the first row in the rs
                 
-                person = createPersonFromResultSet(rs);
+                ll.add(generatePersonFromResultSet(rs));
             }
             
         } catch (SQLException ex) {
-            // call logger on backingbeanutils
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot search for person", ex);
+            
         } finally{
-             if (rs != null) {
-                try {
-                    System.out.println("CEActionRequestorIntegrator.submitCEActionRequest - close rs");
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-             }
-            if (con != null) {
-                try {
-                    System.out.println("CEActionRequestorIntegrator.submitCEActionRequest - close con");
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-             }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         
-        return person;
+        return ll;
         
     } // close method
     
@@ -195,7 +179,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @param personToStore the person to store
      * @return 
      */
-    public int storeNewPerson(Person personToStore){
+    public int insertPerson(Person personToStore){
         Connection con = getPostgresCon();
         ResultSet rs = null;
         StringBuilder query = new StringBuilder();
@@ -215,8 +199,8 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             stmt = con.prepareStatement(query.toString());
             // default ID generated by sequence in PostGres
             stmt.setString(1, personToStore.getPersonType().toString());
-            stmt.setString(2, personToStore.getfName());
-            stmt.setString(3, personToStore.getlName());
+            stmt.setString(2, personToStore.getFirstName());
+            stmt.setString(3, personToStore.getLastName());
             
             stmt.setString(4, personToStore.getPhoneCell());
             stmt.setString(5, personToStore.getPhoneHome());
@@ -249,24 +233,13 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         } catch (SQLException ex) {
             // call logger on backingbeanutils
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CEActionRequestIntegrator.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            }
-            if (con != null) {
-                try {
-                    System.out.println("CEActionRequestorIntegrator.submitCEActionRequest - close con");
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-             }
+             if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         
         return newPersonId;
-    } // close storeNewPerson()
+    } // close insertPerson()
     
     /**
      * Generates a linked list of Person objects given an array of person ID
@@ -278,14 +251,14 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @param people an integer array containing Person id numbers to be
      * converted into a linkedList of Person objects for display in the view
      */
-    public LinkedList<Person> getPersonList(int[] people){
+    public LinkedList<Person> getPersonList(int[] people) throws IntegrationException{
         LinkedList<Person> list = new LinkedList<>();
         
         // loop through the array of integers provided and ask
         // our getPersonByID() method for a person object associated with
         // each id
         for(int i = 0; i<people.length; i++){
-            list.add(getPersonById(people[i]));
+            list.add(PersonIntegrator.this.getPerson(people[i]));
         }
         return list;
     } // close getPersonListe()
@@ -298,8 +271,9 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * 
      * @param personToUpdate the Person object with the updated data
      * to be stored in the database. All old information will be overwritten
+     * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public void updatePerson(Person personToUpdate){
+    public void updatePerson(Person personToUpdate) throws IntegrationException{
         Connection con = getPostgresCon();
         String query;
         
@@ -316,15 +290,15 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
                 + "address_zip = ?," 
                 + "notes = ?"
                 + "lastUpdated = ?"
-                + "WHERE personId = " + personToUpdate.getPersonid() + ";";
+                + "WHERE personId = ?;";
         
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(query);
             // default ID generated by sequence in PostGres
             stmt.setString(1, personToUpdate.getPersonType().toString());
-            stmt.setString(2, personToUpdate.getfName());
-            stmt.setString(3, personToUpdate.getlName());
+            stmt.setString(2, personToUpdate.getFirstName());
+            stmt.setString(3, personToUpdate.getLastName());
             
             stmt.setString(4, personToUpdate.getPhoneCell());
             stmt.setString(5, personToUpdate.getPhoneHome());
@@ -338,28 +312,35 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             
             stmt.setString(11, personToUpdate.getNotes());
             stmt.setDate(12, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            stmt.setInt(13, personToUpdate.getPersonid());
             
             stmt.executeQuery();
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "PersonIntegrator.UpdatePerson: Person Successfully Retrieved", ""));
-            
+        
         } catch (SQLException ex) {
-            // call logger on backingbeanutils
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "PersonIntegrator.UpdatePerson: Unable to locate person", ""));
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to update person");
+            
+        
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-                
-            }
-            if (con != null) {
-                try {
-                    System.out.println("CEActionRequestorIntegrator.submitCEActionRequest - close con");
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-             }
+             if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
     } // close updatePerson
+    
+    public HashMap getPersonMapByPropertyID(int propertyID){
+        
+        return new HashMap();
+    }
+    
+    public HashMap getPersonMapByCaseID(int caseID){
+        
+        return new HashMap();
+    }
+    
+    public void deletePerson(int personToDeleteID){
+        
+        
+    }
+    
+    
 } // close class

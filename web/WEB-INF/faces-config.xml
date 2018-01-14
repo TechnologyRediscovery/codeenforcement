@@ -325,6 +325,7 @@
         <navigation-case>
             <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <managed-bean>
@@ -348,19 +349,100 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
+    <managed-bean>
+        <managed-bean-name>personBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PersonBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
     <navigation-rule>
+        <from-view-id>/personManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>personProfile</from-outcome>
+            <to-view-id>/personProfile.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <managed-bean>
+        <managed-bean-name>personUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PersonUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    
+    
+    <!--Dashboard Navigation-->
+
+    <navigation-rule>
+        
         <from-view-id>/dashboard.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>propertyProfiler</from-outcome>
+            <to-view-id>/propertyProfiler.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    
+        <navigation-case>
+            <from-outcome>personManage</from-outcome>
+            <to-view-id>/personManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseManage</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>eventManage</from-outcome>
+            <to-view-id>/ce/eventManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>litigationManage</from-outcome>
+            <to-view-id>/ce/litigationManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
         <navigation-case>
             <from-outcome>codeSourceManage</from-outcome>
             <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
+        
         <navigation-case>
-            <from-outcome>elementTypeManager</from-outcome>
+            <from-outcome>elementTypeManage</from-outcome>
             <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
+        
         <navigation-case>
             <from-outcome>codeSetManage</from-outcome>
             <to-view-id>/ce/codeSetManage.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>userManage</from-outcome>
+            <to-view-id>/userManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>logManage</from-outcome>
+            <to-view-id>/logManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>muniManage</from-outcome>
+            <to-view-id>/muiniManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    
     </navigation-rule>
+    
 </faces-config>

@@ -27,6 +27,7 @@ import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -161,6 +162,18 @@ public class BackingBeanUtils implements Serializable{
                         CodeIntegrator.class);
         
         return codeInt;
+        
+    }
+    
+    public PersonIntegrator getPersonIntegrator(){
+        FacesContext context = getFacesContext();
+        PersonIntegrator personIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{personIntegrator}", 
+                        PersonIntegrator.class);
+        
+        return personIntegrator;
         
     }
     
