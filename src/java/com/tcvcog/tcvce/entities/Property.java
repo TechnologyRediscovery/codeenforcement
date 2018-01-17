@@ -8,7 +8,11 @@ package com.tcvcog.tcvce.entities;
 import java.util.LinkedList;
 
 /**
- *
+ *SELECT propertyid, municipality_municode, parid, lotandblock, address, 
+       propertyusetype_propertyuseid, rental, multiunit, usegroup, constructiontype, 
+       countycode, apartmentno
+  FROM public.property;
+ * 
  * @author cedba
  */
 
@@ -16,11 +20,13 @@ public class Property {
     
     private int propertyID;
     private Municipality muni;
+    private int muniCode;
     private String parID;
     
     private String lotAndBlock;
     private String address;
-    private String propertyUseType;
+    private String propertyUseTypeName;
+    private int propertyUseTypeID;
 
     private boolean rental;
     private boolean multiUnit;
@@ -29,8 +35,11 @@ public class Property {
     private String constructionType;
     private String countyCode;
     
-    private LinkedList<CECase> cases;
-    private LinkedList<PropertyUnit> propertyUnits;
+    private String notes;
+    
+    private LinkedList<CECase> propertyCaseList;
+    private LinkedList<PropertyUnit> propertyUnitList;
+    private LinkedList<Person> propertyPersonList;
     
     
   /**
@@ -111,17 +120,17 @@ public class Property {
     }
 
     /**
-     * @return the propertyUseType
+     * @return the propertyUseTypeName
      */
-    public String getPropertyUseType() {
-        return propertyUseType;
+    public String getPropertyUseTypeName() {
+        return propertyUseTypeName;
     }
 
     /**
-     * @param propertyUseType the propertyUseType to set
+     * @param propertyUseTypeName the propertyUseTypeName to set
      */
-    public void setPropertyUseType(String propertyUseType) {
-        this.propertyUseType = propertyUseType;
+    public void setPropertyUseTypeName(String propertyUseTypeName) {
+        this.propertyUseTypeName = propertyUseTypeName;
     }
 
     /**
@@ -195,31 +204,87 @@ public class Property {
     }
 
     /**
-     * @return the cases
+     * @return the propertyCaseList
      */
-    public LinkedList<CECase> getCases() {
-        return cases;
+    public LinkedList<CECase> getPropertyCaseList() {
+        return propertyCaseList;
     }
 
     /**
-     * @param cases the cases to set
+     * @param propertyCaseList the propertyCaseList to set
      */
-    public void setCases(LinkedList<CECase> cases) {
-        this.cases = cases;
+    public void setPropertyCaseList(LinkedList<CECase> propertyCaseList) {
+        this.propertyCaseList = propertyCaseList;
     }
 
     /**
-     * @return the propertyUnits
+     * @return the propertyUnitList
      */
-    public LinkedList<PropertyUnit> getPropertyUnits() {
-        return propertyUnits;
+    public LinkedList<PropertyUnit> getPropertyUnitList() {
+        return propertyUnitList;
     }
 
     /**
-     * @param propertyUnits the propertyUnits to set
+     * @param propertyUnitList the propertyUnitList to set
      */
-    public void setPropertyUnits(LinkedList<PropertyUnit> propertyUnits) {
-        this.propertyUnits = propertyUnits;
+    public void setPropertyUnitList(LinkedList<PropertyUnit> propertyUnitList) {
+        this.propertyUnitList = propertyUnitList;
+    }
+
+    /**
+     * @return the propertyPersonList
+     */
+    public LinkedList<Person> getPropertyPersonList() {
+        return propertyPersonList;
+    }
+
+    /**
+     * @param propertyPersonList the propertyPersonList to set
+     */
+    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
+        this.propertyPersonList = propertyPersonList;
+    }
+
+    /**
+     * @return the muniCode
+     */
+    public int getMuniCode() {
+        return muniCode;
+    }
+
+    /**
+     * @param muniCode the muniCode to set
+     */
+    public void setMuniCode(int muniCode) {
+        this.muniCode = muniCode;
+    }
+
+    /**
+     * @return the notes
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     * @return the propertyUseTypeID
+     */
+    public int getPropertyUseTypeID() {
+        return propertyUseTypeID;
+    }
+
+    /**
+     * @param propertyUseTypeID the propertyUseTypeID to set
+     */
+    public void setPropertyUseTypeID(int propertyUseTypeID) {
+        this.propertyUseTypeID = propertyUseTypeID;
     }
     
   

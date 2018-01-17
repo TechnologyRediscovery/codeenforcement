@@ -27,24 +27,32 @@ import java.time.LocalDateTime;
  * @author Eric Darsow
  */
 public class Person {
+    
     private int personid;
     private PersonType personType;
     private Municipality muni;
+    private int muniCode;
+    
     private String firstName;
     private String lastName;
     private String jobTitle;
+    
     private String phoneCell;
     private String phoneHome;
     private String phoneWork;
+    
     private String email;
     private String address_street;
     private String address_city;
+    
     private String address_zip;
     private String address_state;
     private String notes;
+    
     private LocalDateTime lastUpdated;
-    private LocalDateTime expieryDate;
+    private LocalDateTime expiryDate;
     private boolean isActive;
+    
     private boolean isUnder18;
 
     /**
@@ -231,17 +239,17 @@ public class Person {
     }
 
     /**
-     * @return the expieryDate
+     * @return the expiryDate
      */
-    public LocalDateTime getExpieryDate() {
-        return expieryDate;
+    public LocalDateTime getExpiryDate() {
+        return expiryDate;
     }
 
     /**
-     * @param expieryDate the expieryDate to set
+     * @param expiryDate the expiryDate to set
      */
-    public void setExpieryDate(LocalDateTime expieryDate) {
-        this.expieryDate = expieryDate;
+    public void setExpiryDate(LocalDateTime expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     /**
@@ -312,6 +320,20 @@ public class Person {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    /**
+     * @return the muniCode
+     */
+    public int getMuniCode() {
+        return muniCode;
+    }
+
+    /**
+     * @param muniCode the muniCode to set
+     */
+    public void setMuniCode(int muniCode) {
+        this.muniCode = muniCode;
     }
 
 }

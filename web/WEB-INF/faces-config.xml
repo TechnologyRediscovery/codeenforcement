@@ -13,18 +13,10 @@
     <managed-bean>
         <description>PProvides Back-end support for the basic property serach utility</description>
         <managed-bean-name>propSearchBean</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.PropSearchBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropSearchBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    
-    
-<!--    <managed-bean>
-        <description>Manages a user's visit to the site, particularly it coordinates an active Property entity and related objects that the user might interact with, edit, update, report, etc. during the session.</description>
-        <managed-bean-name>visit</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.Visit</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>-->
-    
+        
     <managed-bean>
         <managed-bean-name>login</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.Login</managed-bean-class>
@@ -55,27 +47,15 @@
     <managed-bean>
         <managed-bean-name>userCoordinator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.coordinators.UserCoordinator</managed-bean-class>
-    
-        <managed-bean-scope>application</managed-bean-scope></managed-bean>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
     
     <managed-bean>
         <description>Handles Property Entity related operations on behalf of backing beans</description>
         <managed-bean-name>propertyCoordinator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.coordinators.PropertyCoordinator</managed-bean-class>
-    
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-<!--    <managed-bean>
-        <description>Bean for providing basic bean utility methods, such as retrieving the FacesContext object </description>
-        <managed-bean-name>backingBeanUtils</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.BackingBeanUtils</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-        <managed-property>
-            <property-name>visit</property-name>
-            <value>#{session.visit}</value>
-        </managed-property>
-    </managed-bean>-->
-
     
     <managed-bean>
         <description>Represents the user in a particular session of the application. Stores basic user id info and access related keys</description>
@@ -370,16 +350,38 @@
     </managed-bean>
     
     
+    <navigation-rule>
+        
+        <from-view-id>/personManage.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>personAdd</from-outcome>
+            <to-view-id>/personAdd.xhtml</to-view-id>
+        </navigation-case>
+        
+    </navigation-rule>
     
-    <!--Dashboard Navigation-->
+    <navigation-rule>
+        
+        <from-view-id>/personAdd.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>personManage</from-outcome>
+            <to-view-id>/personManage.xhtml</to-view-id>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    
+    
 
     <navigation-rule>
         
         <from-view-id>/dashboard.xhtml</from-view-id>
         
         <navigation-case>
-            <from-outcome>propertyProfiler</from-outcome>
-            <to-view-id>/propertyProfiler.xhtml</to-view-id>
+            <from-outcome>propertySearch</from-outcome>
+            <to-view-id>/propertySearch.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     
@@ -444,5 +446,67 @@
         </navigation-case>
     
     </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>muniBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.MuniBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>personAddBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PersonAddBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>propertyProfileBB</managed-bean-name>
+        <managed-bean-class>PropertyProfileBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
     
+    <navigation-rule>
+        
+        <from-view-id>/propertyProfile.xhtml</from-view-id>
+        
+        <nanavigation-case>
+            <from-outcome>propertyUpdate</from-outcome>
+            <to-view-id>/propertyUpdate.xhtml</to-view-id>
+        </nanavigation-case>
+        
+        
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>propertySearchBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropertySearchBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <navigation-rule>
+        
+        <from-view-id>/propertySearch.xhtml</from-view-id>
+        
+        <nanavigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+        <nanavigation-case>
+            <from-outcome>propertyUpdate</from-outcome>
+            <to-view-id>/propertyUpdate.xhtml</to-view-id>
+        </nanavigation-case>
+        
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>propertyUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropertyUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <navigation-rule>
+        
+        <from-view-id>/propertyUpdate.xhtml</from-view-id>
+        
+        <nanavigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+        
+    </navigation-rule>
 </faces-config>

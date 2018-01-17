@@ -27,6 +27,8 @@ import com.tcvcog.tcvce.entities.PersonType;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 /**
  *
@@ -152,9 +154,12 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         // by the integrator class
         
         // Commit the sin of creating an integrator here and using it
+        // refactor using the new backing bean setup to access application level beans
         PersonIntegrator personIntegrator = new PersonIntegrator();
-        int newPersonId = personIntegrator.insertPerson(currentPerson);
-        currentPerson.setPersonid(newPersonId);
+        try {
+            personIntegrator.insertPerson(currentPerson);
+        } catch (IntegrationException ex) {
+        }
         
     } // close storePerson 
 
@@ -500,14 +505,16 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      * @return the submittingPersonTypes
      */
     public PersonType[] getSubmittingPersonTypes() {
+        
         return PersonType.values();
     }
 
     /**
      * @return the muniMap
+     * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
     public HashMap getMuniMap() throws IntegrationException {
-        MunicipalityIntegrator muniInt = getMuniIntegrator();
+        MunicipalityIntegrator muniInt = getMunicipalityIntegrator();
         return muniInt.getMunicipalityMap();
     }
 

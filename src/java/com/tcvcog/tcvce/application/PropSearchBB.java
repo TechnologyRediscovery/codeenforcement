@@ -5,6 +5,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.domain.IntegrationException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.List;
@@ -12,14 +13,14 @@ import java.util.LinkedList;
 import com.tcvcog.tcvce.entities.Property;
 import javax.faces.event.ActionEvent;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 
 /** 
  *
- * @author cedba
+ * @author Eric Darsow
  */
-
-public class PropSearchBean extends BackingBeanUtils implements Serializable {
+public class PropSearchBB extends BackingBeanUtils implements Serializable {
 
     private String parid;
     private String address;
@@ -30,28 +31,57 @@ public class PropSearchBean extends BackingBeanUtils implements Serializable {
     private LinkedList<Property> propList;
     private UIInput addressInput;
     
-    
+    private int selectedMuniCode;
     
     /**
      * Creates a new instance of PropSearchBean
      */
-    public PropSearchBean() {
-        System.out.println("PropSearchBean.PropSearchBean");
+    public PropSearchBB() {
 
         
     } // close constructor
     
-    public String lookUpProperty(){
-        System.out.println("PropSearchBean.lookUpProperty");
+    public String searchForPropertiesAllMunis(){
+        System.out.println("PropSearchBean.searchForProperties");
         PropertyIntegrator pi = new PropertyIntegrator();
         
-        //addrPart = (String) addressInput.getValue();
-        // hardcoded muni id for testing only!!!
-        propList = pi.searchForProperties(addrPart, 953);
+        try {
+            propList = pi.searchForProperties(addrPart);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "Your search completed with " + propList.size() + " results", ""));
+            
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        " Unable to complete a property search! ", ""));
+        }
+        return "";
+    }
+    
+    public void searchForPropertiesSingleMuni(ActionEvent event){
+        System.out.println("PropSearchBean.searchForProperties");
+        PropertyIntegrator pi = new PropertyIntegrator();
         
-     return null;
-       
-        
+        try {
+            propList = pi.searchForProperties(addrPart);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "Your search completed with " + propList.size() + " results", ""));
+            
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        " Unable to complete a property search! ", ""));
+        }
+    }
+    
+    public String viewProperty(){
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveProp(selectedProperty);
+        return "propertyProfile";
     }
 
     /**
@@ -136,6 +166,20 @@ public class PropSearchBean extends BackingBeanUtils implements Serializable {
      */
     public void setAddressInput(UIInput addressInput) {
         this.addressInput = addressInput;
+    }
+
+    /**
+     * @return the selectedMuniCode
+     */
+    public int getSelectedMuniCode() {
+        return selectedMuniCode;
+    }
+
+    /**
+     * @param selectedMuniCode the selectedMuniCode to set
+     */
+    public void setSelectedMuniCode(int selectedMuniCode) {
+        this.selectedMuniCode = selectedMuniCode;
     }
     
     

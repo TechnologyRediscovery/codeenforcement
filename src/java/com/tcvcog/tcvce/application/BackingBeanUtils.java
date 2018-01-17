@@ -28,6 +28,7 @@ import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
+import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,8 +50,9 @@ public class BackingBeanUtils implements Serializable{
     //@ManagedProperty(value="#{visit}")
     private Visit visit;
     private UserCoordinator userCoordinator;
-    private MunicipalityIntegrator muniIntegrator;
+    private MunicipalityIntegrator municipalityIntegrator;
     private SessionManager sessionManager;
+    private PropertyIntegrator propertyIntegrator;
  
     // private Connection postgresCon;
     
@@ -179,12 +181,12 @@ public class BackingBeanUtils implements Serializable{
     
     public MunicipalityIntegrator getMunicipalityIntegrator(){
         FacesContext context = getFacesContext();
-        muniIntegrator = context. getApplication()
+        municipalityIntegrator = context. getApplication()
                 .evaluateExpressionGet(
                         context, 
                         "#{municipalityIntegrator}", 
                         MunicipalityIntegrator.class);
-        return muniIntegrator;
+        return municipalityIntegrator;
     }
     
     
@@ -196,18 +198,13 @@ public class BackingBeanUtils implements Serializable{
         return userCoordinator;
     }
 
-    /**
-     * @return the muniIntegrator
-     */
-    public MunicipalityIntegrator getMuniIntegrator() {
-        return muniIntegrator;
-    }
+
 
     /**
      * @param muniIntegrator the muniIntegrator to set
      */
-    public void setMuniIntegrator(MunicipalityIntegrator muniIntegrator) {
-        this.muniIntegrator = muniIntegrator;
+    public void setMunicipalityIntegrator(MunicipalityIntegrator muniIntegrator) {
+        this.municipalityIntegrator = muniIntegrator;
     }
 
     /**
@@ -228,6 +225,27 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setSessionManager(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
+    }
+
+    /**
+     * @return the propertyIntegrator
+     */
+    public PropertyIntegrator getPropertyIntegrator() {
+        
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), 
+                        "#{propertyIntegrator}", PropertyIntegrator.class);
+        propertyIntegrator = (PropertyIntegrator) ve.getValue(context.getELContext());
+   
+        return propertyIntegrator;
+    }
+
+    /**
+     * @param propertyIntegrator the propertyIntegrator to set
+     */
+    public void setPropertyIntegrator(PropertyIntegrator propertyIntegrator) {
+        this.propertyIntegrator = propertyIntegrator;
     }
 
 }

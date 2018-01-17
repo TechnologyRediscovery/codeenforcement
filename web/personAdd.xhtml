@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <link rel="stylesheet" type="text/css" href="css/style.css"></link>
-        <title>Person Profile</title>
+        <title>Add Person</title>
     </h:head>
     <h:body>
         <ui:composition template="./tempHeadFoot.xhtml">
@@ -16,12 +16,16 @@
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
-                    
-                    <h1>Person profile</h1>
+                            
+                    <h1>Add a new Person</h1>
+                    <p>Add a new person to a specified municipality. 
+                        Once added here, that Person becomes part of the pool 
+                        of folks who can be attached to cases, events, citations, 
+                        and much, more.</p>
                     <f:view>
-                        <h:form id="personProifleForm">
-                            <h2>Name: <h:outputText value="#{personUpdateBB.person.firstName}"/> <span> </span><h:outputText value="#{personUpdateBB.person.lastName}"/>, ID: <h:outputText value="#{personUpdateBB.person.personid}"/></h2>
-                            <p>This record was last updated on: #{personUpdateBB.formattedLastUpdated}</p>
+                         <h:form id="personAddForm">
+                            <h2>Person Details:</h2>
+                            <p>The more fields you can populate, the better. (Data integrity hangs in the balance.)</p>
                             <h:panelGrid columns="4" border="0" 
                                          cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
                                          footerClass="gridFooter">
@@ -30,7 +34,7 @@
                                 <h:outputLabel value="Person Type:" for="personTypeSelectMenu"/>
                                 <h:panelGroup>
                                     
-                                    <p:selectOneMenu id="personTypeSelectMenu" required="true" value="#{personUpdateBB.formPersonType}">
+                                    <p:selectOneMenu id="personTypeSelectMenu" required="true" value="#{personAddBB.formPersonType}">
                                         <f:selectItems value="#{personUpdateBB.personTypes}"
                                                        var="pt" itemValue="#{pt}" itemLabel="#{pt.label}"/>
                                     </p:selectOneMenu>
@@ -42,7 +46,7 @@
                                 <h:outputLabel value="Municipality" for="personMuniSelectMenu"/>
                                 <h:panelGroup>
                                     
-                                    <p:selectOneMenu id="personMuniSelectMenu" required="true" value="#{personUpdateBB.formMuniCode}">
+                                    <p:selectOneMenu id="personMuniSelectMenu" required="true" value="#{personAddBB.formMuniCode}">
                                         <f:selectItems value="#{personUpdateBB.muniMap}"/>
                                     </p:selectOneMenu>
                                     
@@ -56,7 +60,7 @@
                                 
                                 <h:outputLabel value="First Name:" for="formFirstNameIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formFirstNameIT" value="#{personUpdateBB.formFirstName}" 
+                                    <p:inputText id="formFirstNameIT" value="#{personAddBB.formFirstName}" 
                                            style="width: 250px;" tabindex="1" required="true" styleClass="inputText"/>
                                     <h:message for="formFirstNameIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -64,7 +68,7 @@
 
                                 <h:outputLabel value="Last Name:" for="formLastNameIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formLastNameIT" value="#{personUpdateBB.formLastName}" 
+                                    <p:inputText id="formLastNameIT" value="#{personAddBB.formLastName}" 
                                            style="width: 250px;" tabindex="2" required="true" styleClass="inputText"/>
                                     <h:message for="formLastNameIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -73,7 +77,7 @@
                                 
                                 <h:outputLabel value="Job Title:" for="formJobTitleIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formJobTitleIT" value="#{personUpdateBB.formJobTitle}" 
+                                    <p:inputText id="formJobTitleIT" value="#{personAddBB.formJobTitle}" 
                                            style="width: 250px;" tabindex="3" required="false" styleClass="inputText"/>
                                     <h:message for="formJobTitleIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -81,7 +85,7 @@
                                 
                                 <h:outputLabel value="Phone(cell):" for="formCellIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formCellIT" value="#{personUpdateBB.formPhoneCell}" 
+                                    <p:inputText id="formCellIT" value="#{personAddBB.formPhoneCell}" 
                                            style="width: 250px;" tabindex="4" required="false" styleClass="inputText" maxlength="12"/>
                                     <h:message for="formCellIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -89,7 +93,7 @@
                                 
                                 <h:outputLabel value="Phone(home):" for="formHomeIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formHomeIT" value="#{personUpdateBB.formPhoneHome}" 
+                                    <p:inputText id="formHomeIT" value="#{personAddBB.formPhoneHome}" 
                                            style="width: 250px;" tabindex="5" required="false" styleClass="inputText" maxlength="12"/>
                                     <h:message for="formHomeIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -97,7 +101,7 @@
                                 
                                 <h:outputLabel value="Phone(work)" for="formWorkIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formWorkIT" value="#{personUpdateBB.formPhoneWork}" 
+                                    <p:inputText id="formWorkIT" value="#{personAddBB.formPhoneWork}" 
                                                  style="width: 250px;" tabindex="6" required="false" styleClass="inputText" maxlength="12"/>
                                     <h:message for="formWorkIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -105,7 +109,7 @@
                                 
                                 <h:outputLabel value="Email:" for="formEmailIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formEmailIT" value="#{personUpdateBB.formEmail}" 
+                                    <p:inputText id="formEmailIT" value="#{personAddBB.formEmail}" 
                                            style="width: 250px;" tabindex="7" required="false" styleClass="inputText"/>
                                     <h:message for="formEmailIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -113,12 +117,12 @@
                                 
                                 <h:outputLabel value="Is under 18?" for="isUnder18FormIS"/>
                                 <h:panelGroup>
-                                    <p:inputSwitch tabindex="8" id="isUnder18FormIS" value="#{personUpdateBB.formIsUnder18}" onLabel="Yes" offLabel="No" />
+                                    <p:inputSwitch tabindex="8" id="isUnder18FormIS" value="#{personAddBB.formIsUnder18}" onLabel="Yes" offLabel="No" />
                                 </h:panelGroup>
                                 
                                 <h:outputLabel value="Street:" for="formStreetIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formStreetIT" value="#{personUpdateBB.formAddress_street}" 
+                                    <p:inputText id="formStreetIT" value="#{personAddBB.formAddress_street}" 
                                            style="width: 250px;" tabindex="9" required="true" styleClass="inputText"/>
                                     <h:message for="formStreetIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -126,7 +130,7 @@
                                 
                                 <h:outputLabel value="City:" for="formCityIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formCityIT" value="#{personUpdateBB.formAddress_city}" 
+                                    <p:inputText id="formCityIT" value="#{personAddBB.formAddress_city}" 
                                            style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
                                     <h:message for="formCityIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -134,7 +138,7 @@
                                 
                                 <h:outputLabel value="State:" for="formStateIT"/>
                                 <h:panelGroup>
-                                <p:inputText id="formStateIT" value="#{personUpdateBB.formAddress_state}" 
+                                <p:inputText id="formStateIT" value="#{personAddBB.formAddress_state}" 
                                              style="width: 250px;" tabindex="11" required="true" styleClass="inputText" maxlength="2"/>
                                     <h:message for="formStateIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -142,7 +146,7 @@
                                 
                                 <h:outputLabel value="ZipCode:" for="formZipIT"/>
                                 <h:panelGroup>
-                                    <p:inputText id="formZipIT" value="#{personUpdateBB.formAddress_zip}" 
+                                    <p:inputText id="formZipIT" value="#{personAddBB.formAddress_zip}" 
                                            style="width: 250px;" tabindex="12" required="false" styleClass="inputText"/>
                                     <h:message for="formZipIT" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -150,7 +154,7 @@
                                 
                                 <h:outputLabel value="Person's Expiry Date:" for="personExpiryDate"/>
                                 <h:panelGroup>
-                                    <p:calendar value="#{personUpdateBB.formExpiryDate}" 
+                                    <p:calendar value="#{personAddBB.formExpiryDate}" 
                                             mode="popup" tabindex="13"
                                             id="personExpiryDate"
                                             showOn="button"
@@ -169,14 +173,14 @@
                                 
                                 <h:outputLabel value="Active Person?" for="isActiveFormIS"/>
                                 <h:panelGroup>
-                                    <p:inputSwitch id="isActiveFormIS" value="#{personUpdateBB.formIsActive}" onLabel="Yes" offLabel="No" tabindex="14"/>
+                                    <p:inputSwitch id="isActiveFormIS" value="#{personAddBB.formIsActive}" onLabel="Yes" offLabel="No" tabindex="14"/>
                                 </h:panelGroup>
                                 
                                 <f:facet name="footer">
                                     
                                     <h:panelGroup>
                                         <h:outputLabel value="Person Notes:" for="formNotesIT"/>
-                                        <p:inputTextarea id="formNotesIT" value="#{personUpdateBB.formNotes}" 
+                                        <p:inputTextarea id="formNotesIT" value="#{personAddBB.formNotes}" 
                                                style="width: 100%;" tabindex="15" required="true" styleClass="inputText"/>
                                         <h:message for="formNotesIT" showDetail="false" showSummary="true" 
                                         warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -187,9 +191,7 @@
                                 
                             </h:panelGrid>
                             <p:spacer height="10px"/>
-                            <p:commandButton ajax="false" value="Update Person" action="#{personUpdateBB.updatePerson}" />
-                            
-
+                            <p:commandButton ajax="false" value="Add Person" action="#{personAddBB.addPerson}" />
                         </h:form>
                     </f:view>
                 </div>

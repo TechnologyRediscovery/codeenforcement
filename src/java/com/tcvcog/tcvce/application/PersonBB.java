@@ -22,8 +22,6 @@ import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -50,26 +48,27 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
     public void searchForPersonByName(ActionEvent event){
         // clear past search results
         personList = null;
+        
         PersonIntegrator integrator = getPersonIntegrator();
         
         try {
             personList = integrator.searchForPerson(formFName, formLName);
             if(personList.isEmpty()){
                 getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Database search returned 0 Persons", 
                             "Please try again, perhaps by removing some letters from your name text"));
                 
             } else {
                 getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Database search returned 0 Persons", 
-                            "Please try again, perhaps by removing some letters from your name text"));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Database search returned "+ personList.size() + " Persons", 
+                                "Please try again, perhaps by removing some letters from your name text"));
             }
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Search returned " + personList.size() + " Persons", ""));
+                        "System-related search error", "This issue requires administrator attention, sorry"));
             
         }
         
@@ -87,6 +86,27 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
         return "personProfile";
     }
 
+    public String deletePerson(){
+        System.out.println("PersonBB.deletePerson | in method");
+        PersonIntegrator pi = getPersonIntegrator();
+        try {
+            pi.deletePerson(selectedPerson.getPersonid());
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        selectedPerson.getFirstName() + " has been permanently deleted; Goodbye " 
+                                + selectedPerson.getFirstName() 
+                                + ". Search results have been cleared.", ""));
+            
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Cannot delete person." + ex.toString(), "Best not to delete folks anyway..."));
+            
+        }
+        personList = null;
+        return "";
+    }
+    
     /**
      * @return the personList
      */

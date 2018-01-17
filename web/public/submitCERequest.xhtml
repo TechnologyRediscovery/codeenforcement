@@ -46,16 +46,16 @@
                         <p:inputText
                                 id="addrPart"
                                 size="20"
-                                value="#{propSearchBean.addrPart}"/>
+                                value="#{propSearchBB.addrPart}"/>
                             <h:commandButton
                                 value="Search" id="propSearch"
-                                action="#{propSearchBean.lookUpProperty}">
+                                action="#{propSearchBean.searchForProperties}">
                                 <f:ajax
                                     execute="addrPart"
                                     render="propTable testOutput"/>
                             </h:commandButton>    <br/>
                       <h:outputText
-                          value="#{propSearchBean.addrPart}"
+                          value="#{propSearchBB.addrPart}"
                           id="testOutput">
                           
                       </h:outputText>
@@ -87,16 +87,16 @@
                        
                         <h:outputText
                             id="addrOutput"
-                            value="#{propSearchBean.addrPart}" />
+                            value="#{propSearchBB.addrPart}" />
 
                         <!--Display of properties from search-->
                         <h4>Search Results:</h4>
                         <p:dataTable
                             id="propTable"
                             var="prop"
-                            value="#{propSearchBean.propList}"
+                            value="#{propSearchBB.propList}"
                             selectionMode="single"
-                            selection="#{propSearchBean.selectedProperty}"
+                            selection="#{propSearchBB.selectedProperty}"
                             rowKey="#{prop.propertyID}">
                             <p:column>
                                 <f:facet name="header">

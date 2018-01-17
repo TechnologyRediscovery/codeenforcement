@@ -23,6 +23,7 @@ import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
+import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
@@ -73,6 +74,9 @@ public class Initializer implements ServletContextListener{
         
         PersonIntegrator personIntegrator = new PersonIntegrator();
         servletContext.setAttribute("personIntegrator", personIntegrator);
+        
+        PropertyIntegrator pi = new PropertyIntegrator();
+        servletContext.setAttribute("propertyIntegrator", pi);
     }
     
     @Override

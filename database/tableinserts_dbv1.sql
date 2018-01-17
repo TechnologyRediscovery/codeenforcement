@@ -259,3 +259,12 @@ INSERT INTO public.propertyunitperson(
 INSERT INTO public.propertyusetype(
             propertyusetypeid, name, description)
     VALUES (DEFAULT, 'Multi-Unit', 'Property contains 2 or more dwelling units');
+INSERT INTO public.propertyusetype(
+            propertyusetypeid, name, description)
+    VALUES (DEFAULT, 'Single Family', 'Property contains 1 dwelling unit');
+INSERT INTO public.propertyusetype(
+            propertyusetypeid, name, description)
+    VALUES (DEFAULT, 'Duplex', 'Property is house-like and contains 2 dwelling units');
+INSERT INTO public.propertyusetype(
+            propertyusetypeid, name, description)
+    VALUES (DEFAULT, 'Condominium', 'Please define Condominium');

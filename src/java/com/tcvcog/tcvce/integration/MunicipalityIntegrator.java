@@ -48,7 +48,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         PreparedStatement stmt = null;
         Connection con = null;
         // note that muniCode is not returned in this query since it is specified in the WHERE
-        String query = "SELECT muniname, address_street, address_city, "
+        String query = "SELECT municode, muniname, address_street, address_city, "
                 + "address_state, address_zip, phone, "
                 + "fax, email, managername, "
                 + "managerphone, population, activeinprogram\n" +
@@ -63,21 +63,22 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                muni.setMuniName(rs.getString(1));
-                muni.setAddress_street(rs.getString(2));
-                muni.setAddress_city(rs.getString(3));
+                muni.setMuniCode(rs.getInt("municode"));
+                muni.setMuniName(rs.getString("muniname"));
+                muni.setAddress_street(rs.getString("address_street"));
+                muni.setAddress_city(rs.getString("address_city"));
                 
-                muni.setAddress_state(rs.getString(4));
-                muni.setAddress_zip(rs.getString(5));
-                muni.setPhone(rs.getString(6));
+                muni.setAddress_state(rs.getString("address_state"));
+                muni.setAddress_zip(rs.getString("address_zip"));
+                muni.setPhone(rs.getString("phone"));
                 
-                muni.setFax(rs.getString(7));
-                muni.setEmail(rs.getString(8));
-                muni.setManagerName(rs.getString(9));
+                muni.setFax(rs.getString("fax"));
+                muni.setEmail(rs.getString("email"));
+                muni.setManagerName(rs.getString("managername"));
                 
-                muni.setManagerPhone(rs.getString(10));
-                muni.setPopulation(rs.getInt(11));
-                muni.setActiveInProgram(rs.getBoolean(12));             
+                muni.setManagerPhone(rs.getString("managerphone"));
+                muni.setPopulation(rs.getInt("population"));
+                muni.setActiveInProgram(rs.getBoolean("activeinprogram"));             
             }
         } catch (SQLException ex) {
             System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | " + ex.toString());

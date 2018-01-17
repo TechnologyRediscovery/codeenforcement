@@ -20,11 +20,16 @@
                     <h1>Human Resources Department</h1>
                     <p>Add, adjust, and coordinate person-level information for use by modules across the system.</p>
                     <f:view>
+                        <h2>Add a new person:</h2>
+                        <h:form id="personNavForm">
+                            <p:commandButton id="addNewPersonCB" action="personAdd" value="Add person form -->" ajax="false"/>
+                            
+                        </h:form>
                         <h:form id="personManageForm">
                             <h2>Search for persons:</h2>
                             <p>Search Hints: 1) Capitalization doesn't matter. 2) System searches for a match in any part of the Person's name in the database:
                             You can find a person named "Rodney Readman" by searching for "rod" and "read" OR searching for "ney" and "man" OR etc.</p>
-
+ 
                             <h:panelGrid columns="3" cellpadding="5" border="0" frame="true">
                                 
                                     <h:panelGroup id="fname">
@@ -85,7 +90,8 @@
                             <p:spacer height="15"/>
 
                             <h2>Search Results</h2>
-                             <p:dataTable
+                            
+                            <p:dataTable
                             id="personTable"
                             var="p"
                             value="#{personBB.personList}"
@@ -93,6 +99,8 @@
                             selection="#{personBB.selectedPerson}"
                             rowKey="#{p.personid}"
                             tableStyleClass="primeDataTable">
+                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+                                
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="Person Type" />
@@ -135,6 +143,16 @@
                             
                             <p:commandButton ajax="false" value="View profile of selected person" 
                                              action="#{personBB.viewPersonProfile}"/>
+                            
+                            <!--<p:commandButton type="button" onclick="PF('cd').show();" value="Nuke Person from System"/>--> 
+<!--                                             
+                            <p:confirmDialog message="You are about to nuke (forever remove) this person from the system. Remember, there's no back, undo, or recyle bin in this case!"
+                                header="Delete Confirmation" severity="alert" widgetVar="cd">
+                            </p:confirmDialog>
+                                -->
+                            <p:commandButton value="NUKE!" action="#{personBB.deletePerson}"
+                                                 ajax="false" />
+                                
 
                             
                             
