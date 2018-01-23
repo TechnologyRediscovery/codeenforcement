@@ -7,9 +7,9 @@
         <description>Establishes the connection to the Code Enforcement Database for use throughout a session</description>
         <managed-bean-name>dBConnection</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.integration.PostgresConnectionFactory</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
     
-        <managed-bean-scope>application</managed-bean-scope></managed-bean>
-        
     <managed-bean>
         <managed-bean-name>login</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.Login</managed-bean-class>
@@ -18,8 +18,8 @@
     
     <managed-bean>
         <description>Handles user credential verification and initiates session building process upon successful authentication.</description>
-        <managed-bean-name>authentication</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.Authenticator</managed-bean-class>
+        <managed-bean-name>authenticationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.AuthenticationBB</managed-bean-class>
     
         <managed-bean-scope>session</managed-bean-scope></managed-bean>
     
@@ -37,11 +37,11 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
     
-    <managed-bean>
+<!--    <managed-bean>
         <managed-bean-name>userCoordinator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.coordinators.UserCoordinator</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>-->
     
     <managed-bean>
         <description>Handles Property Entity related operations on behalf of backing beans</description>
@@ -54,24 +54,13 @@
         <description>Represents the user in a particular session of the application. Stores basic user id info and access related keys</description>
         <managed-bean-name>user</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.entities.User</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
-    <navigation-rule>
-        <from-view-id>/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-action>#{authentication.login}</from-action>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/ce/requestManagement.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-action>#{authentication.login}</from-action>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/login.xhtml</to-view-id>
-        </navigation-case>
    
-        
-    </navigation-rule>
+    
+    
+    
     <managed-bean>
         <description>Responsible for pulling and pushing property data from database to object model</description>
         <managed-bean-name>propertyIntegrator</managed-bean-name>
@@ -289,13 +278,66 @@
     </managed-bean>
     
     <navigation-rule>
-        <from-view-id>*</from-view-id>
+        <from-view-id>navview</from-view-id>
         <navigation-case>
             <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>propertySearch</from-outcome>
+            <to-view-id>/propertySearch.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>workflow</from-outcome>
+            <to-view-id>/workflow.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>logs</from-outcome>
+            <to-view-id>/logManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <navigation-case>
+            <from-action>#{authenticationBB.logout}</from-action>
+            <from-outcome>logoutSequenceComplete</from-outcome>
+            <to-view-id>/exitLanding.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{authenticationBB.login}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{authenticationBB.login}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/exitLanding.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>gotoLogin</from-action>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>codeElementBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementBB</managed-bean-class>
@@ -514,6 +556,47 @@
     <managed-bean>
         <managed-bean-name>caseAddBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CaseAddBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>userBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.UserBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <navigation-rule>
+        <from-view-id>/userManage.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-outcome>userUpdate</from-outcome>
+            <to-view-id>/userUpdate.xhtml</to-view-id>
+        </nanavigation-case>
+        <nanavigation-case>
+            <from-outcome>userAdd</from-outcome>
+            <to-view-id>/userAdd.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/userManage.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-outcome>userManage</from-outcome>
+            <to-view-id>/userManage.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/userAdd.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-outcome>userManage</from-outcome>
+            <to-view-id>/userManage.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    
+    <managed-bean>
+        <managed-bean-name>userUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.UserUpdateBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

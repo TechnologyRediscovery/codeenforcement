@@ -21,12 +21,16 @@
                     <h2>System Login Portal for Code Enforcement Staff, municpality employees, and council members</h2>
                     <f:view>
                         <h:form>
+                                <h:messages globalOnly="true" showDetail="false" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                                </h:messages>
+                            
                             <h:panelGroup id="loginPanel" styleClass="loginForm">
 
                                 <h:outputLabel for="userNameInput">
                                     <h:outputText value="Username: " />
                                 </h:outputLabel>
-                                <h:inputText id="userNameInput" value="#{authentication.loginName}" size="20" 
+                                <h:inputText id="userNameInput" value="#{authenticationBB.loginName}" size="20" 
                                              maxlength="40" tabindex="1" required="true" styleClass="inputText"/>
                                 <h:message for="userNameInput" showDetail="false" showSummary="true" 
                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -34,12 +38,12 @@
                                 <h:outputLabel for="passInput">
                                     <h:outputText value="Password: " />
                                 </h:outputLabel>
-                                <h:inputSecret id="passInput" value="#{authentication.loginPassword}" size="20" 
+                                <h:inputSecret id="passInput" value="#{authenticationBB.loginPassword}" size="20" 
                                                maxlength="40" tabindex="2" required="true" styleClass="inputText"/>
                                 <h:message for="passInput" showDetail="false" showSummary="true" 
                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
-                                <h:commandButton id="login" value="Login" tabindex="3" action="#{authentication.login}" title="login" styleClass="commandButton"/>
+                                <h:commandButton id="login" value="Login" tabindex="3" action="#{authenticationBB.login}" title="login" styleClass="commandButton"/>
 
                                 <h:outputLink styleClass="outputLink">
                                     <h:outputText value="Help! I Forgot my password!" />

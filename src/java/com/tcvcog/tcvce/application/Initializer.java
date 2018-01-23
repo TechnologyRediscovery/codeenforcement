@@ -25,6 +25,7 @@ import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
+import com.tcvcog.tcvce.integration.UserIntegrator;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
@@ -81,6 +82,9 @@ public class Initializer implements ServletContextListener{
         
         CEActionRequestIntegrator ceActionRI = new CEActionRequestIntegrator();
         servletContext.setAttribute("cEActionRequestIntegrator", ceActionRI);
+        
+        UserIntegrator ui = new UserIntegrator();
+        servletContext.setAttribute("userIntegrator", ui);
         
     }
     

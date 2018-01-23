@@ -53,6 +53,7 @@ public class User {
     public User() {
     }
 
+
     /**
      * @return the userID
      */
@@ -112,28 +113,28 @@ public class User {
     /**
      * @return the fName
      */
-    public String getfName() {
+    public String getFName() {
         return fName;
     }
 
     /**
      * @param fName the fName to set
      */
-    public void setfName(String fName) {
+    public void setFName(String fName) {
         this.fName = fName;
     }
 
     /**
      * @return the lName
      */
-    public String getlName() {
+    public String getLName() {
         return lName;
     }
 
     /**
      * @param lName the lName to set
      */
-    public void setlName(String lName) {
+    public void setLName(String lName) {
         this.lName = lName;
     }
 

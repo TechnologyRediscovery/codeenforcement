@@ -18,6 +18,7 @@ Council of Governments, PA
 package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.entities.CodeSource;
+import com.tcvcog.tcvce.entities.User;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
@@ -36,7 +37,7 @@ public class SessionManager implements Serializable{
      * Creates a new instance of SessionManager
      */
     public SessionManager() {
-        System.out.println("SessionManager.SessionManager | Adding a visit to session");
+        System.out.println("SessionManager.SessionManager | Adding a new visit to session");
         Visit v = new Visit();
         visit = v;
     }
@@ -44,6 +45,7 @@ public class SessionManager implements Serializable{
     private Visit visit;
     private CodeSource activeCodeSource;
     private String sessionManagerVersion;
+    private User utilityUserToUpdate;
     
 
     /**
@@ -87,6 +89,20 @@ public class SessionManager implements Serializable{
      */
     public void setSessionManagerVersion(String sessionManagerVersion) {
         this.sessionManagerVersion = sessionManagerVersion;
+    }
+
+    /**
+     * @return the utilityUserToUpdate
+     */
+    public User getUtilityUserToUpdate() {
+        return utilityUserToUpdate;
+    }
+
+    /**
+     * @param utilityUserToUpdate the utilityUserToUpdate to set
+     */
+    public void setUtilityUserToUpdate(User utilityUserToUpdate) {
+        this.utilityUserToUpdate = utilityUserToUpdate;
     }
     
 }

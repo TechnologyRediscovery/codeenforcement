@@ -18,20 +18,16 @@ package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.DataStoreException;
-import com.tcvcog.tcvce.domain.ObjectNotFoundException;
-import com.tcvcog.tcvce.entities.Property;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 import java.sql.SQLException;
 import java.io.Serializable;
 import com.tcvcog.tcvce.domain.ObjectNotFoundException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import com.tcvcog.tcvce.entities.User;
-import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
-import com.tcvcog.tcvce.util.Constants;
+import com.tcvcog.tcvce.integration.UserIntegrator;
 
 /**
  *
@@ -47,7 +43,7 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
      * Creates a new instance of UserCoordinator
      */
     public UserCoordinator(){
-        System.out.println("Initializing userCoordinator class");
+       
         
     }
     
@@ -67,38 +63,13 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
      * @throws com.tcvcog.tcvce.domain.DataStoreException
      */
     public User getUser(String loginName, String loginPassword) throws ObjectNotFoundException, DataStoreException {
-        System.out.println("Inside getUser method inside Usercoordinator Class");
+        System.out.println("UserCoordinator.geUser | given: " + loginName + " " + loginPassword);
         con = getPostgresCon();
         
+        UserIntegrator ui = getUserIntegrator();
         
-         String query = "SELECT username, password FROM login"
-                + " WHERE username='"+ loginName + "' AND password='" + loginPassword +"';";
-        ResultSet rs;
         
-        // login is successful if the result set has any rows in it
-        // TODO: create value comparison check as a backup to avoid SQL injection risks
-        try {
-            Statement stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-            
-            // ACCESS CONTROL: ONLY CREATE USER IF THE USER EXISTS IN THE SYSTEM
-            if(rs.next()){
-        
-                
-                User user = new User();
-                
-            
-                con.close();
-                return user;
-            } else {
-                throw new ObjectNotFoundException("No User found with those credentials. Try again, please.");
-            }
-            
-   
-            
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
+         
         return null;
         
     } // close getUser()

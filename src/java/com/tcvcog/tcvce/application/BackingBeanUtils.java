@@ -19,8 +19,6 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 import javax.faces.application.Application;
 import java.sql.Connection;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
@@ -30,8 +28,7 @@ import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
-import java.sql.Timestamp;
-import java.util.Calendar;
+import com.tcvcog.tcvce.integration.UserIntegrator;
 import java.util.Date;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
@@ -52,9 +49,13 @@ public class BackingBeanUtils implements Serializable{
     private Visit visit;
     private UserCoordinator userCoordinator;
     private MunicipalityIntegrator municipalityIntegrator;
+    
+    @ManagedProperty("#{sessionManager}")
     private SessionManager sessionManager;
+    
     private PropertyIntegrator propertyIntegrator;
     private CEActionRequestIntegrator cEActionRequestIntegrator;
+    private UserIntegrator userIntegrator;
  
     // private Connection postgresCon;
     
@@ -213,11 +214,11 @@ public class BackingBeanUtils implements Serializable{
      * @return the sessionManager
      */
     public SessionManager getSessionManager() {
-        FacesContext context = getFacesContext();
-        ValueExpression ve = context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), 
-                        "#{sessionManager}", SessionManager.class);
-        sessionManager = (SessionManager) ve.getValue(context.getELContext());
+//        FacesContext context = getFacesContext();
+//        ValueExpression ve = context.getApplication().getExpressionFactory()
+//                .createValueExpression(context.getELContext(), 
+//                        "#{sessionManager}", SessionManager.class);
+//        sessionManager = (SessionManager) ve.getValue(context.getELContext());
    
         return sessionManager;
     }
@@ -267,6 +268,26 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setcEActionRequestIntegrator(CEActionRequestIntegrator cEActionRequestIntegrator) {
         this.cEActionRequestIntegrator = cEActionRequestIntegrator;
+    }
+
+    /**
+     * @return the userIntegrator
+     */
+    public UserIntegrator getUserIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{userIntegrator}", UserIntegrator.class);
+        userIntegrator = (UserIntegrator) ve.getValue(context.getELContext());
+        
+        
+        return userIntegrator;
+    }
+
+    /**
+     * @param userIntegrator the userIntegrator to set
+     */
+    public void setUserIntegrator(UserIntegrator userIntegrator) {
+        this.userIntegrator = userIntegrator;
     }
 
 }

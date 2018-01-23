@@ -24,27 +24,31 @@
                     <h:form id="navForm">
 
                         <div class="headerLinks">
+
                             <div class="headerLinkCont">
                                 <h:commandLink action="dashboard" value="Dashboard"/>
                             </div>
+
                             <div class="headerLinkCont">
-                                <a class="headerLink" href="">Property</a>
+                                <h:commandLink action="propertySearch" value="Change Property"/>
                             </div>
+                            
                             <div class="headerLinkCont">
-                                <a class="headerLink" href="">Code Enforcement</a>
+                                <h:commandLink action="propertyProfile" value="Property Profile"/>
                             </div>
+
                             <div class="headerLinkCont">
-                                <a class="headerLink" href="">Occ Inspections</a>
+                                <h:commandLink action="workflow" value="Muni Workflow"/>
                             </div>
+
                             <div class="headerLinkCont">
-                                <a class="headerLink" href="">Rentals</a>
+                                <h:commandLink action="logs" value="System Logs"/>
                             </div>
+
                             <div class="headerLinkCont">
-                                <a class="headerLink" href="">Settings</a>
+                                <h:commandLink action="#{authentication.logout}" value="Logout"/>
                             </div>
-                            <div class="headerLinkCont">
-                                <a class="headerLink" href="">Logout</a>
-                            </div>
+                            
                         </div>
                     </h:form>
                 </div>

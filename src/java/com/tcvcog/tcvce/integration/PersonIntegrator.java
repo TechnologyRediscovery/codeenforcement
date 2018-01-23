@@ -245,7 +245,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setString(11, personToStore.getAddress_city());
             
             stmt.setString(12, personToStore.getAddress_zip());
-            stmt.setString(13, personToStore.getAddress_state());
+            stmt.setString(13,  personToStore.getAddress_state());
             stmt.setString(14, personToStore.getNotes());
             
             if(personToStore.getExpiryDate() != null){
