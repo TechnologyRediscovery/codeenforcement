@@ -18,6 +18,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
+import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
@@ -77,6 +78,10 @@ public class Initializer implements ServletContextListener{
         
         PropertyIntegrator pi = new PropertyIntegrator();
         servletContext.setAttribute("propertyIntegrator", pi);
+        
+        CEActionRequestIntegrator ceActionRI = new CEActionRequestIntegrator();
+        servletContext.setAttribute("cEActionRequestIntegrator", ceActionRI);
+        
     }
     
     @Override

@@ -32,33 +32,33 @@
                                     <p:outputLabel for="propSearchIT">
                                         <h:outputText value="House number and street name"/>
                                     </p:outputLabel>
-                                    <p:inputText id="propSearchIT" value="#{propertySearchBB.addrPart}" 
+                                     <p:inputText id="propSearchIT" value="#{propertySearchBB.addrPartAllMunis}" 
                                           style="width: 200px;" tabindex="1" required="false" styleClass="inputText"/>
                                     <h:message for="propSearchIT" showDetail="false" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                  </h:panelGroup>
                                  
+                                <p:commandButton
+                                    value="Search All Municipalities" tabindex="2" ajax="false"
+                                    actionListener="#{propertySearchBB.searchForPropertiesAllMunis}" />
+                                 
                                  <h:panelGroup>
                                      <!--place holder-->
                                  </h:panelGroup>
 
-                                <h:commandButton
-                                    value="Search All Municipalities"
-                                    actionListener="#{propertySearchBB.searchForPropertiesAllMunis}" />
-                                 
                                  <h:panelGroup>
                                     <p:outputLabel for="propSearchITwMuni">
                                         <h:outputText value="House number and street name"/>
                                     </p:outputLabel>
                                     <p:inputText id="propSearchITwMuni" value="#{propertySearchBB.addrPart}" 
-                                          style="width: 200px;" tabindex="1" required="false" styleClass="inputText"/>
+                                          style="width: 200px;" tabindex="3" required="false" styleClass="inputText"/>
                                     <h:message for="propSearchITwMuni" showDetail="false" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                  </h:panelGroup>
                                  
                                  <h:panelGroup>
                                     
-                                    <p:selectOneMenu id="personMuniSelectMenu" required="false" value="#{propertySearchBB.selectedMuniCode}">
+                                     <p:selectOneMenu id="personMuniSelectMenu" tabindex="4" required="false" value="#{propertySearchBB.selectedMuniCode}">
                                         <f:selectItems value="#{muniBB.muniMap}"/>
                                     </p:selectOneMenu>
                                     
@@ -67,12 +67,16 @@
                                     
                                 </h:panelGroup>
 
-                                <h:commandButton
-                                    value="Search only in Selected Municipality"
+                                <p:commandButton
+                                    value="Search only in Selected Municipality" tabindex="5" ajax="false"
                                     actionListener="#{propertySearchBB.searchForPropertiesSingleMuni}" />
                                  
                                  
                              </h:panelGrid>
+                            <p>Search note: You may enter all or only part of an address for searching: 
+                                "398 HOMER DR" can be found with "398 H" but NOT "3 HOM" 
+                                since you cannot "chop" characters from the middle of an address, 
+                                only from the front and back.</p>
 
                             <p:spacer height="10"></p:spacer>
                             <hr/>
@@ -89,9 +93,9 @@
                                   selection="#{propertySearchBB.selectedProperty}"
                                   rowKey="#{prop.propertyID}"
                                   tableStyleClass="primeDataTable"
-                                  rows="10" scrollable="true"
+                                  scrollable="true" scrollHeight="200" 
                                   resizableColumns="true" draggableColumns="true"
-                                  draggableRows="true"
+                                  draggableRows="false" tabindex="6"
                                   >
                                  
                                 <p:column>
@@ -135,9 +139,11 @@
                             
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton ajax="fakse" value="Update Selected Property Info" action="#{propertySearchBB.updateProperty}"/>
+                            <p:commandButton ajax="fakse" value="Update Selected Property Info" 
+                                             tabindex="7" action="#{propertySearchBB.updateProperty}"/>
                             
-                            <p:commandButton ajax="false" value="View Profile for Selected Property &rarr;" action="#{propertySearchBB.viewProperty}"/>
+                            <p:commandButton ajax="false" value="View Profile for Selected Property &rarr;" 
+                                             tabindex="8" action="#{propertySearchBB.viewProperty}"/>
                             
                         </h:form>
                     </f:view>

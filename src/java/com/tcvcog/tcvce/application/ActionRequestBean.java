@@ -24,12 +24,14 @@ import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import java.time.ZoneId;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.PersonType;
+import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
+import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.LinkedList;
 import javax.faces.application.FacesMessage;
+import javax.faces.event.ActionEvent;
 /**
  *
  * @author cedba
@@ -39,43 +41,47 @@ import javax.faces.application.FacesMessage;
 public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     
     // for request lookup
-    private int lookUpControlCode; 
     
     private CEActionRequest submittedRequest;
     private CEActionRequest currentRequest;
     private Person currentPerson;
 
-    // UI Component bindings
+    private LinkedList propList;
+    private String addrPart;
     
     private int violationTypeID;
     private String violationTypeName;
     
-    private int muniID;
-    private String muniName;
+    private int muniCode;
     private HashMap muniMap;
     
-    private String form_addressOfConcern;
+    private Property selectedProperty;
     
-    private boolean form_notAtAddress;
+    private boolean form_atSpecificAddress;
+    private String form_nonPropertyLocation;
     
     private String form_requestDescription;
     private boolean form_isUrgent;
     private Date form_dateOfRecord;
     
-    private PersonType submittingPersonType;
+    private boolean form_anonymous;
     
     // located address
+        
+    private PersonType submittingPersonType;
     private String form_requestorFName;
     private String form_requestorLName;
+    private String form_requestorJobtitle;
+    
     private String form_requestor_phoneCell;
     private String form_requestor_phoneHome;
     private String form_requestor_phoneWork;
+    
     private String form_requestor_email;
     private String form_requestor_addressStreet;
     private String form_requestor_addressCity;
     private String form_requestor_addressZip;
-    private String form_requestor_notes;
-    private boolean form_anonymous;
+    private String form_requestor_addressState;
 
     /**
      * Creates a new instance of ActionRequestBean
@@ -83,6 +89,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     public ActionRequestBean(){
         // set date of record to current date
         form_dateOfRecord = new Date();
+        System.out.println("ActionRequestBean.ActionRequestBean");
     }
     
     
@@ -91,104 +98,206 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      * action request is submitted online (submit button in submitCERequest
      * @return 
      */
-    public String submitActionRequest(){
-                 getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "ActionRequestBean.submitActionRequest: request submitted", ""));
+    public String submitActionRequest() {
         
+        int personID = storeActionRequestorPerson();
         
-        int controlCode;
-        
-        System.out.println("ActionRequestBean.submitActionRequest: start method");
         currentRequest = new CEActionRequest();
+        currentRequest.setPersonID(personID);
+        currentRequest.setMuniCode(muniCode);
+        
+        int controlCode = getControlCodeFromTime();
+        currentRequest.setRequestPublicCC(controlCode);
+        
+        currentRequest.setIsAtKnownAddress(form_atSpecificAddress);
+        
+        if (form_atSpecificAddress){
+            currentRequest.setRequestProperty(selectedProperty);
+        } else {
+            currentRequest.setNonAddressDescription(form_nonPropertyLocation);
+        }
+        
         currentRequest.setIssueType_issueTypeID(violationTypeID);
-        //currentRequest.setMuni_muniCode(muniID);
-        currentRequest.setAddressOfConcern(form_addressOfConcern);
-        currentRequest.setNotAtAddress(form_notAtAddress);
         currentRequest.setRequestDescription(form_requestDescription);
-        currentRequest.setIsUrgent(form_isUrgent);
         currentRequest.setDateOfRecord(form_dateOfRecord
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
-                .toLocalDate());
+                .toLocalDateTime());
+        currentRequest.setIsUrgent(form_isUrgent);
         // note that the time stamp is applied by the integration layer
         // with a simple call to the backing bean getTimeStamp method
         
-        // should't be making an integration layer object in this actionMethod
-        // TODO Fix this structure!
-        CEActionRequestIntegrator integrator = new CEActionRequestIntegrator();
-        // for testing
-        //System.out.println("ActionRequestBean.submitActionRequest: personType: " + submittingPersonType.getLabel());
-        controlCode = integrator.submitCEActionRequest(currentRequest);
-        
-        System.out.println("ActionRequestBean.submitActionRequest - submitting request");
-        submittedRequest = integrator.getActionRequest(controlCode);
-        System.out.println("ActionRequestBean.submitActionRequest: submitted request = " + submittedRequest.getRequestPublicCC());
-        System.out.println("ActionRequestBean.submitActionRequest - COMPLETE request submission");
-        
-        //getVisit().setActionRequest(aRequest);
-        
+    
+        CEActionRequestIntegrator integrator = getcEActionRequestIntegrator();
+
+        try { 
+            // send the request into the DB
+            integrator.submitCEActionRequest(currentRequest);
+            System.out.println("ActionRequestBean.submitActionRequest");
+            getFacesContext().addMessage(null,
+               new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                       "ActionRequestBean.submitActionRequest: request submitted", ""));
+
+            // now go back to integrator and get the request that was just submitted to display to the user
+            getCEActionRequestByPublicCC(controlCode);
+
+        } catch (IntegrationException ex) {
+            System.out.println(ex.toString());
+               getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable write request into the database, our apologies!", 
+                            "Please call your municipal office and report your concern by phone."));
+            return "";
+            
+        }
         return "success";
     }
+    
+    private void getCEActionRequestByPublicCC(int cc){
+        CEActionRequest actionRequest = null;
+        CEActionRequestIntegrator ceai = getcEActionRequestIntegrator();
+        try {
+            actionRequest = ceai.getActionRequest(cc);
+        } catch (IntegrationException ex) {
+            System.out.println(ex.toString());
+               getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to retrieve action request by control code, our apologies!", 
+                            "Please call your municipal office and report your concern by phone."));
+        }
+        // now set this action request for the session to have and send the user to the
+        // confirmation page
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActionRequest(actionRequest);
+    } // close method
+    
     
     public String refreshPage(){
         return "submitCERequest";
     }
     
-    public void storeActionRequestorPerson(){
+    public int storeActionRequestorPerson(){
         
+        int publicCC = 0;
         currentPerson = new Person();
         
         currentPerson.setPersonType(submittingPersonType);
+        currentPerson.setMuniCode(muniCode);
+        
         currentPerson.setFirstName(form_requestorFName);
         currentPerson.setLastName(form_requestorLName);
+        currentPerson.setJobTitle(form_requestorJobtitle);
+        
         currentPerson.setPhoneCell(form_requestor_phoneCell);
         currentPerson.setPhoneHome(form_requestor_phoneHome);
         currentPerson.setPhoneWork(form_requestor_phoneWork);
+        
         currentPerson.setEmail(form_requestor_email);
         currentPerson.setAddress_street(form_requestor_addressStreet);
         currentPerson.setAddress_city(form_requestor_addressCity);
         currentPerson.setAddress_zip(form_requestor_addressZip);
-        currentPerson.setNotes(form_requestor_notes);
+        currentPerson.setAddress_state(form_requestor_addressState);
+        
+        currentPerson.setNotes("[System-Generated] This person was created "
+                + "from the code enforcement action request form");
+        
+        currentPerson.setIsActive(true);
+        currentPerson.setIsUnder18(false);
+        
         // the insertion of this person will be timestamped
         // by the integrator class
         
-        // Commit the sin of creating an integrator here and using it
-        // refactor using the new backing bean setup to access application level beans
-        PersonIntegrator personIntegrator = new PersonIntegrator();
+        PersonIntegrator personIntegrator = getPersonIntegrator();
+        
         try {
-            personIntegrator.insertPerson(currentPerson);
+            publicCC = personIntegrator.insertPerson(currentPerson);
         } catch (IntegrationException ex) {
+             System.out.println(ex.toString());
+               getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Sorry, the system was unable to store your contact information and as a result, your request has not been recorded.", 
+                            "You might call your municipal office to report this error and make a request over the phone. "
+                                    + "You can also phone the Turtle Creek COG's tecnical support specialist, Eric Darsow, at 412.840.3020 and leave a message"));
+            
+            
+        } catch (NullPointerException ex){
+             System.out.println(ex.toString());
+               getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Sorry, the system was unable to store your contact information and as a result, your request has not been recorded.", 
+                            "You might call your municipal office to report this error and make a request over the phone. "
+                                    + "You can also phone the Turtle Creek COG's tecnical support specialist, Eric Darsow, at 412.840.3020 and leave a message"));
+            
+            
         }
         
+        return publicCC;
+        
     } // close storePerson 
+    
+    public void storePropertyLocationInfo(ActionEvent event){
+        System.out.println("ActionRequestBean.storePropertyLocationInfo | selectedProp: " + selectedProperty.getAddress());
+        
+    }
+    
+    public void storeNoPropertyInfo(ActionEvent event){
+        System.out.println("ActionRequestBean.storeNoPropertyInfo | request location: " + form_nonPropertyLocation);
+    }
+    
+    public void incrementalFormContinue(ActionEvent event){
+        System.out.println("ActionRequestBean.incrementalFormContinue");
+    }
 
+      
+    public void searchForPropertiesSingleMuni(ActionEvent event){
+        System.out.println("ActionRequestBean.searchForPropertiesSingleMuni | municode: " + muniCode);
+        System.out.println("");
+        PropertyIntegrator pi = new PropertyIntegrator();
+        
+        try {
+            setPropList(pi.searchForProperties(addrPart, muniCode));
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "Your search completed with " + getPropList().size() + " results", ""));
+            
+            
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to complete a property search! ", ""));
+            
+        }
+    }
+    
+    
     /**
-     * @return the form_addressOfConcern
+     * @return the form_nonPropertyLocation
      */
-    public String getForm_addressOfConcern() {
-        return form_addressOfConcern;
+    public String getForm_nonPropertyLocation() {
+        return form_nonPropertyLocation;
     }
 
     /**
-     * @param form_addressOfConcern the form_addressOfConcern to set
+     * @param form_nonPropertyLocation the form_nonPropertyLocation to set
      */
-    public void setForm_addressOfConcern(String form_addressOfConcern) {
-        this.form_addressOfConcern = form_addressOfConcern;
+    public void setForm_nonPropertyLocation(String form_nonPropertyLocation) {
+        this.form_nonPropertyLocation = form_nonPropertyLocation;
     }
 
     /**
-     * @return the form_notAtAddress
+     * @return the form_atSpecificAddress
      */
-    public boolean isForm_notAtAddress() {
-        return form_notAtAddress;
+    public boolean isForm_atSpecificAddress() {
+        form_atSpecificAddress = true;
+        return form_atSpecificAddress;
     }
 
     /**
-     * @param form_notAtAddress the form_notAtAddress to set
+     * @param form_atSpecificAddress the form_atSpecificAddress to set
      */
-    public void setForm_notAtAddress(boolean form_notAtAddress) {
-        this.form_notAtAddress = form_notAtAddress;
+    public void setForm_atSpecificAddress(boolean form_atSpecificAddress) {
+        this.form_atSpecificAddress = form_atSpecificAddress;
     }
 
     /**
@@ -376,32 +485,19 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the muniID
+     * @return the muniCode
      */
-    public int getMuniID() {
-        return muniID;
+    public int getMuniCode() {
+        return muniCode;
     }
 
     /**
-     * @param muniID the muniID to set
+     * @param muniCode the muniCode to set
      */
-    public void setMuniID(int muniID) {
-        this.muniID = muniID;
+    public void setMuniCode(int muniCode) {
+        this.muniCode = muniCode;
     }
 
-    /**
-     * @return the muniName
-     */
-    public String getMuniName() {
-        return muniName;
-    }
-
-    /**
-     * @param muniName the muniName to set
-     */
-    public void setMuniName(String muniName) {
-        this.muniName = muniName;
-    }
 
     /**
      * @return the submittedRequest
@@ -449,6 +545,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      * @return the submittingPersonType
      */
     public PersonType getSubmittingPersonType() {
+        submittingPersonType = PersonType.Public;
         return submittingPersonType;
     }
 
@@ -487,19 +584,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         this.form_requestor_phoneWork = form_requestor_phoneWork;
     }
 
-    /**
-     * @return the form_requestor_notes
-     */
-    public String getForm_requestor_notes() {
-        return form_requestor_notes;
-    }
-
-    /**
-     * @param form_requestor_notes the form_requestor_notes to set
-     */
-    public void setForm_requestor_notes(String form_requestor_notes) {
-        this.form_requestor_notes = form_requestor_notes;
-    }
+    
 
     /**
      * @return the submittingPersonTypes
@@ -515,7 +600,50 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      */
     public HashMap getMuniMap() throws IntegrationException {
         MunicipalityIntegrator muniInt = getMunicipalityIntegrator();
-        return muniInt.getMunicipalityMap();
+        muniMap = muniInt.getMunicipalityMap(); 
+        return muniMap;
+    }
+
+    /**
+     * @return the selectedProperty
+     */
+    public Property getSelectedProperty() {
+        return selectedProperty;
+    }
+
+    /**
+     * @param selectedProperty the selectedProperty to set
+     */
+    public void setSelectedProperty(Property selectedProperty) {
+        this.selectedProperty = selectedProperty;
+    }
+
+    /**
+     * @return the form_requestorJobtitle
+     */
+    public String getForm_requestorJobtitle() {
+        return form_requestorJobtitle;
+    }
+
+    /**
+     * @return the form_requestor_addressState
+     */
+    public String getForm_requestor_addressState() {
+        return form_requestor_addressState;
+    }
+
+    /**
+     * @param form_requestorJobtitle the form_requestorJobtitle to set
+     */
+    public void setForm_requestorJobtitle(String form_requestorJobtitle) {
+        this.form_requestorJobtitle = form_requestorJobtitle;
+    }
+
+    /**
+     * @param form_requestor_addressState the form_requestor_addressState to set
+     */
+    public void setForm_requestor_addressState(String form_requestor_addressState) {
+        this.form_requestor_addressState = form_requestor_addressState;
     }
 
     /**
@@ -523,5 +651,33 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      */
     public void setMuniMap(HashMap muniMap) {
         this.muniMap = muniMap;
+    }
+
+    /**
+     * @return the propList
+     */
+    public LinkedList getPropList() {
+        return propList;
+    }
+
+    /**
+     * @return the addrPart
+     */
+    public String getAddrPart() {
+        return addrPart;
+    }
+
+    /**
+     * @param propList the propList to set
+     */
+    public void setPropList(LinkedList propList) {
+        this.propList = propList;
+    }
+
+    /**
+     * @param addrPart the addrPart to set
+     */
+    public void setAddrPart(String addrPart) {
+        this.addrPart = addrPart;
     }
 }

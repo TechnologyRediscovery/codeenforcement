@@ -21,7 +21,7 @@
                     <f:view>
                         <h:form id="personProifleForm">
                             <h2>Name: <h:outputText value="#{personUpdateBB.person.firstName}"/> <span> </span><h:outputText value="#{personUpdateBB.person.lastName}"/>, ID: <h:outputText value="#{personUpdateBB.person.personid}"/></h2>
-                            <p>This record was last updated on: #{personUpdateBB.formattedLastUpdated}</p>
+                            <p>This record was last updated on: #{personUpdateBB.person.lastUpdated}</p>
                             <h:panelGrid columns="4" border="0" 
                                          cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
                                          footerClass="gridFooter">

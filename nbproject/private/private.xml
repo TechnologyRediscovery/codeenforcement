@@ -3,29 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/dashboard.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CEActionRequestIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/propertyProfiler.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CodeIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/CEActionRequest.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ManageARequestBean.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/mangeActionRequest.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/PropertyIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/MuniBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/Visit.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personProfile.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/propertySearch.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/MunicipalityIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Property.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CaseManageBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseManage.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/PropertyProfileBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseAdd.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/propertyProfile.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/SessionManager.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/requestManagement.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/DashboardBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/resources/css/style.css</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ActionRequestBean.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PSearch.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonUpdateBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CaseAddBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/faces-config.xml</file>
         </group>
     </open-files>
 </project-private>

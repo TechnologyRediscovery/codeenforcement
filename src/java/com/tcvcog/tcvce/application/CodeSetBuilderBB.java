@@ -74,8 +74,6 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
                             "Unable to find any code elements in the selected source, sorry.", ""));
         }
         
-        
-        
     }
     
     public void prepareSlectedElementForCodeSet(ActionEvent event){
@@ -116,10 +114,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                     "Unable to add enforcement data to code element, sorry.", "This is an unwanted system error."));            
-            
         }
-        
-        
     }
 
     /**

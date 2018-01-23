@@ -25,6 +25,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     private String parid;
     private String address;
     private String addrPart;
+    private String addrPartAllMunis;
     Connection con = null;
     
     private Property selectedProperty;
@@ -42,11 +43,11 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     } // close constructor
     
     public void searchForPropertiesAllMunis(ActionEvent event){
-        System.out.println("PropSearchBean.searchForProperties");
+        System.out.println("PropSearchBean.searchForPropertiesAllMunis");
         PropertyIntegrator pi = new PropertyIntegrator();
         
         try {
-            propList = pi.searchForProperties(addrPart);
+            propList = pi.searchForProperties(addrPartAllMunis);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         "Your search completed with " + propList.size() + " results", ""));
@@ -61,7 +62,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     }
     
     public void searchForPropertiesSingleMuni(ActionEvent event){
-        System.out.println("PropSearchBean.searchForProperties");
+        System.out.println("PropSearchBean.searchForPropertiesSingleMuni");
         PropertyIntegrator pi = new PropertyIntegrator();
         
         try {
@@ -211,6 +212,20 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
      */
     public void setSelectedMuniCode(int selectedMuniCode) {
         this.selectedMuniCode = selectedMuniCode;
+    }
+
+    /**
+     * @return the addrPartAllMunis
+     */
+    public String getAddrPartAllMunis() {
+        return addrPartAllMunis;
+    }
+
+    /**
+     * @param addrPartAllMunis the addrPartAllMunis to set
+     */
+    public void setAddrPartAllMunis(String addrPartAllMunis) {
+        this.addrPartAllMunis = addrPartAllMunis;
     }
     
     

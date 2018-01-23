@@ -13,12 +13,12 @@
         <ui:composition template="./tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
-                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                    <h:messages globalOnly="true" showDetail="false" showSummary="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
                             
                     <f:view>
-                        <h:outputLink value="propertySearch.xhtml">&larr;;-- Back to Property locator</h:outputLink>
+                        <h:outputLink value="propertySearch.xhtml">&larr; Back to Property locator</h:outputLink>
                         <h1>Property Profile</h1>
                         <p>Access all property-level data and jump into cases, inspections, and people attached to this property.</p>
                         
@@ -134,7 +134,14 @@
                             
                         </h:form>
                         
+                        <p:spacer height="10px"/>
+                        <hr/>
+                        <p:spacer height="10px"/>
                         
+
+                        <h2>Supplemental Property Data</h2>
+                        
+                        <p>Last update: </p>
                         
                         
                         <p:spacer height="10px"/>
@@ -148,7 +155,11 @@
                                 submitted through the public request portal or by municipal staff.</p>
                             
                             
-                            <p:commandButton ajax="fakse" value="Manage Code Enforcemetn Request &rarr;" action="manageActionRequest"/>
+                            
+                            
+                            
+                            
+                            <p:commandButton ajax="fakse" value="Manage Code Enforcement Request &rarr;" action="manageActionRequest"/>
                             
 
 
@@ -159,13 +170,15 @@
                             <p:spacer height="10px"/>
 
                             <h2>Active Code enforcement cases</h2>
-                            <p:commandButton ajax="fakse" value="Open a new case &rarr;" action="createCase"/>
+                            <p:commandButton ajax="false"  value="Open a new case &rarr;" action="#{propertyProfileBB.createCase}"/>
                             
-                            <p>Select a case in the table to view its details.</p>
+                            
+                            
+                                <p>Select a case in the table to view its details.</p>
                                 <!--Insert case table here-->
                             
                             
-                            <p:commandButton ajax="fakse" value="View selected case summary" action="caseSummary"/>
+                                <p:commandButton ajax="fakse" value="View selected case summary" action="caseSummary"/>
                             
                         
                             <p:spacer height="10px"/>

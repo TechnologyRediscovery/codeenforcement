@@ -56,18 +56,25 @@ public class CEActionRequest {
     private int requestID;
     private int requestPublicCC;
 
+    private Municipality muni;
+    private int personID;
     private Person actionRequestorPerson;
-    private Property requestProperty;
-    private String issueTypeString; //populated from linked table
-    private Municipality reqMuni;
-    private CECase linkedCase;
-    
-    private int issueType_issueTypeID;
-    private java.time.LocalDateTime submittedTimeStamp;
-    private java.time.LocalDate dateOfRecord;
 
-    private boolean notAtAddress;
+    private Property requestProperty;
+   
+    private int issueType_issueTypeID;
+    private String issueTypeString; //populated from linked table
+    
+    private int muniCode;
+    private CECase linkedCase; // probably only use caseID
+    private int caseID;
+    
+    private java.time.LocalDateTime submittedTimeStamp;
+    private java.time.LocalDateTime dateOfRecord;
+
+    private boolean isAtKnownAddress;
     private String addressOfConcern;
+    private String nonAddressDescription;
     
     private String requestDescription;
     private boolean isUrgent;
@@ -146,21 +153,21 @@ public class CEActionRequest {
     }
 
     /**
-     * @return the notAtAddress
+     * @return the isAtKnownAddress
      */
-    public boolean isNotAtAddress() {
-        return notAtAddress;
+    public boolean isIsAtKnownAddress() {
+        return isAtKnownAddress;
     }
 
     /**
-     * @param notAtAddress the notAtAddress to set
+     * @param isAtKnownAddress the isAtKnownAddress to set
      */
-    public void setNotAtAddress(boolean notAtAddress) {
-        this.notAtAddress = notAtAddress;
+    public void setIsAtKnownAddress(boolean isAtKnownAddress) {
+        this.isAtKnownAddress = isAtKnownAddress;
     }
     
     public boolean getNotAtAddress(){
-        return notAtAddress;
+        return isAtKnownAddress;
     }
 
   
@@ -196,14 +203,14 @@ public class CEActionRequest {
     /**
      * @return the dateOfRecord
      */
-    public LocalDate getDateOfRecord() {
+    public LocalDateTime getDateOfRecord() {
         return dateOfRecord;
     }
 
     /**
      * @param dateOfRecord the dateOfRecord to set
      */
-    public void setDateOfRecord(LocalDate dateOfRecord) {
+    public void setDateOfRecord(LocalDateTime dateOfRecord) {
         this.dateOfRecord = dateOfRecord;
     }
 
@@ -307,19 +314,7 @@ public class CEActionRequest {
         this.requestProperty = requestProperty;
     }
 
-    /**
-     * @return the reqMuni
-     */
-    public Municipality getReqMuni() {
-        return reqMuni;
-    }
 
-    /**
-     * @param reqMuni the reqMuni to set
-     */
-    public void setReqMuni(Municipality reqMuni) {
-        this.reqMuni = reqMuni;
-    }
 
     /**
      * @return the linkedCase
@@ -347,5 +342,77 @@ public class CEActionRequest {
      */
     public void setAnonymitiyRequested(boolean anonymitiyRequested) {
         this.anonymitiyRequested = anonymitiyRequested;
+    }
+
+    /**
+     * @return the muniCode
+     */
+    public int getMuniCode() {
+        return muniCode;
+    }
+
+    /**
+     * @param muniCode the muniCode to set
+     */
+    public void setMuniCode(int muniCode) {
+        this.muniCode = muniCode;
+    }
+
+  
+    /**
+     * @return the personID
+     */
+    public int getPersonID() {
+        return personID;
+    }
+
+  
+    /**
+     * @param personID the personID to set
+     */
+    public void setPersonID(int personID) {
+        this.personID = personID;
+    }
+
+    /**
+     * @return the nonAddressDescription
+     */
+    public String getNonAddressDescription() {
+        return nonAddressDescription;
+    }
+
+    /**
+     * @param nonAddressDescription the nonAddressDescription to set
+     */
+    public void setNonAddressDescription(String nonAddressDescription) {
+        this.nonAddressDescription = nonAddressDescription;
+    }
+
+    /**
+     * @return the muni
+     */
+    public Municipality getMuni() {
+        return muni;
+    }
+
+    /**
+     * @param muni the muni to set
+     */
+    public void setMuni(Municipality muni) {
+        this.muni = muni;
+    }
+
+    /**
+     * @return the caseID
+     */
+    public int getCaseID() {
+        return caseID;
+    }
+
+    /**
+     * @param caseID the caseID to set
+     */
+    public void setCaseID(int caseID) {
+        this.caseID = caseID;
     }
 }

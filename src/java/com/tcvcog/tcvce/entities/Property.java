@@ -5,6 +5,7 @@
  */
 package com.tcvcog.tcvce.entities;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -38,7 +39,7 @@ public class Property {
     private String notes;
     
     private LinkedList<CECase> propertyCaseList;
-    private LinkedList<PropertyUnit> propertyUnitList;
+    private HashMap<PropertyUnit, Integer> propertyUnitHashMap;
     private LinkedList<Person> propertyPersonList;
     
     
@@ -217,20 +218,7 @@ public class Property {
         this.propertyCaseList = propertyCaseList;
     }
 
-    /**
-     * @return the propertyUnitList
-     */
-    public LinkedList<PropertyUnit> getPropertyUnitList() {
-        return propertyUnitList;
-    }
-
-    /**
-     * @param propertyUnitList the propertyUnitList to set
-     */
-    public void setPropertyUnitList(LinkedList<PropertyUnit> propertyUnitList) {
-        this.propertyUnitList = propertyUnitList;
-    }
-
+   
     /**
      * @return the propertyPersonList
      */
@@ -285,6 +273,20 @@ public class Property {
      */
     public void setPropertyUseTypeID(int propertyUseTypeID) {
         this.propertyUseTypeID = propertyUseTypeID;
+    }
+
+    /**
+     * @return the propertyUnitHashMap
+     */
+    public HashMap<PropertyUnit, Integer> getPropertyUnitHashMap() {
+        return propertyUnitHashMap;
+    }
+
+    /**
+     * @param propertyUnitHashMap the propertyUnitHashMap to set
+     */
+    public void setPropertyUnitHashMap(HashMap<PropertyUnit, Integer> propertyUnitHashMap) {
+        this.propertyUnitHashMap = propertyUnitHashMap;
     }
     
   

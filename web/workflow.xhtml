@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Municipal Workflow Central</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./tempHeadFoot.xhtml">
+            <ui:define name="content">
+                <div class="mainContainer">
+                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                            
+                    <h1>Municipal Workflow Central</h1>
+                    <p>Access to code enforcement requests, case management tools, and municipal-related data</p>
+                    <f:view>
+                        
+                        <h2>Code Enforcement Action Requests:</h2>
+                        <p>Listing of all action request forms attached to this municipality. 
+                            Use the filter tools atop each column to isolate the type of action requests visible.</p>
+                            
+                            <p:dataTable
+                                id="personTable"
+                                var="p"
+                                value="#{personBB.personList}"
+                                selectionMode="single"
+                                selection="#{personBB.selectedPerson}"
+                                rowKey="#{p.personid}"
+                                tableStyleClass="primeDataTable">
+                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Person Type" />
+                                    </f:facet>
+                                    <h:outputText value="#{p.personType.label}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Municipality" />
+                                    </f:facet>
+                                    <h:outputText value="#{p.muni.muniName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="First" />
+                                    </f:facet>
+                                    <h:outputText value="#{p.firstName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Last" />
+                                    </f:facet>
+                                    <h:outputText value="#{p.lastName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Cell Num" />
+                                    </f:facet>
+                                    <h:outputText value="#{p.phoneCell}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Address" />
+                                    </f:facet>
+                                    <h:outputText value="#{p.address_street}"/>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <p:spacer height="10px"/>
+                            
+                            <p:commandButton ajax="false" value="View profile of selected person" 
+                                             action="#{personBB.viewPersonProfile}"/>
+                        
+                        
+                        
+                        <p:spacer height="10px"/>
+                        <hr/>
+                        <p:spacer height="10px"/>
+                        
+
+                        <h:form id="">
+
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

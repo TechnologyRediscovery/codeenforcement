@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,19 +55,20 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
     public Person getPerson(int personId) throws IntegrationException{
         
         Connection con = getPostgresCon();
-        
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         Person person = null;
         
         try {
-            String s =  "SELECT personid, personType, fName, lName, "
-                    + "worktitle, phoneCell, phoneHome, phoneWork, "
+            String s =  "SELECT personid, personType, muni_municode, fName, lName, "
+                    + "jobtitle, phoneCell, phoneHome, phoneWork, "
                     + "email, address_street, address_city, "
                     + "address_zip, address_state, notes, lastUpdated, \n"
-                    + "expirydate, isactive, isunder18 FROM public.person"
+                    + "expirydate, isactive, isunder18 FROM public.person \n"
                     + "WHERE personid = "
                     + personId + ";";
-            PreparedStatement stmt = con.prepareStatement(s);
+            stmt = con.prepareStatement(s);
+            System.out.println("PersonIntegrator.getPerson | sql: " + s);
             
             rs = stmt.executeQuery();
             
@@ -78,9 +80,10 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new IntegrationException("Cannot search for person", ex);
+            throw new IntegrationException("PersonIntegrator.getPerson | Unable to retrieve person", ex);
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         return person;
@@ -192,7 +195,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         
@@ -204,11 +207,15 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * Accepts a Person object to store in the database.
      * 
      * @param personToStore the person to store
+     * @return the unique id number assigned to the record just created in postgres
+     * through a call to currval('[sequence_name]')
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public void insertPerson(Person personToStore) throws IntegrationException{
+    public int insertPerson(Person personToStore) throws IntegrationException{
         Connection con = getPostgresCon();
         StringBuilder query = new StringBuilder();
+        ResultSet rs = null;
+        int lastID;
         
         query.append("INSERT INTO public.person(\n" +
 "            personid, persontype, muni_municode, fname, lname, jobtitle, \n" +
@@ -217,7 +224,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
 "            isunder18)\n" +
 "    VALUES (DEFAULT, CAST (? AS persontype), ?, ?, ?, ?, \n" +
 "            ?, ?, ?, ?, ?, ?, \n" +
-"            ?, ?, ?, ?, now(), ?, \n" +
+"            ?, ?, ?, now(), ?, ?, \n" +
 "            ?);");
         
         PreparedStatement stmt = null;
@@ -241,7 +248,13 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setString(13, personToStore.getAddress_state());
             stmt.setString(14, personToStore.getNotes());
             
-            stmt.setTimestamp(15, java.sql.Timestamp.valueOf(personToStore.getExpiryDate()));
+            if(personToStore.getExpiryDate() != null){
+                stmt.setTimestamp(15, java.sql.Timestamp.valueOf(personToStore.getExpiryDate()));
+                
+            } else {
+                stmt.setNull(15, java.sql.Types.NULL);
+            }
+            
             stmt.setBoolean(16, personToStore.isIsActive());
             
             stmt.setBoolean(17, personToStore.isIsUnder18());
@@ -250,14 +263,27 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             
             stmt.execute();
             
+            // now get the most recent Unique ID added to this person to pass 
+            // to client methods who want to connect a record to this person
+            
+
+            String idNumQuery = "SELECT currval('person_personIDSeq');";
+            Statement s = con.createStatement();
+            rs = s.executeQuery(idNumQuery);
+            rs.next();
+            lastID = rs.getInt(1);
+            
             
         } catch (SQLException ex) {
             System.out.println(ex);
             throw new IntegrationException("Error inserting new person", ex);
         } finally{
              if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
+        
+        return lastID;
         
     } // close insertPerson()
     

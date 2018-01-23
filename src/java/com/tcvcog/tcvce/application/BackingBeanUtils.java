@@ -25,6 +25,7 @@ import javax.faces.application.Application;
 import java.sql.Connection;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
+import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
@@ -53,6 +54,7 @@ public class BackingBeanUtils implements Serializable{
     private MunicipalityIntegrator municipalityIntegrator;
     private SessionManager sessionManager;
     private PropertyIntegrator propertyIntegrator;
+    private CEActionRequestIntegrator cEActionRequestIntegrator;
  
     // private Connection postgresCon;
     
@@ -246,6 +248,25 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setPropertyIntegrator(PropertyIntegrator propertyIntegrator) {
         this.propertyIntegrator = propertyIntegrator;
+    }
+
+    /**
+     * @return the cEActionRequestIntegrator
+     */
+    public CEActionRequestIntegrator getcEActionRequestIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), 
+                        "#{cEActionRequestIntegrator}", CEActionRequestIntegrator.class);
+        cEActionRequestIntegrator = (CEActionRequestIntegrator) ve.getValue(context.getELContext());
+        return cEActionRequestIntegrator;
+    }
+
+    /**
+     * @param cEActionRequestIntegrator the cEActionRequestIntegrator to set
+     */
+    public void setcEActionRequestIntegrator(CEActionRequestIntegrator cEActionRequestIntegrator) {
+        this.cEActionRequestIntegrator = cEActionRequestIntegrator;
     }
 
 }

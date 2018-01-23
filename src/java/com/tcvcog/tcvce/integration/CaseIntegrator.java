@@ -36,19 +36,23 @@ public class CaseIntegrator {
     public CaseIntegrator() {
     }
     
-    public LinkedList getCECasesByPropertyID(int propertyID){
+    public LinkedList getCECases(int propertyID){
         LinkedList caseList = null;
         return caseList;
     }
     
-    public CECase getCECaseByCaseID(int ceCaseID){
+    public LinkedList getCECasesByMuni(int muniCode){
+        LinkedList caseList = null;
+        return caseList;
+    }
+    
+    public CECase getCECase(int ceCaseID){
         CECase ceCase = null;
         
         return ceCase;
-        
-        
     }
     
+
     public int insertNewCECase(CECase cecase){
         
         return 0;

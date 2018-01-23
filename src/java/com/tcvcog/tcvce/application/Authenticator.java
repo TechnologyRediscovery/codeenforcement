@@ -24,6 +24,7 @@ import com.tcvcog.tcvce.entities.User;
 
 
 import com.tcvcog.tcvce.domain.*;
+import com.tcvcog.tcvce.entities.CodeSet;
 import java.io.Serializable;
 import javax.faces.bean.ManagedProperty;
 
@@ -68,6 +69,10 @@ public class Authenticator extends BackingBeanUtils implements Serializable{
         
         sessionManager = new SessionManager();
         Visit visit = new Visit();
+        CodeSet cs = new CodeSet();
+        cs.setCodeSetName("I have a name!");
+        visit.setActiveCodeSet(cs);
+        System.out.println("Authenticator.login | setting active code set in session manager");
         sessionManager.setVisit(visit);
         
   
@@ -112,19 +117,7 @@ public class Authenticator extends BackingBeanUtils implements Serializable{
         this.loginPassword = loginPassword;
     }
 
-    /**
-     * @return the sessionManager
-     */
-    public SessionManager getSessionManager() {
-        return sessionManager;
-    }
-
-    /**
-     * @param sessionManager the sessionManager to set
-     */
-    public void setSessionManager(SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
+   
     
     
 } // close clas

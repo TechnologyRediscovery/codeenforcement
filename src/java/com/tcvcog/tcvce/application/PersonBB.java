@@ -81,9 +81,17 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
     }
     
     public String viewPersonProfile(){
-        SessionManager sm = getSessionManager();
-        sm.getVisit().setActivePerson(selectedPerson);
-        return "personProfile";
+        if(selectedPerson != null){
+            SessionManager sm = getSessionManager();
+            sm.getVisit().setActivePerson(selectedPerson);
+            return "personProfile";
+        } else {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "Please select a person from the table to view details", ""));
+            return "";
+            
+        }
     }
 
     public String deletePerson(){

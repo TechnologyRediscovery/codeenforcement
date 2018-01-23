@@ -16,12 +16,15 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.LinkedList;
 import javax.faces.component.html.HtmlDataTable;
 //import org.primefaces.component.datatable.DataTable;
 import com.tcvcog.tcvce.entities.*;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
 
 /**
@@ -63,7 +66,13 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
      */
     public LinkedList getRequestList() {
         
-        return integrator.getCEActionRequestList();
+        try {
+            return integrator.getCEActionRequestList();
+        } catch (IntegrationException ex) {
+            Logger.getLogger(RequestManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new LinkedList();
     }
 
     /**

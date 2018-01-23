@@ -48,6 +48,68 @@
                         </div>
                     </h:form>
                 </div>
+                <div class="sessionInfo">
+                    <h:form id="sessionInfoForm">
+                         <h:panelGrid columns="4" border="0" 
+                                         cellpadding="2" columnClasses="gridTd, gridTd, gridTd, gridTd,"
+                                 footerClass="gridFooter">
+                             
+                             <h:panelGroup>
+                                 <span class="bold"><h:outputText value="User: "/></span>
+                             </h:panelGroup>
+                             <h:panelGroup>
+                                 <h:outputText value="#{sessionManager.visit.currentUser.getfName}"/>,   
+                                 <h:outputText value="#{sessionManager.visit.currentUser.getlName}"/>
+                             </h:panelGroup>
+                             
+                             <h:panelGroup>
+                                 <span class="bold"><h:outputText value="Permissions: "/></span>
+                             </h:panelGroup>
+                             <h:panelGroup>
+                                 <h:outputText value="#{sessionManager.visit.currentUser.roleType.label}"/>   
+                             </h:panelGroup>
+                                             
+                             <h:panelGroup>
+                                 <span class="bold"><h:outputText value="Default Municipality: "/></span>
+                             </h:panelGroup>
+                             <h:panelGroup>
+                                 <h:outputText value="#{sessionManager.visit.currentUser.muni.muniName}"/> 
+                             </h:panelGroup>
+                             
+                             <h:panelGroup>
+                                 <span class="bold"><h:outputText value="Active Property: "/></span>
+                             </h:panelGroup>
+                             <h:panelGroup>
+                                <h:outputText value="#{sessionManager.visit.activeProp.address}"/> 
+                                (<h:outputText value="#{sessionManager.visit.activeProp.muni.muniName}"/>)
+                             </h:panelGroup>
+                             
+                             <h:panelGroup>
+                                 <span class="bold"><h:outputText value="Active Person:"/></span>
+                             </h:panelGroup>
+                             <h:panelGroup>
+                                 <h:outputText value="#{sessionManager.visit.activePerson.firstName}"/>, 
+                                 <h:outputText value="#{sessionManager.visit.activePerson.lastName}"/>
+                             </h:panelGroup>
+                             
+                             <h:panelGroup>
+                                 <span class="bold"><h:outputText value="Code Set: "/></span>
+                             </h:panelGroup>
+                             <h:panelGroup>
+                                 <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/> 
+                             </h:panelGroup>
+                             
+                         </h:panelGrid>
+
+                    </h:form>
+                </div>
+                        
+                        
+                        
+                        
+                    
+                    
+                    
                 </f:view>
             </ui:insert>
         </div>

@@ -27,6 +27,7 @@ Council of Governments, PA
  * @author sylvia
  */
 public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
+    private Property currentProperty;
 
     /**
      * Creates a new instance of PropertyProfileBB
@@ -34,8 +35,16 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     public PropertyProfileBB() {
     }
     
-    private Property currentProperty;
+    
+    public String createCase(){
+        System.out.println("PropertyProfileBB.createCase");
+        
+        
+        return "/ce/caseAdd.xhtml";
+    }
+    
 
+    
     /**
      * @return the currentProperty
      */
@@ -53,6 +62,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     }
     
     public String updateProperty(){
+        System.out.println("PropertyProfileBB.updateProperty");
         return "propertyUpdate";
         
     }

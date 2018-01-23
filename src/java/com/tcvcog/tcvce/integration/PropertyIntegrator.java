@@ -107,7 +107,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             System.out.println(ex.toString());
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         
@@ -141,7 +141,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         
@@ -171,7 +171,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             throw new IntegrationException("Unable to build propertyUseTypesMap", ex);
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         
@@ -215,15 +215,43 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             throw new IntegrationException("Unable to build propertyUseTypesMap", ex);
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
-        
-        
         
         return "propertyProfile";
         
     }
     
+    public Property getProperty(int propertyID) throws IntegrationException{
+        Property p = new Property();
+         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_propertyuseid "
+                + " WHERE propertyid = ?;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, propertyID);
+            System.out.println("PropertyIntegrator.getProperty | sql: " + stmt.toString());
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                p = generatePropertyFromRS(rs);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("PropertyIntegrator.getProperty | Unable to retrieve property by ID number", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        
+        return p;
+        
+    } // close getProperty()
     
     
-}
+    
+} // close class

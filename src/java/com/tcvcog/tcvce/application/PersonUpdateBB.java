@@ -65,7 +65,6 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
     private String formNotes;
     
     private LocalDateTime lastUpdated;
-    private String formattedLastUpdated;
     private java.util.Date formExpiryDate;
     private boolean formIsActive;
     
@@ -473,22 +472,6 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      */
     public void setFormExpiryDate(java.util.Date formExpiryDate) {
         this.formExpiryDate = formExpiryDate;
-    }
-
-    /**
-     * @return the formattedLastUpdated
-     */
-    public String getFormattedLastUpdated() {
-        String formattedDate = person.getLastUpdated().withSecond(0).format(DateTimeFormatter.ISO_DATE_TIME);
-        formattedLastUpdated = formattedDate;
-        return formattedLastUpdated;
-    }
-
-    /**
-     * @param formattedLastUpdated the formattedLastUpdated to set
-     */
-    public void setFormattedLastUpdated(String formattedLastUpdated) {
-        this.formattedLastUpdated = formattedLastUpdated;
     }
 
    

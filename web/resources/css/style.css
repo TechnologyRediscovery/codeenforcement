@@ -120,7 +120,16 @@ img.header{
 
 div.header{
     /*height:300px; */
-    width: 1000px;
+    width: 1030px;
+    clear:right;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#top{
+    /*height:300px; */
+    width: 1030px;
     clear:right;
     display: block;
     margin-left: auto;
@@ -140,7 +149,36 @@ span.bold {
     font-weight: bold;
 }
 
-/* TABLE STYLES */
+div.ccBox{
+    height: 25%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 2em;
+    font-weight: bold;
+    background-color: green;
+    border-color: darkgray;
+    border-width: 1px;
+    text-align: center;
+    padding: 15px;
+    border-top: 30px;
+    border-bottom: 30px;
+}
+
+div.sessionInfo{
+    display: block;
+    background-color: lightsteelblue;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    color: white;
+    
+}
+
+
+/* ****************** TABLE STYLES ********************/
 
 table.primeDataTable td{
     font-size: small;
@@ -287,7 +325,7 @@ div.checkBoxLabel{
 /* Error Styling */
 
 .msgWarn{
-    color: yellow;
+    color: darkgoldenrod;
 }
 
 .msgInfo{
@@ -331,3 +369,10 @@ tr.caseOpen{
 }
 
 
+/* fieldset */
+
+.ui-fieldset-toggleable .ui-fieldset-legend{
+    background-color: white;
+    font-weight: normal;
+    
+}

@@ -28,6 +28,8 @@ public class User {
     private RoleType roleType;
     private String username;
     // note password is not stored in the business object!
+    private String password;
+    private int muniCode;
     private Municipality muni;
     private String fName;
     private String lName;
@@ -39,9 +41,10 @@ public class User {
     private String address_street;
     private String address_city;
     private String address_zip;
+    private String address_state;
     private String notes;
-    private String activityStartDate;
-    private LocalDateTime activityStopDatel;
+    private LocalDateTime activityStartDate;
+    private LocalDateTime activityStopDate;
     private boolean accessPermitted;
     
     /**
@@ -263,29 +266,29 @@ public class User {
     /**
      * @return the activityStartDate
      */
-    public String getActivityStartDate() {
+    public LocalDateTime getActivityStartDate() {
         return activityStartDate;
     }
 
     /**
      * @param activityStartDate the activityStartDate to set
      */
-    public void setActivityStartDate(String activityStartDate) {
+    public void setActivityStartDate(LocalDateTime activityStartDate) {
         this.activityStartDate = activityStartDate;
     }
 
     /**
-     * @return the activityStopDatel
+     * @return the activityStopDate
      */
-    public LocalDateTime getActivityStopDatel() {
-        return activityStopDatel;
+    public LocalDateTime getActivityStopDate() {
+        return activityStopDate;
     }
 
     /**
-     * @param activityStopDatel the activityStopDatel to set
+     * @param activityStopDate the activityStopDate to set
      */
-    public void setActivityStopDatel(LocalDateTime activityStopDatel) {
-        this.activityStopDatel = activityStopDatel;
+    public void setActivityStopDate(LocalDateTime activityStopDate) {
+        this.activityStopDate = activityStopDate;
     }
 
     /**
@@ -300,6 +303,48 @@ public class User {
      */
     public void setAccessPermitted(boolean accessPermitted) {
         this.accessPermitted = accessPermitted;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the muniCode
+     */
+    public int getMuniCode() {
+        return muniCode;
+    }
+
+    /**
+     * @param muniCode the muniCode to set
+     */
+    public void setMuniCode(int muniCode) {
+        this.muniCode = muniCode;
+    }
+
+    /**
+     * @return the address_state
+     */
+    public String getAddress_state() {
+        return address_state;
+    }
+
+    /**
+     * @param address_state the address_state to set
+     */
+    public void setAddress_state(String address_state) {
+        this.address_state = address_state;
     }
     
     

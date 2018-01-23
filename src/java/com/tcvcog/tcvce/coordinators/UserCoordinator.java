@@ -83,8 +83,7 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
             
             // ACCESS CONTROL: ONLY CREATE USER IF THE USER EXISTS IN THE SYSTEM
             if(rs.next()){
-                // TODO: Don't construct a User here--figure out how to
-                // get the mbcf to work
+        
                 
                 User user = new User();
                 
