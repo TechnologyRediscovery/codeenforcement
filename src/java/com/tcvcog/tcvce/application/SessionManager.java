@@ -20,8 +20,6 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.User;
 import java.io.Serializable;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -37,14 +35,13 @@ public class SessionManager implements Serializable{
      * Creates a new instance of SessionManager
      */
     public SessionManager() {
-        System.out.println("SessionManager.SessionManager | Adding a new visit to session");
-        Visit v = new Visit();
-        visit = v;
+        System.out.println("SessionManager.SessionManager");
+        visit = new Visit();
+        
     }
     
     private Visit visit;
     private CodeSource activeCodeSource;
-    private String sessionManagerVersion;
     private User utilityUserToUpdate;
     
 
@@ -76,20 +73,8 @@ public class SessionManager implements Serializable{
         this.activeCodeSource = activeCodeSource;
     }
 
-    /**
-     * @return the sessionManagerVersion
-     */
-    public String getSessionManagerVersion() {
-        sessionManagerVersion = "M0.9";
-        return sessionManagerVersion;
-    }
+   
 
-    /**
-     * @param sessionManagerVersion the sessionManagerVersion to set
-     */
-    public void setSessionManagerVersion(String sessionManagerVersion) {
-        this.sessionManagerVersion = sessionManagerVersion;
-    }
 
     /**
      * @return the utilityUserToUpdate

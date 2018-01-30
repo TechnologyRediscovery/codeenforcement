@@ -16,7 +16,9 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
+import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import javax.faces.application.Application;
@@ -24,11 +26,16 @@ import java.sql.Connection;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
+import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
@@ -48,13 +55,21 @@ public class BackingBeanUtils implements Serializable{
     //@ManagedProperty(value="#{visit}")
     private Visit visit;
     private UserCoordinator userCoordinator;
+    
+    private CaseCoordinator caseCoordinator;
+    private CaseIntegrator caseIntegrator;
+    
+    private EventCoordinator eventCoordinator;
+    private EventIntegrator eventIntegrator;
+    
     private MunicipalityIntegrator municipalityIntegrator;
     
-    @ManagedProperty("#{sessionManager}")
+//    @ManagedProperty("#{sessionManager}")
     private SessionManager sessionManager;
     
     private PropertyIntegrator propertyIntegrator;
     private CEActionRequestIntegrator cEActionRequestIntegrator;
+    
     private UserIntegrator userIntegrator;
  
     // private Connection postgresCon;
@@ -90,7 +105,6 @@ public class BackingBeanUtils implements Serializable{
     }
     
     public Visit getVisit(){
-        System.out.println("BackingBeanUtils.getVisit | gotten visit: " + visit.getEceList().peek().getOrdsecTitle());
         return visit;
     }
     
@@ -98,12 +112,6 @@ public class BackingBeanUtils implements Serializable{
         this.visit = visit;
     }
     
-    public UserCoordinator getUserCorodinator(){
-        System.out.println("Inside call to getUserCoordinator of class BackingBeanUtils");
-        // this is a debugging object creation -- troubleshoot where to actually construct this
-        UserCoordinator user = new UserCoordinator();
-        return user;
-    }
     
     public void setUserCoordinator(UserCoordinator userCoordinator){
         this.userCoordinator = userCoordinator;
@@ -198,6 +206,11 @@ public class BackingBeanUtils implements Serializable{
      * @return the userCoordinator
      */
     public UserCoordinator getUserCoordinator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(),
+                "#{userCoordinator}", UserCoordinator.class);
+       userCoordinator = (UserCoordinator) ve.getValue(context.getELContext());
         return userCoordinator;
     }
 
@@ -214,11 +227,11 @@ public class BackingBeanUtils implements Serializable{
      * @return the sessionManager
      */
     public SessionManager getSessionManager() {
-//        FacesContext context = getFacesContext();
-//        ValueExpression ve = context.getApplication().getExpressionFactory()
-//                .createValueExpression(context.getELContext(), 
-//                        "#{sessionManager}", SessionManager.class);
-//        sessionManager = (SessionManager) ve.getValue(context.getELContext());
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), 
+                        "#{sessionManager}", SessionManager.class);
+        sessionManager = (SessionManager) ve.getValue(context.getELContext());
    
         return sessionManager;
     }
@@ -288,6 +301,96 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setUserIntegrator(UserIntegrator userIntegrator) {
         this.userIntegrator = userIntegrator;
+    }
+
+    /**
+     * @return the caseCoordinator
+     */
+    public CaseCoordinator getCaseCoordinator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{caseCoordinator}", CaseCoordinator.class);
+        caseCoordinator = (CaseCoordinator) ve.getValue(context.getELContext());
+        return caseCoordinator;
+    }
+
+    /**
+     * @param caseCoordinator the caseCoordinator to set
+     */
+    public void setCaseCoordinator(CaseCoordinator caseCoordinator) {
+        this.caseCoordinator = caseCoordinator;
+    }
+
+    /**
+     * @return the eventCoordinator
+     */
+    public EventCoordinator getEventCoordinator() {
+        return eventCoordinator;
+    }
+
+    /**
+     * @param eventCoordinator the eventCoordinator to set
+     */
+    public void setEventCoordinator(EventCoordinator eventCoordinator) {
+        this.eventCoordinator = eventCoordinator;
+    }
+
+    /**
+     * @return the eventIntegrator
+     */
+    public EventIntegrator getEventIntegrator() {
+        return eventIntegrator;
+    }
+
+    /**
+     * @param eventIntegrator the eventIntegrator to set
+     */
+    public void setEventIntegrator(EventIntegrator eventIntegrator) {
+        this.eventIntegrator = eventIntegrator;
+    }
+
+    /**
+     * @return the caseIntegrator
+     */
+    public CaseIntegrator getCaseIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{caseIntegrator}", CaseIntegrator.class);
+        caseIntegrator = (CaseIntegrator) ve.getValue(context.getELContext());
+        
+        return caseIntegrator;
+        
+        
+        
+        
+    }
+
+    /**
+     * @param caseIntegrator the caseIntegrator to set
+     */
+    public void setCaseIntegrator(CaseIntegrator caseIntegrator) {
+        this.caseIntegrator = caseIntegrator;
+    }
+    
+    /**
+     * Calculates the number of days since a given date and the current system 
+     * date.
+     * @param pastDate
+     * @return the number of calendar days since a given date 
+     */
+    public long getDaysSince(LocalDateTime pastDate){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Long daysBetween = pastDate.atZone(ZoneId.systemDefault())
+                .until(currentDateTime.atZone(ZoneId.systemDefault()), java.time.temporal.ChronoUnit.DAYS);
+        return daysBetween;
+        
+        
+    }
+    
+    public String getPrettyDate(LocalDateTime d){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy, HH:mm");
+        String formattedDateTime = d.format(formatter); 
+        return formattedDateTime;
     }
 
 }

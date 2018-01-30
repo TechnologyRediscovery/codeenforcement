@@ -17,11 +17,10 @@
 package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.DataStoreException;
+import com.tcvcog.tcvce.domain.IntegrationException;
 import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.io.Serializable;
 import com.tcvcog.tcvce.domain.ObjectNotFoundException;
 import javax.enterprise.context.ApplicationScoped;
@@ -61,16 +60,22 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
      * 
      * @throws com.tcvcog.tcvce.domain.ObjectNotFoundException
      * @throws com.tcvcog.tcvce.domain.DataStoreException
+     * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public User getUser(String loginName, String loginPassword) throws ObjectNotFoundException, DataStoreException {
+    public User getUser(String loginName, String loginPassword) 
+            throws ObjectNotFoundException, DataStoreException, IntegrationException {
         System.out.println("UserCoordinator.geUser | given: " + loginName + " " + loginPassword);
         con = getPostgresCon();
-        
+        User authenticatedUser = null;
         UserIntegrator ui = getUserIntegrator();
         
-        
+        authenticatedUser = ui.getAuthenticatedUser(loginName, loginPassword);
+        if (authenticatedUser != null){
+            SessionManager sm = getSessionManager();
+            sm.getVisit().setCurrentUser(authenticatedUser);
+        }
          
-        return null;
+        return authenticatedUser;
         
     } // close getUser()
     

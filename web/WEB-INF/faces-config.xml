@@ -335,6 +335,7 @@
         <navigation-case>
             <from-action>gotoLogin</from-action>
             <to-view-id>/login.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -480,6 +481,12 @@
             <to-view-id>/public/submitCERequest.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>workflow</from-outcome>
+            <to-view-id>/workflow.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     
     </navigation-rule>
     <managed-bean>
@@ -548,6 +555,20 @@
         <managed-bean-class>com.tcvcog.tcvce.application.WorkflowBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/workflow.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-action>#{workflowBB.viewSelectedActionRequest}</from-action>
+            <from-outcome>actionRequestManage</from-outcome>
+            <to-view-id>/ce/actionRequestManage.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    
+    
+    
+    
     <managed-bean>
         <managed-bean-name>caseManageBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CaseManageBB</managed-bean-class>
@@ -558,6 +579,18 @@
         <managed-bean-class>com.tcvcog.tcvce.application.CaseAddBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/ce/caseAdd.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-action>#{caseAddBB.addNewCase}</from-action>
+            <from-outcome>caseManage</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    
+    
     <managed-bean>
         <managed-bean-name>userBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.UserBB</managed-bean-class>

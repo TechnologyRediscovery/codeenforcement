@@ -157,7 +157,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         CEActionRequest actionRequest = null;
         CEActionRequestIntegrator ceai = getcEActionRequestIntegrator();
         try {
-            actionRequest = ceai.getActionRequest(cc);
+            actionRequest = ceai.getActionRequestByControlCode(cc);
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
                getFacesContext().addMessage(null,

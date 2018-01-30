@@ -22,8 +22,6 @@ import com.tcvcog.tcvce.entities.CEActionRequest;
 import java.sql.*;
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 /**
  *
  * @author sylvia
@@ -88,7 +86,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
             stmt.setString(14, actionRequest.getMuniInternalNotes());
             stmt.setString(15, actionRequest.getPublicExternalNotes());
             
-            System.out.println("CEActionRequestIntegrator.submitCEActionRequest | sql: " + stmt.toString());
+            //System.out.println("CEActionRequestIntegrator.submitCEActionRequest | sql: " + stmt.toString());
             stmt.execute();
             
         } catch (SQLException ex) { 
@@ -101,7 +99,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
         
     } // close submitActionRequest
     
-    private StringBuilder getSelectActionRequestSQLStatement(int controlCode){
+    private StringBuilder getSelectActionRequestSQLStatement(int requestID){
         StringBuilder sb = new StringBuilder();
         
         sb.append("SELECT requestid, requestpubliccc, public.ceactionrequest.muni_municode AS muni_municode, \n" +
@@ -113,8 +111,8 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
 "	actionRqstIssueType.typeName AS typename\n" +
 "	FROM public.ceactionrequest \n" +
 "		INNER JOIN actionrqstissuetype ON ceactionrequest.issuetype_issuetypeid = actionRqstIssueType.issuetypeid");
-        sb.append(" WHERE requestpubliccc = ");
-        sb.append(String.valueOf(controlCode));
+        sb.append(" WHERE requestID = ");
+        sb.append(String.valueOf(requestID));
         sb.append(";");
         
         return sb;
@@ -139,7 +137,9 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
            actionRequest.setIssueTypeString(rs.getString("typename")); // field from joined table
            actionRequest.setSubmittedTimeStamp(rs.getTimestamp("submittedtimestamp").toLocalDateTime());
            actionRequest.setDateOfRecord(rs.getTimestamp("dateofrecord").toLocalDateTime());
+           actionRequest.setFormattedSubmittedTimeStamp(getPrettyDate(actionRequest.getDateOfRecord()));
            
+           actionRequest.setDaysSinceDateOfRecord(getDaysSince(actionRequest.getDateOfRecord()));
            actionRequest.setAddressOfConcern(rs.getString("addressofconcern"));
            actionRequest.setIsAtKnownAddress(rs.getBoolean("notataddress"));
            
@@ -155,15 +155,15 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
            
            actionRequest.setMuniInternalNotes(rs.getString("muniinternalnotes"));
            actionRequest.setPublicExternalNotes(rs.getString("publicexternalnotes"));
-           
+           System.out.println("CEActionRequestIntegrator.generateActionRequestFromRS | Generated request: " + actionRequest.getRequestID());
            return actionRequest;
     }
     
     
-    public CEActionRequest getActionRequest(int controlCode) throws IntegrationException{
-        CEActionRequest request = null;
+    public CEActionRequest getActionRequestByRequestID(int requestID) throws IntegrationException{
+        CEActionRequest newActionRequest = null;
         
-        StringBuilder sb = getSelectActionRequestSQLStatement(controlCode);
+        StringBuilder sb = getSelectActionRequestSQLStatement(requestID);
         
         // for degugging
         // System.out.println("Select Statement: ");
@@ -182,7 +182,8 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
            
            // loop through the result set and reat an action request from each
            while(rs.next()){
-               request = generateActionRequestFromRS(rs);
+               newActionRequest = generateActionRequestFromRS(rs);
+                System.out.println("CEActionRequestorIntegrator.getActionRequest | Retrieved Request: " + newActionRequest.getRequestID());
          
            }
         } catch (SQLException ex) {
@@ -193,41 +194,100 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
-        return request;
+        return newActionRequest;
     } // close getActionRequest
     
-    public LinkedList getCEActionRequestList() throws IntegrationException{
-        LinkedList<CEActionRequest> requestList = new LinkedList();
-        String query = "SELECT requestpubliccc FROM public.codeenfactionrequest"; 
+    public CEActionRequest getActionRequestByControlCode(int controlCode) throws IntegrationException{
+        CEActionRequest newActionRequest = null;
+        
+       StringBuilder sb = new StringBuilder();
+        
+        sb.append("SELECT requestid, requestpubliccc, public.ceactionrequest.muni_municode AS muni_municode, \n" +
+"	property_propertyid, issuetype_issuetypeid, actrequestor_requestorid, submittedtimestamp, \n" +
+"	dateofrecord, addressofconcern, \n" +
+"	notataddress, requestdescription, isurgent, anonymityRequested, \n" +
+"	cecase_caseid, coginternalnotes, \n" +
+"	muniinternalnotes, publicexternalnotes,\n" +
+"	actionRqstIssueType.typeName AS typename\n" +
+"	FROM public.ceactionrequest \n" +
+"		INNER JOIN actionrqstissuetype ON ceactionrequest.issuetype_issuetypeid = actionRqstIssueType.issuetypeid");
+        sb.append(" WHERE requestpubliccc = ");
+        sb.append(String.valueOf(controlCode));
+        sb.append(";");
+        
+        // for degugging
+        // System.out.println("Select Statement: ");
+        // System.out.println(sb.toString());
+        Connection con = null;
+        Statement stmt = null;
         ResultSet rs = null;
+        try {
+            con = getPostgresCon();
+            stmt = con.createStatement();
+            
+            System.out.println("CEActionRequestorIntegrator.getActionRequestByControlCode | SQL: " + sb.toString());
+            // Retrieve action data from postgres
+           rs = stmt.executeQuery(sb.toString());
+           
+           
+           // loop through the result set and reat an action request from each
+           while(rs.next()){
+               newActionRequest = generateActionRequestFromRS(rs);
+                System.out.println("CEActionRequestorIntegrator.getActionRequestByControlCode | Retrieved Request: " + newActionRequest.getRequestID());
          
-         int controlCode;
+           }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            throw new IntegrationException("CEActionRequestorIntegrator.getActionRequestByControlCode | Integration Error: Unable to retrieve action request", ex);
+        } finally{
+           if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+        return newActionRequest;
+    } // close getActionRequest
+    
+    
+    public LinkedList getCEActionRequestList(int muniCode) throws IntegrationException{
+        LinkedList<CEActionRequest> requestList = new LinkedList();
+        String query = "SELECT requestid, requestpubliccc FROM public.ceactionrequest "
+                + "WHERE muni_municode = ?;"; 
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+         int requestID;
          
-         System.out.println("CEActionRequestorIntegrator.getCEActionRequestList | Accessing dbcon bean through faces context");
          //FacesContext context = getFacesContext();
          //DBConnection dbCon = context.getApplication().evaluateExpressionGet(context, "#{dBConnection}", DBConnection.class);
          
         Connection con = getPostgresCon();
+        CEActionRequest cear;
         
          try {
-           Statement stmt = con.createStatement();
+           stmt = con.prepareStatement(query);
+           stmt.setInt(1, muniCode);
             
+               System.out.println("CEActionRequestorIntegrator.getCEActionRequestList | sql: " + stmt.toString());
             // Retrieve action data from postgres
-           rs = stmt.executeQuery(query);
+           rs = stmt.executeQuery();
            while(rs.next()){
-               controlCode = rs.getInt("requestpubliccc");
-               requestList.add(getActionRequest(controlCode));
+               requestID = rs.getInt("requestid");
+               cear = getActionRequestByRequestID(requestID);
+               System.out.println("CEActionRequestorIntegrator.getCEActionRequestList | retrieved action requestID: " + cear.getRequestID());
+               requestList.add(cear);
            } // close while
                
          } catch (SQLException ex) {
                 System.out.println(ex);
                 throw new IntegrationException("Integration Error: Problem retrieving and generating action request list", ex);
         } finally {
-             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
-             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
              
         }// close try/catch
          
          return requestList;
     } // close method
+    
+    
 } // close class

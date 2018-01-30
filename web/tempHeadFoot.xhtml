@@ -46,7 +46,7 @@
                             </div>
 
                             <div class="headerLinkCont">
-                                <h:commandLink action="#{authentication.logout}" value="Logout"/>
+                                <h:commandLink action="#{authenticationBB.logout}" value="Logout"/>
                             </div>
                             
                         </div>
@@ -62,8 +62,8 @@
                                  <span class="bold"><h:outputText value="User: "/></span>
                              </h:panelGroup>
                              <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.currentUser.getfName}"/>,   
-                                 <h:outputText value="#{sessionManager.visit.currentUser.getlName}"/>
+                                 <h:outputText value="#{sessionManager.visit.currentUser.FName}"/>,   
+                                 <h:outputText value="#{sessionManager.visit.currentUser.LName}"/>
                              </h:panelGroup>
                              
                              <h:panelGroup>

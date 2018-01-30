@@ -17,7 +17,9 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
+import com.tcvcog.tcvce.integration.CaseIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -28,8 +30,9 @@ import java.util.LinkedList;
 public class CaseManageBB extends BackingBeanUtils implements Serializable{
 
     
-    private int caseID;
-    private LinkedList<CodeViolation> violationList;
+    private CECase currentCase;
+    
+    
     
     
     /**
@@ -37,5 +40,21 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      */
     public CaseManageBB() {
     }
-    
+
+    /**
+     * @return the currentCase
+     */
+    public CECase getCurrentCase() {
+        SessionManager sm = getSessionManager();
+        currentCase = sm.getVisit().getActiveCase();
+        return currentCase;
+    }
+
+   
+    /**
+     * @param currentCase the currentCase to set
+     */
+    public void setCurrentCase(CECase currentCase) {
+        this.currentCase = currentCase;
+    }
 }

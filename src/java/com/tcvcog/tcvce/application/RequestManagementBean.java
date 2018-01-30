@@ -34,9 +34,13 @@ import javax.faces.event.ActionEvent;
 public class RequestManagementBean extends BackingBeanUtils implements Serializable{
     
     private LinkedList<CEActionRequest> requestList;
+    
     private HtmlDataTable requestTable;
+    
     private String currentRequestAddressOfConcern;
-    private CEActionRequest selectedRequest;
+    
+    private CEActionRequest currentRequest;
+    
     private RequestStatus newStatus;
     
     // bean utilities
@@ -51,10 +55,10 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
     // action listener method for managing requests by COG staff
     public String manage(){
         System.out.println("RequestManagementBean.manage - action event");
-        selectedRequest = (CEActionRequest) requestTable.getRowData();
+        currentRequest = (CEActionRequest) requestTable.getRowData();
         // these next lines were created for testing purposes only and can be deleted
-        currentRequestAddressOfConcern = String.valueOf(selectedRequest.getAddressOfConcern());
-        System.out.println("RequestManagementBean.manage - got address:" + selectedRequest.getAddressOfConcern());
+        currentRequestAddressOfConcern = String.valueOf(currentRequest.getAddressOfConcern());
+        System.out.println("RequestManagementBean.manage - got address:" + currentRequest.getAddressOfConcern());
         
         return "manageRequest";
         
@@ -66,11 +70,11 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
      */
     public LinkedList getRequestList() {
         
-        try {
-            return integrator.getCEActionRequestList();
-        } catch (IntegrationException ex) {
-            Logger.getLogger(RequestManagementBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            return integrator.getCEActionRequestList();
+//        } catch (IntegrationException ex) {
+//            Logger.getLogger(RequestManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         
         return new LinkedList();
     }
@@ -111,17 +115,19 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
     }
 
     /**
-     * @return the selectedRequest
+     * @return the currentRequest
      */
-    public CEActionRequest getSelectedRequest() {
-        return selectedRequest;
+    public CEActionRequest getCurrentRequest() {
+        SessionManager sm = getSessionManager();
+        currentRequest = sm.getVisit().getActionRequest();
+        return currentRequest;
     }
 
     /**
-     * @param selectedRequest the selectedRequest to set
+     * @param currentRequest the currentRequest to set
      */
-    public void setSelectedRequest(CEActionRequest selectedRequest) {
-        this.selectedRequest = selectedRequest;
+    public void setCurrentRequest(CEActionRequest currentRequest) {
+        this.currentRequest = currentRequest;
     }
 
     /**

@@ -85,6 +85,15 @@
                            
                             <h2>Search Results:</h2>
 
+                            
+                            
+                            <p:commandButton ajax="fakse" value="Update Selected Property Info" 
+                                             tabindex="7" action="#{propertySearchBB.updateProperty}"/>
+                            
+                            <p:commandButton ajax="false" value="View Profile for Selected Property &rarr;" 
+                                             tabindex="8" action="#{propertySearchBB.viewProperty}"/>
+                            <p:spacer height="10px"/>
+                            
                              <p:dataTable
                                   id="propSearchTable"
                                   var="prop"
@@ -136,15 +145,6 @@
 
                                
                             </p:dataTable>
-                            
-                            <p:spacer height="10px"/>
-                            
-                            <p:commandButton ajax="fakse" value="Update Selected Property Info" 
-                                             tabindex="7" action="#{propertySearchBB.updateProperty}"/>
-                            
-                            <p:commandButton ajax="false" value="View Profile for Selected Property &rarr;" 
-                                             tabindex="8" action="#{propertySearchBB.viewProperty}"/>
-                            
                         </h:form>
                     </f:view>
                 </div>

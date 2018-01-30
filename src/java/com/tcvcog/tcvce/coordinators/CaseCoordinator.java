@@ -17,16 +17,48 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.coordinators;
 
+import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.application.SessionManager;
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.CasePhase;
+import com.tcvcog.tcvce.integration.CaseIntegrator;
+import java.io.Serializable;
+
 /**
  *
  * @author sylvia
  */
-public class CaseCoordinator {
+public class CaseCoordinator extends BackingBeanUtils implements Serializable{
 
     /**
      * Creates a new instance of CaseCoordinator
      */
     public CaseCoordinator() {
+    
     }
+    
+    public void createNewCECase(CECase newCase) throws IntegrationException{
+        
+        CaseIntegrator ci = getCaseIntegrator();
+        
+        CECase newlyAddedCase = ci.insertNewCECase(newCase);
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveCase(newlyAddedCase);
+        
+        
+    }
+    
+    public CasePhase getNextCasePhase(CECase c){
+        
+        return CasePhase.PrelimInvestigationPending;
+    }
+    
+    public void advanceToNextCasePhase(CECase c){
+        
+        
+        
+    }
+    
     
 }

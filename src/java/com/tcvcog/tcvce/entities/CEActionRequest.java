@@ -18,6 +18,7 @@ package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Models the entity: code enforcement action request. 
@@ -70,7 +71,10 @@ public class CEActionRequest {
     private int caseID;
     
     private java.time.LocalDateTime submittedTimeStamp;
+    private String formattedSubmittedTimeStamp;
+    
     private java.time.LocalDateTime dateOfRecord;
+    private long daysSinceDateOfRecord;
 
     private boolean isAtKnownAddress;
     private String addressOfConcern;
@@ -278,6 +282,8 @@ public class CEActionRequest {
     public LocalDateTime getSubmittedTimeStamp() {
         return submittedTimeStamp;
     }
+    
+    
 
     /**
      * @param submittedTimeStamp the submittedTimeStamp to set
@@ -414,5 +420,34 @@ public class CEActionRequest {
      */
     public void setCaseID(int caseID) {
         this.caseID = caseID;
+    }
+
+    /**
+     * @return the formattedSubmittedTimeStamp
+     */
+    public String getFormattedSubmittedTimeStamp() {
+        
+        return formattedSubmittedTimeStamp;
+    }
+
+    /**
+     * @param formattedSubmittedTimeStamp the formattedSubmittedTimeStamp to set
+     */
+    public void setFormattedSubmittedTimeStamp(String formattedSubmittedTimeStamp) {
+        this.formattedSubmittedTimeStamp = formattedSubmittedTimeStamp;
+    }
+
+    /**
+     * @return the daysSinceDateOfRecord
+     */
+    public long getDaysSinceDateOfRecord() {
+        return daysSinceDateOfRecord;
+    }
+
+    /**
+     * @param daysSinceDateOfRecord the daysSinceDateOfRecord to set
+     */
+    public void setDaysSinceDateOfRecord(long daysSinceDateOfRecord) {
+        this.daysSinceDateOfRecord = daysSinceDateOfRecord;
     }
 }

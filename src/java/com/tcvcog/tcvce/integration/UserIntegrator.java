@@ -61,7 +61,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setString(1, loginName);
             stmt.setString(2, loginPassword);
             
-            rs = stmt.executeQuery(query);
+            rs = stmt.executeQuery();
             
             String retrievedUsername;
             String retrievedPassword;
@@ -90,7 +90,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new IntegrationException("Unable to authenticate a user", ex);
+            throw new IntegrationException("Unable to authenticate a user due to a SQL error", ex);
         } 
         
         
@@ -298,7 +298,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
         
-        return new User();
+        return newUser;
     }
     
     public LinkedList getCompleteUserList() throws IntegrationException{

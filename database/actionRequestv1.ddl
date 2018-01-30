@@ -479,6 +479,7 @@ CREATE TABLE cecase
     casePhase                       casephase NOT NULL , -- the central case flow tracking field
     originationDate                 TIMESTAMP WITH TIME ZONE, -- inherited from the one event of type 'Origination'
     closingdate                     TIMESTAMP WITH TIME ZONE , -- inerited from the one event of type 'Closing'
+    creationTimestamp               TIMESTAMP WITH TIME ZONE , -- added manually in test system
     notes                           character varying (2000)
 
 ) ;

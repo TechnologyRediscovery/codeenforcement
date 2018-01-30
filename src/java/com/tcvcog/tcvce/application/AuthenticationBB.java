@@ -25,6 +25,8 @@ import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.domain.*;
 import com.tcvcog.tcvce.entities.CodeSet;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedProperty;
 
 /**
@@ -55,6 +57,7 @@ public class AuthenticationBB extends BackingBeanUtils implements Serializable{
         User newUser = null;
         FacesContext facesContext = getFacesContext();
         UserCoordinator uc = getUserCoordinator();
+        System.out.println("AuthenticationBB.login | userCoordinator: " + uc);
         
         try {
             newUser = uc.getUser(loginName, loginPassword);
@@ -66,7 +69,7 @@ public class AuthenticationBB extends BackingBeanUtils implements Serializable{
             System.out.println(e);
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                     "Incorrect Username or Password; Please try again", 
-                    "If problem persists, please call system administrator Eric Darsow: 412.923.9907"));
+                    "If problem persists, please verify your inputs with the issuer of your credentials"));
             return "failure";
             
         } catch(DataStoreException e){
@@ -77,6 +80,12 @@ public class AuthenticationBB extends BackingBeanUtils implements Serializable{
                     "Please contact system administrator Eric Darsow: 412.923.9907"));
             return "failure";
             
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, 
+                    "Integration module error. Unable to authenticate users.", 
+                    "Please contact system administrator Eric Darsow: 412.923.9907"));
+            return "failure";
         }
         // creating and setting the new session manager who lives in BeackingBeanUtils
         setSessionManager(new SessionManager());
@@ -104,19 +113,20 @@ public class AuthenticationBB extends BackingBeanUtils implements Serializable{
         
         if (session != null) {
 
-            session.removeAttribute("dBConnection");
-            session.removeAttribute("codeCoordinator");
-            session.removeAttribute("codeIntegrator");
-            session.removeAttribute("municipalitygrator");
-            session.removeAttribute("personIntegrator");
-            session.removeAttribute("propertyIntegrator");
-            session.removeAttribute("cEActionRequestIntegrator");
-            session.removeAttribute("userIntegrator");
+//            session.removeAttribute("dBConnection");
+//            session.removeAttribute("codeCoordinator");
+//            session.removeAttribute("codeIntegrator");
+//            session.removeAttribute("municipalitygrator");
+//            session.removeAttribute("personIntegrator");
+//            session.removeAttribute("propertyIntegrator");
+//            session.removeAttribute("cEActionRequestIntegrator");
+//            session.removeAttribute("userIntegrator");
             session.invalidate();
 
             FacesContext facesContext = getFacesContext();
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         "Logout Successful", ""));
+            System.out.println("AuthenticationBB.logout | Session invalidated");
 
         } else {
             FacesContext facesContext = getFacesContext();

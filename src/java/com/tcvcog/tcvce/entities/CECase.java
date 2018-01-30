@@ -15,10 +15,11 @@ import java.util.LinkedList;
 public class CECase {
     
     private int caseID;
+    private int publicControlCode;
     
     private Property property;
     private PropertyUnit propertyUnit;
-    private User userID;
+    private User user;
 
     private LinkedList<CodeViolation> violationList;
     private LinkedList<Event> eventList;
@@ -29,6 +30,7 @@ public class CECase {
     private LocalDateTime originationDate;
 
     private LocalDateTime closingDate;
+    private LocalDateTime creationTimestamp;
     private String notes;
     
     /**
@@ -74,17 +76,17 @@ public class CECase {
     }
 
     /**
-     * @return the userID
+     * @return the user
      */
-    public User getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
     /**
-     * @param userID the userID to set
+     * @param user the user to set
      */
-    public void setUserID(User userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -197,6 +199,34 @@ public class CECase {
      */
     public void setCasePeople(LinkedList<Person> casePeople) {
         this.casePeople = casePeople;
+    }
+
+    /**
+     * @return the publicControlCode
+     */
+    public int getPublicControlCode() {
+        return publicControlCode;
+    }
+
+    /**
+     * @param publicControlCode the publicControlCode to set
+     */
+    public void setPublicControlCode(int publicControlCode) {
+        this.publicControlCode = publicControlCode;
+    }
+
+    /**
+     * @return the creationTimestamp
+     */
+    public LocalDateTime getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    /**
+     * @param creationTimestamp the creationTimestamp to set
+     */
+    public void setCreationTimestamp(LocalDateTime creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
     
     

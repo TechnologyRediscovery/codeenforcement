@@ -17,12 +17,16 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.Person;
+import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
+import com.tcvcog.tcvce.integration.CaseIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -32,7 +36,9 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
 
     
     private LinkedList<CEActionRequest> requestList;
-    private LinkedList<CECase> CaseList;
+    private CEActionRequest selectedRequest;
+    private LinkedList<CECase> caseList;
+    private CECase selectedCase;
     private LinkedList<Event> recentEventList;
     private LinkedList<Person> muniPeopleList;
     
@@ -42,6 +48,127 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
      * Creates a new instance of WorkflowBB
      */
     public WorkflowBB() {
+    }
+    
+    
+    public String viewCase(){
+        
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveCase(selectedCase);
+        
+        
+        return "caseManager";
+    }
+    
+    public String viewSelectedActionRequest(){
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActionRequest(selectedRequest);
+        
+        return "actionRequestManage";
+    }
+
+    /**
+     * @return the requestList
+     */
+    public LinkedList<CEActionRequest> getRequestList() {
+        CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
+        SessionManager sm = getSessionManager();
+        try {
+            requestList = ari.getCEActionRequestList(sm.getVisit().getCurrentUser().getMuniCode());
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to load action requests due to an error in the Integration Module", ""));
+        }
+        return requestList;
+    }
+
+    /**
+     * @return the CaseList
+     */
+    public LinkedList<CECase> getCaseList() {
+        CaseIntegrator ci = getCaseIntegrator();
+        SessionManager sm = getSessionManager();
+        int muniCodeForFetching = sm.getVisit().getCurrentUser().getMuniCode();
+        
+        try {
+            caseList = ci.getCECasesByMuni(muniCodeForFetching);
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to load cases for this municipality due to an error in the Integration Module", ""));
+        }
+        return caseList;
+    }
+
+    /**
+     * @return the recentEventList
+     */
+    public LinkedList<Event> getRecentEventList() {
+        return recentEventList;
+    }
+
+    /**
+     * @return the muniPeopleList
+     */
+    public LinkedList<Person> getMuniPeopleList() {
+        return muniPeopleList;
+    }
+
+    /**
+     * @param requestList the requestList to set
+     */
+    public void setRequestList(LinkedList<CEActionRequest> requestList) {
+        this.requestList = requestList;
+    }
+
+    /**
+     * @param CaseList the CaseList to set
+     */
+    public void setCaseList(LinkedList<CECase> CaseList) {
+        this.caseList = CaseList;
+    }
+
+    /**
+     * @param recentEventList the recentEventList to set
+     */
+    public void setRecentEventList(LinkedList<Event> recentEventList) {
+        this.recentEventList = recentEventList;
+    }
+
+    /**
+     * @param muniPeopleList the muniPeopleList to set
+     */
+    public void setMuniPeopleList(LinkedList<Person> muniPeopleList) {
+        this.muniPeopleList = muniPeopleList;
+    }
+
+    /**
+     * @return the selectedCase
+     */
+    public CECase getSelectedCase() {
+        return selectedCase;
+    }
+
+    /**
+     * @param selectedCase the selectedCase to set
+     */
+    public void setSelectedCase(CECase selectedCase) {
+        this.selectedCase = selectedCase;
+    }
+
+    /**
+     * @return the selectedRequest
+     */
+    public CEActionRequest getSelectedRequest() {
+        return selectedRequest;
+    }
+
+    /**
+     * @param selectedRequest the selectedRequest to set
+     */
+    public void setSelectedRequest(CEActionRequest selectedRequest) {
+        this.selectedRequest = selectedRequest;
     }
     
 }

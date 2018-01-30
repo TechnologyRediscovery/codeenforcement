@@ -17,9 +17,14 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.CaseCoordinator;
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Property;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -30,10 +35,9 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
     private Property caseProperty;
     private int formPropertyUnitID;
     private String formCaseName;
-    private LocalDateTime formOriginationDate;
+    private Date formOriginationDate;
     private String formCaseNotes;
     private boolean isUnitAssociated;
-    
     
     /**
      * Creates a new instance of CaseAddBB
@@ -42,7 +46,42 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
     }
     
     public String addNewCase(){
+        // note that in this case, the case coordinator not this 
+        // backing bean will interact with the caseintegrator
+        // to enforce business logic concerning cases
+        CaseCoordinator cc = getCaseCoordinator();
+        SessionManager sm = getSessionManager();
         
+        // cases originate here
+        CECase newCase = new CECase();
+        
+        int casePCC = getControlCodeFromTime();
+        // caseID set by postgres sequence
+        // timestamp set by postgres
+        // no closing date, by design of case flow
+        newCase.setPublicControlCode(casePCC);
+        newCase.setProperty(sm.getVisit().getActiveProp());
+        newCase.setUser(sm.getVisit().getCurrentUser());
+        newCase.setCaseName(formCaseName);
+        newCase.setOriginationDate(formOriginationDate.toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        newCase.setNotes(formCaseNotes);
+        
+        try {
+            cc.createNewCECase(newCase);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Successfully added case to property!", ""));
+            return "caseManage";
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Integration Module error: Unable to add case to current property.", 
+                            "Best try again or note the error and complain to Eric."));
+        }
+        
+        //reload page on error
         return "";
     }
 
@@ -63,7 +102,7 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the formOriginationDate
      */
-    public LocalDateTime getFormOriginationDate() {
+    public Date getFormOriginationDate() {
         return formOriginationDate;
     }
 
@@ -91,7 +130,7 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
     /**
      * @param formOriginationDate the formOriginationDate to set
      */
-    public void setFormOriginationDate(LocalDateTime formOriginationDate) {
+    public void setFormOriginationDate(Date formOriginationDate) {
         this.formOriginationDate = formOriginationDate;
     }
 

@@ -6,19 +6,30 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Manage Code Enforcement Action Requests</title>
+        <title>Manage Code Enforcement Action Request</title>
         <link rel="stylesheet" type="text/css" href="css/style.css"></link>
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'/>
         
     </h:head>
     <body>
-
         <ui:composition template="./../tempHeadFoot.xhtml">
-
-            
             <ui:define name="content">
-                <f:view>
+                <f:view id="actionRequestManagement">
                     <h:form id="manageSingleActionRequest">
+                        <h1>Manage Code Enforcement Action Request</h1>
+                        
+                        <h:panelGrid
+                            columns="4" border="0" 
+                            cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd">
+                            
+                            <h:panelGroup>
+                                
+                                
+                            </h:panelGroup>
+                            
+                        </h:panelGrid>
+                        
+                        
                         
                         <p:selectOneMenu 
                             id="requestType"
@@ -41,7 +52,7 @@
                     <p>
                        <h:outputText
                        styleClass="plainText" 
-                       value="#{requestManagementBean.selectedRequest.addressOfConcern}" />
+                       value="#{requestManagementBean.currentRequest.addressOfConcern}" />
                     </p>
 
                 </f:view>

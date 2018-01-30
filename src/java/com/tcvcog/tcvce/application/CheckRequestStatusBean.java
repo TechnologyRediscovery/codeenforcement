@@ -47,7 +47,7 @@ public class CheckRequestStatusBean extends BackingBeanUtils implements Serializ
     public String lookupRequest(){
         CEActionRequestIntegrator ceari = getcEActionRequestIntegrator();
         try {
-            retrievedRequest = ceari.getActionRequest(lookupControlCode);
+            retrievedRequest = ceari.getActionRequestByControlCode(lookupControlCode);
             // now that we've got a request, store it in our session's active action request
             SessionManager sm = getSessionManager();
             sm.getVisit().setActionRequest(retrievedRequest);

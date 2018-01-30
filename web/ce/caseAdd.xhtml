@@ -41,7 +41,7 @@
                                 <h:panelGroup>
                                     <p:inputSwitch id="isUnitAssociatedSwitch" value="#{caseAddBB.isUnitAssociated}" onLabel="Yes" offLabel="No" tabindex="14"/>
                                     
-                                    <p:selectOneMenu id="unitSelectorMenu" required="true" value="#{caseAddBB.formPropertyUnitID}">
+                                    <p:selectOneMenu id="unitSelectorMenu" required="false" value="#{caseAddBB.formPropertyUnitID}">
                                         <f:selectItems value="#{caseAddBB.caseProperty.propertyUnitHashMap}"
                                                        var="pt" itemValue="#{pt}" itemLabel="#{pt.label}"/>
                                     </p:selectOneMenu>
@@ -79,7 +79,7 @@
 
                                         <h:outputLabel value="Case Notes:" for="caseNotesIT"/>
                                         <p:inputTextarea id="caseNotesIT" value="#{caseAddBB.formCaseNotes}" 
-                                               style="width: 100%;" tabindex="1" required="true" styleClass="inputText"/>
+                                               style="width: 100%;" tabindex="1" required="false" styleClass="inputText"/>
                                         <h:message for="caseNotesIT" showDetail="false" showSummary="true" 
                                         warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                         

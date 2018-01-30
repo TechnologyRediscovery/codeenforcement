@@ -17,66 +17,98 @@
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
                             
-                    <h1>Municipal Workflow Central</h1>
+                    <h1><h:outputText value="#{sessionManager.visit.currentUser.muni.muniName}"/> Municipal Workflow Central</h1>
                     <p>Access to code enforcement requests, case management tools, and municipal-related data</p>
                     <f:view>
-                        
-                        <h2>Code Enforcement Action Requests:</h2>
-                        <p>Listing of all action request forms attached to this municipality. 
-                            Use the filter tools atop each column to isolate the type of action requests visible.</p>
+                        <h:form id="workflowForm">
                             
+                        
+                        <h2>Un-Tethered Code Enforcement Action Requests:</h2>
+                        <p>Code Enforcement requests which have not yet been connected to 
+                        an open case. Select each request to view its details and attach to an existing case.
+                        OR you may select a request and click "open a new case and tether action request" to
+                        complete the connection in one fell swoop.</p>
+                        
                             <p:dataTable
-                                id="personTable"
-                                var="p"
-                                value="#{personBB.personList}"
+                                id="actionRequestTable"
                                 selectionMode="single"
-                                selection="#{personBB.selectedPerson}"
-                                rowKey="#{p.personid}"
-                                tableStyleClass="primeDataTable">
-                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+                                var="r"
+                                selection="#{workflowBB.selectedRequest}"
+                                rowKey="#{r.requestID}"
+                                value="#{workflowBB.requestList}"
+                                tableStyleClass="primeDataTable"
+                                scrollable="true"
+                                resizableColumns="true"
+                                scrollHeight="200"
+                                rowExpandMode="multiple"
+                                reflow="true"
+                                >
+                                
+                                <f:facet name="header">
+                                    Expand rows to see detailed info about each request
+                                </f:facet>
 
                                 <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Person Type" />
-                                    </f:facet>
-                                    <h:outputText value="#{p.personType.label}"/>
+                                    <p:rowToggler />
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Municipality" />
+                                        <h:outputText value="Request ID" />
                                     </f:facet>
-                                    <h:outputText value="#{p.muni.muniName}"/>
+                                    <h:outputText value="#{r.requestID}"/>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="First" />
+                                        <h:outputText value="Issue Type" />
                                     </f:facet>
-                                    <h:outputText value="#{p.firstName}"/>
+                                    <h:outputText value="#{r.issueTypeString}"/>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Last" />
+                                        <h:outputText value="Attached Address" />
                                     </f:facet>
-                                    <h:outputText value="#{p.lastName}"/>
+                                    <h:outputText value="#{r.requestProperty.address}"/>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Cell Num" />
+                                        <h:outputText value="Date of Record" />
                                     </f:facet>
-                                    <h:outputText value="#{p.phoneCell}"/>
+                                    <h:outputText value="#{r.formattedSubmittedTimeStamp}"/>
                                 </p:column>
+                                
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Address" />
+                                        <h:outputText value="Days old" />
                                     </f:facet>
-                                    <h:outputText value="#{p.address_street}"/>
+                                    <h:outputText value="#{r.daysSinceDateOfRecord}"/>
                                 </p:column>
+                                
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Urgent?" />
+                                    </f:facet>
+                                    <h:outputText value="#{r.isUrgent}"/>
+                                </p:column>
+                                <p:rowExpansion>
+                                    <h:outputLabel value="Description of code enforcement Concern: "/>
+                                    <h:outputLabel value="#{r.requestDescription}"/>
+                                    <p:spacer height="5px"/>
+                                    <h:outputLabel value="Requestor: "/>
+                                    <h:outputText value="#{r.actionRequestorPerson.firstName}"/> 
+                                    <h:outputText value=" "/>
+                                    <h:outputText value="#{r.actionRequestorPerson.lastName}"/> 
+                                    <h:outputText value=" Living at: "/>
+                                    <h:outputText value="#{r.actionRequestorPerson.address_street}"/> 
+                                    <h:outputText value="#{r.actionRequestorPerson.address_city}"/> 
+                                    <h:outputText value=" Phone (cell): "/>
+                                    <h:outputText value="#{r.actionRequestorPerson.phoneCell}"/> 
+                                </p:rowExpansion>
                             </p:dataTable>
                             
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton ajax="false" value="View profile of selected person" 
-                                             action="#{personBB.viewPersonProfile}"/>
+                            <p:commandButton ajax="false" value="Manage Selected Action Request" 
+                                             action="#{workflowBB.viewSelectedActionRequest}"/>
                         
                         
                         
@@ -84,10 +116,69 @@
                         <hr/>
                         <p:spacer height="10px"/>
                         
+                        <h2>Open Cases:</h2>
+                            <p:dataTable
+                                id="caseTable"
+                                var="c"
+                                selectionMode="single"
+                                selection="#{workflowBB.selectedCase}"
+                                rowKey="#{c.caseID}"
+                                value="#{workflowBB.caseList}"
+                                tableStyleClass="primeDataTable">
+                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
 
-                        <h:form id="">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Case ID" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.caseID}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Name" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.caseName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Phase" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.casePhase}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Date Opened" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.originationDate}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Control Code" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.publicControlCode}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Property" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.property.address}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Manager" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.user.LName}"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:spacer height="10px"/>
+
+                            <p:commandButton ajax="false" value="View Case Profile" 
+                                             action="#{workflowBB.viewCase}"/>
+
 
                         </h:form>
+                       
                     </f:view>
                 </div>
             </ui:define>

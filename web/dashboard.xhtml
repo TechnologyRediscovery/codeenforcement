@@ -15,9 +15,6 @@
                 <div class="mainContainer">
                     <h1>Code Enforcement System Dashboard</h1>
                     <f:view id="dashboard">
-                        <p>Your session manager version is: <h:outputText value="#{sessionManager.sessionManagerVersion}"/></p>
-                        
-                        <hr/>
                         
                         <h2>Essential Entities Toolbox: Properties &amp; People</h2>
                         <p:spacer height="8px"/>
@@ -31,6 +28,10 @@
                             
                             <p:commandLink ajax="false" value="Human Resources" action="personManage"/>
                             <p>Add, adjust, and coordinate person-level information for use by modules across the system.</p>
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Municipality Workflow" action="workflow"/>
+                            <p>View and manage action requests, cases, people, and inspections by municipality.</p>
                             <p:spacer height="8px"/>
                             
                         </h:form>

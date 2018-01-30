@@ -16,10 +16,14 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
+import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
+import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
@@ -68,6 +72,15 @@ public class Initializer implements ServletContextListener{
         CodeCoordinator codeCoordinator = new CodeCoordinator();
         servletContext.setAttribute("codeCoordinator", codeCoordinator);
         
+        UserCoordinator uc = new UserCoordinator();
+        servletContext.setAttribute("userCoordinator", uc);
+        
+        CaseCoordinator cc = new CaseCoordinator();
+        servletContext.setAttribute("caseCoordinator", cc);
+        
+        EventCoordinator ec = new EventCoordinator();
+        servletContext.setAttribute("eventCoordinator", ec);
+        
         CodeIntegrator codeIntegrator = new CodeIntegrator();
         servletContext.setAttribute("codeIntegrator", codeIntegrator);
         
@@ -85,6 +98,16 @@ public class Initializer implements ServletContextListener{
         
         UserIntegrator ui = new UserIntegrator();
         servletContext.setAttribute("userIntegrator", ui);
+        
+        CaseIntegrator ci = new CaseIntegrator();
+        servletContext.setAttribute("caseIntegrator", ci);
+        
+        EventIntegrator ei = new EventIntegrator();
+        servletContext.setAttribute("eventIntegrator", ei);
+        
+        CEActionRequestIntegrator ari = new CEActionRequestIntegrator();
+        servletContext.setAttribute("ceActionRequestIntegrator", ari);
+        
         
     }
     
