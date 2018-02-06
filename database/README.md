@@ -1,4 +1,4 @@
-#instructions for configuring database tables
+# instructions for configuring database tables
 
 The files in this directory are used to populate the code enforcement postgres database with enough basic data to run the actual web app. Follow these instructions to properly populate the tables
 
