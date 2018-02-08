@@ -37,11 +37,6 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
     
-<!--    <managed-bean>
-        <managed-bean-name>userCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.UserCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>-->
     
     <managed-bean>
         <description>Handles Property Entity related operations on behalf of backing beans</description>
@@ -278,7 +273,7 @@
     </managed-bean>
     
     <navigation-rule>
-        <from-view-id>navview</from-view-id>
+        <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.xhtml</to-view-id>
@@ -509,11 +504,6 @@
             <from-outcome>propertyUpdate</from-outcome>
             <to-view-id>/propertyUpdate.xhtml</to-view-id>
         </nanavigation-case>
-<!--        <nanavigation-case>
-            <from-outcome>openNewCase</from-outcome>
-            <to-view-id>/ce/caseAdd.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>-->
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>propertySearchBB</managed-bean-name>
@@ -558,12 +548,17 @@
     
     <navigation-rule>
         <from-view-id>/workflow.xhtml</from-view-id>
-        <nanavigation-case>
+        <navigation-case>
             <from-action>#{workflowBB.viewSelectedActionRequest}</from-action>
             <from-outcome>actionRequestManage</from-outcome>
             <to-view-id>/ce/actionRequestManage.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-action>#{workflowBB.viewCase}</from-action>
+            <from-outcome>caseManage</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
     
     
@@ -630,6 +625,16 @@
     <managed-bean>
         <managed-bean-name>userUpdateBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.UserUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>actionRequestManageBB</managed-bean-name>
+        <managed-bean-class>ActionRequestManageBB.ActionRequestManageBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>eventConfigurationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.EventConfigurationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

@@ -42,6 +42,9 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         
         CaseIntegrator ci = getCaseIntegrator();
         
+        // set default status to prelim investigation pending
+        newCase.setCasePhase(CasePhase.PrelimInvestigationPending);
+        
         CECase newlyAddedCase = ci.insertNewCECase(newCase);
         SessionManager sm = getSessionManager();
         sm.getVisit().setActiveCase(newlyAddedCase);
@@ -56,9 +59,5 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     
     public void advanceToNextCasePhase(CECase c){
         
-        
-        
     }
-    
-    
 }

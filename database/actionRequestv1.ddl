@@ -73,13 +73,14 @@ CREATE TYPE casephase as ENUM
 
 CREATE TYPE ceEventType as ENUM
 (
-    'Originaion',
+    'Origination',
     'Action',
     'PhaseChange',
     'Closing',
     'Timeline',
     'Communication',
     'Meeting',
+    'Notice',
     'Custom'
 ) ;
 
@@ -512,6 +513,7 @@ CREATE TABLE ceevent
     eventID                     INTEGER DEFAULT nextval('ceevent_eventID_seq') NOT NULL ,
     ceeventCategory_catID       INTEGER NOT NULL , -- fk from ceeventcateogry
     cecase_caseID               INTEGER NOT NULL , -- fk from cecase
+    ceEventType                 ceEventType,
     dateOfRecord                TIMESTAMP WITH TIME ZONE ,
     eventTimeStamp              TIMESTAMP WITH TIME ZONE ,
     eventDescription            character varying (2000) ,
@@ -664,7 +666,7 @@ CREATE TABLE codesetelement
     codelement_elementID        INTEGER NOT NULL, --fk
     elementMaxPenalty           NUMERIC,
     elementMinPenalty           NUMERIC,
-    elementNormPenalty          NUMERIC,
+    elementNormPenalty          NUMERIC NOT NULL,
     penaltyNotes                character varying (300),
     normDaysToComply            INTEGER NOT NULL,
     daysToComplyNotes           character varying (300)
@@ -692,10 +694,10 @@ CREATE TABLE courtentity
     jurisdictionLevel          character varying (100) NOT NULL,
     muni_muniCode              INTEGER , --fk
     name                       character varying (1000) NOT NULL ,
-    address_street             character varying (100) ,
-    address_city               character varying (100) ,
-    address_zip                character varying (100) ,
-    address_state              character varying (2) ,
+    address_street             character varying (100) NOT NULL,
+    address_city               character varying (100) NOT NULL,
+    address_zip                character varying (100) NOT NULL,
+    address_state              character varying (2) NOT NULL,
     county                     character varying (50) ,
     phone                      character varying (11) ,
     URL                        character varying (1000) ,
@@ -722,8 +724,8 @@ CREATE TABLE citation
     origin_courtentity_entityID     INTEGER NOT NULL, --fk
     cecase_caseID                   INTEGER NOT NULL, --fk
     enforcementofficial_officialID  INTEGER NOT NULL, --fk
-    dateOfRecord                    TIMESTAMP WITH TIME ZONE,
-    transTimeStamp                  TIMESTAMP WITH TIME ZONE,
+    dateOfRecord                    TIMESTAMP WITH TIME ZONE NOT NULL,
+    transTimeStamp                  TIMESTAMP WITH TIME ZONE NOT NULL,
     isActive                        boolean DEFAULT TRUE,
     notes                           character varying (2000)
     -- this is just a skeleton for a citation: more fields likely as system develops
@@ -753,11 +755,15 @@ CREATE TABLE codeviolation
     codeSetElement_elementID    INTEGER NOT NULL , -- foreign key from codeelement
     cecase_caseID               INTEGER NOT NULL , -- foreign key from cecase
     citation_citationID         INTEGER, --fk
-    stipulatedComplianceDate    TIMESTAMP WITH TIME ZONE , -- auto generated base on the default compliance timeframe for each violation
+    dateOfCitation              TIMESTAMP WITH TIME ZONE,
+    dateOfRecord                TIMESTAMP WITH TIME ZONE,
+    entryTimeStamp              TIMESTAMP WITH TIME ZONE NOT NULL,
+    stipulatedComplianceDate    TIMESTAMP WITH TIME ZONE NOT NULL, -- auto generated base on the default compliance timeframe for each violation
     actualCompliancDate         TIMESTAMP WITH TIME ZONE , -- entered when a violationComplianceEvent is generated
-    penalty                     NUMERIC,
-    description                 character varying (2000),
+    penalty                     NUMERIC NOT NULL,
+    description                 character varying (2000) NOT NULL,
     notes                       character varying (1000)
+    -- needs a timestamp field
   ) ;
 
 ALTER TABLE codeviolation ADD CONSTRAINT codeviolation_pk PRIMARY KEY ( violationID ) ;

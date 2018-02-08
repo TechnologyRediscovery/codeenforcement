@@ -19,8 +19,171 @@
                             
                     <h1>Case Manager</h1>
                     <f:view>
-                        <h2>Case: </h2>
+                        <h2>Case: <h:outputText value="#{caseManageBB.currentCase.caseName}"/></h2>
                         <h:form id="caseManagerForm">
+                            
+                            
+                            <h:outputText value="Current Phase: #{caseManageBB.currentCase.casePhase.label}"/>
+                            
+                            <h2>Code Violations</h2>
+                            
+                            <h2>Event Log</h2>
+                            
+                                <p:dataTable
+                                    id="caseEventTable"
+                                    var="e"
+                                    selectionMode="single"
+                                    selection="#{caseManageBB.selectedEvent}"
+                                    rowKey="#{e.eventID}"
+                                    value="#{caseManageBB.eventList}"
+                                    tableStyleClass="primeDataTable">
+                                    <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Date" />
+                                        </f:facet>
+                                        <h:outputText value="#{e.dateOfRecord}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Type" />
+                                        </f:facet>
+                                        <h:outputText value="#{e.eventType}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Creator" />
+                                        </f:facet>
+                                        <h:outputText value="#{e.eventOwnerUser.LName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Description" />
+                                        </f:facet>
+                                        <h:outputText value="#{e.eventDescription}"/>
+                                    </p:column>
+                                    
+                                    <p:rowExpansion>
+                                        <h:outputLabel value="Disclose to Municipality Staff? "/>
+                                        <h:outputText value="#{e.discloseToMunicipality}"/>
+                                        
+                                        <p:spacer height="10px"/>
+                                        
+                                        <h:outputLabel value="Disclose to Public? "/>
+                                        <h:outputText value="#{e.discloseToPublic}"/>
+                                        
+                                        <p:spacer height="10px"/>
+                                        
+                                        <h:outputLabel value="Active Event? "/>
+                                        <h:outputText value="#{e.activeEvent}"/>
+                                        
+                                        <p:spacer height="10px"/>
+                                        
+                                        <h:outputLabel value="Event Notes: "/>
+                                        <h:outputText value="#{e.notes}"/>
+                                        
+                                    </p:rowExpansion>
+                                
+                                </p:dataTable>
+                            
+                            <p:spacer height="15px"/>
+                            
+                            <p:commandButton ajax="false" action="#{caseManageBB.editSelectedEvent}"
+                                             value="Edit Selected Event"/>
+                            
+                            <p:spacer height="15px"/>
+                            
+                             <p:fieldset legend="Add a new case"
+                                         toggleable="true" collapsed="true">
+                                 
+                                <p:spacer height="10px"/>
+                                
+                                <h:panelGrid columns="2" border="0" 
+                                         cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
+                                         footerClass="gridFooter">
+                                    
+                                    <f:facet name="header">
+                                        <h:panelGroup>
+                                            <p:outputLabel for="eventDesc">
+                                                <h:outputText value="Description (1 sentnece ish):"/>
+                                            </p:outputLabel>
+                                            <p:inputText id="eventDesc" value="#{caseManageBB.formEventDesc}" 
+                                                      style="width: 100%;" tabindex="3" required="true" styleClass="inputText"/>
+                                            <h:message for="eventDesc" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                        </h:panelGroup>
+                                    </f:facet>
+                                    
+                                    <h:panelGroup>
+                                        <h:outputLabel for="eventTypeMenu">
+                                            <h:outputText value="Event Type"/>
+                                        </h:outputLabel>
+                                        <p:selectOneMenu id="eventTypeMenu" required="true" value="#{caseManageBB.selectedEventType}" tabindex="3">
+                                            <f:selectItems value="#{caseManageBB.eventTypeArr}"/>
+                                        </p:selectOneMenu>
+                                        <h:message for="eventTypeMenu" showDetail="false" showSummary="true" 
+                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <h:outputLabel for="eventDateCal">
+                                            <h:outputText value="Date of Record"/>
+                                        </h:outputLabel>
+                                        <p:calendar value="#{caseManageBB.formEventType}" 
+                                                    mode="popup"  id="eventDateCal"
+                                                    showOn="button" pattern="EEE, dd MMM, yyyy"
+                                                    navigator="true" tabindex="16"
+                                                    showButtonPanel="true" showTodayButton="true"
+                                                    required="true"/>
+                                        <h:message for="eventDateCal" showDetail="false" showSummary="true" 
+                                                warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+                                        
+                                    <h:panelGroup>
+                                        <h:outputLabel for="discloseToMuniIS">
+                                            <h:outputText value="Disclose to Municipalities"/>
+                                        </h:outputLabel>
+                                        <p:inputSwitch tabindex="18" id="discloseToMuniIS" value="#{caseManageBB.formDiscloseToMuni}" onLabel="Yes" offLabel="No" />
+                                    </h:panelGroup>
+                                    
+                                    <h:panelGroup>
+                                        <h:outputLabel for="discloseToPublic">
+                                            <h:outputText value="Disclose to Public"/>
+                                        </h:outputLabel>
+                                        <p:inputSwitch tabindex="18" id="discloseToPublic" value="#{caseManageBB.formDiscloseToPublic}" onLabel="Yes" offLabel="No" />
+                                    </h:panelGroup>
+                                       
+                                    <f:facet name="footer">
+                                        <h:outputLabel for="eventNotes">
+                                            <h:outputText value="Event Notes:"/>
+                                        </h:outputLabel>
+                                        <h:panelGroup>
+                                            <p:inputTextarea id="eventNotes" value="#{caseManageBB.formEventNotes}" 
+                                                   style="width: 100%;" tabindex="19" required="false" styleClass="inputText"/>
+                                            <h:message for="eventNotes" showDetail="false" showSummary="true" 
+                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                        </h:panelGroup>
+                                    </f:facet>
+                                 
+                                </h:panelGrid>
+                                
+                                 <h:outputLabel for="eventPerson">
+                                    <h:outputText value="Attach a Property Person"/>
+                                 </h:outputLabel>
+                                
+                                <p:selectOneMenu id="eventPerson" required="true" value="#{caseManageBB.formEventpersonList}" tabindex="3">
+                                    <f:selectItems value="#{caseManageBB.eventTypeArr}"/>
+                                 </p:selectOneMenu>
+                                
+                                 <h:message for="eventTypeMenu" showDetail="false" showSummary="true" 
+                                 warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                
+                                
+                                 
+                                 
+                             </p:fieldset>
                             
                             
 

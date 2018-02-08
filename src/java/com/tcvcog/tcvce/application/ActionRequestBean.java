@@ -19,6 +19,8 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.Date;
 import java.io.Serializable;
+import org.primefaces.component.tabview.TabView;
+
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import java.time.ZoneId;
@@ -45,6 +47,9 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     private CEActionRequest submittedRequest;
     private CEActionRequest currentRequest;
     private Person currentPerson;
+    
+    private TabView tabView;
+    private int currentTabIndex;
 
     private LinkedList propList;
     private String addrPart;
@@ -89,6 +94,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     public ActionRequestBean(){
         // set date of record to current date
         form_dateOfRecord = new Date();
+        currentTabIndex = 0;
         System.out.println("ActionRequestBean.ActionRequestBean");
     }
     
@@ -132,8 +138,8 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
 
         try { 
             // send the request into the DB
+            System.out.println("ActionRequestBean.submitActionRequest | propID:" + selectedProperty.getPropertyID());
             integrator.submitCEActionRequest(currentRequest);
-            System.out.println("ActionRequestBean.submitActionRequest");
             getFacesContext().addMessage(null,
                new FacesMessage(FacesMessage.SEVERITY_INFO, 
                        "ActionRequestBean.submitActionRequest: request submitted", ""));
@@ -173,7 +179,47 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     
     
     public String refreshPage(){
-        return "submitCERequest";
+        return "";
+    }
+    
+    
+    /**
+     * Coordinates the active tab index based on the status of various
+     * form fields. it's not pretty, but it's functional
+     */
+    private void manageTabs(){
+        System.out.println("ActionRequestBean | manageTab | prop: "
+        + selectedProperty);
+        System.out.println("ActionRequestBean | manageTab | lname: "
+        + form_requestorLName);
+        System.out.println("ActionRequestBean | violationType ID: " + violationTypeID);
+        
+        // check for first tab completed
+        if(selectedProperty != null 
+                && violationTypeID <= 0
+                && form_requestorLName == null) {
+            System.out.println("selecting tab index 1");
+            currentTabIndex = 1; // go to request details tab
+        // check for second tab com1pleted
+        } else if(selectedProperty != null
+                && violationTypeID > 0
+                && form_requestorLName == null) {
+            System.out.println("selecting tab index 2");
+            currentTabIndex = 2; // to to contact info tab
+        // check for third tab completed
+        } else if(selectedProperty != null
+                && violationTypeID > 0
+                && form_requestorLName != null){
+            System.out.println("selecting tab index 3");
+            currentTabIndex = 3; // go to final tab
+            
+        } else {
+            currentTabIndex = 0;
+        }
+        if(tabView != null){
+          tabView.setActiveIndex(currentTabIndex);
+            
+        }
     }
     
     public int storeActionRequestorPerson(){
@@ -227,25 +273,27 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
                             "Sorry, the system was unable to store your contact information and as a result, your request has not been recorded.", 
                             "You might call your municipal office to report this error and make a request over the phone. "
                                     + "You can also phone the Turtle Creek COG's tecnical support specialist, Eric Darsow, at 412.840.3020 and leave a message"));
-            
-            
         }
+        manageTabs();
         
         return publicCC;
         
     } // close storePerson 
     
     public void storePropertyLocationInfo(ActionEvent event){
-        System.out.println("ActionRequestBean.storePropertyLocationInfo | selectedProp: " + selectedProperty.getAddress());
+        manageTabs();
+//        System.out.println("ActionRequestBean.storePropertyLocationInfo | selectedProp: " + selectedProperty.getAddress());
         
     }
     
     public void storeNoPropertyInfo(ActionEvent event){
+        manageTabs();
         System.out.println("ActionRequestBean.storeNoPropertyInfo | request location: " + form_nonPropertyLocation);
     }
     
     public void incrementalFormContinue(ActionEvent event){
-        System.out.println("ActionRequestBean.incrementalFormContinue");
+        manageTabs();
+        System.out.println("ActionRequestBean.incrementalFormContinue | tabview: " + currentTabIndex);
     }
 
       
@@ -265,7 +313,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
             System.out.println(ex);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to complete a property search! ", ""));
+                        "Unable to complete a property search! Sorry!", ""));
             
         }
     }
@@ -679,5 +727,19 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      */
     public void setAddrPart(String addrPart) {
         this.addrPart = addrPart;
+    }
+
+    /**
+     * @return the tabView
+     */
+    public TabView getTabView() {
+        return tabView;
+    }
+
+    /**
+     * @param tabView the tabView to set
+     */
+    public void setTabView(TabView tabView) {
+        this.tabView = tabView;
     }
 }

@@ -44,9 +44,6 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
     public CaseIntegrator() {
     }
     
-    
-    
-    
     public LinkedList getCECasesByProp(int propertyID) throws IntegrationException{
         LinkedList<CECase> caseList = new LinkedList();
         String query = "SELECT \n" +
@@ -213,7 +210,8 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
             stmt.setString(6, ceCase.getCasePhase().toString());
             stmt.setTimestamp(7, java.sql.Timestamp
                     .valueOf(ceCase.getOriginationDate()));
-            stmt.setNull(8, java.sql.Types.NULL);
+            // closing date
+            stmt.setNull(8, java.sql.Types.NULL); 
             
             stmt.setString(9, ceCase.getNotes());
             

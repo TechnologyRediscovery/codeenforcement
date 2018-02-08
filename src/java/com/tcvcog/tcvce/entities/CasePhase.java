@@ -40,7 +40,7 @@ public enum CasePhase {
         this.label = label;
     }
     
-    private String getLabel(){
+    public String getLabel(){
         return label;
     }
 

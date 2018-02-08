@@ -86,7 +86,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
             stmt.setString(14, actionRequest.getMuniInternalNotes());
             stmt.setString(15, actionRequest.getPublicExternalNotes());
             
-            //System.out.println("CEActionRequestIntegrator.submitCEActionRequest | sql: " + stmt.toString());
+            System.out.println("CEActionRequestIntegrator.submitCEActionRequest | sql: " + stmt.toString());
             stmt.execute();
             
         } catch (SQLException ex) { 

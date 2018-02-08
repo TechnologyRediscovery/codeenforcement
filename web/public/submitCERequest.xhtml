@@ -24,9 +24,12 @@
             <p>Pleae provide the requested information in each tab below to complete your request: </p>
 
             <f:view>
-                <p:tabView id="ceactionTabView" widgetVar="tabview" effect="fade" effectDuration="fast" >
+                <p:tabView id="ceactionTabView" 
+                           widgetVar="tabview" effect="fade" 
+                           effectDuration="fast"
+                           binding="#{actionRequestBean.tabView}">
                     <p:tab title="Step 1: Location" id="t1Location">
-                        <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                        <h:messages globalOnly="true" showDetail="false" showSummary="true"
                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError"></h:messages>
                         <h:form id="propLookupForm">
                             <p:outputLabel for="muniSM" value="Choose your municipality:"/>
@@ -57,8 +60,7 @@
                                         widgetVar="propFS" legend="Lookup Property">
                                 
                                 <h2>Look up a property of concern</h2>
-                                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
-                                          warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError"></h:messages>
+                                   
 
                                 <p>Please search for and select the property of concern using this search tool.</p>
                                 <p:spacer height="10px"/>
@@ -92,27 +94,33 @@
                                         <h:outputText value="#{prop.address}"/>
                                     </p:column>
                                     <p:column>
+                                        
                                         <f:facet name="header">
                                             <h:outputText value="Municipality" />
                                         </f:facet>
                                         <h:outputText value="#{prop.muni.muniName}"/>
+                                        
                                     </p:column>
+                                    
                                     <p:column>
+                                        
                                         <f:facet name="header">
                                             <h:outputText value="Type" />
                                         </f:facet>
                                         <h:outputText value="#{prop.propertyUseTypeName}"/>
+                                        
                                     </p:column>
+                                    
                                 </p:dataTable>
-                                
                     
                                 <p:spacer height="10px"/>
                                 
-                                <p:commandButton  onclick="PF('tabview').select(1)" ajax="false"
+                                <p:commandButton   ajax="false"
                                         value="Use selected property and go to next step" id="propSelectButton"
                                         actionListener="#{actionRequestBean.storePropertyLocationInfo}"/>
 
                                 </p:fieldset>
+                            
                             </h:form>
                             
                             <p:spacer height="15px"/>
@@ -133,7 +141,7 @@
 
                                     <p:spacer height="10px"/>
 
-                                    <p:commandButton onclick="PF('tabview').select(1)" ajax="false"
+                                    <p:commandButton  ajax="false"
                                         value="Go to next step" id="continueToRequestDetailsButton" 
                                         actionListener="#{actionRequestBean.storeNoPropertyInfo}"/>
 
@@ -209,7 +217,7 @@
                             
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton  onclick="PF('tabview').select(2)" ajax="false"
+                            <p:commandButton  ajax="false"
                                     value="Continue to contact info" id="continueToContactInfoButton"
                                     actionListener="#{actionRequestBean.incrementalFormContinue}"/>
                             
@@ -372,7 +380,7 @@
 
                             </h:panelGrid>
                             <p:spacer width="10px"/>
-                            <p:commandButton  onclick="PF('tabview').select(3)" ajax="false"
+                            <p:commandButton  ajax="false"
                                     value="Continue to final submission" id="continueToFinalSubmission"
                                     actionListener="#{actionRequestBean.incrementalFormContinue}"/>
                         </h:form>   

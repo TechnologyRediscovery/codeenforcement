@@ -39,7 +39,7 @@
                                 
                                 <h:outputLabel value="Associated with a Unit?" for="isUnitAssociatedSwitch"/>
                                 <h:panelGroup>
-                                    <p:inputSwitch id="isUnitAssociatedSwitch" value="#{caseAddBB.isUnitAssociated}" onLabel="Yes" offLabel="No" tabindex="14"/>
+                                    <p:inputSwitch id="isUnitAssociatedSwitch" value="#{caseAddBB.isUnitAssociated}" onLabel="Yes" offLabel="No" tabindex="2"/>
                                     
                                     <p:selectOneMenu id="unitSelectorMenu" required="false" value="#{caseAddBB.formPropertyUnitID}">
                                         <f:selectItems value="#{caseAddBB.caseProperty.propertyUnitHashMap}"
@@ -50,14 +50,11 @@
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                     
                                 </h:panelGroup>
-                                
-                                
-                                
                             
                                 <h:outputLabel value="Case Opening Date:" for="formOpenDateCal"/>
                                 <h:panelGroup>
                                     <p:calendar value="#{caseAddBB.formOriginationDate}" 
-                                            mode="popup" tabindex="13"
+                                            mode="popup" tabindex="3"
                                             id="formOpenDateCal"
                                             showOn="button"
                                             pattern="EEE, dd MMM, yyyy"
@@ -71,15 +68,13 @@
                         
                                 </h:panelGroup>
                                 
-                                
-                                
                                 <f:facet name="footer">
                                     
                                     <h:panelGroup>
 
                                         <h:outputLabel value="Case Notes:" for="caseNotesIT"/>
                                         <p:inputTextarea id="caseNotesIT" value="#{caseAddBB.formCaseNotes}" 
-                                               style="width: 100%;" tabindex="1" required="false" styleClass="inputText"/>
+                                               style="width: 100%;" tabindex="4" required="false" styleClass="inputText"/>
                                         <h:message for="caseNotesIT" showDetail="false" showSummary="true" 
                                         warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                         
@@ -90,10 +85,9 @@
                                 
                             </h:panelGrid>
                             
-                            
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton ajax="false" value="Create New Case" action="#{caseAddBB.addNewCase}" />
+                            <p:commandButton ajax="false" tabindex="5" value="Create New Case" action="#{caseAddBB.addNewCase}" />
                             
                             
                         </h:form>

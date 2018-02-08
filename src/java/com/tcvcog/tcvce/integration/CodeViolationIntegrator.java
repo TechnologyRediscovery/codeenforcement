@@ -17,14 +17,22 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.integration;
 
+import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeViolation;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 
 /**
  *
  * @author sylvia
  */
-public class CodeViolationIntegrator {
+public class CodeViolationIntegrator extends BackingBeanUtils implements Serializable{
 
     /**
      * Creates a new instance of ViolationIntegrator
@@ -32,36 +40,199 @@ public class CodeViolationIntegrator {
     public CodeViolationIntegrator() {
     }
     
-    public int insertCodeViolation(CodeViolation violationToInsert){
-        return 0;
+    public void insertCodeViolation(CodeViolation v) throws IntegrationException{
+        
+        String query = "INSERT INTO public.codeviolation(\n" +
+            "            violationid, codesetelement_elementid, cecase_caseid, citation_citationid, \n" +
+            "            dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, \n" +
+            "            actualcompliancdate, penalty, description, notes)\n" +
+            "    VALUES (DEFAULT, ?, ?, ?, \n" +
+            "            ?, ?, now(), ?, \n" +
+            "            ?, ?, ?, ?);";
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, v.getViolationID());
+            stmt.setInt(2, v.getCeCaseID());
+            stmt.setString(3, v.getCitationID());
+            
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(v.getDateOfCitation()));
+            stmt.setTimestamp(5, java.sql.Timestamp.valueOf(v.getDateOfRecord()));
+            stmt.setTimestamp(6, java.sql.Timestamp.valueOf(v.getStipulatedComplianceDate()));
+            
+            stmt.setTimestamp(7, java.sql.Timestamp.valueOf(v.getActualComplianceDate()));
+            stmt.setDouble(8, v.getPenalty());
+            stmt.setString((9), v.getDescription());
+            stmt.setString(10, v.getNotes());
+            
+            stmt.execute();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("cannot fetch code violation by ID, sorry.", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
         
     }
     
     
-    public void updateCodeViolation(CodeViolation violationToUpdate){
+    public void updateCodeViolation(CodeViolation v) throws IntegrationException{
+        String query = "UPDATE public.codeviolation\n" +
+            "   SET codesetelement_elementid=?, cecase_caseid=?, citation_citationid=?, \n" +
+            "       dateofcitation=?, dateofrecord=?, entrytimestamp=now(), stipulatedcompliancedate=?, \n" +
+            "       actualcompliancdate=?, penalty=?, description=?, notes=?\n" +
+            " WHERE violatoinid = ?;";
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
         
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, v.getViolationID());
+            stmt.setInt(2, v.getCeCaseID());
+            stmt.setString(3, v.getCitationID());
+            
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(v.getDateOfCitation()));
+            stmt.setTimestamp(5, java.sql.Timestamp.valueOf(v.getDateOfRecord()));
+            stmt.setTimestamp(6, java.sql.Timestamp.valueOf(v.getStipulatedComplianceDate()));
+            
+            stmt.setTimestamp(7, java.sql.Timestamp.valueOf(v.getActualComplianceDate()));
+            stmt.setDouble(8, v.getPenalty());
+            stmt.setString((9), v.getDescription());
+            stmt.setString(10, v.getNotes());
+            
+            stmt.execute();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("cannot fetch code violation by ID, sorry.", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
         
     }
     
     
-    public void deleteCodeViolation(CodeViolation violationToDelete){
+    public void deleteCodeViolation(CodeViolation violationToDelete) throws IntegrationException{
+        String query = "DELETE FROM public.codeviolation\n" +
+            " WHERE violatoinid = ?;";
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
         
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1,violationToDelete.getViolationID());
+            
+            stmt.executeUpdate();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot delete code violation--probably because"
+                    + "other enetities in the system refer to it. Sorry!", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+    }
+    
+    private CodeViolation generateCodeViolationFromRS(ResultSet rs) throws SQLException, IntegrationException{
+        
+        CodeViolation v = new CodeViolation();
+        CodeIntegrator ci = getCodeIntegrator();
+        
+        v.setViolationID(rs.getInt("violationid"));
+        v.setViolatedElement(ci.getEnforcableCodeElement(rs.getInt("codesetelement_elementid")));
+        v.setCeCaseID(rs.getInt("cecase_caseid"));
+        v.setCitationID(rs.getString("citation_citationid"));
+        
+        v.setDateOfCitation(rs.getTimestamp("dateofcitation").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        
+        v.setDateOfRecord(rs.getTimestamp("dateofrecord").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        
+        v.setEntryTimeStamp(rs.getTimestamp("entrytimestamp").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        
+        v.setStipulatedComplianceDate(rs.getTimestamp("stipulatedcompliancedate").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+       
+        v.setActualComplianceDate(rs.getTimestamp("actualcompliancdate").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        
+        v.setPenalty(rs.getDouble("penalty"));
+        v.setDescription(rs.getString("description"));
+        v.setNotes(rs.getString("notes"));
+        return v;
     }
     
     
-    public CodeViolation getCodeViolationByViolationID(int violationID){
+    public CodeViolation getCodeViolationByViolationID(int violationID) throws IntegrationException{
+        String query = "SELECT violationid, codesetelement_elementid, cecase_caseid, citation_citationid, \n" +
+            "       dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, \n" +
+            "       actualcompliancdate, penalty, description, notes\n" +
+            "  FROM public.codeviolation WHERE violationid = ?";
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        CodeViolation cv = null;
         
-        return new CodeViolation();
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, violationID);
+            System.out.println("Code.getEventCategory| sql: " + stmt.toString());
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                cv = generateCodeViolationFromRS(rs);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("cannot fetch code violation by ID, sorry.", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return cv;
     }
     
     
-    
-    public LinkedList getCodeViolationsByCaseID(int caseID){
-    
+    public LinkedList getCodeViolationsByCaseID(int caseID) throws IntegrationException{
+        String query = "SELECT violationid from public.codeviolation WHERE cecase_caseid = ?";
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        LinkedList<CodeViolation> cvList = new LinkedList();
         
-        return new LinkedList();
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, caseID);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                cvList.add(generateCodeViolationFromRS(rs));
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot fetch code violation by ID, sorry.", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return cvList;
     }
     
-    
-    
-}
+} // close integrator

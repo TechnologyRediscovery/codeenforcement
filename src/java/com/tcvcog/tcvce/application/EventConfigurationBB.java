@@ -15,30 +15,29 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.entities;
+package com.tcvcog.tcvce.application;
+
+import com.tcvcog.tcvce.entities.EventCategory;
+import com.tcvcog.tcvce.entities.EventType;
+import java.util.LinkedList;
 
 /**
  *
  * @author sylvia
  */
-public enum EventType {
-    Origination("Case Origination"),
-    Action("Human Action"),
-    PhaseChange("Case Phase Change"),
-    Closing("Case Closing"),
-    Timeline("Case Timeline"),
-    Communication("Communication"),
-    Meeting("Meeting"),
-    Notice("Notice"),
-    Custom("Custom");
+public class EventConfigurationBB {
+
+    private EventCategory selectedEventCategory;
+    private LinkedList<EventCategory> eventCategoryList;
+     
+    private EventType[] eventTypeList;
     
-    private final String label;
+    private EventType formSelectedEventType;
+    private String formEventCategoryTitle;
+    private String formEventCategoryDescr;
     
-    private EventType(String label){
-        this.label = label;
+    
+    public EventConfigurationBB() {
     }
     
-    public String getLabel(){
-        return label;
-    }
 }

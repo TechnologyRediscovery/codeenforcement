@@ -19,6 +19,8 @@ package com.tcvcog.tcvce.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import org.primefaces.component.tabview.TabView;
+
 
 /**
  * Models the entity: code enforcement action request. 
@@ -54,12 +56,16 @@ public class CEActionRequest {
     // for the full case model
     //private RequestStatus requestStatus;
     
+    
+    
     private int requestID;
     private int requestPublicCC;
 
     private Municipality muni;
     private int personID;
     private Person actionRequestorPerson;
+    
+
 
     private Property requestProperty;
    
@@ -450,4 +456,6 @@ public class CEActionRequest {
     public void setDaysSinceDateOfRecord(long daysSinceDateOfRecord) {
         this.daysSinceDateOfRecord = daysSinceDateOfRecord;
     }
+
+   
 }

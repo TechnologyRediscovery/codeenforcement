@@ -25,10 +25,17 @@ import java.time.LocalDateTime;
  */
 public class CodeViolation {
     private int violationID;
-    private CodeViolation codeViolated;
+    private EnforcableCodeElement violatedElement;
+    private int ceCaseID;
+    private String citationID;
+    private LocalDateTime dateOfCitation;
+    private LocalDateTime dateOfRecord;
+    private LocalDateTime entryTimeStamp;
     private LocalDateTime stipulatedComplianceDate;
     private LocalDateTime actualComplianceDate;
+    private double penalty;
     private String description;
+    private String notes;
 
     /**
      * @return the violationID
@@ -47,15 +54,15 @@ public class CodeViolation {
     /**
      * @return the codeViolated
      */
-    public CodeViolation getCodeViolated() {
-        return codeViolated;
+    public EnforcableCodeElement getCodeViolated() {
+        return getViolatedElement();
     }
 
     /**
      * @param codeViolated the codeViolated to set
      */
-    public void setCodeViolated(CodeViolation codeViolated) {
-        this.codeViolated = codeViolated;
+    public void setCodeViolated(EnforcableCodeElement codeViolated) {
+        this.setViolatedElement(codeViolated);
     }
 
     /**
@@ -98,6 +105,118 @@ public class CodeViolation {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @return the violatedElement
+     */
+    public EnforcableCodeElement getViolatedElement() {
+        return violatedElement;
+    }
+
+    /**
+     * @return the ceCaseID
+     */
+    public int getCeCaseID() {
+        return ceCaseID;
+    }
+
+    /**
+     * @return the citationID
+     */
+    public String getCitationID() {
+        return citationID;
+    }
+
+    /**
+     * @return the penalty
+     */
+    public double getPenalty() {
+        return penalty;
+    }
+
+    /**
+     * @return the notes
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * @param violatedElement the violatedElement to set
+     */
+    public void setViolatedElement(EnforcableCodeElement violatedElement) {
+        this.violatedElement = violatedElement;
+    }
+
+    /**
+     * @param ceCaseID the ceCaseID to set
+     */
+    public void setCeCaseID(int ceCaseID) {
+        this.ceCaseID = ceCaseID;
+    }
+
+    /**
+     * @param citationID the citationID to set
+     */
+    public void setCitationID(String citationID) {
+        this.citationID = citationID;
+    }
+
+    /**
+     * @param penalty the penalty to set
+     */
+    public void setPenalty(double penalty) {
+        this.penalty = penalty;
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     * @return the dateOfCitation
+     */
+    public LocalDateTime getDateOfCitation() {
+        return dateOfCitation;
+    }
+
+    /**
+     * @return the dateOfRecord
+     */
+    public LocalDateTime getDateOfRecord() {
+        return dateOfRecord;
+    }
+
+    /**
+     * @return the entryTimeStamp
+     */
+    public LocalDateTime getEntryTimeStamp() {
+        return entryTimeStamp;
+    }
+
+    /**
+     * @param dateOfCitation the dateOfCitation to set
+     */
+    public void setDateOfCitation(LocalDateTime dateOfCitation) {
+        this.dateOfCitation = dateOfCitation;
+    }
+
+    /**
+     * @param dateOfRecord the dateOfRecord to set
+     */
+    public void setDateOfRecord(LocalDateTime dateOfRecord) {
+        this.dateOfRecord = dateOfRecord;
+    }
+
+    /**
+     * @param entryTimeStamp the entryTimeStamp to set
+     */
+    public void setEntryTimeStamp(LocalDateTime entryTimeStamp) {
+        this.entryTimeStamp = entryTimeStamp;
     }
        
     

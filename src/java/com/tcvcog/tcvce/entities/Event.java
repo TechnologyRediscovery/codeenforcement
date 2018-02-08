@@ -15,7 +15,9 @@ public class Event {
     
     private int eventID;
     private EventType eventType;
-    private String eventCategory;
+    private EventCategory category;
+    
+    private int caseID;
     
     private LocalDateTime dateOfRecord;
     private LocalDateTime eventTimeStamp;
@@ -42,20 +44,7 @@ public class Event {
         this.eventID = eventID;
     }
 
-    /**
-     * @return the eventCategory
-     */
-    public String getEventCategory() {
-        return eventCategory;
-    }
-
-    /**
-     * @param eventCategory the eventCategory to set
-     */
-    public void setEventCategory(String eventCategory) {
-        this.eventCategory = eventCategory;
-    }
-
+ 
     /**
      * @return the dateOfRecord
      */
@@ -180,6 +169,35 @@ public class Event {
      */
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
+    }
+
+   
+    /**
+     * @return the category
+     */
+    public EventCategory getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(EventCategory category) {
+        this.category = category;
+    }
+
+    /**
+     * @return the caseID
+     */
+    public int getCaseID() {
+        return caseID;
+    }
+
+    /**
+     * @param caseID the caseID to set
+     */
+    public void setCaseID(int caseID) {
+        this.caseID = caseID;
     }
     
     

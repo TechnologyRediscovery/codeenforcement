@@ -15,30 +15,26 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.entities;
+package ActionRequestManageBB;
+
+import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.entities.CEActionRequest;
+import java.io.Serializable;
 
 /**
  *
  * @author sylvia
  */
-public enum EventType {
-    Origination("Case Origination"),
-    Action("Human Action"),
-    PhaseChange("Case Phase Change"),
-    Closing("Case Closing"),
-    Timeline("Case Timeline"),
-    Communication("Communication"),
-    Meeting("Meeting"),
-    Notice("Notice"),
-    Custom("Custom");
+public class ActionRequestManageBB extends BackingBeanUtils implements Serializable{
+
+    private CEActionRequest currentRequest;
     
-    private final String label;
-    
-    private EventType(String label){
-        this.label = label;
+    /**
+     * Creates a new instance of ActionRequestManageBB
+     */
+    public ActionRequestManageBB() {
     }
     
-    public String getLabel(){
-        return label;
-    }
+    
+    
 }
