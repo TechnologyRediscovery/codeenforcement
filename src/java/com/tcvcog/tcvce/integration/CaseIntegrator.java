@@ -247,7 +247,7 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
      * Updates the values in the CECase in the DB but does NOT
      * edit the data in connected tables, namely CodeViolation, Event, and Person
      * Use calls to other add methods in this class for adding additional
-     * violatoins, events, and people to a CE case.
+     * violations, events, and people to a CE case.
      * 
      * @param cecase the case to updated, with updated member variables
      */

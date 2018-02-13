@@ -56,7 +56,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             
             stmt = con.prepareStatement(query);
             stmt.setInt(1, catID);
-            System.out.println("EventInteegrator.getEventCategory| sql: " + stmt.toString());
+            //System.out.println("EventInteegrator.getEventCategory| sql: " + stmt.toString());
             rs = stmt.executeQuery();
             
             while(rs.next()){
@@ -91,9 +91,10 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
+            System.out.println("EventIntegrator.getEventCategoryList | SQL: " + stmt.toString());
             
             while(rs.next()){
-                categoryList.add(getEventCategory(rs.getInt("categoryID")));
+                categoryList.add(getEventCategory(rs.getInt("categoryid")));
             }
             
         } catch (SQLException ex) {
@@ -113,7 +114,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         
         String query = "INSERT INTO public.ceeventcategory(\n" +
                 " categoryid, categorytype, title, description)\n" +
-                " VALUES (DEFAULT, CAST (? as eventType), ?, ?);";
+                " VALUES (DEFAULT, CAST (? as ceeventtype), ?, ?);";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
 
@@ -129,6 +130,33 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         } catch (SQLException ex) {
             System.out.println(ex.toString());
             throw new IntegrationException("Unable to insert event category", ex);
+
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+    }
+    
+    public void updateEventCategory(EventCategory ec) throws IntegrationException{
+        
+          String query = "UPDATE public.ceeventcategory\n" +
+            "   SET categorytype= CAST (? as ceeventtype), title=?, description=?\n" +
+            " WHERE categoryid = ?;";
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setString(1, ec.getEventType().name());
+            stmt.setString(2, ec.getEventTypeTitle());
+            stmt.setString(3, ec.getEventTypeDesc());
+            stmt.setInt(4, ec.getCategoryID());
+            
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to update event category", ex);
 
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }

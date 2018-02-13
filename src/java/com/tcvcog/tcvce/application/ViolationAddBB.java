@@ -15,30 +15,40 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.entities;
+package com.tcvcog.tcvce.application;
+
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 
 /**
  *
  * @author sylvia
  */
-public enum EventType {
-    Origination("Case Origination"),
-    Action("Human Action"),
-    PhaseChange("Case Phase Change"),
-    Closing("Case Closing"),
-    Timeline("Case Timeline"),
-    Communication("Communication"),
-    Meeting("Meeting"),
-    Notice("Notice"),
-    Custom("Custom");
+public class ViolationAddBB extends BackingBeanUtils implements Serializable {
 
-    private final String label;
-
-    private EventType(String label) {
-        this.label = label;
+    
+    
+    
+    
+    
+    private int ceCaseID;
+    private String citationID;
+    private LocalDateTime dateOfCitation;
+    private LocalDateTime dateOfRecord;
+    private LocalDateTime entryTimeStamp;
+    private LocalDateTime stipulatedComplianceDate;
+    private LocalDateTime actualComplianceDate;
+    private double penalty;
+    private String description;
+    private String notes;
+    
+    
+    /**
+     * Creates a new instance of ViolationAdd
+     */
+    public ViolationAddBB() {
     }
-
-    public String getLabel() {
-        return label;
-    }
+    
 }

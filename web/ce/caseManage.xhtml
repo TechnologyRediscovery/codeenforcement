@@ -26,9 +26,93 @@
                             <h:outputText value="Current Phase: #{caseManageBB.currentCase.casePhase.label}"/>
                             
                             <h2>Code Violations</h2>
+                                <p:commandButton ajax="false" action="#{caseManageBB.addViolation}"
+                                                 value="Add new code violation to case"/>
+                                <p:spacer height="15px"/>
+
+                                <p:dataTable
+                                 id="violationTable"
+                                 var="v"
+                                 selectionMode="single"
+                                 selection="#{caseManageBB.selectedViolation}"
+                                 rowKey="#{v.violationID}"
+                                 value="#{caseManageBB.violationList}"
+                                 tableStyleClass="primeDataTable">
+                                 <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Code Element" />
+                                        </f:facet>
+                                        <h:outputText value="#{v.violatedElement.ordsecTitle}: #{v.violatedElement.ordSubSecTitle}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Stipulated Comp. Date" />
+                                        </f:facet>
+                                        <h:outputText value="#{v.stipulatedComplianceDate}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Actual Comp. Date" />
+                                        </f:facet>
+                                        <h:outputText value="#{v.actualComplianceDate}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Citation Date" />
+                                        </f:facet>
+                                        <h:outputText value="#{v.dateOfCitation}"/>
+                                    </p:column>
+                                 
+                                    <p:rowExpansion>
+                                       <h:outputLabel value="Violated Element Details: "/>
+                                       <h:outputLabel value="#{v.violatedElement.codeElement.ordchapterTitle}: 
+                                                      #{v.violatedElement.codeElement.ordSecNum} 
+                                                      #{v.violatedElement.codeElement.ordsecTitle}:
+                                                      #{v.violatedElement.codeElement.ordSubSecNum} 
+                                                      #{v.violatedElement.codeElement.ordSubSecTitle}"/>
+                                       <p:spacer height="5px"/>
+                                       
+                                       <h:outputText value="#{v.violatedElement.codeElement.ordTechnicalText}"/>
+
+                                       <p:spacer height="5px"/>
+                                       
+                                       <h:outputLabel value="Penalty:"/>
+                                       <h:outputText value="#{v.penalty}"/>
+                                       
+                                       <h:outputLabel value="Description: "/>
+                                       <h:outputText value="#{v.description}"/>
+                                       
+                                       <p:spacer height="5px"/>
+                                       
+                                       <h:outputLabel value="Violation Notes: "/>
+                                       <h:outputText value="#{v.notes}"/>
+
+                                    </p:rowExpansion>
+
+                                </p:dataTable> 
+                                
+                                <p:spacer height="15px"/>
+                                
+                                <p:commandButton ajax="false" action="#{caseManageBB.editViolation}"
+                                                 value="Edit Selected Violation"/>
+                                
+                                <p:commandButton ajax="false" action="#{caseManageBB.deleteViolation}"
+                                                 value="Nuke Violation Forever"/>
+                                
+                                <p:spacer height="15px"/>
+                            </h:form>
+
+                            
                             
                             <h2>Event Log</h2>
                             
+                            <h:form id="eventManagementForm">
+                                
                                 <p:dataTable
                                     id="caseEventTable"
                                     var="e"
@@ -92,10 +176,13 @@
                             <p:commandButton ajax="false" action="#{caseManageBB.editSelectedEvent}"
                                              value="Edit Selected Event"/>
                             
+                            </h:form>
                             <p:spacer height="15px"/>
                             
-                             <p:fieldset legend="Add a new case"
-                                         toggleable="true" collapsed="true">
+                            <h:form id="addNewEventForm">
+                                
+                             <p:fieldset legend="Add a new event"
+                                         toggleable="true" collapsed="false">
                                  
                                 <p:spacer height="10px"/>
                                 
@@ -178,15 +265,8 @@
                                 
                                  <h:message for="eventTypeMenu" showDetail="false" showSummary="true" 
                                  warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-
-                                
-                                
-                                 
                                  
                              </p:fieldset>
-                            
-                            
-
                         </h:form>
                     </f:view>
                 </div>

@@ -80,17 +80,21 @@
                          
                         <p:spacer height="5"/>
       
-                        <h:commandButton 
-                            id="updateCodeSetDetails" 
+                        <p:commandButton 
+                            id="SetActiveButton" ajax="false"
+                            value="Make selected code set my active set" 
+                            action="#{codeSetBB.makeSelectedCodeSetActive()}"/>
+                        <p:commandButton 
+                            id="updateCodeSetDetails"  ajax="false"
                             value="View selected code set meta-data" 
                    
                             actionListener="#{codeSetBB.displaySelectedCodeSet}"/>
-                         <h:commandButton 
-                            id="viewCodeElementsInSet" 
+                         <p:commandButton 
+                            id="viewCodeElementsInSet" ajax="false"
                             value="View &amp; edit code set elements" 
                             action="#{codeSetBB.manageCodeSetElements}"/>
-                         <h:commandButton 
-                            id="codeSetBuilderButton" 
+                         <p:commandButton 
+                             id="codeSetBuilderButton" ajax="false"
                             value="Build code set" 
                             action="#{codeSetBB.buildCodeSet}"/>
                         

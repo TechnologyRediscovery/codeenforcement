@@ -295,8 +295,8 @@
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>logs</from-outcome>
-            <to-view-id>/logManage.xhtml</to-view-id>
+            <from-outcome>case</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -425,7 +425,7 @@
         
         <navigation-case>
             <from-outcome>eventManage</from-outcome>
-            <to-view-id>/ce/eventManage.xhtml</to-view-id>
+            <to-view-id>/ce/eventConfiguration.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
@@ -569,6 +569,19 @@
         <managed-bean-class>com.tcvcog.tcvce.application.CaseManageBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/ce/caseManage.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-action>#{caseManageBB.addViolation}</from-action>
+            <from-outcome>violationSelectElement</from-outcome>
+            <to-view-id>/ce/violationSelectElement.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    
+    
+    
     <managed-bean>
         <managed-bean-name>caseAddBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CaseAddBB</managed-bean-class>
@@ -637,4 +650,26 @@
         <managed-bean-class>com.tcvcog.tcvce.application.EventConfigurationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>violationAdd</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ViolationAddBB</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>violationSelectElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ViolationSelectElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/ce/violationSelectElement.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-outcome>violationAdd</from-outcome>
+            <to-view-id>/ce/violationAdd.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    
+    
 </faces-config>

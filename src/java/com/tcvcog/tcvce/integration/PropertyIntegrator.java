@@ -65,7 +65,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             p.setLotAndBlock(rs.getString("lotandblock"));
             p.setAddress(rs.getString("address"));
             p.setPropertyUseTypeName(rs.getString("name"));  //use type name
-            p.setPropertyUseTypeID(rs.getInt("propertyusetype_propertyuseid"));
+            p.setPropertyUseTypeID(rs.getInt("propertyUseType_UseID"));
             
             p.setRental(rs.getBoolean("rental"));
             p.setMultiUnit(rs.getBoolean("multiunit"));
@@ -86,7 +86,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     
     public LinkedList<Property> searchForProperties(String addrPart) throws IntegrationException{
     
-        String query = "select * from property LEFT OUTER JOIN propertyusetype ON propertyusetype.propertyUseTypeID = public.property.propertyusetype_propertyuseid"
+        String query = "select * from property LEFT OUTER JOIN propertyusetype ON propertyusetype.propertyUseTypeID = public.property.propertyUseType_UseID"
                 + " WHERE address ILIKE '%" + addrPart + "%';";
         
         System.out.println("PropertyIntegrator.searchForPropertiesAddOnly - query: " + query);
@@ -118,7 +118,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     public LinkedList<Property> searchForProperties(String addrPart, int muniID) throws IntegrationException{
         
         
-        String query = "select * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_propertyuseid "
+        String query = "select * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyUseType_UseID "
                 + " WHERE address ILIKE '%" + addrPart + "%' AND municipality_muniCode=" 
                 + muniID + ";";
         System.out.println("PropertyIntegrator.searchForProperties - with muni | sql: " + query);
@@ -182,7 +182,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     public String updateProperty(Property propToUpdate) throws IntegrationException{
         String query = "UPDATE public.property\n" +
                 "   SET parid=?, lotandblock=?, \n" +
-                "       address=?, propertyusetype_propertyuseid=?, rental=?, multiunit=?, \n" +
+                "       address=?, propertyUseType_UseID=?, rental=?, multiunit=?, \n" +
                 "       usegroup=?, constructiontype=?, countycode=?, notes=?" +
                 " WHERE propertyid = ?;";
         
@@ -224,7 +224,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     
     public Property getProperty(int propertyID) throws IntegrationException{
         Property p = new Property();
-         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_propertyuseid "
+         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
                 + " WHERE propertyid = ?;";
         
         Connection con = getPostgresCon();

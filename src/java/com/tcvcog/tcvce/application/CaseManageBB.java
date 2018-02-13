@@ -60,6 +60,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     
     
+    
     /**
      * Creates a new instance of CaseManageBB
      */
@@ -74,6 +75,13 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public String editSelectedEvent(){
         
         return "";
+    }
+    
+    public String addViolation(){
+        
+        
+        
+        return "violationSelectElement";
     }
     
 

@@ -86,7 +86,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
             "   SET codesetelement_elementid=?, cecase_caseid=?, citation_citationid=?, \n" +
             "       dateofcitation=?, dateofrecord=?, entrytimestamp=now(), stipulatedcompliancedate=?, \n" +
             "       actualcompliancdate=?, penalty=?, description=?, notes=?\n" +
-            " WHERE violatoinid = ?;";
+            " WHERE violationid = ?;";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
         
@@ -121,7 +121,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
     
     public void deleteCodeViolation(CodeViolation violationToDelete) throws IntegrationException{
         String query = "DELETE FROM public.codeviolation\n" +
-            " WHERE violatoinid = ?;";
+            " WHERE violationid = ?;";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
         

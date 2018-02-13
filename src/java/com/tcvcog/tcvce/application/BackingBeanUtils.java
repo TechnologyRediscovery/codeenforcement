@@ -28,6 +28,7 @@ import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
@@ -61,6 +62,8 @@ public class BackingBeanUtils implements Serializable{
     
     private EventCoordinator eventCoordinator;
     private EventIntegrator eventIntegrator;
+    
+    private CodeViolationIntegrator codeViolationIntegrator;
     
     private MunicipalityIntegrator municipalityIntegrator;
     
@@ -339,6 +342,11 @@ public class BackingBeanUtils implements Serializable{
      * @return the eventIntegrator
      */
     public EventIntegrator getEventIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{eventIntegrator}", EventIntegrator.class);
+        eventIntegrator = (EventIntegrator) ve.getValue(context.getELContext());
+        
         return eventIntegrator;
     }
 
@@ -391,6 +399,25 @@ public class BackingBeanUtils implements Serializable{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy, HH:mm");
         String formattedDateTime = d.format(formatter); 
         return formattedDateTime;
+    }
+
+    /**
+     * @return the codeViolationIntegrator
+     */
+    public CodeViolationIntegrator getCodeViolationIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{codeViolationIntegrator}", CodeViolationIntegrator.class);
+        codeViolationIntegrator = (CodeViolationIntegrator) ve.getValue(context.getELContext());
+        
+        return codeViolationIntegrator;
+    }
+
+    /**
+     * @param codeViolationIntegrator the codeViolationIntegrator to set
+     */
+    public void setCodeViolationIntegrator(CodeViolationIntegrator codeViolationIntegrator) {
+        this.codeViolationIntegrator = codeViolationIntegrator;
     }
 
 }

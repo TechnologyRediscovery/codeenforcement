@@ -32,6 +32,7 @@ public class Visit {
     private User currentUser;
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
+    private EnforcableCodeElement selectedCodeElement;
     //private LinkedList<EnforcableCodeElement> eceList;
     
     /**
@@ -150,6 +151,20 @@ public class Visit {
      */
     public void setActivePerson(Person activePerson) {
         this.activePerson = activePerson;
+    }
+
+    /**
+     * @return the selectedCodeElement
+     */
+    public EnforcableCodeElement getSelectedCodeElement() {
+        return selectedCodeElement;
+    }
+
+    /**
+     * @param selectedCodeElement the selectedCodeElement to set
+     */
+    public void setSelectedCodeElement(EnforcableCodeElement selectedCodeElement) {
+        this.selectedCodeElement = selectedCodeElement;
     }
     
     

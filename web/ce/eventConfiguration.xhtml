@@ -24,26 +24,132 @@
                             
                                 <p:dataTable
                                     id="eventCategories"
-                                    var="e"
+                                    var="c"
                                     selectionMode="single"
-                                    selection="#{caseManageBB.selectedEvent}"
-                                    rowKey="#{e.eventID}"
-                                    value="#{caseManageBB.eventList}"
-                                    tableStyleClass="primeDataTable">
+                                    selection="#{eventConfigurationBB.selectedEventCategory}"
+                                    rowKey="#{c.categoryID}"
+                                    value="#{eventConfigurationBB.eventCategoryList}"
+                                    tableStyleClass="primeDataTable"
+                                    tabindex="1">
                                     <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
 
                                     <p:column>
                                         <f:facet name="header">
-                                            <h:outputText value="Date" />
+                                            <h:outputText value="Event Type" />
                                         </f:facet>
-                                        <h:outputText value="#{e.dateOfRecord}"/>
+                                        <h:outputText value="#{c.eventType.label}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Category" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.eventTypeTitle}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Description" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.eventTypeDesc}"/>
                                     </p:column>
                                     
                                 </p:dataTable>
+                            <p:spacer height="10px"/>
                             
+                            <p:commandButton ajax="false" 
+                                             actionListener="#{eventConfigurationBB.editSelectedEventCategory}"
+                                             value="Update Selected EventCateogory" tabindex="2"/>
+                            
+                            <p:commandButton ajax="false" 
+                                             actionListener="#{eventConfigurationBB.deleteSelectedEventCategory}"
+                                             value="Nuke Selected Category Forever" tabindex="3"/>
+                            </h:form>
+                            <p:spacer height="20px"/>
+                            
+                             <p:fieldset legend="Update event category"
+                                         toggleable="true" collapsed="false" tabindex="4">
+                                 
+                                 <h:form id="updateCategoryForm">
+                                     
+                                 
+                                <h:outputLabel for="eventTypeMenu">
+                                    <h:outputText value="Event Type: "/>
+                                </h:outputLabel>
+                                 <p:selectOneMenu id="eventTypeMenu" required="true" value="#{eventConfigurationBB.formEventType}" tabindex="5">
+                                    <f:selectItems value="#{caseManageBB.eventTypeArr}"/>
+                                </p:selectOneMenu>
+                                <h:message for="eventTypeMenu" showDetail="false" showSummary="true" 
+                                warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                 
+                                <p:spacer height="10px"/>
+                                <p:outputLabel for="catTitleIT">
+                                    <h:outputText value="Category Title"/>
+                                </p:outputLabel>
+                                 <p:inputText id="catTitleIT" value="#{eventConfigurationBB.formEventCategoryTitle}" 
+                                          style="width: 40%;" tabindex="6" required="true" styleClass="inputText"/>
+                                <h:message for="catTitleIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                             
+                                <p:spacer height="10px"/>
+                                 
+                                <p:outputLabel for="catDescIT">
+                                    <h:outputText value="Category Description"/>
+                                </p:outputLabel>
+                                <p:inputText id="catDescIT" value="#{eventConfigurationBB.formEventCategoryDescr}" 
+                                          style="width: 100%;" tabindex="7" required="true" styleClass="inputText"/>
+                                <h:message for="catDescIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                <p:spacer height="20px"/>
+                                
+                                <p:commandButton ajax="false" 
+                                           actionListener="#{eventConfigurationBB.commitUpdates}"
+                                           value="Commit Updates" tabindex="8"/>
+                                 </h:form>
+                                             
+                            </p:fieldset>
+                            <p:spacer height="20px"/>
+                            
+                            <p:fieldset legend="Add new event category"
+                                        toggleable="true" collapsed="false" tabindex="9">
+                                <h:form id="newCategoryForm">
+                                    
+                                
+                                 <h:outputLabel for="newEventTypeMenu">
+                                    <h:outputText value="Event Type: "/>
+                                </h:outputLabel>
+                                 <p:selectOneMenu id="newEventTypeMenu" required="true" value="#{eventConfigurationBB.newFormSelectedEventType}" tabindex="10">
+                                    <f:selectItems value="#{caseManageBB.eventTypeArr}"/>
+                                </p:selectOneMenu>
+                                <h:message for="newEventTypeMenu" showDetail="false" showSummary="true" 
+                                warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                 
+                                <p:spacer height="10px"/>
+                                <p:outputLabel for="newCatTitleIT">
+                                    <h:outputText value="Category Title"/>
+                                </p:outputLabel>
+                                 <p:inputText id="newCatTitleIT" value="#{eventConfigurationBB.newFormEventCategoryTitle}" 
+                                          style="width: 40%;" tabindex="11" required="true" styleClass="inputText"/>
+                                <h:message for="newCatTitleIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                             
+                                 
+                                <p:spacer height="10px"/>
+                                <p:outputLabel for="newCatDescIT">
+                                    <h:outputText value="Category Description"/>
+                                </p:outputLabel>
+                                <p:inputText id="newCatDescIT" value="#{eventConfigurationBB.newFormEventCategoryDescr}" 
+                                          style="width: 100%;" tabindex="12" required="true" styleClass="inputText"/>
+                                <h:message for="newCatDescIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                <p:spacer height="20px"/>
+                                            
+                                <p:commandButton ajax="false" 
+                                    actionListener="#{eventConfigurationBB.addNewEventCategory}"
+                                    value="Add Event Category" tabindex="13"/>
+                                </h:form>
+                            </p:fieldset>
                             
 
-                        </h:form>
+                      
                     </f:view>
                 </div>
             </ui:define>

@@ -102,15 +102,15 @@ INSERT INTO public.ceeventcategory(
 
 INSERT INTO public.ceeventcategory(
             categoryid, categorytype, title, description)
-    VALUES (DEFAULT, 'Originaion', 'Online Action Request Form', 'An action request form was completed by some entity (public or internal)');
+    VALUES (DEFAULT, 'Origination', 'Online Action Request Form', 'An action request form was completed by some entity (public or internal)');
 
 INSERT INTO public.ceeventcategory(
             categoryid, categorytype, title, description)
-    VALUES (DEFAULT, 'Originaion', 'Visual Observation of Violation', 'A code officer detected a code violation during a visual inspection of a property');
+    VALUES (DEFAULT, 'Origination', 'Visual Observation of Violation', 'A code officer detected a code violation during a visual inspection of a property');
 
 INSERT INTO public.ceeventcategory(
             categoryid, categorytype, title, description)
-    VALUES (DEFAULT, 'Originaion', 'Call from Municipality', 'A municipal staff person called a code officer and requested an investigation');
+    VALUES (DEFAULT, 'Origination', 'Call from Municipality', 'A municipal staff person called a code officer and requested an investigation');
 
 
 INSERT INTO public.ceeventcategory(

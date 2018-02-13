@@ -26,14 +26,8 @@ import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
-import javax.inject.Named;
 
 /**
  *
@@ -198,6 +192,19 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         
 //        return "";
         
+    }
+    
+    public String makeSelectedCodeSetActive(){
+        SessionManager sm = getSessionManager();
+        if(selectedCodeSet != null){ 
+            sm.getVisit().setActiveCodeSet(selectedCodeSet);
+            return "dashboard";
+        } else {
+            getFacesContext().addMessage(null,
+                  new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                          "Please select a code set to make your active set", ""));
+            return "";
+        }
     }
 
     /**
