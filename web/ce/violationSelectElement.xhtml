@@ -28,9 +28,9 @@
                             <p:dataTable
                                 id="enforcableCodeElementSelectTable"
                                 var="cse"
-                                value="#{violationSelectElementBB.elementList}"
+                                value="#{violationSelectElementBB.enfElementList}"
                                 selectionMode="single"
-                                selection="#{violationSelectElementBB.selectedViolatedElement}"
+                                selection="#{violationSelectElementBB.selectedViolatedEnfElement}"
                                 rowKey="#{cse.codeSetElementID}"
                                 tableStyleClass="primeDataTable">
                                 <p:column>

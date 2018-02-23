@@ -17,8 +17,10 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
+import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
@@ -29,83 +31,86 @@ import javax.faces.application.FacesMessage;
  *
  * @author sylvia
  */
-public class ViolationSelectElementBB extends BackingBeanUtils implements Serializable{
+public class ViolationSelectElementBB extends BackingBeanUtils implements Serializable {
 
-    private EnforcableCodeElement selectedViolatedElement;
-    private LinkedList<EnforcableCodeElement> elementList;
+    private EnforcableCodeElement selectedViolatedEnfElement;
+    private LinkedList<EnforcableCodeElement> enfElementList;
     private CodeSet currentCodeSet;
-    
-    
+
     /**
      * Creates a new instance of ViolationSelectElementBB
      */
     public ViolationSelectElementBB() {
     }
-    
-    public String useSelectedElement(){
+
+    public String useSelectedElement() {
         SessionManager sm = getSessionManager();
-        
-        if(selectedViolatedElement != null){
-            sm.getVisit().setSelectedCodeElement(selectedViolatedElement);
-            
+        ViolationCoordinator vc = getViolationCoordinator();
+        CodeViolation cv;
+        if (selectedViolatedEnfElement != null && sm.getVisit() != null) {
+             cv = vc.generateNewCodeViolation(sm.getVisit().getActiveCase(), 
+                    selectedViolatedEnfElement);
+            sm.getVisit().setActiveCodeViolation(cv);
+//            System.out.println("ViolationSelectElementBB.useSelectedElement | Selected Enf Element: "
+//                    + selectedViolatedEnfElement.getCodeElement().getOrdchapterTitle());
+            return "violationAdd";
+
         } else {
             getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Ooops: Can't continue -- Please select an element from the list.", ""));
-
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Ooops: Can't continue -- Please select an element from the list.", ""));
+            return "";
         }
-        
-        
-        return "violationAdd";
+
     }
 
     /**
-     * @return the selectedViolatedElement
+     * @return the selectedViolatedEnfElement
      */
-    public EnforcableCodeElement getSelectedViolatedElement() {
-        return selectedViolatedElement;
+    public EnforcableCodeElement getSelectedViolatedEnfElement() {
+        return selectedViolatedEnfElement;
     }
 
     /**
-     * @return the elementList
+     * @return the enfElementList
      */
-    public LinkedList<EnforcableCodeElement> getElementList() {
+    public LinkedList<EnforcableCodeElement> getEnfElementList() {
         SessionManager sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
-        System.out.println("ViolationSelectElement.getElementList| retrievedset: " + codeSet); 
-        
-        if(codeSet != null){
+        System.out.println("ViolationSelectElement.getElementList| retrievedset: " + codeSet);
+
+        if (codeSet != null) {
             int setID = codeSet.getCodeSetID();
             try {
-                elementList =  integrator.getEnforcableCodeElementList(setID);
-                System.out.println("ViolationSelectElement.getElementList| retrievdedList: " 
-                        + elementList.peek().getOrdchapterTitle());
-                getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
-                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
+                enfElementList = integrator.getEnforcableCodeElementList(setID);
+//                System.out.println("ViolationSelectElement.getElementList| retrievdedList: "
+//                        + enfElementList.peek().getCodeElement().getOrdchapterTitle());
+//                getFacesContext().addMessage(null,
+//                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
+//                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
             } catch (IntegrationException ex) {
                 System.out.println(ex.toString());
                 getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                        new FacesMessage(FacesMessage.SEVERITY_WARN,
                                 "No Enforcable Code Elements were found with SetID: " + setID, ""));
             }
-        } 
-        return elementList;
+        }
+        return enfElementList;
     }
 
     /**
-     * @param selectedViolatedElement the selectedViolatedElement to set
+     * @param selectedViolatedEnfElement the selectedViolatedEnfElement to set
      */
-    public void setSelectedViolatedElement(EnforcableCodeElement selectedViolatedElement) {
-        this.selectedViolatedElement = selectedViolatedElement;
+    public void setSelectedViolatedEnfElement(EnforcableCodeElement selectedViolatedEnfElement) {
+        this.selectedViolatedEnfElement = selectedViolatedEnfElement;
     }
 
     /**
-     * @param elementList the elementList to set
+     * @param enfElementList the enfElementList to set
      */
-    public void setElementList(LinkedList<EnforcableCodeElement> elementList) {
-        this.elementList = elementList;
+    public void setEnfElementList(LinkedList<EnforcableCodeElement> enfElementList) {
+        this.enfElementList = enfElementList;
     }
 
     /**
@@ -121,5 +126,5 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     public void setCurrentCodeSet(CodeSet currentCodeSet) {
         this.currentCodeSet = currentCodeSet;
     }
-    
+
 }

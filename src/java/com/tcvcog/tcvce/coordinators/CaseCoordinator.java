@@ -22,8 +22,11 @@ import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
+import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  *
@@ -59,5 +62,12 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     
     public void advanceToNextCasePhase(CECase c){
         
+    }
+    
+    public LinkedList retrieveViolationList(CECase ceCase) throws IntegrationException{
+        LinkedList<CodeViolation> ll;
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        ll = cvi.getCodeViolations(ceCase);
+        return ll;
     }
 }

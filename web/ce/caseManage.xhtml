@@ -13,7 +13,7 @@
         <ui:composition template="./../tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
-                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                    <h:messages globalOnly="true" showDetail="false" showSummary="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
                             
@@ -37,14 +37,27 @@
                                  selection="#{caseManageBB.selectedViolation}"
                                  rowKey="#{v.violationID}"
                                  value="#{caseManageBB.violationList}"
-                                 tableStyleClass="primeDataTable">
+                                 tableStyleClass="primeDataTable"
+                                 expandedRow="false"
+                                 rowExpandMode="multiple"
+                                 draggableColumns="true"
+                                 reflow="true"
+                               
+                                 >
+                                    
+                                    
                                  <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
-
+                                    <f:facet name="header">
+                                        Expand rows to see detailed info about each violation
+                                    </f:facet>
+                                    <p:column>
+                                        <p:rowToggler />
+                                    </p:column>
                                     <p:column>
                                         <f:facet name="header">
                                             <h:outputText value="Code Element" />
                                         </f:facet>
-                                        <h:outputText value="#{v.violatedElement.ordsecTitle}: #{v.violatedElement.ordSubSecTitle}"/>
+                                        <h:outputText value="#{v.violatedEnfElement.codeElement.ordsecTitle}: #{v.violatedEnfElement.codeElement.ordSubSecTitle}"/>
                                     </p:column>
 
                                     <p:column>
@@ -70,14 +83,14 @@
                                  
                                     <p:rowExpansion>
                                        <h:outputLabel value="Violated Element Details: "/>
-                                       <h:outputLabel value="#{v.violatedElement.codeElement.ordchapterTitle}: 
-                                                      #{v.violatedElement.codeElement.ordSecNum} 
-                                                      #{v.violatedElement.codeElement.ordsecTitle}:
-                                                      #{v.violatedElement.codeElement.ordSubSecNum} 
-                                                      #{v.violatedElement.codeElement.ordSubSecTitle}"/>
+                                       <h:outputLabel value="#{v.violatedEnfElement.codeElement.ordchapterTitle}: 
+                                                      #{v.violatedEnfElement.codeElement.ordSecNum} 
+                                                      #{v.violatedEnfElement.codeElement.ordsecTitle}:
+                                                      #{v.violatedEnfElement.codeElement.ordSubSecNum} 
+                                                      #{v.violatedEnfElement.codeElement.ordSubSecTitle}"/>
                                        <p:spacer height="5px"/>
                                        
-                                       <h:outputText value="#{v.violatedElement.codeElement.ordTechnicalText}"/>
+                                       <h:outputText value="#{v.violatedEnfElement.codeElement.ordTechnicalText}"/>
 
                                        <p:spacer height="5px"/>
                                        
@@ -98,17 +111,34 @@
                                 
                                 <p:spacer height="15px"/>
                                 
+                                <h:outputText style="font-style: italic" value="The following buttons all act on a single selected violation:"/>
+                                
+                                <p:spacer height="5px"/>
+                                
+                                <p:commandButton ajax="false" action="#{caseManageBB.recordCompliance}"
+                                                 value="Record compliance "/>
+                                
                                 <p:commandButton ajax="false" action="#{caseManageBB.editViolation}"
-                                                 value="Edit Selected Violation"/>
+                                                 value="Edit non-compliance info"/>
                                 
                                 <p:commandButton ajax="false" action="#{caseManageBB.deleteViolation}"
-                                                 value="Nuke Violation Forever"/>
+                                                 value="Nuke forever"/>
+                                
                                 
                                 <p:spacer height="15px"/>
                             </h:form>
+                                <p:separator/>
+
+                            <h2>Citations</h2>
+                                <h:form id="citationForm">
+                                    
+                                    
+
+
+                                </h:form>
 
                             
-                            
+                                <p:separator/>
                             <h2>Event Log</h2>
                             
                             <h:form id="eventManagementForm">

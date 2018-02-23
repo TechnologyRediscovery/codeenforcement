@@ -18,8 +18,9 @@ Council of Governments, PA
 package com.tcvcog.tcvce.integration;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.domain.EventException;
+import com.tcvcog.tcvce.domain.EventIntegrationException;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
@@ -188,14 +189,14 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     }
     
-    public int insertEvent(Event event) throws IntegrationException{
+    public int insertEvent(Event event) throws EventIntegrationException{
         String query = "INSERT INTO public.ceevent(\n" +
             "            eventid, ceeventcategory_catid, cecase_caseid, dateofrecord, \n" +
             "            eventtimestamp, eventdescription, login_userid, disclosetomunicipality, \n" +
-            "            disclosetopublic, activeevent, notes, eventtype)\n" +
+            "            disclosetopublic, activeevent, notes)\n" +
             "    VALUES (DEFAULT, ?, ?, ?, \n" +
             "            now(), ?, ?, ?, \n" +
-            "            ?, ?, ?, ?);";
+            "            ?, ?, ?);";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
 
@@ -210,17 +211,16 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setInt(5, event.getEventOwnerUser().getUserID());
             stmt.setBoolean(6, event.isDiscloseToMunicipality());
             
-            stmt.setBoolean(8, event.isDiscloseToPublic());
-            stmt.setBoolean(9, event.isActiveEvent());
-            stmt.setString(10, event.getNotes());
-            stmt.setString(11, event.getEventType().name());
+            stmt.setBoolean(7, event.isDiscloseToPublic());
+            stmt.setBoolean(8, event.isActiveEvent());
+            stmt.setString(9, event.getNotes());
             
             System.out.println("EventInteegrator.insertEventCategory| sql: " + stmt.toString());
             stmt.execute();
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new IntegrationException("Cannot insert Event", ex);
+            throw new EventIntegrationException("Cannot insert Event into system", ex);
 
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
@@ -237,7 +237,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         String query = "UPDATE public.ceevent\n" +
             "   SET ceeventcategory_catid=?, cecase_caseid=?, dateofrecord=?, \n" +
             "       eventtimestamp=now(), eventdescription=?, login_userid=?, disclosetomunicipality=?, \n" +
-            "       disclosetopublic=?, activeevent=?, notes=?, eventtype=CAST (? as eventType)\n" +
+            "       disclosetopublic=?, activeevent=?, notes=?\n" +
             " WHERE eventid = ?;";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
@@ -257,7 +257,6 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setBoolean(7, event.isDiscloseToPublic());
             stmt.setBoolean(8, event.isActiveEvent());
             stmt.setString(9, event.getNotes());
-            stmt.setString(10, event.getEventType().name());
             
             System.out.println("EventInteegrator.getEventByEventID| sql: " + stmt.toString());
 
@@ -316,7 +315,6 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         ev.setDiscloseToPublic(rs.getBoolean("disclosetopublic"));
         ev.setActiveEvent(rs.getBoolean("activeevent"));
         ev.setNotes(rs.getString("notes"));
-        ev.setEventType(EventType.valueOf(rs.getString("eventtype")));
         
         return ev;
     }

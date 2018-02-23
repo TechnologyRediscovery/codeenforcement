@@ -25,6 +25,7 @@ import javax.faces.application.Application;
 import java.sql.Connection;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
+import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
@@ -34,10 +35,12 @@ import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.ResourceBundle;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -64,6 +67,7 @@ public class BackingBeanUtils implements Serializable{
     private EventIntegrator eventIntegrator;
     
     private CodeViolationIntegrator codeViolationIntegrator;
+    private ViolationCoordinator violationCoordinator;
     
     private MunicipalityIntegrator municipalityIntegrator;
     
@@ -74,6 +78,8 @@ public class BackingBeanUtils implements Serializable{
     private CEActionRequestIntegrator cEActionRequestIntegrator;
     
     private UserIntegrator userIntegrator;
+    
+    
  
     // private Connection postgresCon;
     
@@ -105,6 +111,13 @@ public class BackingBeanUtils implements Serializable{
     
     public Application getApplication(){
         return getFacesContext().getApplication();
+    }
+    
+    public ResourceBundle getResourceBundle(String bundleName){
+        FacesContext context = getFacesContext();
+        Application app = getApplication();
+        ResourceBundle bundle = app.getResourceBundle(context, bundleName );
+        return bundle;
     }
     
     public Visit getVisit(){
@@ -328,6 +341,10 @@ public class BackingBeanUtils implements Serializable{
      * @return the eventCoordinator
      */
     public EventCoordinator getEventCoordinator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{eventCoordinator}", EventCoordinator.class);
+        eventCoordinator = (EventCoordinator) ve.getValue(context.getELContext());
         return eventCoordinator;
     }
 
@@ -418,6 +435,24 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setCodeViolationIntegrator(CodeViolationIntegrator codeViolationIntegrator) {
         this.codeViolationIntegrator = codeViolationIntegrator;
+    }
+
+    /**
+     * @return the violationCoordinator
+     */
+    public ViolationCoordinator getViolationCoordinator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{violationCoordinator}", ViolationCoordinator.class);
+        violationCoordinator = (ViolationCoordinator) ve.getValue(context.getELContext());
+        return violationCoordinator;
+    }
+
+    /**
+     * @param violationCoordinator the violationCoordinator to set
+     */
+    public void setViolationCoordinator(ViolationCoordinator violationCoordinator) {
+        this.violationCoordinator = violationCoordinator;
     }
 
 }

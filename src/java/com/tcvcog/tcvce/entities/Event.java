@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class Event {
     
     private int eventID;
-    private EventType eventType;
     private EventCategory category;
     
     private int caseID;
@@ -157,21 +156,7 @@ public class Event {
         this.notes = notes;
     }
 
-    /**
-     * @return the eventType
-     */
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    /**
-     * @param eventType the eventType to set
-     */
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
-   
+  
     /**
      * @return the category
      */

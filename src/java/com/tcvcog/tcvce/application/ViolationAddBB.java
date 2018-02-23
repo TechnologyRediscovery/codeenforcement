@@ -17,38 +17,177 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.EventCoordinator;
+import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.domain.ViolationException;
+import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 
 /**
  *
  * @author sylvia
  */
 public class ViolationAddBB extends BackingBeanUtils implements Serializable {
-
     
-    
-    
-    
-    
-    private int ceCaseID;
-    private String citationID;
-    private LocalDateTime dateOfCitation;
-    private LocalDateTime dateOfRecord;
-    private LocalDateTime entryTimeStamp;
-    private LocalDateTime stipulatedComplianceDate;
-    private LocalDateTime actualComplianceDate;
+    private CodeViolation currentViolation;
+    private Date dateOfRecord;
+    private Date stipulatedComplianceDate;
     private double penalty;
     private String description;
     private String notes;
     
+   
     
     /**
      * Creates a new instance of ViolationAdd
      */
     public ViolationAddBB() {
     }
+    
+    public String addViolation(){
+        
+        ViolationCoordinator vc = getViolationCoordinator();
+        SessionManager sm = getSessionManager();
+        
+        currentViolation.setStipulatedComplianceDate(getStipulatedComplianceDate()
+                .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        currentViolation.setDateOfRecord(getDateOfRecord()
+                .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        currentViolation.setPenalty(penalty);
+        currentViolation.setDescription(description);
+        currentViolation.setNotes(notes);
+        
+        try {
+             vc.addNewCodeViolation(currentViolation);
+             // if update succeds without throwing an error, then proceed to
+             // giving the event coordinator info for an update event
+             getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Success! Violation updated.", ""));
+            return "case";
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+             getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to edit violation.", 
+                                "This is a system-level error that msut be corrected by an administrator, Sorry!"));
+            
+        } catch (ViolationException ex) {
+             getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                            ex.getMessage(), "Please revise the stipulated compliance date"));
+        }
+        return "";
+        
+    }
+    
+
+   
+
+    /**
+     * @return the penalty
+     */
+    public double getPenalty() {
+        penalty = currentViolation.getCodeViolated().getNormPenalty();
+        return penalty;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the notes
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+   
+
+    /**
+     * @param penalty the penalty to set
+     */
+    public void setPenalty(double penalty) {
+        this.penalty = penalty;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     * @return the currentViolation
+     */
+    public CodeViolation getCurrentViolation() {
+        SessionManager sm = getSessionManager();
+        currentViolation = sm. getVisit().getActiveCodeViolation();
+        return currentViolation;
+    }
+
+    /**
+     * @param currentViolation the currentViolation to set
+     */
+    public void setCurrentViolation(CodeViolation currentViolation) {
+        this.currentViolation = currentViolation;
+    }
+
+    /**
+     * @return the stipulatedComplianceDate
+     */
+    public Date getStipulatedComplianceDate() {
+        stipulatedComplianceDate = java.util.Date.from(
+                currentViolation.getStipulatedComplianceDate()
+                        .atZone(ZoneId.systemDefault()).toInstant());
+        return stipulatedComplianceDate;
+    }
+
+    /**
+     * @param stipulatedComplianceDate the stipulatedComplianceDate to set
+     */
+    public void setStipulatedComplianceDate(Date stipulatedComplianceDate) {
+        this.stipulatedComplianceDate = stipulatedComplianceDate;
+    }
+
+    /**
+     * @return the dateOfRecord
+     */
+    public Date getDateOfRecord() {
+        dateOfRecord = java.util.Date.from(
+                LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+        return dateOfRecord;
+    }
+
+    /**
+     * @param dateOfRecord the dateOfRecord to set
+     */
+    public void setDateOfRecord(Date dateOfRecord) {
+        this.dateOfRecord = dateOfRecord;
+    }
+
+  
     
 }

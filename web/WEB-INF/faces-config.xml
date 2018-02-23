@@ -3,6 +3,18 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <application>
+        <resource-bundle>
+            <base-name>messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>
+        
+        <resource-bundle>
+            <base-name>eventCategories</base-name>
+            <var>eventCategories</var>
+        </resource-bundle>
+        
+    </application>
     <managed-bean>
         <description>Establishes the connection to the Code Enforcement Database for use throughout a session</description>
         <managed-bean-name>dBConnection</managed-bean-name>
@@ -651,11 +663,9 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>violationAdd</managed-bean-name>
+        <managed-bean-name>violationAddBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ViolationAddBB</managed-bean-class>
-    
         <managed-bean-scope>view</managed-bean-scope></managed-bean>
-    
     <managed-bean>
         <managed-bean-name>violationSelectElementBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ViolationSelectElementBB</managed-bean-class>
@@ -667,6 +677,20 @@
         <nanavigation-case>
             <from-outcome>violationAdd</from-outcome>
             <to-view-id>/ce/violationAdd.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>violationEditBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ViolationEditBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <navigation-rule>
+        <from-view-id>/ce/caseManage.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-action>#{caseManageBB.editViolation}</from-action>
+            <from-outcome>violationEdit</from-outcome>
+            <to-view-id>/ce/violationEdit.xhtml</to-view-id>
             <redirect />
         </nanavigation-case>
     </navigation-rule>

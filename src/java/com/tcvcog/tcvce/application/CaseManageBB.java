@@ -17,6 +17,8 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
+import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
@@ -24,10 +26,15 @@ import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -56,25 +63,63 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     private EventType[] eventTypeArr;
     private EventType selectedEventType;
     
-    
-    
-    
-    
-    
     /**
      * Creates a new instance of CaseManageBB
      */
     public CaseManageBB() {
     }
     
-    public String editSelectedViolation(){
+    public String editViolation(){
         
-        return "";
+        if(selectedViolation != null){
+            SessionManager sm = getSessionManager();
+            sm.getVisit().setActiveCodeViolation(selectedViolation);
+            return "violationEdit";
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Please select a violation and try again", ""));
+            return "";
+            
+        }
     }
     
-    public String editSelectedEvent(){
+    public String recordCompliance(){
         
-        return "";
+        if(selectedViolation != null){
+            ViolationCoordinator vc = getViolationCoordinator();
+            
+            return "eventCompliance";
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Please select a violation and try again", ""));
+            return "";
+            
+        }
+    }
+    
+
+    public void deleteViolation(ActionEvent e){
+        if(selectedViolation != null){
+            ViolationCoordinator vc = getViolationCoordinator();
+            try {
+                vc.deleteViolation(selectedViolation);
+            } catch (IntegrationException ex) {
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                "Unable to delete selected violation", 
+                                "Check if the violation has been referenced in a citation."
+                                        + "If so, and you still wish to delete, you must remove"
+                                        + "the citation first, then delete the violation."));
+            }
+            
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Please select a violation and try again", ""));
+            
+        }
     }
     
     public String addViolation(){
@@ -84,6 +129,20 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         return "violationSelectElement";
     }
     
+    public String editSelectedEvent(){
+
+    if(selectedViolation != null){
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveCodeViolation(selectedViolation);
+        return "";
+    } else {
+        getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please select a violation and try again", ""));
+        return "";
+
+    }
+    }
 
     /**
      * @return the currentCase
@@ -120,6 +179,21 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      * @return the violationList
      */
     public LinkedList<CodeViolation> getViolationList() {
+        ViolationCoordinator vc = getViolationCoordinator();
+        try {
+            violationList = vc.getCodeViolations(currentCase);
+            if(violationList != null){
+                System.out.println("CaseManageBB.getViolationList | peek at list: " 
+                        + violationList.peekFirst().getCeCaseID() );
+            }
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+             getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to load code violation list", 
+                                "This is a system-level error that msut be corrected by an administrator, Sorry!"));
+            
+        }
         return violationList;
     }
 

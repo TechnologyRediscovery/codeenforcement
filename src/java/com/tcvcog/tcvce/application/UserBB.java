@@ -33,10 +33,9 @@ import javax.faces.application.FacesMessage;
  */
 public class UserBB extends BackingBeanUtils implements Serializable {
 
-    
     private LinkedList<User> userList;
     private User selectedUser;
-    
+
     private RoleType formRoleType;
     private RoleType[] roleTypeArray;
     private String formUsername;
@@ -63,26 +62,25 @@ public class UserBB extends BackingBeanUtils implements Serializable {
      */
     public UserBB() {
     }
-        
-    public String updateUser(){
-        
+
+    public String updateUser() {
+
         SessionManager sm = getSessionManager();
         sm.setUtilityUserToUpdate(selectedUser);
-        
+
         return "userUpdate";
     }
-    
-    public String addUser(){
+
+    public String addUser() {
         System.out.println("UserBB.addUser");
-        
-        
+
         return "userAdd";
     }
-    
-    public String commitInsert(){
+
+    public String commitInsert() {
         System.out.println("UserBB.commitInsert");
         UserIntegrator ui = getUserIntegrator();
-        
+
         User u = new User();
         u.setRoleType(formRoleType);
         u.setUsername(formUsername);
@@ -105,26 +103,25 @@ public class UserBB extends BackingBeanUtils implements Serializable {
         u.setActivityStopDate(formActivityStopDate.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
         u.setAccessPermitted(formAccessPermitted);
-        
+
         try {
             ui.insertUser(u);
             getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                                "Successfully added " + u.getFName() 
-                                        + " to the system and this person can now login and get to work.", ""));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Successfully added " + u.getFName()
+                            + " to the system and this person can now login and get to work.", ""));
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                                "Unable to add user to system, my apologies", 
-                                    "This is a system-level error that msut be corrected by an administrator"));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Unable to add user to system, my apologies",
+                            "This is a system-level error that msut be corrected by an administrator"));
             return "";
         }
-        
+
         return "userManage";
-        
+
     }
-    
-    
+
     /**
      * @return the userList
      */
@@ -134,11 +131,11 @@ public class UserBB extends BackingBeanUtils implements Serializable {
             userList = ui.getCompleteUserList();
         } catch (IntegrationException ex) {
             System.out.println(ex);
-        getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "Unable to acquire list of users", 
-                                "This is a system-level error that msut be corrected by an administrator"));
-        } 
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Unable to acquire list of users",
+                            "This is a system-level error that msut be corrected by an administrator"));
+        }
         return userList;
     }
 
@@ -443,8 +440,5 @@ public class UserBB extends BackingBeanUtils implements Serializable {
     public void setRoleTypeArray(RoleType[] roleTypeArray) {
         this.roleTypeArray = roleTypeArray;
     }
-    
-    
-    
-    
+
 }

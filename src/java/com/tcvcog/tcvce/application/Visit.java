@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -11,6 +11,7 @@ import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CodeSet;
+import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.Person;
 import java.util.LinkedList;
@@ -32,9 +33,10 @@ public class Visit {
     private User currentUser;
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
-    private EnforcableCodeElement selectedCodeElement;
+    private EnforcableCodeElement selectedEnfCodeElement;
+    private CodeViolation activeCodeViolation;
     //private LinkedList<EnforcableCodeElement> eceList;
-    
+
     /**
      * Creates a new instance of Visit
      */
@@ -154,19 +156,31 @@ public class Visit {
     }
 
     /**
-     * @return the selectedCodeElement
+     * @return the selectedEnfCodeElement
      */
-    public EnforcableCodeElement getSelectedCodeElement() {
-        return selectedCodeElement;
+    public EnforcableCodeElement getSelectedEnfCodeElement() {
+        return selectedEnfCodeElement;
     }
 
     /**
-     * @param selectedCodeElement the selectedCodeElement to set
+     * @param selectedEnfCodeElement the selectedEnfCodeElement to set
      */
-    public void setSelectedCodeElement(EnforcableCodeElement selectedCodeElement) {
-        this.selectedCodeElement = selectedCodeElement;
+    public void setSelectedEnfCodeElement(EnforcableCodeElement selectedEnfCodeElement) {
+        this.selectedEnfCodeElement = selectedEnfCodeElement;
     }
-    
-    
-    
+
+    /**
+     * @return the activeCodeViolation
+     */
+    public CodeViolation getActiveCodeViolation() {
+        return activeCodeViolation;
+    }
+
+    /**
+     * @param activeCodeViolation the activeCodeViolation to set
+     */
+    public void setActiveCodeViolation(CodeViolation activeCodeViolation) {
+        this.activeCodeViolation = activeCodeViolation;
+    }
+
 }

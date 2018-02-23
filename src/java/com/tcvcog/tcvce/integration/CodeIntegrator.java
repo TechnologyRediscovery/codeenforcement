@@ -266,9 +266,53 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         return codeSources;
     }
     
-    public CodeSet getCodeSetBySetID(int setID){
+    public CodeSet getCodeSetBySetID(int setID) throws IntegrationException{
+         String query = "SELECT codesetid, name, description, municipality_municode \n" +
+                        "FROM public.codeset WHERE codesetid = ?";
         
-        return new CodeSet();
+         //System.out.println("CodeIntegrator.getCodeSets | MuniCode: "+ muniCode);
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        CodeSet cs = null;
+        
+        try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, setID);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                cs = (populateCodeSetFromRS(rs));
+            }
+            
+        } catch (SQLException ex) { 
+             System.out.println("CodeIntegrator.getCodeSetBySetID | " + ex.toString());
+             throw new IntegrationException("Exception in CodeSetIntegrator", ex);
+        } finally{
+            if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return cs;
+        
+    }
+    
+    private CodeSet populateCodeSetFromRS(ResultSet rs) throws SQLException, IntegrationException{
+        CodeSet set = new CodeSet();
+        MunicipalityIntegrator muniInt = getMunicipalityIntegrator();
+        set.setCodeSetID(rs.getInt("codesetid"));
+        set.setCodeSetName(rs.getString("name"));
+        set.setCodeSetDescription(rs.getString("description"));
+        set.setCodeElementList(getEnforcableCodeElementList(rs.getInt("codesetid")));
+        int muniCodeTest = rs.getInt("municipality_municode");
+        set.setMuni(muniInt.getMuniFromMuniCode(muniCodeTest));
+        if (set.getMuni() == null){
+            throw new IntegrationException("Exception in CodeSetIntegrator: Cannot find any code sets for selected Municipality");
+        }
+
+        return set;
         
     }
     
@@ -282,8 +326,6 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         LinkedList<CodeSet> codeSetList = new LinkedList();
-        CodeSet set = null;
-        MunicipalityIntegrator muniInt = getMunicipalityIntegrator();
         
         try {
             con = getPostgresCon();
@@ -292,17 +334,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                set = new CodeSet();
-                set.setCodeSetID(rs.getInt(1));
-                set.setCodeSetName(rs.getString(2));
-                set.setCodeSetDescription(rs.getString(3));
-                set.setCodeElementList(getEnforcableCodeElementList(rs.getInt(1)));
-                int muniCodeTest = rs.getInt(4);
-                set.setMuni(muniInt.getMuniFromMuniCode(muniCodeTest));
-                if (set.getMuni() == null){
-                    throw new IntegrationException("Exception in CodeSetIntegrator: Cannot find any code sets for selected Municipality");
-                }
-                codeSetList.add(set);
+                codeSetList.add(populateCodeSetFromRS(rs));
             }
             
         } catch (SQLException ex) { 
@@ -423,7 +455,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             while(rs.next()){
                 
-                newEce.setCodeElement(getCodeElement(rs.getInt("codeset_codesetid")));
+                newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
+                newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
                 newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
                 newEce.setMinPenalty(rs.getInt("elementminpenalty"));
                 newEce.setNormPenalty(rs.getInt("elementnormpenalty"));
@@ -471,6 +504,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             while(rs.next()){
                 EnforcableCodeElement newEce = new EnforcableCodeElement();
+                newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
                 newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
                 newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
                 newEce.setMinPenalty(rs.getInt("elementminpenalty"));
