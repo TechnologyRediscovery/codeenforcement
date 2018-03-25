@@ -43,13 +43,13 @@
                                         <f:facet name="header">
                                             <h:outputText value="Category" />
                                         </f:facet>
-                                        <h:outputText value="#{c.eventTypeTitle}"/>
+                                        <h:outputText value="#{c.eventCategoryTitle}"/>
                                     </p:column>
                                     <p:column>
                                         <f:facet name="header">
                                             <h:outputText value="Description" />
                                         </f:facet>
-                                        <h:outputText value="#{c.eventTypeDesc}"/>
+                                        <h:outputText value="#{c.eventCategoryDesc}"/>
                                     </p:column>
                                     
                                 </p:dataTable>
@@ -75,7 +75,7 @@
                                     <h:outputText value="Event Type: "/>
                                 </h:outputLabel>
                                  <p:selectOneMenu id="eventTypeMenu" required="true" value="#{eventConfigurationBB.formEventType}" tabindex="5">
-                                    <f:selectItems value="#{caseManageBB.eventTypeArr}"/>
+                                     <f:selectItems value="#{eventConfigurationBB.eventTypeList}"/>
                                 </p:selectOneMenu>
                                 <h:message for="eventTypeMenu" showDetail="false" showSummary="true" 
                                 warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -117,7 +117,7 @@
                                     <h:outputText value="Event Type: "/>
                                 </h:outputLabel>
                                  <p:selectOneMenu id="newEventTypeMenu" required="true" value="#{eventConfigurationBB.newFormSelectedEventType}" tabindex="10">
-                                    <f:selectItems value="#{caseManageBB.eventTypeArr}"/>
+                                     <f:selectItems value="#{eventConfigurationBB.eventTypeList}"/>
                                 </p:selectOneMenu>
                                 <h:message for="newEventTypeMenu" showDetail="false" showSummary="true" 
                                 warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />

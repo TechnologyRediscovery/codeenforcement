@@ -275,8 +275,34 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public void changeCECasePhase(CECase ceCase, CasePhase oldPhase, CasePhase newPhase){
-        
+    /**
+     * The calling method is responsible for setting the new case phase
+     * This is just a plain old update operation. The CaseCoordinator is responsible
+     * for creating a case phase change event for logging purposes
+     * @param ceCase
+     * @throws com.tcvcog.tcvce.domain.IntegrationException
+     */
+    public void changeCECasePhase(CECase ceCase) throws IntegrationException{
+        String query = "UPDATE public.cecase\n" +
+                    "   SET casephase= CAST (? AS casephase)\n" +
+                    " WHERE caseid = ?;";
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+         try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setString(1, ceCase.getCasePhase().toString());
+            stmt.setInt(2, ceCase.getCaseID());
+            stmt.executeUpdate();
+             
+        } catch (SQLException ex) { 
+             System.out.println(ex.toString());
+             throw new IntegrationException("Error updating case phase", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
         
     }
     

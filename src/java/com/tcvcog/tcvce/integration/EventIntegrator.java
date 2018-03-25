@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.LinkedList;
 
@@ -63,8 +64,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             while(rs.next()){
                 ec.setCategoryID(rs.getInt("categoryid"));
                 ec.setEventType(EventType.valueOf(rs.getString("categoryType")));
-                ec.setEventTypeTitle(rs.getString("title"));
-                ec.setEventTypeDesc(rs.getString("description"));
+                ec.setEventCategoryTitle(rs.getString("title"));
+                ec.setEventCategoryDesc(rs.getString("description"));
             }
             
         } catch (SQLException ex) {
@@ -111,6 +112,39 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         return categoryList;
     }
     
+    public LinkedList<EventCategory> getEventCategoryList(EventType et) throws IntegrationException{
+         String query = "SELECT categoryid " +
+            "  FROM public.ceeventcategory WHERE categorytype = cast (? as ceeventtype);";
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        LinkedList<EventCategory> categoryList = new LinkedList();
+        
+        try {
+            
+            stmt = con.prepareStatement(query);
+            stmt.setString(1, et.toString());
+            rs = stmt.executeQuery();
+            System.out.println("EventIntegrator.getEventCategoryList | SQL: " + stmt.toString());
+            
+            while(rs.next()){
+                categoryList.add(getEventCategory(rs.getInt("categoryid")));
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot generate list of event categories", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        
+        return categoryList;
+    }
+    
+    
     public void insertEventCategory(EventCategory ec) throws IntegrationException{
         
         String query = "INSERT INTO public.ceeventcategory(\n" +
@@ -122,8 +156,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         try {
             stmt = con.prepareStatement(query);
             stmt.setString(1, ec.getEventType().name());
-            stmt.setString(2, ec.getEventTypeTitle());
-            stmt.setString(3, ec.getEventTypeDesc());
+            stmt.setString(2, ec.getEventCategoryTitle());
+            stmt.setString(3, ec.getEventCategoryDesc());
             
             System.out.println("EventInteegrator.insertEventCategory| sql: " + stmt.toString());
             stmt.execute();
@@ -149,8 +183,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         try {
             stmt = con.prepareStatement(query);
             stmt.setString(1, ec.getEventType().name());
-            stmt.setString(2, ec.getEventTypeTitle());
-            stmt.setString(3, ec.getEventTypeDesc());
+            stmt.setString(2, ec.getEventCategoryTitle());
+            stmt.setString(3, ec.getEventCategoryDesc());
             stmt.setInt(4, ec.getCategoryID());
             
             stmt.executeUpdate();
@@ -302,13 +336,16 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         UserIntegrator ui = getUserIntegrator();
         
         ev.setEventID(rs.getInt("eventid"));
-        ev.setCategory(getEventCategory(rs.getInt("ceeventcategory_catid")));
+        ev.setCategory(getEventCategory(rs.getInt("ceeventCategory_catID")));
         ev.setCaseID(rs.getInt("cecase_caseid"));
-        ev.setDateOfRecord(rs.getTimestamp("dateofrecord").toInstant()
-                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        LocalDateTime dt = rs.getTimestamp("dateofrecord").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+        ev.setDateOfRecord(dt);
+        ev.setPrettyDateOfRecord(getPrettyDate(dt));
         
         ev.setEventTimeStamp(rs.getTimestamp("eventtimestamp").toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        ev.setEventDescription(rs.getString("eventDescription"));
         ev.setEventOwnerUser(ui.getUserByUserID(rs.getInt("login_userid")));
         ev.setDiscloseToMunicipality(rs.getBoolean("disclosetomunicipality"));
         
@@ -357,7 +394,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
     public LinkedList getEventsByCaseID(int caseID) throws IntegrationException{
         LinkedList<Event> eventList = new LinkedList();
         
-        String query = "SELECT eventid FROM public.ceevent WHERE cecase_caseid = ?;";
+        String query = "SELECT * FROM public.ceevent WHERE cecase_caseid = ?;";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;

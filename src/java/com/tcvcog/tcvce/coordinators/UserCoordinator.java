@@ -72,7 +72,7 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
         authenticatedUser = ui.getAuthenticatedUser(loginName, loginPassword);
         if (authenticatedUser != null){
             SessionManager sm = getSessionManager();
-            sm.getVisit().setCurrentUser(authenticatedUser);
+            sm.getVisit().setActiveUser(authenticatedUser);
             System.out.println("UserCoordinator.getUser | default code set: " 
                     + authenticatedUser.getDefaultCodeSet().getCodeSetID());
             sm.getVisit().setActiveCodeSet(authenticatedUser.getDefaultCodeSet());

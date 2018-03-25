@@ -3,38 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CaseIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/eventConfiguration.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CEActionRequestIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Event.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ViolationSelectElementBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/CECase.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventType.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CaseManageBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/CaseCoordinator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/EventIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/ViolationCoordinator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/EditViolationBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSetElementManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonUpdateBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/violationSelectElement.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/EventConfigurationBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/BackingBeanUtils.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/violationAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CodeIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/UserBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CaseManageBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/tempHeadFoot.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/EventAddBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseManage.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Event.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/EventCoordinator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/workflow.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonAddBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CodeViolationIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventType.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/EventIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/eventAdd.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventCategory.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/WorkflowBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/pageTemplate.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/editViolation.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ViolationAddBB.java</file>
         </group>
     </open-files>
 </project-private>

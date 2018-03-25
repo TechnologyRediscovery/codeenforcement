@@ -64,6 +64,8 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
         sm.getVisit().setActionRequest(selectedRequest);
         
         return "actionRequestManage";
+        
+        
     }
 
     /**
@@ -73,7 +75,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
         CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
         SessionManager sm = getSessionManager();
         try {
-            requestList = ari.getCEActionRequestList(sm.getVisit().getCurrentUser().getMuniCode());
+            requestList = ari.getCEActionRequestList(sm.getVisit().getActiveUser().getMuniCode());
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -88,7 +90,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     public LinkedList<CECase> getCaseList() {
         CaseIntegrator ci = getCaseIntegrator();
         SessionManager sm = getSessionManager();
-        int muniCodeForFetching = sm.getVisit().getCurrentUser().getMuniCode();
+        int muniCodeForFetching = sm.getVisit().getActiveUser().getMuniCode();
         
         try {
             caseList = ci.getCECasesByMuni(muniCodeForFetching);

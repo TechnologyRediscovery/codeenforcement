@@ -52,11 +52,19 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
     public EventConfigurationBB() {
     }
     
+    public String logEvent(){
+        
+        
+        
+        
+        return "";
+    }
+    
     public void editSelectedEventCategory(ActionEvent e){
         if(selectedEventCategory != null){
             formEventType = selectedEventCategory.getEventType();
-            formEventCategoryTitle = selectedEventCategory.getEventTypeTitle();
-            formEventCategoryDescr = selectedEventCategory.getEventTypeDesc();
+            formEventCategoryTitle = selectedEventCategory.getEventCategoryTitle();
+            formEventCategoryDescr = selectedEventCategory.getEventCategoryDesc();
             
         } else {
            getFacesContext().addMessage(null,
@@ -72,8 +80,8 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
        
        ec.setCategoryID(selectedEventCategory.getCategoryID());
        ec.setEventType(formEventType);
-       ec.setEventTypeTitle(formEventCategoryTitle);
-       ec.setEventTypeDesc(formEventCategoryDescr);
+       ec.setEventCategoryTitle(formEventCategoryTitle);
+       ec.setEventCategoryDesc(formEventCategoryDescr);
        
         try {
             ei.updateEventCategory(ec);
@@ -96,8 +104,8 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
         EventCategory ec = new EventCategory();
         
         ec.setEventType(newFormSelectedEventType);
-        ec.setEventTypeTitle(newFormEventCategoryTitle);
-        ec.setEventTypeDesc(newFormEventCategoryDescr);
+        ec.setEventCategoryTitle(newFormEventCategoryTitle);
+        ec.setEventCategoryDesc(newFormEventCategoryDescr);
         
         try {
             ei.insertEventCategory(ec);
@@ -174,6 +182,8 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
      * @return the eventTypeList
      */
     public EventType[] getEventTypeList() {
+        eventTypeList = EventType.values();
+        
         return eventTypeList;
     }
 

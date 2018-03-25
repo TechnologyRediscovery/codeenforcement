@@ -117,6 +117,10 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
        currentViolation = sm.getVisit().getActiveCodeViolation();
         return currentViolation;
     }
+    
+    public String backToCaseManager(){
+        return "caseManage";
+    }
 
     /**
      * @return the dateOfRecord

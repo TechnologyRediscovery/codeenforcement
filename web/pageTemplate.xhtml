@@ -11,17 +11,19 @@
     </h:head>
     <h:body>
         <ui:composition template="./../tempHeadFoot.xhtml">
+           
             <ui:define name="content">
                 <div class="mainContainer">
-                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
-                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
-                    </h:messages>
-                            
-                    <h1>Title here</h1>
-                    <f:view>
-             
-                    </f:view>
+                    
+                    
+                    
+                    <h:outputText value="Hello World"/>
+                    
+                    
                 </div>
+                
+                
+                
             </ui:define>
         </ui:composition>
     </h:body>

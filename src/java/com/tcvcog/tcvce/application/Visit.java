@@ -13,6 +13,7 @@ import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.entities.Person;
 import java.util.LinkedList;
 import javax.annotation.ManagedBean;
@@ -30,7 +31,8 @@ public class Visit {
     private CECase activeCase;
     private Event activeEvent;
     private Person activePerson;
-    private User currentUser;
+    private User activeUser;
+    private NoticeOfViolation activeNotice;
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
     private EnforcableCodeElement selectedEnfCodeElement;
@@ -100,17 +102,17 @@ public class Visit {
     }
 
     /**
-     * @return the currentUser
+     * @return the activeUser
      */
-    public User getCurrentUser() {
-        return currentUser;
+    public User getActiveUser() {
+        return activeUser;
     }
 
     /**
-     * @param currentUser the currentUser to set
+     * @param activeUser the activeUser to set
      */
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
     }
 
     /**
@@ -181,6 +183,20 @@ public class Visit {
      */
     public void setActiveCodeViolation(CodeViolation activeCodeViolation) {
         this.activeCodeViolation = activeCodeViolation;
+    }
+
+    /**
+     * @return the activeNotice
+     */
+    public NoticeOfViolation getActiveNotice() {
+        return activeNotice;
+    }
+
+    /**
+     * @param activeNotice the activeNotice to set
+     */
+    public void setActiveNotice(NoticeOfViolation activeNotice) {
+        this.activeNotice = activeNotice;
     }
 
 }

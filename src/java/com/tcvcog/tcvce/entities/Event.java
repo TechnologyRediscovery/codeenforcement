@@ -19,6 +19,7 @@ public class Event {
     private int caseID;
     
     private LocalDateTime dateOfRecord;
+    private String prettyDateOfRecord;
     private LocalDateTime eventTimeStamp;
     private String eventDescription;
     
@@ -183,6 +184,20 @@ public class Event {
      */
     public void setCaseID(int caseID) {
         this.caseID = caseID;
+    }
+
+    /**
+     * @return the prettyDateOfRecord
+     */
+    public String getPrettyDateOfRecord() {
+        return prettyDateOfRecord;
+    }
+
+    /**
+     * @param prettyDateOfRecord the prettyDateOfRecord to set
+     */
+    public void setPrettyDateOfRecord(String prettyDateOfRecord) {
+        this.prettyDateOfRecord = prettyDateOfRecord;
     }
     
     

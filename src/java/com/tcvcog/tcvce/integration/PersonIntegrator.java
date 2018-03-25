@@ -20,6 +20,7 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.PersonType;
+import com.tcvcog.tcvce.entities.Property;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -402,9 +403,35 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     } // close updatePerson
     
-    public HashMap getPersonMapByPropertyID(int propertyID){
+    public LinkedList getPersonListByPropertyID(Property p) throws IntegrationException{
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        LinkedList<Person> ll = new LinkedList();
         
-        return new HashMap();
+        try {
+            String s =  "SELECT person_personid FROM public.propertyperson WHERE property_propertyid = ?;";
+            stmt = con.prepareStatement(s);
+            stmt.setInt(1, p.getPropertyID());
+            System.out.println("PersonIntegrator.personIntegrator | sql: " + s);
+            
+            rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                 ll.add(getPerson(rs.getInt("person_personid")));
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("PersonIntegrator.getPerson | Unable to retrieve person", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+
+        return ll;
+        
     }
     
     public HashMap getPersonMapByCaseID(int caseID){

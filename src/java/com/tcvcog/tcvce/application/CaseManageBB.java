@@ -17,16 +17,18 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.CaseCoordinator;
+import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
+import com.tcvcog.tcvce.domain.EntityLifecyleException;
+import com.tcvcog.tcvce.domain.EventIntegrationException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.EventType;
-import com.tcvcog.tcvce.integration.CaseIntegrator;
-import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -50,18 +52,15 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     private LinkedList<CodeViolation> violationList;
     private CodeViolation selectedViolation;
     
-    // add event form fields
-    private String formEventDesc;
-    private Date formEventDate;
-    private EventType formEventType;
-    private boolean formDiscloseToMuni;
-    private boolean formDiscloseToPublic;
-    private boolean activeEvent;
-    private String formEventNotes;
-    private LinkedList<Person> formEventpersonList;
+    private LinkedList<NoticeOfViolation> noticeList;
+    private NoticeOfViolation selectedNotice;
     
-    private EventType[] eventTypeArr;
-    private EventType selectedEventType;
+    private LinkedList<CodeViolation> citationList;
+    private CodeViolation code;
+    
+    
+    
+    
     
     /**
      * Creates a new instance of CaseManageBB
@@ -82,6 +81,10 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
             return "";
             
         }
+    }
+    
+    public String createCitation(){
+        return "";
     }
     
     public String recordCompliance(){
@@ -123,27 +126,107 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
     
     public String addViolation(){
-        
-        
+        // no logic needed in the backing bean
         
         return "violationSelectElement";
     }
     
     public String editSelectedEvent(){
 
-    if(selectedViolation != null){
+        if(selectedViolation != null){
+            SessionManager sm = getSessionManager();
+            sm.getVisit().setActiveCodeViolation(selectedViolation);
+            return "";
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Please select a violation and try again", ""));
+            return "";
+
+            }
+    }
+    
+    public String createNewNoticeOfViolation(){
+        CaseCoordinator cc = getCaseCoordinator();
+        NoticeOfViolation nov = cc.generateNewNoticeOfViolation(currentCase);
         SessionManager sm = getSessionManager();
-        sm.getVisit().setActiveCodeViolation(selectedViolation);
-        return "";
-    } else {
-        getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Please select a violation and try again", ""));
-        return "";
-
+        sm.getVisit().setActiveNotice(nov);
+             
+        return "noticeOfViolationEditor";
     }
+    
+    
+    
+    public String editNoticeOfViolation(){
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveNotice(selectedNotice);
+        
+        return "noticeOfViolationEditor";
     }
-
+    
+    
+    public void deleteNoticeOfViolation(ActionEvent event){
+        CaseCoordinator caseCoord = getCaseCoordinator();
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveNotice(selectedNotice);
+        try {
+            caseCoord.deleteNoticeOfViolation(selectedNotice);
+        } catch (EntityLifecyleException ex) {
+            
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to delete this notice of violation, "
+                                    + "probably because it has been sent already", ""));
+        }
+    }
+    
+    public void deployNoticeOfViolation(ActionEvent event){
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveNotice(selectedNotice);
+        CaseCoordinator cc = getCaseCoordinator();
+        try {
+            cc.deployNoticeOfViolation(currentCase, selectedNotice);
+        } catch (EntityLifecyleException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to deploy notice of violation", "Case phase remains unchanged"));
+            
+        } catch (IntegrationException ex) {
+            
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to communicate effectively with the database", ""));
+        } catch (EventIntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to generate case event to log phase change", 
+                            "Note that because this message is being displayed, the phase change"
+                                    + "has probably succeeded"));
+        } // close try/catch \
+        
+    }
+    
+    public void markNoticeOfViolationAsSent(Event event){
+        CaseCoordinator caseCoord = getCaseCoordinator();
+        try {
+            caseCoord.markNoticeOfViolationAsSent(currentCase, selectedNotice);
+        } catch (EntityLifecyleException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            ex.toString(), "This must be corrected by a "
+                                    + "system administrator, sorry"));
+            
+        } catch (EventIntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to generate case event to log phase change", 
+                            "Note that because this message is being displayed, the phase change"
+                                    + "has probably succeeded"));
+            
+            
+        } // close try/cathc section
+    }
+    
     /**
      * @return the currentCase
      */
@@ -165,6 +248,14 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      * @return the eventList
      */
     public LinkedList<Event> getEventList() {
+        EventCoordinator ec = getEventCoordinator();
+        try {
+            eventList = ec.geteventList(currentCase);
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Could not load event list for this case", ""));
+        }
         return eventList;
     }
 
@@ -183,8 +274,6 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         try {
             violationList = vc.getCodeViolations(currentCase);
             if(violationList != null){
-                System.out.println("CaseManageBB.getViolationList | peek at list: " 
-                        + violationList.peekFirst().getCeCaseID() );
             }
         } catch (IntegrationException ex) {
             System.out.println(ex);
@@ -232,144 +321,35 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         this.selectedViolation = selectedViolation;
     }
 
+    
+
+    
+
     /**
-     * @return the formEventDesc
+     * @return the selectedNotice
      */
-    public String getFormEventDesc() {
-        return formEventDesc;
+    public NoticeOfViolation getSelectedNotice() {
+        return selectedNotice;
     }
 
     /**
-     * @return the formEventDate
+     * @param selectedNotice the selectedNotice to set
      */
-    public Date getFormEventDate() {
-        return formEventDate;
+    public void setSelectedNotice(NoticeOfViolation selectedNotice) {
+        this.selectedNotice = selectedNotice;
     }
 
     /**
-     * @return the formEventType
+     * @return the noticeList
      */
-    public EventType getFormEventType() {
-        return formEventType;
+    public LinkedList<NoticeOfViolation> getNoticeList() {
+        return noticeList;
     }
 
     /**
-     * @return the formDiscloseToMuni
+     * @param noticeList the noticeList to set
      */
-    public boolean isFormDiscloseToMuni() {
-        return formDiscloseToMuni;
-    }
-
-    /**
-     * @return the formDiscloseToPublic
-     */
-    public boolean isFormDiscloseToPublic() {
-        return formDiscloseToPublic;
-    }
-
-    /**
-     * @return the activeEvent
-     */
-    public boolean isActiveEvent() {
-        return activeEvent;
-    }
-
-    /**
-     * @return the formEventNotes
-     */
-    public String getFormEventNotes() {
-        return formEventNotes;
-    }
-
-    /**
-     * @return the formEventpersonList
-     */
-    public LinkedList<Person> getFormEventpersonList() {
-        return formEventpersonList;
-    }
-
-    /**
-     * @param formEventDesc the formEventDesc to set
-     */
-    public void setFormEventDesc(String formEventDesc) {
-        this.formEventDesc = formEventDesc;
-    }
-
-    /**
-     * @param formEventDate the formEventDate to set
-     */
-    public void setFormEventDate(Date formEventDate) {
-        this.formEventDate = formEventDate;
-    }
-
-    /**
-     * @param formEventType the formEventType to set
-     */
-    public void setFormEventType(EventType formEventType) {
-        this.formEventType = formEventType;
-    }
-
-    /**
-     * @param formDiscloseToMuni the formDiscloseToMuni to set
-     */
-    public void setFormDiscloseToMuni(boolean formDiscloseToMuni) {
-        this.formDiscloseToMuni = formDiscloseToMuni;
-    }
-
-    /**
-     * @param formDiscloseToPublic the formDiscloseToPublic to set
-     */
-    public void setFormDiscloseToPublic(boolean formDiscloseToPublic) {
-        this.formDiscloseToPublic = formDiscloseToPublic;
-    }
-
-    /**
-     * @param activeEvent the activeEvent to set
-     */
-    public void setActiveEvent(boolean activeEvent) {
-        this.activeEvent = activeEvent;
-    }
-
-    /**
-     * @param formEventNotes the formEventNotes to set
-     */
-    public void setFormEventNotes(String formEventNotes) {
-        this.formEventNotes = formEventNotes;
-    }
-
-    /**
-     * @param formEventpersonList the formEventpersonList to set
-     */
-    public void setFormEventpersonList(LinkedList<Person> formEventpersonList) {
-        this.formEventpersonList = formEventpersonList;
-    }
-
-    /**
-     * @return the eventTypeArr
-     */
-    public EventType[] getEventTypeArr() {
-        eventTypeArr = EventType.values();
-        return eventTypeArr;
-    }
-
-    /**
-     * @param eventTypeArr the eventTypeArr to set
-     */
-    public void setEventTypeArr(EventType[] eventTypeArr) {
-        this.eventTypeArr = eventTypeArr;
-    }
-
-    /**
-     * @return the selectedEventType
-     */
-    public EventType getSelectedEventType() {
-        return selectedEventType;
-    }
-
-    /**
-     * @param selectedEventType the selectedEventType to set
-     */
-    public void setSelectedEventType(EventType selectedEventType) {
-        this.selectedEventType = selectedEventType;
+    public void setNoticeList(LinkedList<NoticeOfViolation> noticeList) {
+        this.noticeList = noticeList;
     }
 }

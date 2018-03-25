@@ -817,5 +817,52 @@ ALTER TABLE propertyphotodoc ADD CONSTRAINT propertyphotodoc_pdid_fk FOREIGN KEY
 ALTER TABLE propertyphotodoc ADD CONSTRAINT propertyphotodoc_prop_fk FOREIGN KEY (property_propertyID) REFERENCES property (propertyID);
 
 
+CREATE SEQUENCE IF NOT EXISTS noticeofviolation_noticeID_seq
+    START WITH 1000
+    INCREMENT BY 1
+    MINVALUE 1000
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE noticeofviolation
+  (
+    noticeID                    INTEGER DEFAULT nextval('noticeofviolation_noticeID_seq') NOT NULL,
+    caseID                      INTEGER NOT NULL,
+    letterText                  character varying (2000),
+    insertionTimeStamp          TIMESTAMP WITH TIME ZONE NOT NULL,
+    dateOfRecord                TIMESTAMP WITH TIME ZONE NOT NULL,
+    requestToSend               boolean,
+    letterSent                  boolean,
+    letterSendDate              TIMESTAMP WITH TIME ZONE NOT NULL
+
+    -- needs a timestamp field
+  ) ;
+
+ALTER TABLE noticeofviolation ADD CONSTRAINT noticeViolation_noticeID_pk PRIMARY KEY ( noticeID ) ;
+
+ALTER TABLE noticeofviolation ADD CONSTRAINT noticeOfViolationCaseID_fk FOREIGN KEY (caseID) REFERENCES cecase (caseID) ;
+
+CREATE SEQUENCE IF NOT EXISTS ice_iceID_seq
+    START WITH 1000
+    INCREMENT BY 1
+    MINVALUE 1000
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE inspectablecodelement
+{
+    inspectableCodelElementID       INTEGER DEFAULT nextval('ice_iceID_seq') NOT NULL,
+    codeElementID                   INTEGER NOT NULL,
+    inspectionPriority              boolean,
+    inspectionTips                  character varying (2000)
+
+}
+
+ALTER TABLE inspectablecodelement ADD CONSTRAINT inspectableCodelElementID_pk PRIMARY KEY ( inspectableCodelElementID );
+
+ALTER TABLE  
+
+
 -- COMMIT;
 
