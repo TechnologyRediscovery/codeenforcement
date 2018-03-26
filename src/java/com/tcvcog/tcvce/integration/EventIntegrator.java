@@ -282,11 +282,12 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         LinkedList<Person> ll = event.getEventPersons();
         event.setEventID(insertedEventID);
         
-        if( ll.size() > 0 && event.getEventID() != 0){
-            pi.connectPersonsToEvent(event, ll);
-        } else {
-            throw new IntegrationException("Successfully inserted event but unable to connect event to persons");
+        if(ll != null){
+            if( ll.size() > 0 && event.getEventID() != 0){
+                pi.connectPersonsToEvent(event, ll);
+            } 
         }
+        
         
     } // close method
     

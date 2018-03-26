@@ -111,6 +111,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         return nextPhaseInSequence;
     }
     
+    // I think this method is deprecated by the second overriden method
     private void advanceToNextCasePhase(CECase ceCase) throws CaseLifecyleException, IntegrationException, EventException{
         CaseIntegrator caseInt = getCaseIntegrator();
         EventCoordinator eventCoor = getEventCoordinator();
@@ -125,7 +126,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         caseInt.changeCECasePhase(ceCase);
         // If we get an integration exception, the case phase change event
         // is never generated since execution returns to caller through an exception
-        eventCoor.logCommittedCasePhaseChange(ceCase, pastPhase);
+//        eventCoor.logCommittedCasePhaseChange(ceCase, pastPhase);
     }
     
     /**
@@ -144,7 +145,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             // we must ship the case to the integrator with the case phase updated
             // because the integrator does not implement any business logic
             caseInt.changeCECasePhase(ceCase);
-            eventCoor.logCommittedCasePhaseChange(ceCase, pastPhase);
+            //eventCoor.logCommittedCasePhaseChange(ceCase, pastPhase);
         
         } catch (IntegrationException ex) {
             Logger.getLogger(CaseCoordinator.class.getName()).log(Level.SEVERE, null, ex);

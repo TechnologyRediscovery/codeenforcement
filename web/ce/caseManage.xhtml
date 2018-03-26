@@ -226,143 +226,43 @@
                                 
                                 
                                 <h:form id="formEventAddAjax">
+                                    
+                                     <h:panelGrid columns="2" border="0" 
+                                         cellpadding="5" columnClasses="gridTd, gridTd"
+                                         footerClass="gridFooter">
+                                             
+                                         <h:panelGroup>
+                                            <h:outputLabel for="newEventTypeMenu">
+                                                <h:outputText value="Select an event type:"/>
+                                            </h:outputLabel>
 
-                                    <h:outputLabel for="newEventTypeMenu">
-                                        <h:outputText value="Select an event type:"/>
-                                    </h:outputLabel>
-                                    
-                                    <p:selectOneListbox id="newEventTypeMenu" required="true" value="#{eventAddBB.selectedEventType}" tabindex="10">
-                                        <p:ajax update="categoryList" immediate="true"/> 
-                                        <f:selectItems value="#{eventAddBB.userAdminEventTypeList}"/>
-                                    </p:selectOneListbox>
-                                    
-                                    <h:message for="newEventTypeMenu" showDetail="false" showSummary="true" 
-                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                            <p:selectOneListbox id="newEventTypeMenu" required="true" value="#{eventAddBB.selectedEventType}" tabindex="10">
+                                                <p:ajax update="categoryList" immediate="true"/> 
+                                                <f:selectItems value="#{eventAddBB.userAdminEventTypeList}"/>
+                                            </p:selectOneListbox>
 
-                                    <h:outputLabel for="categoryList">
-                                        <h:outputText value="Event Categories:"/>
-                                    </h:outputLabel>
-                                    
-                                    <p:selectOneListbox id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
-                                        <f:converter converterId="eventCategoryConverter"/>
-                                        <f:selectItems  id="catItemsList" value="#{eventAddBB.eventCategoryList}" var="ec" itemValue="#{ec}" itemLabel="#{ec.eventCategoryTitle}"/>
-                                    </p:selectOneListbox>
-                                    
-                                    <h:message for="categoryList" showDetail="false" showSummary="true" 
-                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
-                                            value="Create new event"/>
+                                            <h:message for="newEventTypeMenu" showDetail="false" showSummary="true" 
+                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                             
+                                         </h:panelGroup>
+                                         <h:panelGroup>
+                                            <h:outputLabel for="categoryList">
+                                                <h:outputText value="Event Categories of selected type:"/>
+                                            </h:outputLabel>
 
-                                    
+                                             <p:selectOneListbox style="width: 300px" id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
+                                                <f:converter converterId="eventCategoryConverter"/>
+                                                <f:selectItems  id="catItemsList" value="#{eventAddBB.eventCategoryList}" var="ec" itemValue="#{ec}" itemLabel="#{ec.eventCategoryTitle}"/>
+                                            </p:selectOneListbox>
+
+                                            <h:message for="categoryList" showDetail="false" showSummary="true" 
+                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                            <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
+                                                    value="Create new event of this category"/>
+                                         </h:panelGroup>
+                                     </h:panelGrid>
                                 </h:form>
-                                
-                                
-                                
-                                <p>Choose a type of event, select a single category in that type, and then click 
-                                    "Create New Event" to be routed to the event information entry form.</p>
-                                  
-                                        <p:spacer height="10px"/>
-
-                                        <h:panelGrid columns="2" border="0" 
-                                                     cellpadding="5" columnClasses="gridTd, gridTd"
-                                                     footerClass="gridFooter">
-
-                                           
-                                            <h:form id="eventCreateCommForm">
-                                                <h:panelGroup>
-                                                    <h:outputLabel for="commEventListBox">
-                                                        <h:outputText value="Communication Events:"/>
-                                                    </h:outputLabel>
-                                                    <p:spacer height="10"></p:spacer>
-                                                    
-                                                    <p:selectOneMenu 
-                                                        id="commEventListBox" 
-                                                        value="#{eventAddBB.selectedEventCategory}" 
-                                                        tabindex="3">
-                                                        <f:converter converterId="eventCategoryConverter"/>
-                                                        <f:selectItems value="#{eventAddBB.catComList}" var="cat" itemLabel="#{cat.eventCategoryTitle}" itemValue="#{cat}"/>
-                                                    </p:selectOneMenu>
-                                                    
-                                                    <h:message for="commEventListBox" showDetail="false" showSummary="true" 
-                                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                                                    <p:spacer height="10"></p:spacer>
-                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
-                                                            value="Create new communication event"/>
-                                                </h:panelGroup>
-                                            </h:form>
-                                           
-                                            
-
-                                           
-                                            <h:form id="eventCreateActionForm">
-                                                <h:panelGroup>
-                                                    <h:outputLabel for="actionEventListBox">
-                                                        <h:outputText value="Filed Action Events:"/>
-                                                    </h:outputLabel>
-                                                    
-                                                    <p:spacer height="10"></p:spacer>
-                                                    
-                                                    <p:selectOneListbox id="actionEventListBox" required="true" value="#{eventAddBB.selectedEventCategory}" tabindex="3">
-                                                        <f:selectItems value="#{eventAddBB.catActionList}" var="cat" itemLabel="#{cat.eventCategoryTitle}" itemValue="#{cat}" />
-                                                    </p:selectOneListbox>
-                                                    <h:message for="actionEventListBox" showDetail="false" showSummary="true" 
-                                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-u
-                                                    <p:spacer height="10"></p:spacer>
-    
-                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
-                                                         value="Create new action event"/>
-                                                </h:panelGroup>
-                                            </h:form>
-                                           
-                                            
-                                           
-                                            <h:form id="eventCreateMeetingForm">
-                                                <h:panelGroup>
-                                                    <h:outputLabel for="meetingEventListBox">
-                                                        <h:outputText value="Meeting Events:"/>
-                                                    </h:outputLabel>
-                                                    
-                                                    <p:spacer height="10"></p:spacer>
-                                                    
-                                                    <p:selectOneListbox id="meetingEventListBox" required="true" value="#{eventAddBB.selectedEventCategory}" tabindex="3">
-                                                        <f:selectItems value="#{eventAddBB.catMeetingList}" var="cat" itemLabel="#{cat.eventCategoryTitle}" itemValue="#{cat}"/>
-                                                    </p:selectOneListbox>
-                                                    <h:message for="meetingEventListBox" showDetail="false" showSummary="true" 
-                                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-
-                                                    <p:spacer height="10"></p:spacer>
-            
-                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
-                                                         value="Create new meeting event"/>
-                                                </h:panelGroup>
-                                            </h:form>
-                                           
-                                            <h:form id="eventCreateCustom">
-                                                <h:panelGroup>
-                                                    <h:outputLabel for="customEventListBox">
-                                                        <h:outputText value="Custom Events:"/>
-                                                    </h:outputLabel>
-                                                    
-                                                    <p:spacer height="10"></p:spacer>
-                                                    
-                                                    <p:selectOneListbox id="customEventListBox" required="true" value="#{eventAddBB.selectedEventCategory}" tabindex="3">
-                                                        <f:selectItems value="#{eventAddBB.catCustomList}" var="cat" itemLabel="#{cat.eventCategoryTitle}" itemValue="#{cat}"/>
-                                                    </p:selectOneListbox>
-                                                    <h:message for="customEventListBox" showDetail="false" showSummary="true" 
-                                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-
-                                                    <p:spacer height="10"></p:spacer>
-            
-                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
-                                                         value="Create new custom event"/>
-                                                </h:panelGroup>
-                                            </h:form>
-                                           
-                                        </h:panelGrid>
-                                            
-
-                                        <p:spacer height="10px"/>
+                                <p:spacer height="10px"/>
                                            
                                 
                                 

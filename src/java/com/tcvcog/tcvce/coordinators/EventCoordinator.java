@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -159,7 +160,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
                     && evCatID == Integer.parseInt(getResourceBundle(
                     Constants.EVENT_CATEGORY_BUNDLE).getString("advToAwaitingHearingDate"))){
                 
-                cc.advanceToNextCasePhase(c, CasePhase.SecondaryComplianceTimeframe);
+                cc.advanceToNextCasePhase(c, CasePhase.AwaitingHearingDate);
                 logCommittedCasePhaseChange(c, phase);
                 
                 // event trigger: hearing date scheduled
@@ -232,6 +233,11 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setActiveEvent(true);
         
         insertEvent(event);
+        
+         getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "The case phase has been automatically "
+                            + "advanced after a magic event occurred", ""));
         
     } // close method
 }
