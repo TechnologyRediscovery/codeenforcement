@@ -18,6 +18,8 @@ Council of Governments, PA
 package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
+import com.tcvcog.tcvce.domain.CaseLifecyleException;
+import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
@@ -25,13 +27,17 @@ import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.EventIntegrator;
+import com.tcvcog.tcvce.integration.PersonIntegrator;
+import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -40,7 +46,7 @@ import java.util.logging.Logger;
 public class EventAddBB extends BackingBeanUtils implements Serializable {
     
     // add event form fields
-    private LinkedList eventCategoryList;
+    private LinkedList<EventCategory> eventCategoryList;
     
     private LinkedList catComList;
     private LinkedList catActionList;
@@ -48,6 +54,8 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private LinkedList catCustomList;
     
     private EventCategory selectedEventCategory;
+    private EventType selectedEventType;
+    private EventType[] userAdminEventTypeList;
     
     private CECase ceCase;
     private Event event;
@@ -59,8 +67,10 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private boolean activeEvent;
     private String formEventNotes;
     
-    private LinkedList<Person> formEventpersonList;
-    private LinkedList<Person> formSelectedPersons;
+    private LinkedList<Person> propertyPersonList;
+    private ArrayList<Person> formSelectedPersons;
+    
+    
     
     // constructor
     public EventAddBB(){
@@ -71,8 +81,51 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         System.out.println("EventAddBB.startNewEvent | category: " + selectedEventCategory.getEventCategoryTitle());
         SessionManager sm = getSessionManager();
         EventCoordinator ec = getEventCoordinator();
-        sm.getVisit().setActiveEvent(ec.getInitializedEvent(selectedEventCategory));
+        event = ec.getInitializedEvent(selectedEventCategory);
+        sm.getVisit().setActiveEvent(event);
         return "eventAdd";
+    }
+    
+    public String addEvent(){
+        EventCoordinator ec = getEventCoordinator();
+        SessionManager sm = getSessionManager();
+        Event e = sm.getVisit().getActiveEvent();
+        
+        // category is already set from initialization sequence
+        e.setCaseID(sm.getVisit().getActiveCase().getCaseID());
+        e.setEventDescription(formEventDesc);
+        e.setActiveEvent(activeEvent);
+        e.setEventOwnerUser(sm.getVisit().getActiveUser());
+        e.setDateOfRecord(formEventDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        e.setDiscloseToMunicipality(formDiscloseToMuni);
+        e.setDiscloseToPublic(formDiscloseToPublic);
+        e.setNotes(formEventDesc);
+        e.setEventPersons(propertyPersonList);
+        
+        // now check for persons to connect
+        
+        try {
+            ec.processEvent(ceCase, event);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Successfully logged event.", ""));
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            ex.getMessage(), 
+                            "This is a non-user system-level error that must be fixed by your Sys Admin"));
+        } catch (CaseLifecyleException ex) {
+            Logger.getLogger(EventAddBB.class.getName()).log(Level.SEVERE, null, ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            ex.getMessage(), 
+                            "This is a non-user system-level error that must be fixed by your Sys Admin"));
+        }
+        
+        
+        
+        return "caseManage";
     }
     
     
@@ -127,10 +180,18 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     }
 
     /**
-     * @return the formEventpersonList
+     * @return the propertyPersonList
      */
-    public LinkedList<Person> getFormEventpersonList() {
-        return formEventpersonList;
+    public LinkedList<Person> getPropertyPersonList() {
+        PersonIntegrator pi = getPersonIntegrator();
+        SessionManager sm = getSessionManager();
+        
+        try {
+            propertyPersonList = pi.getPersonListByPropertyID(sm.getVisit().getActiveProp());
+        } catch (IntegrationException ex) {
+            // do nothing
+        }
+        return propertyPersonList;
     }
 
     /**
@@ -177,10 +238,10 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     }
 
     /**
-     * @param formEventpersonList the formEventpersonList to set
+     * @param propertyPersonList the propertyPersonList to set
      */
-    public void setFormEventpersonList(LinkedList<Person> formEventpersonList) {
-        this.formEventpersonList = formEventpersonList;
+    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
+        this.propertyPersonList = propertyPersonList;
     }
 
    
@@ -205,14 +266,14 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the formSelectedPersons
      */
-    public LinkedList<Person> getFormSelectedPersons() {
+    public ArrayList<Person> getFormSelectedPersons() {
         return formSelectedPersons;
     }
 
     /**
      * @param formSelectedPersons the formSelectedPersons to set
      */
-    public void setFormSelectedPersons(LinkedList<Person> formSelectedPersons) {
+    public void setFormSelectedPersons(ArrayList<Person> formSelectedPersons) {
         this.formSelectedPersons = formSelectedPersons;
     }
 
@@ -237,6 +298,16 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the eventCategoryList
      */
     public LinkedList getEventCategoryList() {
+        EventIntegrator ei = getEventIntegrator();
+        
+        if(selectedEventType != null){
+            
+            try {
+                eventCategoryList = ei.getEventCategoryList(selectedEventType);
+            } catch (IntegrationException ex) {
+                // do nothing
+            }
+        }
         return eventCategoryList;
     }
 
@@ -338,6 +409,36 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      */
     public void setCatCustomList(LinkedList catCustomList) {
         this.catCustomList = catCustomList;
+    }
+
+    /**
+     * @return the selectedEventType
+     */
+    public EventType getSelectedEventType() {
+        return selectedEventType;
+    }
+
+    /**
+     * @param selectedEventType the selectedEventType to set
+     */
+    public void setSelectedEventType(EventType selectedEventType) {
+        this.selectedEventType = selectedEventType;
+    }
+
+    /**
+     * @return the userAdminEventTypeList
+     */
+    public EventType[] getUserAdminEventTypeList() {
+        EventCoordinator ec = getEventCoordinator();
+        userAdminEventTypeList = ec.getUserAdmnisteredEventTypeList();
+        return userAdminEventTypeList;
+    }
+
+    /**
+     * @param userAdminEventTypeList the userAdminEventTypeList to set
+     */
+    public void setUserAdminEventTypeList(EventType[] userAdminEventTypeList) {
+        this.userAdminEventTypeList = userAdminEventTypeList;
     }
 
    

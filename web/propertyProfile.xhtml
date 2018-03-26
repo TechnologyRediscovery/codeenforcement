@@ -155,16 +155,8 @@
                                 submitted through the public request portal or by municipal staff.</p>
                             
                             
-                            
-                            
-                            
-                            
                             <p:commandButton ajax="fakse" value="Manage Code Enforcement Request &rarr;" action="manageActionRequest"/>
                             
-
-
-
-
                             <p:spacer height="10px"/>
                             <hr/>
                             <p:spacer height="10px"/>
@@ -186,12 +178,59 @@
                             <p:spacer height="10px"/>
 
                             <h2>Property-connected person</h2>
+                            
                             <p>Log of all Persons in the system attached to this property. 
                                 You can sort and filter by Person Type and click through 
                                 to log a communication event or edit the Person's profile.</p>
                             
-                                <!--Insert person table here-->
-                            
+                                 <p:dataTable
+                                    id="personeTable"
+                                    var="p"
+                                    value="#{propertyProfileBB.propertyPersonList}"
+                                    selectionMode="single"
+                                    selection="#{propertyProfile.selectedPerson}"
+                                    rowKey="#{p.personid}"
+                                    tableStyleClass="primeDataTable">
+                                        <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Person Type" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.personType.label}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Municipality" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.muni.muniName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="First" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.firstName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Last" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.lastName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Cell Num" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.phoneCell}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Address" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.address_street}"/>
+                                    </p:column>
+                            </p:dataTable>
+
                             
                             <p:commandButton ajax="fakse" value="Create a communication event with this person" action="communicationEvent"/>
                             <p:commandButton ajax="fakse" value="View Person's profile and edit info" action="personProfile"/>

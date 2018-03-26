@@ -18,8 +18,8 @@ Council of Governments, PA
 package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
-import com.tcvcog.tcvce.domain.EntityLifecyleException;
-import com.tcvcog.tcvce.domain.EventIntegrationException;
+import com.tcvcog.tcvce.domain.CaseLifecyleException;
+import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
@@ -96,14 +96,14 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
         return "caseManage";
     } // close method
     
-    public String deployNotice() throws EventIntegrationException{
+    public String deployNotice() throws EventException{
         
         CaseCoordinator caseCoord = getCaseCoordinator();
         SessionManager sm = getSessionManager();
         CECase ceCase = sm.getVisit().getActiveCase();
         try {
             caseCoord.deployNoticeOfViolation(ceCase, currentNotice);
-        } catch (EntityLifecyleException ex) {
+        } catch (CaseLifecyleException ex) {
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                         "Unable to deploy notice due to a business logic error", ""));

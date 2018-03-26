@@ -6,6 +6,7 @@
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 
 /**
  *
@@ -29,7 +30,9 @@ public class Event {
     
     private boolean activeEvent;
     private String notes;
-
+    
+    private LinkedList<Person> eventPersons;
+    
     /**
      * @return the eventID
      */
@@ -198,6 +201,20 @@ public class Event {
      */
     public void setPrettyDateOfRecord(String prettyDateOfRecord) {
         this.prettyDateOfRecord = prettyDateOfRecord;
+    }
+
+    /**
+     * @return the eventPersons
+     */
+    public LinkedList<Person> getEventPersons() {
+        return eventPersons;
+    }
+
+    /**
+     * @param eventPersons the eventPersons to set
+     */
+    public void setEventPersons(LinkedList<Person> eventPersons) {
+        this.eventPersons = eventPersons;
     }
     
     

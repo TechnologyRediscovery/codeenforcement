@@ -15,16 +15,30 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.entities;
+package com.tcvcog.tcvce.domain;
 
 /**
  *
  * @author sylvia
  */
-public class HumanAction {
+public class CaseLifecyleException extends BaseException {
     
-    private User user;
-    private HumanActionType humanActionType;
+    public CaseLifecyleException(){
+        super();
+        
+    }
     
+    public CaseLifecyleException(String message){
+        super(message);
+    }
+    
+    public CaseLifecyleException(Exception e){
+        super(e);
+    }
+    
+    public CaseLifecyleException(String message, Exception e){
+        super(message, e);
+        
+    }
     
 }

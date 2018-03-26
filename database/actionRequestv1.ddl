@@ -544,7 +544,6 @@ CREATE TABLE ceeventperson
 (
     ceevent_eventID             INTEGER NOT NULL ,
     person_personID             INTEGER NOT NULL ,
-    roleInEvent                 character varying (500) 
 ) ;
 
 ALTER TABLE ceeventperson ADD CONSTRAINT ceeventperson_pk PRIMARY KEY (ceevent_eventID, person_personID) ;
@@ -849,6 +848,9 @@ CREATE SEQUENCE IF NOT EXISTS ice_iceID_seq
     NO MAXVALUE
     CACHE 1;
 
+-- OCCUPANCY INSPECTIONS
+ 
+
 
 CREATE TABLE inspectablecodelement
 {
@@ -861,7 +863,73 @@ CREATE TABLE inspectablecodelement
 
 ALTER TABLE inspectablecodelement ADD CONSTRAINT inspectableCodelElementID_pk PRIMARY KEY ( inspectableCodelElementID );
 
-ALTER TABLE  
+ALTER TABLE inspectablecodelement ADD CONSTRAINT codeElementID_fk FOREIGN KEY ( codeElementID ) REFERENCES codeelement (elementID);
+
+CREATE SEQUENCE IF NOT EXISTS roomTypeID_seq
+    START WITH 10
+    INCREMENT BY 1
+    MINVALUE 10
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE roomtype
+{
+    roomTypeID                      INTEGER DEFAULT nextval('roomTypeID_seq') NOT NULL,
+    typeName                        character varying (100),
+    description                     character varying (1000)
+}
+
+ALTER TABLE roomtype ADD CONSTRAINT roomTypeID_pk PRIMARY KEY (roomTypeID) ;
+
+CREATE SEQUENCE IF NOT EXISTS roomtypeice_seq
+    START WITH 10
+    INCREMENT BY 1
+    MINVALUE 10
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE roomtypeice 
+{
+    roomTypeIceID                   INTEGER DEFAULT nextval('roomtypeice_seq') NOT NULL,
+    roomTypeID                      INTEGER NOT NULL,
+    inspectablecodelementID         INTEGER NOT NULL,
+    notes                           character varying (1000)
+
+}
+
+ALTER TABLE roomtypeice ADD CONSTRAINT roomTypeIceID_pk PRIMARY KEY (roomTypeIceID);
+
+ALTER TABLE roomtypeice ADD CONSTRAINT roomType_typeID_fk FOREIGN KEY ( roomTypeID ) REFERENCES roomtype (roomTypeID) ;
+
+ALTER TABLE roomtypeice ADD CONSTRAINT inspectablecodelementID_fk FOREIGN KEY ( inspectablecodelementID ) REFERENCES inspectablecodelement (inspectablecodelementID) ;
+
+
+CREATE SEQUENCE IF NOT EXISTS occupancyinspectionID_seq
+    START WITH 10
+    INCREMENT BY 1
+    MINVALUE 10
+    NO MAXVALUE
+    CACHE 1;
+
+nh90
+CREATE TABLE occupancyinspection
+{
+    inspectionID                    INTEGER DEFAULT nextval('occupancyinspectionID_seq') NOT NULL,
+    propertyID                      INTEGER, 
+    propertyUnitNo                  character varying (20),
+    enforcementOfficialID           INTEGER NOT NULL,
+    firstInspectionDate             TIMESTAMP WITH TIME ZONE NOT NULL,
+    secondInspectionDate            TIMESTAMP WITH TIME ZONE NOT NULL,
+
+
+
+}
+
+ALTER TABLE occupancyinspection ADD CONSTRAINT citation_officialID_fk FOREIGN KEY (enforcementofficial_officialID) REFERENCES enforcementofficial (officialID);
+
+-- Table: Occupancy permit
+-- figure out how to track the old date with date passedygggggggggggggggggggggggggggggggggggggggggggtrt&^^^^^^^^^^^^^^^y\\
 
 
 -- COMMIT;

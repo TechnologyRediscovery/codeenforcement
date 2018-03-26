@@ -224,6 +224,40 @@
 
                                 <h2>Create a new event</h2>
                                 
+                                
+                                <h:form id="formEventAddAjax">
+
+                                    <h:outputLabel for="newEventTypeMenu">
+                                        <h:outputText value="Select an event type:"/>
+                                    </h:outputLabel>
+                                    
+                                    <p:selectOneListbox id="newEventTypeMenu" required="true" value="#{eventAddBB.selectedEventType}" tabindex="10">
+                                        <p:ajax update="categoryList" immediate="true"/> 
+                                        <f:selectItems value="#{eventAddBB.userAdminEventTypeList}"/>
+                                    </p:selectOneListbox>
+                                    
+                                    <h:message for="newEventTypeMenu" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    <h:outputLabel for="categoryList">
+                                        <h:outputText value="Event Categories:"/>
+                                    </h:outputLabel>
+                                    
+                                    <p:selectOneListbox id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
+                                        <f:converter converterId="eventCategoryConverter"/>
+                                        <f:selectItems  id="catItemsList" value="#{eventAddBB.eventCategoryList}" var="ec" itemValue="#{ec}" itemLabel="#{ec.eventCategoryTitle}"/>
+                                    </p:selectOneListbox>
+                                    
+                                    <h:message for="categoryList" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
+                                            value="Create new event"/>
+
+                                    
+                                </h:form>
+                                
+                                
+                                
                                 <p>Choose a type of event, select a single category in that type, and then click 
                                     "Create New Event" to be routed to the event information entry form.</p>
                                   
@@ -299,7 +333,7 @@ u
 
                                                     <p:spacer height="10"></p:spacer>
             
-                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewevent}"
+                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
                                                          value="Create new meeting event"/>
                                                 </h:panelGroup>
                                             </h:form>
@@ -320,7 +354,7 @@ u
 
                                                     <p:spacer height="10"></p:spacer>
             
-                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewevent}"
+                                                    <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
                                                          value="Create new custom event"/>
                                                 </h:panelGroup>
                                             </h:form>

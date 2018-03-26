@@ -21,22 +21,22 @@ package com.tcvcog.tcvce.domain;
  *
  * @author sylvia
  */
-public class EventIntegrationException extends BaseException {
+public class EventExceptionDeprecated extends BaseException {
     
-    public EventIntegrationException(){
+    public EventExceptionDeprecated(){
         super();
         
     }
     
-    public EventIntegrationException(String message){
+    public EventExceptionDeprecated(String message){
         super(message);
     }
     
-    public EventIntegrationException(Exception e){
+    public EventExceptionDeprecated(Exception e){
         super(e);
     }
     
-    public EventIntegrationException(String message, Exception e){
+    public EventExceptionDeprecated(String message, Exception e){
         super(message, e);
         
     }

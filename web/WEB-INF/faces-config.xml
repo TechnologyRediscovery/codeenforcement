@@ -725,6 +725,9 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
-    
-    
+    <managed-bean>
+        <managed-bean-name>personConnectBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PersonConnectBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

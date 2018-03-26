@@ -19,13 +19,15 @@ package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.application.SessionManager;
-import com.tcvcog.tcvce.domain.EventIntegrationException;
+import com.tcvcog.tcvce.domain.CaseLifecyleException;
+import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.EventCategory;
+import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import java.io.Serializable;
 import javax.faces.application.Application;
@@ -34,7 +36,10 @@ import jdk.nashorn.internal.runtime.Context;
 import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,6 +54,18 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
+    public EventType[] getUserAdmnisteredEventTypeList(){
+        EventType[] eventTypeList = {
+            EventType.Action, 
+            EventType.Communication,
+            EventType.Custom,
+            EventType.Meeting,
+            EventType.Notice};
+        
+        return eventTypeList;
+        
+    }
+    
     public Event getInitializedEvent(EventCategory ec){
         // the moment of event instantiaion
         Event event = new Event();
@@ -58,12 +75,12 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         return event;
     }
     
-    public void logCodeViolationUpdate(CECase ceCase, CodeViolation cv, Event event) throws IntegrationException, EventIntegrationException{
+    public void logCodeViolationUpdate(CECase ceCase, CodeViolation cv, Event event) throws IntegrationException, EventException{
         EventIntegrator ei = getEventIntegrator();
         SessionManager sm = getSessionManager();
         
         
-        // the event is coming to use from the violationEditBB with the description and disclosures flags
+        // the event is coming to us from the violationEditBB with the description and disclosures flags
         // correct. This method needs to set the description from the resource bundle, and 
         // set the date of record to the current date
         String updateViolationDescr = getResourceBundle(Constants.MESSAGE_BUNDLE).getString("violationChangeEventDescription");
@@ -91,17 +108,113 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
+    /**
+     * Main controller method for event-related life cycle events. Requires event to be
+     * loaded up with a caseID and an eventType. No eventID is required since it
+     * has not yet been logged into the db.
+     * @param c code enforcement case
+     * @param event event to process
+     * @throws com.tcvcog.tcvce.domain.CaseLifecyleException 
+     */
+    public void processEvent(CECase c, Event event) throws CaseLifecyleException, IntegrationException{
+        
+        CaseCoordinator cc = getCaseCoordinator();
+        
+        Integer.parseInt(getResourceBundle(Constants.EVENT_CATEGORY_BUNDLE).getString("updateViolationEventCategoryID"));
+        
+        CasePhase phase = c.getCasePhase();
+        int evCatID = event.getCategory().getCategoryID();
+        
+        // check to see if the event triggers a case phase chage. If so,
+        // carry out that function with the case coordinator, creating phase change
+        // event along the way. 
+        
+        try {
+                // event trigger: deployed notice of violation
+            if(phase == CasePhase.PrelimInvestigationPending 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToNoticeDelivery"))){
+            
+                cc.advanceToNextCasePhase(c, CasePhase.NoticeDelivery);
+                logCommittedCasePhaseChange(c, phase);
+            
+                // event trigger: notice of violation sent
+            } else if(phase == CasePhase.NoticeDelivery 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToInitialComplianceTimeframe"))){
+                
+                cc.advanceToNextCasePhase(c, CasePhase.InitialComplianceTimeframe);
+                logCommittedCasePhaseChange(c, phase);
+                
+                // event trigger: property inspection
+            } else if(phase == CasePhase.InitialComplianceTimeframe 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryComplianceTimeframe"))){
+            
+                cc.advanceToNextCasePhase(c, CasePhase.SecondaryComplianceTimeframe);
+                logCommittedCasePhaseChange(c, phase);
+            
+                // Event Trigger: Citation Filed
+            } else if(phase == CasePhase.SecondaryComplianceTimeframe 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToAwaitingHearingDate"))){
+                
+                cc.advanceToNextCasePhase(c, CasePhase.SecondaryComplianceTimeframe);
+                logCommittedCasePhaseChange(c, phase);
+                
+                // event trigger: hearing date scheduled
+            } else if(phase == CasePhase.AwaitingHearingDate 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToHearingPreparation"))){
+                
+                cc.advanceToNextCasePhase(c, CasePhase.HearingPreparation);
+                logCommittedCasePhaseChange(c, phase);
+                
+                // event trigger: hearing held
+            } else if(phase == CasePhase.HearingPreparation 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToInitialPostHearingComplianceTimeframe"))){
+                
+                cc.advanceToNextCasePhase(c, CasePhase.InitialPostHearingComplianceTimeframe);
+                logCommittedCasePhaseChange(c, phase);
+                
+                // event trigger: property inspection
+            } else if(phase == CasePhase.InitialPostHearingComplianceTimeframe 
+                    && evCatID == Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryPostHearingComplianceTimeframe"))){
+                
+                cc.advanceToNextCasePhase(c, CasePhase.SecondaryPostHearingComplianceTimeframe);
+                logCommittedCasePhaseChange(c, phase);
+                
+            } // end if/else chain
+        
+        } catch (IntegrationException ex) {
+            Logger.getLogger(EventCoordinator.class.getName()).log(Level.SEVERE, null, ex);
+            throw new CaseLifecyleException("Cannot update case phase",  ex);
+        }
+        
+        // finally, insert event into system
+        insertEvent(event);
+    }
+    
+    private void insertEvent(Event e) throws IntegrationException{
+        EventIntegrator ei = getEventIntegrator();
+        ei.insertEvent(e);
+        
+    }
+    
     public LinkedList geteventList(CECase currentCase) throws IntegrationException{
         EventIntegrator ei = getEventIntegrator();
         LinkedList<Event> ll = ei.getEventsByCaseID(currentCase.getCaseID());
         return ll;
     }
     
-    public void LogCasePhaseChange(CECase currentCase, CasePhase pastPhase) throws EventIntegrationException{
+    public void logCommittedCasePhaseChange(CECase currentCase, CasePhase pastPhase) throws IntegrationException{
         
         EventIntegrator ei = getEventIntegrator();
         SessionManager sm = getSessionManager();
-        Event event = new Event();
+        Event event = getInitializedEvent(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseChangeEventCatID"))));
         
         StringBuilder sb = new StringBuilder();
         sb.append("Case phase automatically advanced from  \'");
@@ -113,10 +226,12 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
         event.setCaseID(currentCase.getCaseID());
         event.setDateOfRecord(LocalDateTime.now());
+        // not sure if I can access the session level info for the specific user here in the
+        // coordinator bean
         event.setEventOwnerUser(sm.getVisit().getActiveUser());
         event.setActiveEvent(true);
         
-        ei.insertEvent(event);
+        insertEvent(event);
         
     } // close method
 }

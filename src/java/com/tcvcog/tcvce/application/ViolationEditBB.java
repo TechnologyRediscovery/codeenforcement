@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
-import com.tcvcog.tcvce.domain.EventIntegrationException;
+import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
@@ -100,7 +100,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_WARN, 
                             ex.getMessage(), "Please revise the stipulated compliance date"));
              
-        } catch (EventIntegrationException ex) {
+        } catch (EventException ex) {
              getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             ex.getMessage(), "Unable to generate automated event to log violation update"));

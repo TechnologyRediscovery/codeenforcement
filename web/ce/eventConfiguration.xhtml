@@ -19,6 +19,9 @@
                             
                     <h1>Case Event Configuration Tool</h1>
                     <p>View, Create, and manage event categories inside event types</p>
+                    <p>It's perfectly safe to edit category descriptions on this page. All other changes, 
+                        such as major changes to event category titles, should 
+                    only be edited after consulting the sys admin to avoid making messes.</p>
                     <f:view>
                         <h:form id="caseEventConfigForm">
                             
@@ -33,13 +36,19 @@
                                     tabindex="1">
                                     <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
 
-                                    <p:column>
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="CategoryID" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.categoryID}"/>
+                                    </p:column>
+                                    <p:column width="20%">
                                         <f:facet name="header">
                                             <h:outputText value="Event Type" />
                                         </f:facet>
                                         <h:outputText value="#{c.eventType.label}"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column width="20%">
                                         <f:facet name="header">
                                             <h:outputText value="Category" />
                                         </f:facet>
@@ -58,10 +67,10 @@
                             <p:commandButton ajax="false" 
                                              actionListener="#{eventConfigurationBB.editSelectedEventCategory}"
                                              value="Update Selected EventCateogory" tabindex="2"/>
-                            
-                            <p:commandButton ajax="false" 
+                              <p:commandButton ajax="false" 
                                              actionListener="#{eventConfigurationBB.deleteSelectedEventCategory}"
-                                             value="Nuke Selected Category Forever" tabindex="3"/>
+                                            value="Nuke Selected Category Forever" tabindex="3"/>
+               
                             </h:form>
                             <p:spacer height="20px"/>
                             
@@ -113,7 +122,7 @@
                                 <h:form id="newCategoryForm">
                                     
                                 
-                                 <h:outputLabel for="newEventTypeMenu">
+                                <h:outputLabel for="newEventTypeMenu">
                                     <h:outputText value="Event Type: "/>
                                 </h:outputLabel>
                                  <p:selectOneMenu id="newEventTypeMenu" required="true" value="#{eventConfigurationBB.newFormSelectedEventType}" tabindex="10">

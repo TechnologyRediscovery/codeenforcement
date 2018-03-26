@@ -35,7 +35,7 @@ public class EventCategoryConverter extends EntityConverter implements Converter
     public Object getAsObject(FacesContext fc, UIComponent uic, String titleS) {
         System.out.println("EventCategoryConverter.getAsObject | titleS: " + titleS);
         if(titleS.isEmpty()) {
-            return null;
+            return null; 
         }
         
         EventCategory o = (EventCategory) this.getViewMap(fc).get(titleS);
@@ -43,7 +43,6 @@ public class EventCategoryConverter extends EntityConverter implements Converter
         System.out.println("EventCategoryConverter.getAsObject | Retrieved obj: " + o.getEventCategoryDesc());
         
         return o;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

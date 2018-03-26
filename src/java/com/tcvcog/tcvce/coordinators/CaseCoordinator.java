@@ -19,8 +19,8 @@ package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.application.SessionManager;
-import com.tcvcog.tcvce.domain.EntityLifecyleException;
-import com.tcvcog.tcvce.domain.EventIntegrationException;
+import com.tcvcog.tcvce.domain.CaseLifecyleException;
+import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
@@ -62,7 +62,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    private CasePhase getNextCasePhase(CECase c) throws EntityLifecyleException{
+    private CasePhase getNextCasePhase(CECase c) throws CaseLifecyleException{
         CasePhase currentPhase = c.getCasePhase();
         CasePhase nextPhaseInSequence;
         
@@ -98,20 +98,20 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
                 break;
                 
             case Closed:
-                throw new EntityLifecyleException("Cannot advance a closed case to any other phase");
+                throw new CaseLifecyleException("Cannot advance a closed case to any other phase");
             
             case InactiveHolding:
-                throw new EntityLifecyleException("Cases in inactive holding must have "
+                throw new CaseLifecyleException("Cases in inactive holding must have "
                         + "their case phase overriden manually to return to the case management flow");
                 
             default:
-                throw new EntityLifecyleException("Unable to determine next case phase, sorry");
+                throw new CaseLifecyleException("Unable to determine next case phase, sorry");
         }
         
         return nextPhaseInSequence;
     }
     
-    private void advanceToNextCasePhase(CECase ceCase) throws EntityLifecyleException, IntegrationException, EventIntegrationException{
+    private void advanceToNextCasePhase(CECase ceCase) throws CaseLifecyleException, IntegrationException, EventException{
         CaseIntegrator caseInt = getCaseIntegrator();
         EventCoordinator eventCoor = getEventCoordinator();
         
@@ -125,7 +125,31 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         caseInt.changeCECasePhase(ceCase);
         // If we get an integration exception, the case phase change event
         // is never generated since execution returns to caller through an exception
-        eventCoor.LogCasePhaseChange(ceCase, pastPhase);
+        eventCoor.logCommittedCasePhaseChange(ceCase, pastPhase);
+    }
+    
+    /**
+     * Updates a case's phase.
+     * @param ceCase case whose phase has not been updated
+     * @param nextPhase the desired phase to which the case should be assigned
+     */
+    public void advanceToNextCasePhase(CECase ceCase, CasePhase nextPhase){
+         CaseIntegrator caseInt = getCaseIntegrator();
+         EventCoordinator eventCoor = getEventCoordinator();
+ 
+         CasePhase pastPhase = ceCase.getCasePhase();
+         ceCase.setCasePhase(nextPhase);
+        
+        try {
+            // we must ship the case to the integrator with the case phase updated
+            // because the integrator does not implement any business logic
+            caseInt.changeCECasePhase(ceCase);
+            eventCoor.logCommittedCasePhaseChange(ceCase, pastPhase);
+        
+        } catch (IntegrationException ex) {
+            Logger.getLogger(CaseCoordinator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     public LinkedList retrieveViolationList(CECase ceCase) throws IntegrationException{
@@ -163,7 +187,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     }
     
     public void deployNoticeOfViolation(CECase c, NoticeOfViolation nov) 
-            throws EntityLifecyleException, IntegrationException, EventIntegrationException{
+            throws CaseLifecyleException, IntegrationException, EventException{
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
         nov.setRequestToSend(true);
         // flag violation letter as ready to send
@@ -174,7 +198,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public void markNoticeOfViolationAsSent(CECase ceCase, NoticeOfViolation nov) throws EntityLifecyleException, EventIntegrationException{
+    public void markNoticeOfViolationAsSent(CECase ceCase, NoticeOfViolation nov) throws CaseLifecyleException, EventException{
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
         nov.setLetterSentDate(LocalDateTime.now());
         nov.setLetterSentDatePretty(getPrettyDate(LocalDateTime.now()));
@@ -184,19 +208,17 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             
             
         } catch (IntegrationException ex) {
-            throw new EntityLifecyleException("Unable to mark letter as sent "
+            throw new CaseLifecyleException("Unable to mark letter as sent "
                     + "due to a database communication foul-up");
         }
-        
-        
     }
     
-    public void deleteNoticeOfViolation(NoticeOfViolation nov) throws EntityLifecyleException{
+    public void deleteNoticeOfViolation(NoticeOfViolation nov) throws CaseLifecyleException{
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
 
         //cannot delete a letter that was already sent
         if(nov != null && nov.getLetterSentDate() != null){
-            throw new EntityLifecyleException("Cannot delete a letter that has been sent");
+            throw new CaseLifecyleException("Cannot delete a letter that has been sent");
         } else {
             try {
                 cvi.deleteViolationLetter(nov);
@@ -204,11 +226,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
                  getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                     "Unable to delete notice of violation due to a database error", ""));
-            
-                
             }
         }
     }
-    
-    
 }

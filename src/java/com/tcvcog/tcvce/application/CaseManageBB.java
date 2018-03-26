@@ -20,8 +20,8 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
-import com.tcvcog.tcvce.domain.EntityLifecyleException;
-import com.tcvcog.tcvce.domain.EventIntegrationException;
+import com.tcvcog.tcvce.domain.CaseLifecyleException;
+import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
@@ -171,7 +171,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         sm.getVisit().setActiveNotice(selectedNotice);
         try {
             caseCoord.deleteNoticeOfViolation(selectedNotice);
-        } catch (EntityLifecyleException ex) {
+        } catch (CaseLifecyleException ex) {
             
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -186,7 +186,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         CaseCoordinator cc = getCaseCoordinator();
         try {
             cc.deployNoticeOfViolation(currentCase, selectedNotice);
-        } catch (EntityLifecyleException ex) {
+        } catch (CaseLifecyleException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Unable to deploy notice of violation", "Case phase remains unchanged"));
@@ -196,7 +196,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Unable to communicate effectively with the database", ""));
-        } catch (EventIntegrationException ex) {
+        } catch (EventException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Unable to generate case event to log phase change", 
@@ -210,13 +210,13 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         CaseCoordinator caseCoord = getCaseCoordinator();
         try {
             caseCoord.markNoticeOfViolationAsSent(currentCase, selectedNotice);
-        } catch (EntityLifecyleException ex) {
+        } catch (CaseLifecyleException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             ex.toString(), "This must be corrected by a "
                                     + "system administrator, sorry"));
             
-        } catch (EventIntegrationException ex) {
+        } catch (EventException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Unable to generate case event to log phase change", 

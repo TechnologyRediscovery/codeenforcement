@@ -188,6 +188,15 @@
                                     
                                 </f:facet>
                                 
+                                <p:spacer height="15"/>
+                                
+                                <p:outputLabel for="associateWithPropertySwitch">
+                                    <h:outputText value="Associate new person with #{personAddBB.activeProp.address}"/>
+                                </p:outputLabel>
+                                
+                                <p:inputSwitch id="associateWithPropertySwitch" value="#{personAddBB.formConnectToActiveProperty}" onLabel="Yes" offLabel="No" tabindex="15"/>
+                                
+                                <p:spacer height="15"/>
                                 
                             </h:panelGrid>
                             <p:spacer height="10px"/>

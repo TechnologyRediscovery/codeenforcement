@@ -18,12 +18,13 @@ Council of Governments, PA
 package com.tcvcog.tcvce.integration;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.domain.EventExceptionDeprecated;
 import com.tcvcog.tcvce.domain.EventException;
-import com.tcvcog.tcvce.domain.EventIntegrationException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
+import com.tcvcog.tcvce.entities.Person;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -223,7 +224,10 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     }
     
-    public int insertEvent(Event event) throws EventIntegrationException{
+    public void insertEvent(Event event) throws IntegrationException{
+        PersonIntegrator pi = getPersonIntegrator();
+        int insertedEventID = 0;
+        
         String query = "INSERT INTO public.ceevent(\n" +
             "            eventid, ceeventcategory_catid, cecase_caseid, dateofrecord, \n" +
             "            eventtimestamp, eventdescription, login_userid, disclosetomunicipality, \n" +
@@ -233,6 +237,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             "            ?, ?, ?);";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try {
             stmt = con.prepareStatement(query);
@@ -249,21 +254,41 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setBoolean(8, event.isActiveEvent());
             stmt.setString(9, event.getNotes());
             
-            System.out.println("EventInteegrator.insertEventCategory| sql: " + stmt.toString());
+            System.out.println("EventIntegrator.insertEventCategory| sql: " + stmt.toString());
             stmt.execute();
+            
+            String retrievalQuery = "SELECT currval('ceevent_eventID_seq');";
+            stmt = con.prepareStatement(retrievalQuery);
+            
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                insertedEventID = rs.getInt(1);
+                System.out.println("EventIntegrator.insertEvent | retrieved eventID: " + insertedEventID);
+                
+            }
+            
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new EventIntegrationException("Cannot insert Event into system", ex);
+            throw new IntegrationException("Cannot insert Event into system", ex);
 
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
              if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
         
+        // now connect people to event that has already been logged
         
-        return 0;
-    }
+        LinkedList<Person> ll = event.getEventPersons();
+        event.setEventID(insertedEventID);
+        
+        if( ll.size() > 0 && event.getEventID() != 0){
+            pi.connectPersonsToEvent(event, ll);
+        } else {
+            throw new IntegrationException("Successfully inserted event but unable to connect event to persons");
+        }
+        
+    } // close method
     
     
     
@@ -421,7 +446,11 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         
         return eventList;
     }
-}
+    
+
+    
+    
+} // close class
 
 //
 //
