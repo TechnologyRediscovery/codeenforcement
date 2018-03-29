@@ -3,8 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/eventConfiguration.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CaseIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/eventConfiguration.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/domain/EventException.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/tempHeadFoot.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Event.java</file>
@@ -13,9 +13,9 @@
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventType.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personAdd.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/PersonIntegrator.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/LogIntegrator.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/classes/eventCategories.properties</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonConnectBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/LogIntegrator.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/util/EventCategoryConverter.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CaseManageBB.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/EventAddBB.java</file>
@@ -30,6 +30,8 @@
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/BackingBeanUtils.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/EventCoordinator.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonAddBB.java</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/exitLanding.xhtml</file>
+            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/workflow.xhtml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventCategory.java</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/web.xml</file>
             <file>file:/home/sylvia/NetBeansProjects/tcvce/web/pageTemplate.xhtml</file>

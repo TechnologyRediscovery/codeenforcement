@@ -17,12 +17,14 @@
                                 warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
 
-                    <h1>Case Manager</h1>
+                    <h1>Code Enforcement Case Control Panel:</h1>
                     <f:view>
-                        <h2>Case: <h:outputText value="#{caseManageBB.currentCase.caseName}"/></h2>
+                        <h2>Case Name: <h:outputText value="#{caseManageBB.currentCase.caseName}"/></h2>
 
 
-                        <h:outputText value="Current Phase: #{caseManageBB.currentCase.casePhase.label}"/>
+                        <h:outputText style="font-size: 1.3em; font-weight: bold;" value="Current Phase: #{caseManageBB.currentCase.casePhase.label}"/>
+                        
+                        <p:spacer height="15px"/>
 
                         <p:tabView id="caseTabView" 
                                    widgetVar="tabview" effect="fade" 
@@ -227,9 +229,9 @@
                                 
                                 <h:form id="formEventAddAjax">
                                     
-                                     <h:panelGrid columns="2" border="0" 
+                                     <h:panelGrid columns="3" border="0" 
                                          cellpadding="5" columnClasses="gridTd, gridTd"
-                                         footerClass="gridFooter">
+                                         footerClass="gridFooter" style="vertical-align: top;">
                                              
                                          <h:panelGroup>
                                             <h:outputLabel for="newEventTypeMenu">
@@ -250,7 +252,8 @@
                                                 <h:outputText value="Event Categories of selected type:"/>
                                             </h:outputLabel>
 
-                                             <p:selectOneListbox style="width: 300px" id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
+                                             <p:selectOneListbox style="width: 300px;" id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
+                                                 <p:ajax update="selectedEventCategoryDescription" immediate="true"/>
                                                 <f:converter converterId="eventCategoryConverter"/>
                                                 <f:selectItems  id="catItemsList" value="#{eventAddBB.eventCategoryList}" var="ec" itemValue="#{ec}" itemLabel="#{ec.eventCategoryTitle}"/>
                                             </p:selectOneListbox>
@@ -259,6 +262,11 @@
                                             warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                             <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
                                                     value="Create new event of this category"/>
+                                         </h:panelGroup>
+                                         
+                                         <h:panelGroup>
+                                             <h:outputText value="#{eventAddBB.selectedEventCateogryDescription}" id="selectedEventCategoryDescription"/>
+                                             
                                          </h:panelGroup>
                                      </h:panelGrid>
                                 </h:form>

@@ -54,6 +54,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private LinkedList catCustomList;
     
     private EventCategory selectedEventCategory;
+    private String selectedEventCateogryDescription;
     private EventType selectedEventType;
     private EventType[] userAdminEventTypeList;
     
@@ -439,6 +440,23 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      */
     public void setUserAdminEventTypeList(EventType[] userAdminEventTypeList) {
         this.userAdminEventTypeList = userAdminEventTypeList;
+    }
+
+    /**
+     * @return the selectedEventCateogryDescription
+     */
+    public String getSelectedEventCateogryDescription() {
+        if(selectedEventCategory != null){
+            selectedEventCateogryDescription = selectedEventCategory.getEventCategoryDesc();
+        }
+        return selectedEventCateogryDescription;
+    }
+
+    /**
+     * @param selectedEventCateogryDescription the selectedEventCateogryDescription to set
+     */
+    public void setSelectedEventCateogryDescription(String selectedEventCateogryDescription) {
+        this.selectedEventCateogryDescription = selectedEventCateogryDescription;
     }
 
    

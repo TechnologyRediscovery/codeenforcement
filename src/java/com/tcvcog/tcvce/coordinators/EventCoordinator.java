@@ -56,12 +56,8 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     }
     
     public EventType[] getUserAdmnisteredEventTypeList(){
-        EventType[] eventTypeList = {
-            EventType.Action, 
-            EventType.Communication,
-            EventType.Custom,
-            EventType.Meeting,
-            EventType.Notice};
+        EventType[] eventTypeList = EventType.values();
+            
         
         return eventTypeList;
         
@@ -125,6 +121,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
         CasePhase phase = c.getCasePhase();
         int evCatID = event.getCategory().getCategoryID();
+        EventType catEvType = event.getCategory().getEventType();
         
         // check to see if the event triggers a case phase chage. If so,
         // carry out that function with the case coordinator, creating phase change
@@ -187,7 +184,11 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
                 cc.advanceToNextCasePhase(c, CasePhase.SecondaryPostHearingComplianceTimeframe);
                 logCommittedCasePhaseChange(c, phase);
                 
-            } // end if/else chain
+            } else if(catEvType == EventType.Closing){
+                cc.advanceToNextCasePhase(c, CasePhase.Closed);
+                logCommittedCasePhaseChange(c, phase);
+                
+            }
         
         } catch (IntegrationException ex) {
             Logger.getLogger(EventCoordinator.class.getName()).log(Level.SEVERE, null, ex);
