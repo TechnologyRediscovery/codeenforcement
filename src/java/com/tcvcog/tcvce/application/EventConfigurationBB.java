@@ -44,19 +44,43 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
     private String formEventCategoryTitle;
     private String formEventCategoryDescr;
     
+    private boolean formUserdeployable;
+    private boolean formMunideployable;
+    private boolean formPublicdeployable;
+    private boolean formRequiresviewconfirmation;
+    private boolean formNotifycasemonitors;
+    private boolean formCasephasechangetrigger;
+    private boolean formHidable;
+    
     private EventType newFormSelectedEventType;
     private String newFormEventCategoryTitle;
     private String newFormEventCategoryDescr;
     
+    private boolean newFormUserdeployable;
+    private boolean newFormMunideployable;
+    private boolean newFormPublicdeployable;
+    private boolean newFormRequiresviewconfirmation;
+    private boolean newFormNotifycasemonitors;
+    private boolean newFormCasephasechangetrigger;
+    private boolean newFormHidable;
     
     public EventConfigurationBB() {
     }
     
+  
+    
     public void editSelectedEventCategory(ActionEvent e){
-        if(selectedEventCategory != null){
-            formEventType = selectedEventCategory.getEventType();
-            formEventCategoryTitle = selectedEventCategory.getEventTypeTitle();
-            formEventCategoryDescr = selectedEventCategory.getEventTypeDesc();
+        if(getSelectedEventCategory() != null){
+            setFormEventType(getSelectedEventCategory().getEventType());
+            setFormEventCategoryTitle(getSelectedEventCategory().getEventCategoryTitle());
+            setFormEventCategoryDescr(getSelectedEventCategory().getEventCategoryDesc());
+            
+            setFormUserdeployable(selectedEventCategory.isUserdeployable());
+            setFormMunideployable(selectedEventCategory.isMunideployable());
+            setFormPublicdeployable(selectedEventCategory.isPublicdeployable());
+            setFormRequiresviewconfirmation(selectedEventCategory.isRequiresviewconfirmation());
+            setFormNotifycasemonitors(selectedEventCategory.isNotifycasemonitors());
+            setFormHidable(selectedEventCategory.isHidable());
             
         } else {
            getFacesContext().addMessage(null,
@@ -70,18 +94,25 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
        EventIntegrator ei = getEventIntegrator();
        EventCategory ec = new EventCategory();
        
-       ec.setCategoryID(selectedEventCategory.getCategoryID());
-       ec.setEventType(formEventType);
-       ec.setEventTypeTitle(formEventCategoryTitle);
-       ec.setEventTypeDesc(formEventCategoryDescr);
+       ec.setCategoryID(getSelectedEventCategory().getCategoryID());
+       ec.setEventType(getFormEventType());
+       ec.setEventCategoryTitle(getFormEventCategoryTitle());
+       ec.setEventCategoryDesc(getFormEventCategoryDescr());
        
+        ec.setUserdeployable(formUserdeployable);
+        ec.setMunideployable(formMunideployable);
+        ec.setPublicdeployable(formPublicdeployable);
+        ec.setRequiresviewconfirmation(formRequiresviewconfirmation);
+        ec.setNotifycasemonitors(formNotifycasemonitors);
+        ec.setHidable(formHidable);
+        
         try {
             ei.updateEventCategory(ec);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         "Event category updated!", ""));
-            formEventCategoryTitle = "";
-            formEventCategoryDescr = "";
+            setFormEventCategoryTitle("");
+            setFormEventCategoryDescr("");
         } catch (IntegrationException ex) {
            getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -95,17 +126,24 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
         EventIntegrator ei = getEventIntegrator();
         EventCategory ec = new EventCategory();
         
-        ec.setEventType(newFormSelectedEventType);
-        ec.setEventTypeTitle(newFormEventCategoryTitle);
-        ec.setEventTypeDesc(newFormEventCategoryDescr);
+        ec.setEventType(getNewFormSelectedEventType());
+        ec.setEventCategoryTitle(getNewFormEventCategoryTitle());
+        ec.setEventCategoryDesc(getNewFormEventCategoryDescr());
+        
+        ec.setUserdeployable(newFormUserdeployable);
+        ec.setMunideployable(newFormMunideployable);
+        ec.setPublicdeployable(newFormCasephasechangetrigger);
+        ec.setRequiresviewconfirmation(newFormRequiresviewconfirmation);
+        ec.setNotifycasemonitors(newFormNotifycasemonitors);
+        ec.setHidable(newFormHidable);
         
         try {
             ei.insertEventCategory(ec);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         "Event category added!", ""));
-            newFormEventCategoryTitle = "";
-            newFormEventCategoryDescr = "";
+            setNewFormEventCategoryTitle("");
+            setNewFormEventCategoryDescr("");
         } catch (IntegrationException ex) {
             System.out.println(ex);
             getFacesContext().addMessage(null,
@@ -118,9 +156,9 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
     
     public void deleteSelectedEventCategory(ActionEvent e){
         EventIntegrator ei = getEventIntegrator();
-        if(selectedEventCategory != null){
+        if(getSelectedEventCategory() != null){
             try {
-                ei.deleteEventCategory(selectedEventCategory);
+                ei.deleteEventCategory(getSelectedEventCategory());
                 getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Event category deleted forever!", ""));
@@ -174,6 +212,8 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
      * @return the eventTypeList
      */
     public EventType[] getEventTypeList() {
+        eventTypeList = EventType.values();
+        
         return eventTypeList;
     }
 
@@ -218,7 +258,7 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
      * @param eventTypeList the eventTypeList to set
      */
     public void setEventTypeList(EventType[] eventTypeList) {
-        this.eventTypeList = eventTypeList;
+        this.setEventTypeList(eventTypeList);
     }
 
     /**
@@ -282,6 +322,203 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
      */
     public void setNewFormEventCategoryDescr(String newFormEventCategoryDescr) {
         this.newFormEventCategoryDescr = newFormEventCategoryDescr;
+    }
+
+    /**
+     * @return the formUserdeployable
+     */
+    public boolean isFormUserdeployable() {
+        return formUserdeployable;
+    }
+
+    /**
+     * @return the formMunideployable
+     */
+    public boolean isFormMunideployable() {
+        return formMunideployable;
+    }
+
+    /**
+     * @return the formPublicdeployable
+     */
+    public boolean isFormPublicdeployable() {
+        return formPublicdeployable;
+    }
+
+    /**
+     * @return the formRequiresviewconfirmation
+     */
+    public boolean isFormRequiresviewconfirmation() {
+        return formRequiresviewconfirmation;
+    }
+
+    /**
+     * @return the formNotifycasemonitors
+     */
+    public boolean isFormNotifycasemonitors() {
+        return formNotifycasemonitors;
+    }
+
+    /**
+     * @return the formCasephasechangetrigger
+     */
+    public boolean isFormCasephasechangetrigger() {
+        return formCasephasechangetrigger;
+    }
+
+    /**
+     * @return the formHidable
+     */
+    public boolean isFormHidable() {
+        return formHidable;
+    }
+
+    /**
+     * @return the newFormUserdeployable
+     */
+    public boolean isNewFormUserdeployable() {
+        return newFormUserdeployable;
+    }
+
+    /**
+     * @return the newFormMunideployable
+     */
+    public boolean isNewFormMunideployable() {
+        return newFormMunideployable;
+    }
+
+    /**
+     * @return the newFormPublicdeployable
+     */
+    public boolean isNewFormPublicdeployable() {
+        return newFormPublicdeployable;
+    }
+
+    /**
+     * @return the newFormRequiresviewconfirmation
+     */
+    public boolean isNewFormRequiresviewconfirmation() {
+        return newFormRequiresviewconfirmation;
+    }
+
+    /**
+     * @return the newFormNotifycasemonitors
+     */
+    public boolean isNewFormNotifycasemonitors() {
+        return newFormNotifycasemonitors;
+    }
+
+    /**
+     * @return the newFormCasephasechangetrigger
+     */
+    public boolean isNewFormCasephasechangetrigger() {
+        return newFormCasephasechangetrigger;
+    }
+
+    /**
+     * @return the newFormHidable
+     */
+    public boolean isNewFormHidable() {
+        return newFormHidable;
+    }
+
+
+    /**
+     * @param formUserdeployable the formUserdeployable to set
+     */
+    public void setFormUserdeployable(boolean formUserdeployable) {
+        this.formUserdeployable = formUserdeployable;
+    }
+
+    /**
+     * @param formMunideployable the formMunideployable to set
+     */
+    public void setFormMunideployable(boolean formMunideployable) {
+        this.formMunideployable = formMunideployable;
+    }
+
+    /**
+     * @param formPublicdeployable the formPublicdeployable to set
+     */
+    public void setFormPublicdeployable(boolean formPublicdeployable) {
+        this.formPublicdeployable = formPublicdeployable;
+    }
+
+    /**
+     * @param formRequiresviewconfirmation the formRequiresviewconfirmation to set
+     */
+    public void setFormRequiresviewconfirmation(boolean formRequiresviewconfirmation) {
+        this.formRequiresviewconfirmation = formRequiresviewconfirmation;
+    }
+
+    /**
+     * @param formNotifycasemonitors the formNotifycasemonitors to set
+     */
+    public void setFormNotifycasemonitors(boolean formNotifycasemonitors) {
+        this.formNotifycasemonitors = formNotifycasemonitors;
+    }
+
+    /**
+     * @param formCasephasechangetrigger the formCasephasechangetrigger to set
+     */
+    public void setFormCasephasechangetrigger(boolean formCasephasechangetrigger) {
+        this.formCasephasechangetrigger = formCasephasechangetrigger;
+    }
+
+    /**
+     * @param formHidable the formHidable to set
+     */
+    public void setFormHidable(boolean formHidable) {
+        this.formHidable = formHidable;
+    }
+
+    /**
+     * @param newFormUserdeployable the newFormUserdeployable to set
+     */
+    public void setNewFormUserdeployable(boolean newFormUserdeployable) {
+        this.newFormUserdeployable = newFormUserdeployable;
+    }
+
+    /**
+     * @param newFormMunideployable the newFormMunideployable to set
+     */
+    public void setNewFormMunideployable(boolean newFormMunideployable) {
+        this.newFormMunideployable = newFormMunideployable;
+    }
+
+    /**
+     * @param newFormPublicdeployable the newFormPublicdeployable to set
+     */
+    public void setNewFormPublicdeployable(boolean newFormPublicdeployable) {
+        this.newFormPublicdeployable = newFormPublicdeployable;
+    }
+
+    /**
+     * @param newFormRequiresviewconfirmation the newFormRequiresviewconfirmation to set
+     */
+    public void setNewFormRequiresviewconfirmation(boolean newFormRequiresviewconfirmation) {
+        this.newFormRequiresviewconfirmation = newFormRequiresviewconfirmation;
+    }
+
+    /**
+     * @param newFormNotifycasemonitors the newFormNotifycasemonitors to set
+     */
+    public void setNewFormNotifycasemonitors(boolean newFormNotifycasemonitors) {
+        this.newFormNotifycasemonitors = newFormNotifycasemonitors;
+    }
+
+    /**
+     * @param newFormCasephasechangetrigger the newFormCasephasechangetrigger to set
+     */
+    public void setNewFormCasephasechangetrigger(boolean newFormCasephasechangetrigger) {
+        this.newFormCasephasechangetrigger = newFormCasephasechangetrigger;
+    }
+
+    /**
+     * @param newFormHidable the newFormHidable to set
+     */
+    public void setNewFormHidable(boolean newFormHidable) {
+        this.newFormHidable = newFormHidable;
     }
     
 }

@@ -20,6 +20,7 @@ import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
+import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
@@ -129,6 +130,9 @@ public class Initializer implements ServletContextListener{
         
         CodeViolationIntegrator cvi = new CodeViolationIntegrator();
         servletContext.setAttribute("codeViolationIntegrator", cvi);
+        
+        ViolationCoordinator vc = new ViolationCoordinator();
+        servletContext.setAttribute("violationCoordinator", vc);
         
         
     }

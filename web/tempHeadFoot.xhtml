@@ -9,8 +9,9 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
           <h:outputStylesheet name="style.css" library="css"/>
+          
+        <title>Code Enforcement</title>
 
-          <title>Facelets Template</title>
     </h:head>
 
     <h:body>
@@ -34,7 +35,7 @@
                             </div>
                             
                             <div class="headerLinkCont">
-                                <h:commandLink action="propertyProfile" value="Property Profile"/>
+                                <h:commandLink action="#{userCoordinator.accessPropertyProfile}" value="Property Profile"/>
                             </div>
 
                             <div class="headerLinkCont">
@@ -42,7 +43,7 @@
                             </div>
 
                             <div class="headerLinkCont">
-                                <h:commandLink action="case" value="Case Profile"/>
+                                <h:commandLink action="#{userCoordinator.accessCaseProfile}" value="Case Profile"/>
                             </div>
 
                             <div class="headerLinkCont">
@@ -62,22 +63,22 @@
                                  <span class="bold"><h:outputText value="User: "/></span>
                              </h:panelGroup>
                              <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.currentUser.FName}"/>,   
-                                 <h:outputText value="#{sessionManager.visit.currentUser.LName}"/>
+                                 <h:outputText value="#{sessionManager.visit.activeUser.FName}"/>,   
+                                 <h:outputText value="#{sessionManager.visit.activeUser.LName}"/>
                              </h:panelGroup>
                              
                              <h:panelGroup>
                                  <span class="bold"><h:outputText value="Permissions: "/></span>
                              </h:panelGroup>
                              <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.currentUser.roleType.label}"/>   
+                                 <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}"/>   
                              </h:panelGroup>
                                              
                              <h:panelGroup>
                                  <span class="bold"><h:outputText value="Default Municipality: "/></span>
                              </h:panelGroup>
                              <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.currentUser.muni.muniName}"/> 
+                                 <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName}"/> 
                              </h:panelGroup>
                              
                              <h:panelGroup>

@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Add event</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./../tempHeadFoot.xhtml">
+           
+            <ui:define name="content">
+                <div class="mainContainer">
+                    <f:view id="addEventView">
+                        
+                    <h1>Add Event</h1>
+                    
+                    <h:outputText value="Current Case: #{eventAddBB.ceCase.caseName}"/>
+                    <p:spacer height="5px"/>
+                    <h:outputText value="Event Type: #{eventAddBB.event.category.eventCategoryTitle}"/>
+                        
+                    <h:form id="addNewEventForm">
+
+                                <p:spacer height="10px"/>
+
+                                <h:panelGrid columns="2" border="0" 
+                                             cellpadding="5" columnClasses="gridTd, gridTd"
+                                             footerClass="gridFooter">
+
+                                    <f:facet name="header">
+                                        <h:panelGroup>
+                                            <p:outputLabel for="eventDesc">
+                                                <h:outputText value="Short Description:"/>
+                                            </p:outputLabel>
+                                            <p:inputText id="eventDesc" value="#{eventAddBB.formEventDesc}" 
+                                                         style="width: 100%;" tabindex="3" required="true" styleClass="inputText"/>
+                                            <h:message for="eventDesc" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                        </h:panelGroup>
+                                    </f:facet>
+
+                                    <h:panelGroup>
+                                        
+                                         <h:outputLabel for="activeEvent">
+                                            <h:outputText value="Active Event?"/>
+                                        </h:outputLabel>
+                                        <p:spacer height="5px"/>
+                                        <p:inputSwitch tabindex="18" id="activeEvent" value="#{eventAddBB.activeEvent}" onLabel="Yes" offLabel="No" />
+                                        
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <h:outputLabel for="eventDateCal">
+                                            <h:outputText value="Date of Record"/>
+                                        </h:outputLabel>
+                                        <p:spacer height="5px"/>
+                                        <p:calendar value="#{eventAddBB.formEventDate}" 
+                                                    mode="popup"  id="eventDateCal"
+                                                    showOn="button" pattern="EEE, dd MMM, yyyy"
+                                                    navigator="true" tabindex="16"
+                                                    showButtonPanel="true" showTodayButton="true"
+                                                    required="true"/>
+                                        <h:message for="eventDateCal" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <h:outputLabel for="discloseToMuniIS">
+                                            <h:outputText value="Disclose to Municipalities"/>
+                                        </h:outputLabel>
+                                        <p:spacer height="5px"/>
+                                        <p:inputSwitch tabindex="18" id="discloseToMuniIS" value="#{eventAddBB.formDiscloseToMuni}" onLabel="Yes" offLabel="No" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <h:outputLabel for="discloseToPublic">
+                                            <h:outputText value="Disclose to Public"/>
+                                        </h:outputLabel>
+                                        <p:spacer height="5px"/>
+                                        <p:inputSwitch tabindex="18" id="discloseToPublic" value="#{eventAddBB.formDiscloseToPublic}" onLabel="Yes" offLabel="No" />
+                                    </h:panelGroup>
+                                    
+                                    
+                                    
+                                    <h:panelGroup>
+                                        <h:outputLabel for="requireViewConfirmationSwitch">
+                                            <h:outputText value="Disclose to Public"/>
+                                        </h:outputLabel>
+                                        <p:spacer height="5px"/>
+                                        <p:inputSwitch tabindex="18" id="requireViewConfirmationSwitch" value="#{eventAddBB.formRequireViewConfirmation}" onLabel="Yes" offLabel="No" />
+                                    </h:panelGroup>
+
+                                    <f:facet name="footer">
+                                        <h:outputLabel for="eventNotes">
+                                            <h:outputText value="Event Notes:"/>
+                                        </h:outputLabel>
+                                        <h:panelGroup>
+                                            <p:inputTextarea id="eventNotes" value="#{eventAddBB.formEventNotes}" 
+                                                             style="width: 100%;" tabindex="19" required="false" styleClass="inputText"/>
+                                            <h:message for="eventNotes" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                        </h:panelGroup>
+                                    </f:facet>
+
+                                </h:panelGrid>
+
+                                <h:outputLabel>
+                                    <h:outputText value="Attach a Property Person"/>
+                                </h:outputLabel>
+                                
+                                
+                                 <p:dataTable
+                                    id="personeTable"
+                                    var="p"
+                                    value="#{eventAddBB.propertyPersonList}"
+                                    selectionMode="multiple"
+                                    selection="#{eventAddBB.formSelectedPersons}"
+                                    rowKey="#{p.personid}"
+                                    tableStyleClass="primeDataTable">
+                                        <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Person Type" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.personType.label}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Municipality" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.muni.muniName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="First" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.firstName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Last" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.lastName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Cell Num" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.phoneCell}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Address" />
+                                        </f:facet>
+                                        <h:outputText value="#{p.address_street}"/>
+                                    </p:column>
+                            </p:dataTable>
+
+                                <p:commandButton ajax="false" action="#{eventAddBB.addEvent}"
+                                            value="Create new event"/>
+                                
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -6,20 +6,35 @@
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 
 /**
  *
+ * corresponding database table DDL
+ * 
+ * 
+   INSERT INTO public.ceevent(
+            eventid, ceeventcategory_catid, cecase_caseid, dateofrecord, 
+            eventtimestamp, eventdescription, login_userid, disclosetomunicipality, 
+            disclosetopublic, activeevent, requiresviewconfirmation, viewconfirmed, 
+            hidden, notes)
+    VALUES (?, ?, ?, ?, 
+            ?, ?, ?, ?, 
+            ?, ?, ?, ?, 
+            ?, ?);
+
+* 
  * @author cedba
  */
 public class Event {
     
     private int eventID;
-    private EventType eventType;
     private EventCategory category;
     
     private int caseID;
     
     private LocalDateTime dateOfRecord;
+    private String prettyDateOfRecord;
     private LocalDateTime eventTimeStamp;
     private String eventDescription;
     
@@ -28,8 +43,14 @@ public class Event {
     private boolean discloseToPublic;
     
     private boolean activeEvent;
+    private boolean requiresViewConfirmation;
+    private boolean viewConfirmed;
+    private boolean hidden;
+    
     private String notes;
-
+    
+    private LinkedList<Person> eventPersons;
+    
     /**
      * @return the eventID
      */
@@ -157,21 +178,7 @@ public class Event {
         this.notes = notes;
     }
 
-    /**
-     * @return the eventType
-     */
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    /**
-     * @param eventType the eventType to set
-     */
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
-   
+  
     /**
      * @return the category
      */
@@ -198,6 +205,76 @@ public class Event {
      */
     public void setCaseID(int caseID) {
         this.caseID = caseID;
+    }
+
+    /**
+     * @return the prettyDateOfRecord
+     */
+    public String getPrettyDateOfRecord() {
+        return prettyDateOfRecord;
+    }
+
+    /**
+     * @param prettyDateOfRecord the prettyDateOfRecord to set
+     */
+    public void setPrettyDateOfRecord(String prettyDateOfRecord) {
+        this.prettyDateOfRecord = prettyDateOfRecord;
+    }
+
+    /**
+     * @return the eventPersons
+     */
+    public LinkedList<Person> getEventPersons() {
+        return eventPersons;
+    }
+
+    /**
+     * @param eventPersons the eventPersons to set
+     */
+    public void setEventPersons(LinkedList<Person> eventPersons) {
+        this.eventPersons = eventPersons;
+    }
+
+    /**
+     * @return the requiresViewConfirmation
+     */
+    public boolean isRequiresViewConfirmation() {
+        return requiresViewConfirmation;
+    }
+
+    /**
+     * @return the viewConfirmed
+     */
+    public boolean isViewConfirmed() {
+        return viewConfirmed;
+    }
+
+    /**
+     * @return the hidden
+     */
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * @param requiresViewConfirmation the requiresViewConfirmation to set
+     */
+    public void setRequiresViewConfirmation(boolean requiresViewConfirmation) {
+        this.requiresViewConfirmation = requiresViewConfirmation;
+    }
+
+    /**
+     * @param viewConfirmed the viewConfirmed to set
+     */
+    public void setViewConfirmed(boolean viewConfirmed) {
+        this.viewConfirmed = viewConfirmed;
+    }
+
+    /**
+     * @param hidden the hidden to set
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
     
     

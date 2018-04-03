@@ -151,6 +151,10 @@ INSERT INTO public.ceeventcategory(
             categoryid, categorytype, title, description)
     VALUES (DEFAULT, 'Custom', 'Note', 'Case note of unspecified content');
 
+INSERT INTO public.ceeventcategory(
+            categoryid, categorytype, title, description)
+    VALUES (150, 'Notice', 'Code Violation Update', 'A code violation in this case was updated');
+
 
 INSERT INTO public.ceevent(
             eventid, ceeventcategory_catid, cecase_caseid, dateofrecord, 
@@ -219,10 +223,13 @@ INSERT INTO public.codesetelement(
             'Start with 30 but folks usually take longer');
 
 INSERT INTO public.codeviolation(
-            violationid, codeSetElement_elementID, cecase_caseid, stipulatedcompliancedate, 
-            actualcompliancdate, description)
-    VALUES (DEFAULT, 1, 1000, '2018-01-20 14:49:06.219519-05' , 
-            NULL, 'No Bathroom in dwelling unit, only a closet with a bucket in it with a sign that reads ''wc''');
+            violationid, codesetelement_elementid, cecase_caseid, citation_citationid, 
+            dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, 
+            actualcompliancdate, penalty, description, notes)
+    VALUES (DEFAULT, 1, 1000, NULL, 
+            '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-02-20 14:49:06.219519-05', 
+            NULL, 100, 'No bathroom, only bucket', 'We need a policy on buckets');
+
 
 INSERT INTO public.coglog(
             logentryid, timeofentry, user_userid, sessionid, category, notes)

@@ -23,12 +23,7 @@ import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 
 /** 
  *
@@ -77,9 +72,9 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
             int setID = codeSet.getCodeSetID();
             try {
                 eceList =  integrator.getEnforcableCodeElementList(setID);
-                getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
-                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
+//                getFacesContext().addMessage(null,
+//                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
+//                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
             } catch (IntegrationException ex) {
                 System.out.println(ex.toString());
                 getFacesContext().addMessage(null,

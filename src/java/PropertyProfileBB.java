@@ -1,8 +1,16 @@
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.application.SessionManager;
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.CEActionRequest;
+import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.Property;
+import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * Copyright (C) 2018 Turtle Creek Valley
@@ -28,6 +36,12 @@ Council of Governments, PA
  */
 public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     private Property currentProperty;
+    private LinkedList<Person> propertyPersonList;
+    private Person selectedPerson;
+    
+    
+    private LinkedList<CECase> ceCaseList;
+    private LinkedList<CEActionRequest> ceActionRequestList;
 
     /**
      * Creates a new instance of PropertyProfileBB
@@ -65,6 +79,68 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
         System.out.println("PropertyProfileBB.updateProperty");
         return "propertyUpdate";
         
+    }
+
+    /**
+     * @return the propertyPersonList
+     */
+    public LinkedList<Person> getPropertyPersonList() {
+        PersonIntegrator pi = getPersonIntegrator();
+        try {
+            propertyPersonList = pi.getPersonListByPropertyID(currentProperty);
+        } catch (IntegrationException ex) {
+            // do nothing
+        }
+        return propertyPersonList;
+    }
+
+    /**
+     * @return the ceCaseList
+     */
+    public LinkedList<CECase> getCeCaseList() {
+        return ceCaseList;
+    }
+
+    /**
+     * @return the ceActionRequestList
+     */
+    public LinkedList<CEActionRequest> getCeActionRequestList() {
+        return ceActionRequestList;
+    }
+
+    /**
+     * @param propertyPersonList the propertyPersonList to set
+     */
+    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
+        this.propertyPersonList = propertyPersonList;
+    }
+
+    /**
+     * @param ceCaseList the ceCaseList to set
+     */
+    public void setCeCaseList(LinkedList<CECase> ceCaseList) {
+        this.ceCaseList = ceCaseList;
+    }
+
+    /**
+     * @param ceActionRequestList the ceActionRequestList to set
+     */
+    public void setCeActionRequestList(LinkedList<CEActionRequest> ceActionRequestList) {
+        this.ceActionRequestList = ceActionRequestList;
+    }
+
+    /**
+     * @return the selectedPerson
+     */
+    public Person getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    /**
+     * @param selectedPerson the selectedPerson to set
+     */
+    public void setSelectedPerson(Person selectedPerson) {
+        this.selectedPerson = selectedPerson;
     }
     
     

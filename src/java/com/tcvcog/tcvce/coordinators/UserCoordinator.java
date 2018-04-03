@@ -23,10 +23,13 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import java.sql.Connection;
 import java.io.Serializable;
 import com.tcvcog.tcvce.domain.ObjectNotFoundException;
+import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.Property;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -72,12 +75,43 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
         authenticatedUser = ui.getAuthenticatedUser(loginName, loginPassword);
         if (authenticatedUser != null){
             SessionManager sm = getSessionManager();
-            sm.getVisit().setCurrentUser(authenticatedUser);
+            sm.getVisit().setActiveUser(authenticatedUser);
+            System.out.println("UserCoordinator.getUser | default code set: " 
+                    + authenticatedUser.getDefaultCodeSet().getCodeSetID());
+            sm.getVisit().setActiveCodeSet(authenticatedUser.getDefaultCodeSet());
         }
          
         return authenticatedUser;
         
     } // close getUser()
+    
+    public String accessCaseProfile(){
+        SessionManager sm = getSessionManager();
+        CECase cecase = sm.getVisit().getActiveCase();
+        if(cecase != null){
+            return "case";
+        } else {
+            getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                                "Please select a case: Click Muni Workflow >> select a case >> view case profile", 
+                                ""));
+            return "";
+        }
+    }
+    
+    public String accessPropertyProfile(){
+        SessionManager sm = getSessionManager();
+        Property p = sm.getVisit().getActiveProp();
+        if(p != null){
+            return "propertyProfile";
+        } else {
+            getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                                "Please select a property: Click Muni Workflow >> select case", 
+                                ""));
+            return "";
+        }
+    }
     
     
 } // close class

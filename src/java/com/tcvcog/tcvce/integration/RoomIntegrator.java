@@ -15,25 +15,16 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.entities;
+package com.tcvcog.tcvce.integration;
 
 /**
- * Potentially useless class that will probably be represented by
- * simple methods on the back of some bean
+ *
  * @author sylvia
  */
-public enum HumanActionType {
+
+import java.util.LinkedList;
+
+public class RoomIntegrator {
     
-    ObserveViolation("Staff observes a violation");
-       
-    
-    private final String label;
-    
-    private HumanActionType(String label){
-        this.label = label;
-    }
-    
-    public String getLabel(){
-        return label;
-    }
+    StringBuilder rBuilder = new StringBuilder();
 }

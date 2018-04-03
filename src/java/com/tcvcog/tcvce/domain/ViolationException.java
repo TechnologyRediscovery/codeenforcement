@@ -21,22 +21,22 @@ package com.tcvcog.tcvce.domain;
  *
  * @author sylvia
  */
-public class EntityLifecyleException extends BaseException {
+public class ViolationException extends BaseException {
     
-    public EntityLifecyleException(){
+    public ViolationException(){
         super();
         
     }
     
-    public EntityLifecyleException(String message){
+    public ViolationException(String message){
         super(message);
     }
     
-    public EntityLifecyleException(Exception e){
+    public ViolationException(Exception e){
         super(e);
     }
     
-    public EntityLifecyleException(String message, Exception e){
+    public ViolationException(String message, Exception e){
         super(message, e);
         
     }

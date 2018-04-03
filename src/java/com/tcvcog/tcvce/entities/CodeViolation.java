@@ -25,9 +25,10 @@ import java.time.LocalDateTime;
  */
 public class CodeViolation {
     private int violationID;
-    private EnforcableCodeElement violatedElement;
+    private EnforcableCodeElement violatedEnfElement;
     private int ceCaseID;
-    private String citationID;
+    private CECase attachedCase;
+    private int citationID;
     private LocalDateTime dateOfCitation;
     private LocalDateTime dateOfRecord;
     private LocalDateTime entryTimeStamp;
@@ -55,14 +56,14 @@ public class CodeViolation {
      * @return the codeViolated
      */
     public EnforcableCodeElement getCodeViolated() {
-        return getViolatedElement();
+        return getViolatedEnfElement();
     }
 
     /**
      * @param codeViolated the codeViolated to set
      */
     public void setCodeViolated(EnforcableCodeElement codeViolated) {
-        this.setViolatedElement(codeViolated);
+        this.setViolatedEnfElement(codeViolated);
     }
 
     /**
@@ -108,10 +109,10 @@ public class CodeViolation {
     }
 
     /**
-     * @return the violatedElement
+     * @return the violatedEnfElement
      */
-    public EnforcableCodeElement getViolatedElement() {
-        return violatedElement;
+    public EnforcableCodeElement getViolatedEnfElement() {
+        return violatedEnfElement;
     }
 
     /**
@@ -124,7 +125,7 @@ public class CodeViolation {
     /**
      * @return the citationID
      */
-    public String getCitationID() {
+    public int getCitationID() {
         return citationID;
     }
 
@@ -143,10 +144,10 @@ public class CodeViolation {
     }
 
     /**
-     * @param violatedElement the violatedElement to set
+     * @param violatedEnfElement the violatedEnfElement to set
      */
-    public void setViolatedElement(EnforcableCodeElement violatedElement) {
-        this.violatedElement = violatedElement;
+    public void setViolatedEnfElement(EnforcableCodeElement violatedEnfElement) {
+        this.violatedEnfElement = violatedEnfElement;
     }
 
     /**
@@ -159,7 +160,7 @@ public class CodeViolation {
     /**
      * @param citationID the citationID to set
      */
-    public void setCitationID(String citationID) {
+    public void setCitationID(int citationID) {
         this.citationID = citationID;
     }
 
@@ -217,6 +218,20 @@ public class CodeViolation {
      */
     public void setEntryTimeStamp(LocalDateTime entryTimeStamp) {
         this.entryTimeStamp = entryTimeStamp;
+    }
+
+    /**
+     * @return the attachedCase
+     */
+    public CECase getAttachedCase() {
+        return attachedCase;
+    }
+
+    /**
+     * @param attachedCase the attachedCase to set
+     */
+    public void setAttachedCase(CECase attachedCase) {
+        this.attachedCase = attachedCase;
     }
        
     

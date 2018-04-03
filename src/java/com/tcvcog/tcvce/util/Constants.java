@@ -42,6 +42,10 @@ public class Constants {
     public final static String DB_PASS = "c0d3";
     public final static int MAX_CONNECTIONS = 1000;
     
+    public final static String MESSAGE_BUNDLE= "msgs";
+    public final static String EVENT_CATEGORY_BUNDLE = "eventCategories";
+    
+    
     
     
     

@@ -17,12 +17,92 @@
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
                             
-                    <h1><h:outputText value="#{sessionManager.visit.currentUser.muni.muniName}"/> Municipal Workflow Central</h1>
+                    <h1><h:outputText value="#{sessionManager.visit.activeUser.muni.muniName}"/> Municipal Workflow Central</h1>
                     <p>Access to code enforcement requests, case management tools, and municipal-related data</p>
                     <f:view>
                         <h:form id="workflowForm">
                             
                         
+                        
+                        <p:spacer height="10px"/>
+                        <hr/>
+                        <p:spacer height="10px"/>
+                        
+                        <h2>Open Cases in Current Municipality:</h2>
+                            <p:dataTable
+                                id="caseTable"
+                                var="c"
+                                selectionMode="single"
+                                selection="#{workflowBB.selectedCase}"
+                                rowKey="#{c.caseID}"
+                                rowExpandMode="multiple"
+                                value="#{workflowBB.caseList}"
+                                tableStyleClass="primeDataTable">
+                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                <p:column width="3%">
+                                    <p:rowToggler />
+                                </p:column>
+                                <p:column width="5%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Case ID" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.caseID}"/>
+                                </p:column>
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Property" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.property.address}"/>
+                                </p:column>
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Name" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.caseName}"/>
+                                </p:column>
+                                <p:column width="25%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Phase" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.casePhase}"/>
+                                </p:column>
+                                <p:column width="10%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Date Opened" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.originationDate}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Manager" />
+                                    </f:facet>
+                                    <h:outputText value="#{c.user.LName}"/>
+                                </p:column>
+                                
+                                <p:rowExpansion>
+                                    
+                                    <h:panelGrid
+                                        columns="3" border="0" 
+                                         cellpadding="5" columnClasses="gridTd, gridTd"
+                                         footerClass="gridFooter" style="vertical-align: top;">
+                                        
+                                        
+                                        
+                                        
+                                        <h:panelGroup>
+                                            
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                    <h:outputText value="Public access control Code: #{c.publicControlCode}"/>
+                                </p:rowExpansion>
+                            </p:dataTable>
+
+                            <p:spacer height="10px"/>
+
+                            <p:commandButton ajax="false" value="View Case Profile" 
+                                             action="#{workflowBB.viewCase}"/>
+
                         <h2>Un-Tethered Code Enforcement Action Requests:</h2>
                         <p>Code Enforcement requests which have not yet been connected to 
                         an open case. Select each request to view its details and attach to an existing case.
@@ -111,71 +191,6 @@
                                              action="#{workflowBB.viewSelectedActionRequest}"/>
                         
                         
-                        
-                        <p:spacer height="10px"/>
-                        <hr/>
-                        <p:spacer height="10px"/>
-                        
-                        <h2>Open Cases:</h2>
-                            <p:dataTable
-                                id="caseTable"
-                                var="c"
-                                selectionMode="single"
-                                selection="#{workflowBB.selectedCase}"
-                                rowKey="#{c.caseID}"
-                                value="#{workflowBB.caseList}"
-                                tableStyleClass="primeDataTable">
-                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
-
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Case ID" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.caseID}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Name" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.caseName}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Phase" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.casePhase}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Date Opened" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.originationDate}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Control Code" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.publicControlCode}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Property" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.property.address}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Manager" />
-                                    </f:facet>
-                                    <h:outputText value="#{c.user.LName}"/>
-                                </p:column>
-                            </p:dataTable>
-
-                            <p:spacer height="10px"/>
-
-                            <p:commandButton ajax="false" value="View Case Profile" 
-                                             action="#{workflowBB.viewCase}"/>
-
 
                         </h:form>
                        
