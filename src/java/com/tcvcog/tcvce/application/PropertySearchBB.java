@@ -57,10 +57,11 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
             System.out.println(ex);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        " Unable to complete a property search! ", ""));
+                        " Unable to complete a search search! ", ""));
         }
     }
     
+    //this method should correlate to the "Search only in Selected Muni"
     public void searchForPropertiesSingleMuni(ActionEvent event){
         System.out.println("PropSearchBean.searchForPropertiesSingleMuni");
         PropertyIntegrator pi = new PropertyIntegrator();
@@ -76,7 +77,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
             System.out.println(ex);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to complete a property search! ", ""));
+                        "Unable to complete search! ", ""));
             
         }
     }

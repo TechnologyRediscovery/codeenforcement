@@ -35,148 +35,137 @@
                             <h2>New Element Form:</h2>
                             <p>Populate the following fields to add an element to the above code source</p>
                             
-                            <p>Select an appropriate type for this element</p>
-                            <p:selectOneListbox value="#{codeElementBB.formType}"
-                                            id="elementTypes" style="width: 400px"
-                                            tabindex="1">
-                                <f:selectItems value="#{codeElementTypeBB.codeElementTypesMap}"/>
-                            </p:selectOneListbox>
+                            <h:panelGrid columns="2" border="0" cellspacing="10" cellpadding="5" 
+                                         columnClasses="gridTd, gridTd, gridTd, gridTd" 
+                                         footerClass="gridFooter">
+                                
+                                <h:outputLabel value="Select an appropriate type for this element:" for="elementTypes"/>
+                                    <h:panelGroup>
+                                        <p:selectOneMenu value="#{codeElementBB.formType}"
+                                                    id="elementTypes" 
+                                                    tabindex="1">
+                                        <f:selectItems value="#{codeElementTypeBB.codeElementTypesMap}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>    
+                                
+                                <h:outputLabel value="Ordiance chapter number (numbers only):"/>
+                                    <h:panelGroup>               
+                                        <p:inputText id="cdelOrdChapterNo" value="#{codeElementBB.formOrdChapterNo}" 
+                                                     style="width: 100%;" tabindex="2" required="true" styleClass="inputText"/>
+                                        <h:message for="cdelOrdChapterNo" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                <h:outputLabel value="Chapter title:"/>
+                                <h:panelGroup>
+                                    <p:inputText id="cdelOrdChapterTitle" value="#{codeElementBB.formOrdChapterTitle}" 
+                                                 style="width: 100%;" tabindex="3" required="true" styleClass="inputText"/>
+                                    <h:message for="cdelOrdChapterTitle" showDetail="true" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                
+
+                                <h:outputLabel value="Section number (may contain letters):"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="cdelOrdSecNum" value="#{codeElementBB.formOrdSecNum}" 
+                                                     style="width: 100%;" tabindex="4" required="true" styleClass="inputText"/>
+                                        <h:message for="cdelOrdSecNum" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError"/>
+                                    </h:panelGroup>
+                                        
+                                <h:outputLabel value="Section title:"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="ccdelOrdSecTitle" value="#{codeElementBB.formOrdSecTitle}" 
+                                                     style="width: 100%;" tabindex="5" required="true" styleClass="inputText"/>
+                                        <h:message for="ccdelOrdSecTitle" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                <h:outputLabel value="Subsection number (may contain letters):"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="cdelordSubSecNum" value="#{codeElementBB.formOrdSubSecNum}" 
+                                                     style="width: 100%;" tabindex="6" required="false" styleClass="inputText"/>
+                                        <h:message for="cdelordSubSecNum" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                <h:outputLabel value="Subsection title:"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="cdelOrdSubSecTitle" value="#{codeElementBB.formOrdSubSecTitle}" 
+                                                     style="width: 100%;" tabindex="7" required="false" styleClass="inputText"/>
+                                        <h:message for="cdelOrdSubSecTitle" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>    
+                                
+                                <h:outputLabel value="Enter the default penalty for violating this ordinance:"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="cdelDefaultPenalty" value="#{codeElementBB.formDefaultPenalty}" 
+                                                     style="width: 100%;" tabindex="8" required="true" styleClass="inputText"/>
+                                        <h:message for="cdelDefaultPenalty" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>    
+                                   
+                                <h:outputLabel value="Toggle active element:"/>
+                                <h:panelGroup>
+                                    <p:inputSwitch id="cdelIsActive" value="#{codeElementBB.formIsActive}" 
+                                               tabindex="9" onLabel="Yes" offLabel="No"/>
+                                    <h:message for="cdelIsActive" showDetail="true" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+
+                                <h:outputLabel value="Toggle code enforcement priority:"/>
+                                    <h:panelGroup>    
+                                        <p:inputSwitch id="cdelEnfPriority" value="#{codeElementBB.formIsEnforcementPriority}" 
+                                                   tabindex="10" onLabel="Yes" offLabel="No"/>
+                                        <h:message for="cdelEnfPriority" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                
+                                
+                                <f:facet name="footer">
+                                    
+                                    <h:outputLabel value="Web address of element resource:"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="cdelUrl" value="#{codeElementBB.formResourceURL}" 
+                                                     style="width: 100%;" tabindex="11" required="false" styleClass="inputText"/>
+                                        <h:message for="cdelUrl" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+                                    
+                                    
+                                     <h:outputLabel value="Enter the technical text of this ordinance:"/> 
+                                    <h:panelGroup>    
+                                        <p:inputTextarea id="cdelOrdTechnicalText" value="#{codeElementBB.formOrdTechnicalText}" 
+                                                     style="width: 100%;" tabindex="12" required="true" styleClass="inputText"/>
+                                        <h:message for="cdelOrdTechnicalText" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>  
+                                    
+                                    <h:outputLabel value="Compose a human-friendly version of this ordinance:"/>
+                                    <h:panelGroup>   
+                                        <p:inputTextarea id="cdelOrdHumanFriendlyText" value="#{codeElementBB.formOrdHumanFriendlyText}" 
+                                                     style="width: 100%;" tabindex="13" required="false" styleClass="inputText"/>
+                                        <h:message for="cdelOrdHumanFriendlyText" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup> 
+                                    
+                                    
+                                <h:outputLabel value="Inspection procedure or best practices:"/>
+                                    <h:panelGroup>    
+                                        <p:inputTextarea id="cdelInspectionTips" value="#{codeElementBB.formInspectionTips}" 
+                                                     style="width: 100%;" tabindex="14" required="false" styleClass="inputText"/>
+                                        <h:message for="cdelInspectionTips" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>  
+                                
+                                </f:facet>    
                             
-                            
-                            <h:outputLabel for="cdelOrdChapterNo" >
-                                <h:outputText value="Ordiance chapter number (numbers only)" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelOrdChapterNo" value="#{codeElementBB.formOrdChapterNo}" 
-                                         style="width: 10%;" tabindex="2" required="true" styleClass="inputText"/>
-                            <h:message for="cdelOrdChapterNo" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelOrdChapterTitle" >
-                                <h:outputText value="Chapter title" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelOrdChapterTitle" value="#{codeElementBB.formOrdChapterTitle}" 
-                                         style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
-                            <h:message for="cdelOrdChapterTitle" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                            
-                            <p:spacer height="15px"/>
-         
-                            <h:outputLabel for="cdelOrdSecNum" >
-                                <h:outputText value="Section number (may contain letters)" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelOrdSecNum" value="#{codeElementBB.formOrdSecNum}" 
-                                         style="width: 10%;" tabindex="4" required="true" styleClass="inputText"/>
-                            <h:message for="cdelOrdSecNum" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="ccdelOrdSecTitle" >
-                                <h:outputText value="Section title" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="ccdelOrdSecTitle" value="#{codeElementBB.formOrdSecTitle}" 
-                                         style="width: 50%;" tabindex="5" required="true" styleClass="inputText"/>
-                            <h:message for="ccdelOrdSecTitle" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelordSubSecNum" >
-                                <h:outputText value="Subsection number (may contain letters)" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelordSubSecNum" value="#{codeElementBB.formOrdSubSecNum}" 
-                                         style="width: 10%;" tabindex="6" required="false" styleClass="inputText"/>
-                            <h:message for="cdelordSubSecNum" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelOrdSubSecTitle" >
-                                <h:outputText value="Subsection title" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelOrdSubSecTitle" value="#{codeElementBB.formOrdSubSecTitle}" 
-                                         style="width: 50%;" tabindex="7" required="false" styleClass="inputText"/>
-                            <h:message for="cdelOrdSubSecTitle" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelOrdTechnicalText" >
-                                <h:outputText value="Enter the technical text of this ordinance" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputTextarea id="cdelOrdTechnicalText" value="#{codeElementBB.formOrdTechnicalText}" 
-                                         style="width: 100%;" tabindex="8" required="true" styleClass="inputText"/>
-                            <h:message for="cdelOrdTechnicalText" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelOrdHumanFriendlyText" >
-                                <h:outputText value="Compose a human-friendly version of this ordinance" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputTextarea id="cdelOrdHumanFriendlyText" value="#{codeElementBB.formOrdHumanFriendlyText}" 
-                                         style="width: 100%;" tabindex="9" required="false" styleClass="inputText"/>
-                            <h:message for="cdelOrdHumanFriendlyText" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelDefaultPenalty" >
-                                <h:outputText value="Enter the default penalty for violating this ordinance" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelDefaultPenalty" value="#{codeElementBB.formDefaultPenalty}" 
-                                         style="width: 10%;" tabindex="10" required="true" styleClass="inputText"/>
-                            <h:message for="cdelDefaultPenalty" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelIsActive" >
-                                <h:outputText value="Toggle active element'" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:selectBooleanCheckbox id="cdelIsActive" value="#{codeElementBB.formIsActive}" 
-                                       tabindex="11" required="true" styleClass="selectOneRadio"/>
-                            <h:message for="cdelIsActive" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelEnfPriority" >
-                                <h:outputText value="Toggle code enforcement priority." styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:selectBooleanCheckbox id="cdelEnfPriority" value="#{codeElementBB.formIsEnforcementPriority}" 
-                                       tabindex="12" required="true" styleClass="selectOneRadio"/>
-                            <h:message for="cdelEnfPriority" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelUrl" >
-                                <h:outputText value="Web address of element resource" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputText id="cdelUrl" value="#{codeElementBB.formResourceURL}" 
-                                         style="width: 100%;" tabindex="13" required="false" styleClass="inputText"/>
-                            <h:message for="cdelUrl" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelInspectionTips" >
-                                <h:outputText value="Inspection procedure or best practices" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputTextarea id="cdelInspectionTips" value="#{codeElementBB.formInspectionTips}" 
-                                         style="width: 100%;" tabindex="14" required="false" styleClass="inputText"/>
-                            <h:message for="cdelInspectionTips" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                            
-                            <p:spacer height="15px"/>
-                            
-                            <h:commandButton 
+                            </h:panelGrid>
+                            <p:commandButton 
                              id="insertCodeElement" 
                              value="Add code element" 
-                             styleClass="buttonOwnLine"
+                             ajax="false"
                              tabindex="15"
                              action="#{codeElementListBB.commitUpdatesToCodeElement}"/>
                             

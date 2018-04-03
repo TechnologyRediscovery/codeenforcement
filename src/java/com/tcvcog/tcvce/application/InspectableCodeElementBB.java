@@ -1,0 +1,215 @@
+/*
+ * Copyright (C) 2018 Adam Gutonski
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.tcvcog.tcvce.application;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.Exercise;
+
+import com.tcvcog.tcvce.integration.ExerciseIntegrator;
+import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
+import com.tcvcog.tcvce.occupancy.InspectableCodeElement;
+
+import java.io.Serializable;
+import javax.faces.event.*;
+import java.time.*;
+//imported when adding @ManagedBean and @ViewScoped
+
+import java.util.*;
+import javax.faces.application.FacesMessage;
+
+/**
+ *
+ * @author Adam Gutonski
+ */
+@ManagedBean
+@ViewScoped
+public class InspectableCodeElementBB extends BackingBeanUtils implements Serializable{
+    
+    //i believe this LinkList will load up the objects from our database to ship back
+    //to the XHTML page...?
+    private LinkedList<InspectableCodeElement> inspectableCodeElementList;
+    private InspectableCodeElement selectedIce;
+    private int formCodeElementID;
+    private String formInspectionTips;
+    //private String formNonComplianceNotes;
+    private boolean formInspectionPriority;
+    //private java.util.Date formIceDate;
+    
+    /**
+     * Creates a new instance of ExerciseBB
+     */
+    public InspectableCodeElementBB() {
+    }
+    //need to add the getInspectableCodeElementIntegrator(); method to BBUtils  
+    public String addInspectableCodeElement(){
+        
+        InspectableCodeElement i = new InspectableCodeElement();
+        InspectableCodeElementIntegrator ic = new InspectableCodeElementIntegrator();
+//need to add the getInspectableCodeElementIntegrator(); method to BBUtils        
+//InspectableCodeElementIntegrator ei = getInspectableCodeElementIntegrator();
+        
+        i.setCodeElementID(formCodeElementID);
+        i.setInspectionPriority(isFormInspectionPriority());
+        i.setInspectionTips(formInspectionTips);
+        //i.setHighImportance(formHighImportance);
+        //i.setIceDate(formIceDate.toInstant()
+        //        .atZone(ZoneId.systemDefault())
+        //        .toLocalDateTime());
+               
+        // placeholder for lastupdated
+        
+        try {
+            ic.insertInspectableCodeElement(i);
+            getFacesContext().addMessage(null,
+                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                         "Successfully added "/* + i.getCodeElement() + */+ 
+                                 " inspectable code element to the Database!", ""));
+
+        } catch (IntegrationException ex) {
+            System.out.println(ex.toString());
+               getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to add InspectableCodeElement to the database, my apologies!", "Check server print out!"));
+            return "";
+        }
+        
+        return "inspectableCodeElementManage";
+    }
+    
+    public LinkedList<InspectableCodeElement> getInspectableCodeElementList() {
+        try {
+            InspectableCodeElementIntegrator ic = getInspectableCodeElementIntegrator();
+            inspectableCodeElementList = ic.getInspectableCodeElementList();
+            //return eventCategoryList;
+        } catch (IntegrationException ex) {
+             getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to load event category list", 
+                        "This must be corrected by the System Administrator"));
+        }
+        if(inspectableCodeElementList != null){
+            return inspectableCodeElementList;
+            
+        } else {
+            inspectableCodeElementList = new LinkedList();
+            return inspectableCodeElementList;
+        }
+        
+    }
+
+    /**
+     * @return the formCodeElement
+     */
+    public int getFormCodeElementID() {
+        return formCodeElementID;
+    }
+
+    /**
+     * @param formCodeElement the formCodeElement to set
+     */
+    public void setFormCodeElementID(int formCodeElementID) {
+        this.formCodeElementID = formCodeElementID;
+    }
+
+    /**
+     * @return the formInspectionGuidelines
+     */
+    public String getFormInspectionTips() {
+        return formInspectionTips;
+    }
+
+    /**
+     * @param formInspectionTips the formInspectionGuidelines to set
+     */
+    public void setFormInspectionTips(String formInspectionTips) {
+        this.formInspectionTips = formInspectionTips;
+    }
+
+    /**
+     * @return the formNonComplianceNotes
+     
+    public String getFormNonComplianceNotes() {
+        return formNonComplianceNotes;
+    }
+
+    
+     * @param formNonComplianceNotes the formNonComplianceNotes to set
+    
+    public void setFormNonComplianceNotes(String formNonComplianceNotes) {
+        this.formNonComplianceNotes = formNonComplianceNotes;
+    }
+
+   
+     * @return the formHighImportance
+     
+    public boolean isFormHighImportance() {
+        return formHighImportance;
+    }
+
+    /**
+     * @param formHighImportance the formHighImportance to set
+     
+    public void setFormHighImportance(boolean formHighImportance) {
+        this.formHighImportance = formHighImportance;
+    }
+
+    /**
+     * @return the selectedIce
+     */
+    public InspectableCodeElement getSelectedIce() {
+        return selectedIce;
+    }
+
+    /**
+     * @param selectedIce the selectedIce to set
+     */
+    public void setSelectedIce(InspectableCodeElement selectedIce) {
+        this.selectedIce = selectedIce;
+    }
+
+    /**
+     * @return the formInspectionPriority
+     */
+    public boolean isFormInspectionPriority() {
+        return formInspectionPriority;
+    }
+
+    /**
+     * @param formInspectionPriority the formInspectionPriority to set
+     */
+    public void setFormInspectionPriority(boolean formInspectionPriority) {
+        this.formInspectionPriority = formInspectionPriority;
+    }
+
+    /**
+     * @return the formIceDate
+     
+    public java.util.Date getFormIceDate() {
+        return formIceDate;
+    }
+
+    /**
+     * @param formIceDate the formIceDate to set
+     
+    public void setFormIceDate(java.util.Date formIceDate) {
+        this.formIceDate = formIceDate;
+    }
+    * */
+}
+    
+    

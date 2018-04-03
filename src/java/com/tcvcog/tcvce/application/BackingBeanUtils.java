@@ -30,10 +30,15 @@ import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
+import com.tcvcog.tcvce.integration.ExerciseIntegrator;
+import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import com.tcvcog.tcvce.integration.WeatherTestIntegrator;
+import com.tcvcog.tcvce.occupancy.InspectableCodeElement;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -59,6 +64,9 @@ public class BackingBeanUtils implements Serializable{
     
     private CaseCoordinator caseCoordinator;
     private CaseIntegrator caseIntegrator;
+    
+    //testing weather test integrator
+    private WeatherTestIntegrator weatherTestIntegrator;
     
     private EventCoordinator eventCoordinator;
     private EventIntegrator eventIntegrator;
@@ -190,6 +198,53 @@ public class BackingBeanUtils implements Serializable{
                         PersonIntegrator.class);
         
         return personIntegrator;
+        
+    }
+    
+    public ExerciseIntegrator getExerciseIntegrator(){
+        FacesContext context = getFacesContext();
+        ExerciseIntegrator exerciseIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{exerciseIntegrator}", 
+                        ExerciseIntegrator.class);
+        
+        return exerciseIntegrator;
+        
+    }
+    //adams creation of getInspectableCodeElementIntegrator()
+     public InspectableCodeElementIntegrator getInspectableCodeElementIntegrator(){
+        FacesContext context = getFacesContext();
+        InspectableCodeElementIntegrator inspectableCodeElementIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{inspectableCodeElementIntegrator}", 
+                        InspectableCodeElementIntegrator.class);
+        
+        return inspectableCodeElementIntegrator;
+        
+    }
+    
+    //adam creation of occupancy inspeciton integrator
+    public OccupancyInspectionIntegrator getOccupancyInpsectionIntegrator(){
+        FacesContext context = getFacesContext();
+        OccupancyInspectionIntegrator occupancyInspectionIntegrator = context.getApplication()
+                .evaluateExpressionGet(context, 
+                        "#{occupancyInspectionIntegrator}", 
+                        OccupancyInspectionIntegrator.class);
+        return occupancyInspectionIntegrator;
+    }
+     
+    //adams creation of a weathertestintegrator in the backingbeanutils
+    public WeatherTestIntegrator getWeatherTestIntegrator(){
+        FacesContext context = getFacesContext();
+        WeatherTestIntegrator weatherIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{personIntegrator}", 
+                        WeatherTestIntegrator.class);
+        
+        return weatherIntegrator;
         
     }
     

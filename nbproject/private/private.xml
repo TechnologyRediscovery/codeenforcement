@@ -3,31 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CaseIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CEActionRequestIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeElementTypeManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/CEActionRequest.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSetManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/tempHeadFoot.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/PropertyIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventType.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/actionRequestManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/ActionRequestManageBB/ActionRequestManageBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/CaseCoordinator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ActionRequestBean.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/EventIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/CasePhase.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/public/submitCERequest.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CodeIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/resultsets/PublicViolationSet.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/userAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/workflow.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/codeSetBuilder.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/faces-config.xml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/WorkflowBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/PersonType.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/occupancy/InspectableCodeElement.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/BackingBeanUtils.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/personAdd.xhtml</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/ManageARequestBean.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/ExerciseBB.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/integration/InspectableCodeElementIntegrator.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/occupancy/OccupancyInspection.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/Exercising.xhtml</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/InspectableCodeElementBB.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/OccupancyInspectionBB.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/integration/OccupancyInspectionIntegrator.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/integration/ExerciseIntegrator.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/inspectableCodeElementAdd.xhtml</file>
         </group>
     </open-files>
 </project-private>

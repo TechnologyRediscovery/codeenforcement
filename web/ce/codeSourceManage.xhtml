@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -15,13 +15,14 @@
             
             <ui:define name="content">
                 <div class="mainContainer">
-                <h2>Manage municipal code sources</h2>
+                <h1>Manage municipal code sources</h1>
                 
                 <f:view>
-                    <p>
-                    <h:outputLink value="../ce/codeSourceAdd.xhtml">Create a new code source</h:outputLink>
-                    </p>
-                    <h:form id="manageSingleActionRequest">
+                   <h:form id="manageSingleActionRequest"> 
+                    <p:commandButton id="sourceManCommand" ajax="false" value="Create a new code source" action="/ce/codeSourceAdd.xhtml" styleClass="manButton"/>
+                    <!--<h:outputLink value="../ce/codeSourceAdd.xhtml">Create a new code source</h:outputLink>-->
+                    
+                    <!--<h:form id="manageSingleActionRequest">-->
                          <h:messages globalOnly="true"></h:messages>
                         
                         <h:outputLabel for="codesourceid" >
@@ -31,18 +32,18 @@
                                      style="width: 100%;" tabindex="0" required="true" styleClass="inputText"/>
                         <h:message for="codesourceid" showDetail="true" showSummary="true" 
                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                        <h:commandButton 
+                        <p:commandButton 
                                 id="lookupsource" 
                                 value="Look Up Source" 
-                                styleClass="buttonOwnLine"
+                                styleClass="buttonOwnLine1"
                                 action="#{codeSourceBB.lookUpSource}"/>
                         
                        
                         
-                         <h:commandButton 
+                         <p:commandButton 
                                 id="completeCodeSourceList" 
                                 value="Retrieve All Code Sources" 
-                                styleClass="buttonOwnLine"
+                                styleClass="buttonOwnLine1"
                                 action="#{codeSourceBB.retrieveAllCodeSources}"/>
                          
                         
@@ -101,19 +102,19 @@
                          
                         <p:spacer height="5"/>
                         
-                        <h:commandButton 
+                        <p:commandButton 
                             id="getDetails" 
                             value="Get Info on Selected Source" 
                             styleClass="buttonOwnLine"
                             actionListener="#{codeSourceBB.lookUpSource}"/>
                         
-                         <h:commandButton
+                         <p:commandButton
                              id="addElementToSource"
                              value="Add Element to Source"
                              styleClass="buttonOwnLine"
                              action="#{codeSourceBB.addElementToSource}" />
                          
-                          <h:commandButton
+                          <p:commandButton
                              id="viewElementsInSource"
                              value="View list of elements in source"
                              styleClass="buttonOwnLine"
@@ -152,7 +153,7 @@
                                 <h:outputText value="Description of Code Source"/>
                             </p:outputLabel>
                             <p:inputTextarea id="selectedSourceDescription" value="#{codeSourceBB.formSourceDescription}" 
-                                      style="width: 100%;" tabindex="5" required="true" styleClass="inputTextarea"/>
+                                      style="width: 100%;" tabindex="5" required="true" styleClass="inputTextarea" />
                             <h:message for="selectedSourceDescription" showDetail="false" showSummary="true" 
                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
@@ -160,8 +161,8 @@
                             <p:outputLabel for="selectedSourceIsActive">
                                 <h:outputText value="Active Source?"/>
                             </p:outputLabel>
-                            <p:selectBooleanCheckbox id="selectedSourceIsActive" value="#{codeSourceBB.formSourceIsActive}" 
-                                       tabindex="2" required="true" styleClass="selectOneRadio"/>
+                            <p:inputSwitch id="selectedSourceIsActive" value="#{codeSourceBB.formSourceIsActive}" 
+                                       tabindex="2" required="true" onLabel="Yes" offLabel="No"/>
                             <h:message for="selectedSourceIsActive" showDetail="false" showSummary="true" 
                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                             <p:spacer height="15"/>
@@ -183,7 +184,7 @@
                             <h:message for="selectedSourceNotes" showDetail="false" showSummary="true" 
                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
-                               <h:commandButton 
+                               <p:commandButton 
                                 id="updateSource" 
                                 value="Update Source" 
                                 styleClass="buttonOwnLine"
