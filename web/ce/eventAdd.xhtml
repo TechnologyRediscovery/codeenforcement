@@ -82,6 +82,16 @@
                                         <p:spacer height="5px"/>
                                         <p:inputSwitch tabindex="18" id="discloseToPublic" value="#{eventAddBB.formDiscloseToPublic}" onLabel="Yes" offLabel="No" />
                                     </h:panelGroup>
+                                    
+                                    
+                                    
+                                    <h:panelGroup>
+                                        <h:outputLabel for="requireViewConfirmationSwitch">
+                                            <h:outputText value="Disclose to Public"/>
+                                        </h:outputLabel>
+                                        <p:spacer height="5px"/>
+                                        <p:inputSwitch tabindex="18" id="requireViewConfirmationSwitch" value="#{eventAddBB.formRequireViewConfirmation}" onLabel="Yes" offLabel="No" />
+                                    </h:panelGroup>
 
                                     <f:facet name="footer">
                                         <h:outputLabel for="eventNotes">
@@ -97,7 +107,7 @@
 
                                 </h:panelGrid>
 
-                                <h:outputLabel for="evenBtPerson">
+                                <h:outputLabel>
                                     <h:outputText value="Attach a Property Person"/>
                                 </h:outputLabel>
                                 

@@ -21,7 +21,27 @@ import java.util.Objects;
 
 /**
  *
- * @author sylvia
+ * 
+CREATE TABLE public.ceeventcategory
+(
+  categoryid integer NOT NULL DEFAULT nextval('ceeventcategory_categoryid_seq'::regclass),
+  categorytype ceeventtype NOT NULL,
+  title text,
+  description text,
+  userdeployable boolean DEFAULT true,
+  munideployable boolean DEFAULT false,
+  publicdeployable boolean DEFAULT false,
+  requiresviewconfirmation boolean DEFAULT false,
+  notifycasemonitors boolean DEFAULT false,
+  casephasechangetrigger boolean DEFAULT false,
+  hidable boolean DEFAULT false,
+  CONSTRAINT ceeventcategory_categoryid_pk PRIMARY KEY (categoryid)
+)
+WITH (
+  OIDS=FALSE
+);
+ * 
+ * @author Eric Darsow
  */
 public class EventCategory {
     
@@ -29,6 +49,16 @@ public class EventCategory {
     private int categoryID;
     private String eventCategoryTitle;
     private String eventCategoryDesc;
+    
+    private boolean userdeployable;
+    private boolean munideployable;
+    private boolean publicdeployable;
+    private boolean requiresviewconfirmation;
+    private boolean notifycasemonitors;
+    private boolean casephasechangetrigger;
+    private boolean hidable;
+    
+    
     
 
     /**
@@ -122,6 +152,104 @@ public class EventCategory {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the userdeployable
+     */
+    public boolean isUserdeployable() {
+        return userdeployable;
+    }
+
+    /**
+     * @return the munideployable
+     */
+    public boolean isMunideployable() {
+        return munideployable;
+    }
+
+    /**
+     * @return the publicdeployable
+     */
+    public boolean isPublicdeployable() {
+        return publicdeployable;
+    }
+
+    /**
+     * @return the requiresviewconfirmation
+     */
+    public boolean isRequiresviewconfirmation() {
+        return requiresviewconfirmation;
+    }
+
+    /**
+     * @return the notifycasemonitors
+     */
+    public boolean isNotifycasemonitors() {
+        return notifycasemonitors;
+    }
+
+    /**
+     * @return the casephasechangetrigger
+     */
+    public boolean isCasephasechangetrigger() {
+        return casephasechangetrigger;
+    }
+
+    /**
+     * @return the hidable
+     */
+    public boolean isHidable() {
+        return hidable;
+    }
+
+    /**
+     * @param userdeployable the userdeployable to set
+     */
+    public void setUserdeployable(boolean userdeployable) {
+        this.userdeployable = userdeployable;
+    }
+
+    /**
+     * @param munideployable the munideployable to set
+     */
+    public void setMunideployable(boolean munideployable) {
+        this.munideployable = munideployable;
+    }
+
+    /**
+     * @param publicdeployable the publicdeployable to set
+     */
+    public void setPublicdeployable(boolean publicdeployable) {
+        this.publicdeployable = publicdeployable;
+    }
+
+    /**
+     * @param requiresviewconfirmation the requiresviewconfirmation to set
+     */
+    public void setRequiresviewconfirmation(boolean requiresviewconfirmation) {
+        this.requiresviewconfirmation = requiresviewconfirmation;
+    }
+
+    /**
+     * @param notifycasemonitors the notifycasemonitors to set
+     */
+    public void setNotifycasemonitors(boolean notifycasemonitors) {
+        this.notifycasemonitors = notifycasemonitors;
+    }
+
+    /**
+     * @param casephasechangetrigger the casephasechangetrigger to set
+     */
+    public void setCasephasechangetrigger(boolean casephasechangetrigger) {
+        this.casephasechangetrigger = casephasechangetrigger;
+    }
+
+    /**
+     * @param hidable the hidable to set
+     */
+    public void setHidable(boolean hidable) {
+        this.hidable = hidable;
     }
     
     

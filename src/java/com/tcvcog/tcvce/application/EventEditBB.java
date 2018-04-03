@@ -43,7 +43,7 @@ import javax.faces.application.FacesMessage;
  *
  * @author Eric Darsow
  */
-public class EventAddBB extends BackingBeanUtils implements Serializable {
+public class EventEditBB extends BackingBeanUtils implements Serializable {
     
     // add event form fields
     private LinkedList<EventCategory> eventCategoryList;
@@ -77,7 +77,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     
     
     // constructor
-    public EventAddBB(){
+    public EventEditBB(){
         
     }
     
@@ -121,7 +121,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
                             ex.getMessage(), 
                             "This is a non-user system-level error that must be fixed by your Sys Admin"));
         } catch (CaseLifecyleException ex) {
-            Logger.getLogger(EventAddBB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EventEditBB.class.getName()).log(Level.SEVERE, null, ex);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             ex.getMessage(), 

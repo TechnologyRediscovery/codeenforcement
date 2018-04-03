@@ -10,6 +10,20 @@ import java.util.LinkedList;
 
 /**
  *
+ * corresponding database table DDL
+ * 
+ * 
+   INSERT INTO public.ceevent(
+            eventid, ceeventcategory_catid, cecase_caseid, dateofrecord, 
+            eventtimestamp, eventdescription, login_userid, disclosetomunicipality, 
+            disclosetopublic, activeevent, requiresviewconfirmation, viewconfirmed, 
+            hidden, notes)
+    VALUES (?, ?, ?, ?, 
+            ?, ?, ?, ?, 
+            ?, ?, ?, ?, 
+            ?, ?);
+
+* 
  * @author cedba
  */
 public class Event {
@@ -29,6 +43,10 @@ public class Event {
     private boolean discloseToPublic;
     
     private boolean activeEvent;
+    private boolean requiresViewConfirmation;
+    private boolean viewConfirmed;
+    private boolean hidden;
+    
     private String notes;
     
     private LinkedList<Person> eventPersons;
@@ -215,6 +233,48 @@ public class Event {
      */
     public void setEventPersons(LinkedList<Person> eventPersons) {
         this.eventPersons = eventPersons;
+    }
+
+    /**
+     * @return the requiresViewConfirmation
+     */
+    public boolean isRequiresViewConfirmation() {
+        return requiresViewConfirmation;
+    }
+
+    /**
+     * @return the viewConfirmed
+     */
+    public boolean isViewConfirmed() {
+        return viewConfirmed;
+    }
+
+    /**
+     * @return the hidden
+     */
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * @param requiresViewConfirmation the requiresViewConfirmation to set
+     */
+    public void setRequiresViewConfirmation(boolean requiresViewConfirmation) {
+        this.requiresViewConfirmation = requiresViewConfirmation;
+    }
+
+    /**
+     * @param viewConfirmed the viewConfirmed to set
+     */
+    public void setViewConfirmed(boolean viewConfirmed) {
+        this.viewConfirmed = viewConfirmed;
+    }
+
+    /**
+     * @param hidden the hidden to set
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
     
     

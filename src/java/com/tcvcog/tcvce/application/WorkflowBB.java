@@ -55,6 +55,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
         
         SessionManager sm = getSessionManager();
         sm.getVisit().setActiveCase(selectedCase);
+        sm.getVisit().setActiveProp(selectedCase.getProperty());
         
         return "caseManage";
     }

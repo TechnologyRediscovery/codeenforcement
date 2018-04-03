@@ -72,6 +72,13 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         return event;
     }
     
+    public EventCategory getInitializedEventCateogry(){
+        EventCategory ec =  new EventCategory();
+        ec.setUserdeployable(true);
+        ec.setHidable(true);
+        return ec;
+    }
+    
     public void logCodeViolationUpdate(CECase ceCase, CodeViolation cv, Event event) throws IntegrationException, EventException{
         EventIntegrator ei = getEventIntegrator();
         SessionManager sm = getSessionManager();

@@ -129,8 +129,8 @@
                                     <p:commandButton ajax="false" action="#{caseManageBB.editViolation}"
                                                      value="Edit Details"/>
 
-                                    <p:commandButton ajax="false" action="#{caseManageBB.deleteViolation}"
-                                                     value="Nuke Violation Forever"/>
+<!--                                    <p:commandButton ajax="false" action="caseManageBB.deleteViolation"
+                                                     value="Nuke Violation Forever"/>-->
 
                                     
                                 </h:form>
@@ -230,7 +230,7 @@
                                 <h:form id="formEventAddAjax">
                                     
                                      <h:panelGrid columns="3" border="0" 
-                                         cellpadding="5" columnClasses="gridTd, gridTd"
+                                         cellpadding="5" columnClasses="gridTd, gridTd, gridTd"
                                          footerClass="gridFooter" style="vertical-align: top;">
                                              
                                          <h:panelGroup>
@@ -253,19 +253,23 @@
                                             </h:outputLabel>
 
                                              <p:selectOneListbox style="width: 300px;" id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
-                                                 <p:ajax update="selectedEventCategoryDescription" immediate="true"/>
+                                                 <p:ajax update="selectedEventCategoryDescription, selectedEventCategoryDescription, selectedEventCateogryRequiresViewConfirm, selectedEventCateogryNotifiesCaseMonitors" immediate="true"/>
                                                 <f:converter converterId="eventCategoryConverter"/>
                                                 <f:selectItems  id="catItemsList" value="#{eventAddBB.eventCategoryList}" var="ec" itemValue="#{ec}" itemLabel="#{ec.eventCategoryTitle}"/>
                                             </p:selectOneListbox>
 
-                                            <h:message for="categoryList" showDetail="false" showSummary="true" 
+                                            <h:message for="categoryList" showDetail="false" showSummary="true"  
                                             warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                             <p:commandButton ajax="false" action="#{eventAddBB.startNewEvent}"
                                                     value="Create new event of this category"/>
                                          </h:panelGroup>
                                          
                                          <h:panelGroup>
-                                             <h:outputText value="#{eventAddBB.selectedEventCateogryDescription}" id="selectedEventCategoryDescription"/>
+                                             <h:outputText value="Event Cateogry Description: #{eventAddBB.selectedEventCateogryDescription}" id="selectedEventCategoryDescription"/>
+                                             <p:spacer height="10px"/>
+                                             <h:outputText value="Requires View Confirmation: #{eventAddBB.selectedEventRequiresViewConfirmation}" id="selectedEventCateogryRequiresViewConfirm"/>
+                                             <p:spacer height="10px"/>
+                                             <h:outputText value="Triggers notification of case monitor subscribers: #{eventAddBB.selectedEventNotifiesCaseMonitors}" id="selectedEventCateogryNotifiesCaseMonitors"/>
                                              
                                          </h:panelGroup>
                                      </h:panelGrid>
