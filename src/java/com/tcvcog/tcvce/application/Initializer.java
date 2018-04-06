@@ -34,6 +34,7 @@ import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
+import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
 import java.util.Set;
 import javax.servlet.ServletContext;
@@ -124,6 +125,9 @@ public class Initializer implements ServletContextListener{
         
         EventIntegrator ei = new EventIntegrator();
         servletContext.setAttribute("eventIntegrator", ei);
+        
+        SpaceTypeIntegrator spaceTypeIntegrator = new SpaceTypeIntegrator();
+        servletContext.setAttribute("spaceTypeIntegrator", spaceTypeIntegrator);
         
         CEActionRequestIntegrator ari = new CEActionRequestIntegrator();
         servletContext.setAttribute("ceActionRequestIntegrator", ari);

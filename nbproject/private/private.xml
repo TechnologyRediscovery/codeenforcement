@@ -3,57 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/occupancy/RoomType.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/occupancy/InspectableCodeElement.java</file>
-            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/BackingBeanUtils.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/templateClient~.xhtml</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/testing/TestDB.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/personAdd.xhtml</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/ManageARequestBean.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/ExerciseBB.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/integration/InspectableCodeElementIntegrator.java</file>
-            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/occupancy/OccupancyInspection.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/WEB-INF/faces-config.xml</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/Exercising.xhtml</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/InspectableCodeElementBB.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/OccupancyInspectionBB.java</file>
+            <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/application/Initializer.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/integration/OccupancyInspectionIntegrator.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/src/java/com/tcvcog/tcvce/integration/ExerciseIntegrator.java</file>
             <file>file:/C:/Users/Emily/codeenforcementDB/codeenforcement/web/inspectableCodeElementAdd.xhtml</file>
-=======
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/CaseIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/eventConfiguration.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/domain/EventException.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/tempHeadFoot.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/Event.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/PropertyProfileBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventType.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/PersonIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/LogIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/classes/eventCategories.properties</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonConnectBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/util/EventCategoryConverter.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/CaseManageBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/EventAddBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/caseManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/classes/messages.properties</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/CaseCoordinator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/propertyProfile.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/integration/EventIntegrator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/ce/eventAdd.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personManage.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/EventConfigurationBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/BackingBeanUtils.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/coordinators/EventCoordinator.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/PersonAddBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/exitLanding.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/workflow.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/entities/EventCategory.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/WEB-INF/web.xml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/pageTemplate.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/application/ViolationEditBB.java</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/web/personConnect.xhtml</file>
-            <file>file:/home/sylvia/NetBeansProjects/tcvce/src/java/com/tcvcog/tcvce/util/EntityConverter.java</file>
->>>>>>> 5ba118b781c21793f3560586db5154e6175ba125
         </group>
     </open-files>
 </project-private>
