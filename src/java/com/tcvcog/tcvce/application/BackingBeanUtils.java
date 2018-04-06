@@ -37,6 +37,7 @@ import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
+import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
 import com.tcvcog.tcvce.integration.WeatherTestIntegrator;
 import com.tcvcog.tcvce.occupancy.InspectableCodeElement;
@@ -86,6 +87,8 @@ public class BackingBeanUtils implements Serializable{
     private CEActionRequestIntegrator cEActionRequestIntegrator;
     
     private UserIntegrator userIntegrator;
+    private SpaceTypeIntegrator spaceTypeIntegrator;
+    
     
     
  
@@ -237,6 +240,17 @@ public class BackingBeanUtils implements Serializable{
         return inspectableCodeElementIntegrator;
         
     }
+     
+     public SpaceTypeIntegrator getSpaceTypeIntegrator(){
+        FacesContext context = getFacesContext();
+        SpaceTypeIntegrator spaceTypeIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{spaceTypeIntegrator}", 
+                        SpaceTypeIntegrator.class);
+        
+        return spaceTypeIntegrator;
+     }
     
     //adam creation of occupancy inspeciton integrator
     public OccupancyInspectionIntegrator getOccupancyInpsectionIntegrator(){
