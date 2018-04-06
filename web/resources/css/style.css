@@ -225,6 +225,7 @@ td.gridTd {
 
 td.gridFooter {
     border: none;
+    
 }
 
 /* ------------------------------------- */
@@ -286,6 +287,7 @@ a.outputLink{
 .buttonOwnLine{
     display: block;
     margin-bottom: 10px;
+    margin-top: 5px;
     clear: left;
 /*    color: blue;
     background-color: green;*/
@@ -375,4 +377,20 @@ tr.caseOpen{
     background-color: white;
     font-weight: normal;
     
+}
+
+/* this styling is for use w/ command button on codeSourceManage.xhtml */
+.manButton{
+    margin-bottom: 15px;
+}
+
+/* formatting command buttons completeCodeSourceList & codeSourceTable on codeSourceManage.xhtml  */
+.buttonOwnLine1{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* formatting command buttons for inspectableCodeElementManage.xhtml */
+.iceButton{
+    margin-top: 10px;
 }

@@ -455,6 +455,15 @@
             <redirect />
         </navigation-case>
         
+        
+        <!--
+        <navigation-case>
+            <from-outcome>sourceManCommand</from-outcome>
+            <to-view-id>/ce/codeSourceAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        -->
+        
         <navigation-case>
             <from-outcome>elementTypeManage</from-outcome>
             <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
@@ -679,6 +688,24 @@
         <nanavigation-case>
             <from-outcome>violationAdd</from-outcome>
             <to-view-id>/ce/violationAdd.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>weatherBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.WeatherBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>inspectableCodeElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.InspectableCodeElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <navigation-rule>
+        <from-view-id>inspectableCodeElement.xhtml</from-view-id>
+        <nanavigation-case>
+            <from-outcome>inspectableCodeElementManage</from-outcome>
+            <to-view-id>inspectableCodeElementManage.xhtml</to-view-id>
             <redirect />
         </nanavigation-case>
     </navigation-rule>

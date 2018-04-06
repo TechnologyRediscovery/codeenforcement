@@ -26,12 +26,17 @@ import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
+import com.tcvcog.tcvce.integration.ExerciseIntegrator;
+import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
+import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
@@ -71,6 +76,7 @@ public class Initializer implements ServletContextListener{
         //servletContext.setAttribute(Constants.USER_COORDINATOR_SCOPE, userCoordinator);
         servletContext.setAttribute(Constants.USER_COORDINATOR_KEY, userCoordinator);
         
+        
         CodeCoordinator codeCoordinator = new CodeCoordinator();
         servletContext.setAttribute("codeCoordinator", codeCoordinator);
         
@@ -82,6 +88,19 @@ public class Initializer implements ServletContextListener{
         
         EventCoordinator ec = new EventCoordinator();
         servletContext.setAttribute("eventCoordinator", ec);
+        
+        //adding integrator build for exercise
+        ExerciseIntegrator exerciseIntegrator = new ExerciseIntegrator();
+        servletContext.setAttribute("exerciseIntegrator", exerciseIntegrator);
+        
+        //adding integrator for occupancy inspection
+        OccupancyInspectionIntegrator occupancyInspectionIntegrator = new OccupancyInspectionIntegrator();
+        servletContext.setAttribute("occupancyInspectionIntegrator", occupancyInspectionIntegrator);
+        
+        //add integrator build for inspectable code element
+        InspectableCodeElementIntegrator inspectableCEIntegrator = new InspectableCodeElementIntegrator();
+        servletContext.setAttribute("inspectableCodeElementIntegrator", inspectableCEIntegrator);
+       
         
         CodeIntegrator codeIntegrator = new CodeIntegrator();
         servletContext.setAttribute("codeIntegrator", codeIntegrator);
@@ -106,6 +125,9 @@ public class Initializer implements ServletContextListener{
         
         EventIntegrator ei = new EventIntegrator();
         servletContext.setAttribute("eventIntegrator", ei);
+        
+        SpaceTypeIntegrator spaceTypeIntegrator = new SpaceTypeIntegrator();
+        servletContext.setAttribute("spaceTypeIntegrator", spaceTypeIntegrator);
         
         CEActionRequestIntegrator ari = new CEActionRequestIntegrator();
         servletContext.setAttribute("ceActionRequestIntegrator", ari);
