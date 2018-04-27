@@ -130,7 +130,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
 
         try {
             newPerson.setPersonid(rs.getInt("personid"));
-            System.out.println("PersonIntegrator.getneratePersonFromResultSet | person Type from db: " + rs.getString("personType"));
+            System.out.println("PersonIntegrator.generatePersonFromResultSet | person Type from db: " + rs.getString("personType"));
             newPerson.setPersonType(PersonType.valueOf(rs.getString("personType")));
             newPerson.setMuni(muniIntegrator.getMuniFromMuniCode(rs.getInt("muni_muniCode")));
 
@@ -452,7 +452,8 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * converted into a linkedList of Person objects for display in the view
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public LinkedList<Person> getPersonList(int[] people) throws IntegrationException {
+    
+   public LinkedList<Person> getPersonList(int[] people) throws IntegrationException {
         LinkedList<Person> list = new LinkedList<>();
 
         // loop through the array of integers provided and ask
@@ -563,15 +564,17 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         LinkedList<Person> ll = new LinkedList();
 
         try {
-            String s = "SELECT person_personid FROM public.propertyperson WHERE property_propertyid = ?;";
+            String s = "SELECT * FROM public.propertyperson WHERE property_propertyid = ?;";
             stmt = con.prepareStatement(s);
             stmt.setInt(1, p.getPropertyID());
-            System.out.println("PersonIntegrator.personIntegrator | sql: " + s);
+            System.out.println("PersonIntegrator.getPersonListByPropertyID | sql: " + stmt.toString());
 
             rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                ll.add(getPerson(rs.getInt("person_personid")));
+            while (rs.next()) {
+                Person pers = getPerson(rs.getInt("person_personid"));
+                System.out.println("PersonIntegrator.getPersonListByPropertyID | adding person: " + pers.getFirstName());
+                ll.add(pers);
             }
 
         } catch (SQLException ex) {

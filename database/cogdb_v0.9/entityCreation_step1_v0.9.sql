@@ -695,9 +695,23 @@ CREATE TABLE courtentity
 
 ALTER TABLE courtentity ADD CONSTRAINT courtentity_entityID_pk PRIMARY KEY (entityID) ;
 
-ALTER TABLE courtentity ADD CONSTRAINT courtentity_muniCode_fk FOREIGN KEY (muni_muniCode) REFERENCES municipality (muniCode); 
+ALTER TABLE courtentity ADD CONSTRAINT courtentity_muniCode_fk FOREIGN KEY (muni_muniCode) REFERENCES municipality (muniCode);
+    
 
+CREATE SEQUENCE IF NOT EXISTS citationStatus_statusID_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
 
+CREATE TABLE citationstatus
+(
+    statusID                INTEGER nextval('citationStatus_statusID_seq') CONSTRAINT citationStatus_statusID_pk PRIMARY KEY,
+    statusName              text NOT NULL,
+    description             text NOT NULL,
+
+) ;
 
 CREATE SEQUENCE IF NOT EXISTS citation_citationID_seq
     START WITH 1000
@@ -709,9 +723,10 @@ CREATE SEQUENCE IF NOT EXISTS citation_citationID_seq
 CREATE TABLE citation
 (
     citationID                      INTEGER DEFAULT nextval('citation_citationID_seq') NOT NULL, 
-    citationNo                      text, --collaboratively created with munis
+    citationNo                      text, --collaborvely created with munis
+    status_statusID                 INTEGER NOT NULL CONSTRAINT citation_citationStatusID_fk REFERENCES citationstatus (statusID),
     origin_courtentity_entityID     INTEGER NOT NULL, --fk
-    cecase_caseID                   INTEGER NOT NULL, --fk
+    codeViolation_violationID       INTEGER NOT NULL CONSTRAINT citationviolationID_fk REFERENCES codeviolation (violationID),
     login_userID                    INTEGER NOT NULL, --fk
     dateOfRecord                    TIMESTAMP WITH TIME ZONE NOT NULL,
     transTimeStamp                  TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -724,9 +739,25 @@ ALTER TABLE citation ADD CONSTRAINT citation_citationID_pk PRIMARY KEY ( citatio
 
 ALTER TABLE citation ADD CONSTRAINT citation_courtentity_entityID_fk FOREIGN KEY (origin_courtentity_entityID ) REFERENCES courtentity ( entityID ) ;
 
-ALTER TABLE citation ADD CONSTRAINT citation_cecase_caseID_fk FOREIGN KEY ( cecase_caseID ) REFERENCES cecase (caseID) ;
+ALTER TABLE citation ADD CONSTRAINT citation_cecase_caseID_fk FOREIGN KEY (cecase_caseID ) REFERENCES cecase (caseID) ;
 
 ALTER TABLE citation ADD CONSTRAINT citation_login_userID_login_fk FOREIGN KEY (login_userid) REFERENCES login;
+
+
+CREATE SEQUENCE IF NOT EXISTS citationviolation_cvid_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE citationviolation
+(
+    citationviolationID             INTEGER DEFAULT nextval('citationviolation_cvid_seq') PRIMARY KEY,
+    citation_citationID             INTEGER NOT NULL CONSTRAINT citationviolation_citationID_fk REFERENCES citation (citationID),
+    codeviolation_violationID       INTEGER NOT NULL CONSTRAINT citationviolation_violationID_fk REFERENCES codeviolation (violationID)
+
+) ;
 
 -- Stores information related to which code sections are violated in each cecase item
 -- this is a briding table to facilitate many-to-many relationships between case and codeelement
@@ -843,6 +874,7 @@ CREATE TABLE occupancyinspection
     secondInspectionDate            TIMESTAMP WITH TIME ZONE,
     secondInspectionPass            boolean DEFAULT FALSE,
     resolved                        boolean DEFAULT FALSE, -- deprecated from old db
+    assignedFee                     INTEGER NOT NULL,
     totalFeePaid                    boolean DEFAULT FALSE,
     notes                           text
 
@@ -853,6 +885,9 @@ ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_inspectionID PRIMARY KE
 ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_login_userID_fk FOREIGN KEY (login_userID) REFERENCES login (userid);
 
 ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_propUnit_fk FOREIGN KEY (propertyUnitID) REFERENCES propertyunit (unitID);
+
+ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_assignedFee_fk FOREIGN KEY (assignedFee) REFERENCES occinspectionfee (feeID);
+
 
 
 CREATE SEQUENCE IF NOT EXISTS ice_iceID_seq
@@ -903,18 +938,18 @@ CREATE SEQUENCE IF NOT EXISTS spacetypeice_spacetypeiceid_seq
 
 
 
-CREATE TABLE spacetypeice 
+CREATE TABLE spacetypeelement 
 (
     spaceTypeIceID                  INTEGER NOT NULL PRIMARY KEY,
     spaceTypeID                     INTEGER NOT NULL, --fk
-    inspectablecodelement_eleID     INTEGER NOT NULL, --fk
+    codelement_eleID                INTEGER NOT NULL, --fk
     notes                           text
 
 ) ;
 
 ALTER TABLE spacetypeice ADD CONSTRAINT spaceType_typeID_fk FOREIGN KEY ( spaceTypeID ) REFERENCES spacetype (spaceTypeID) ;
 
-ALTER TABLE spacetypeice ADD CONSTRAINT inspectablecodelementID_fk FOREIGN KEY ( inspectablecodelement_eleID ) REFERENCES inspectablecodelement (inspectableCodelElementID) ;
+ALTER TABLE spacetypeice ADD CONSTRAINT codelementID_fk FOREIGN KEY ( codelement_eleID ) REFERENCES codelement (codelElementID) ;
 
 CREATE SEQUENCE IF NOT EXISTS checklist_checklistID_seq
     START WITH 10
@@ -927,7 +962,8 @@ CREATE TABLE inspectionchecklist
 (
     checklistID                         INTEGER DEFAULT nextval('checklist_checklistID_seq') NOT NULL,
     title                               text NOT NULL,
-    description                         text NOT NULL
+    description                         text NOT NULL,
+    muni_muniCode                       INTEGER NOT NULL CONSTRAINT inspectionChecklist_muni_fk REFERENCES municipality (muniCode);
 ) ;
 
 ALTER TABLE inspectionchecklist ADD CONSTRAINT inspectionchecklist_checklistID_pk PRIMARY KEY (checklistID);
@@ -939,11 +975,11 @@ CREATE SEQUENCE IF NOT EXISTS chklistSTICEID_seq
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE checklistspacetypeice
+CREATE TABLE checklistspacetypeelement
 (
-    chklistSTICEID                              INTEGER DEFAULT nextval('chklistSTICEID_seq') CONSTRAINT chklistSTICEID_pk PRIMARY KEY,
+    chklistSpaceTypeElementID                   INTEGER DEFAULT nextval('chklistSTICEID_seq') CONSTRAINT chklistSTICEID_pk PRIMARY KEY,
     chklist_checklistID                         INTEGER NOT NULL,
-    spacetypeice_typeID                         INTEGER NOT NULL,
+    spacetypeice_typeID                         CREATE TABLE codeelement                   INTEGER NOT NULL,
     required                                    boolean
 ) ;
 
@@ -976,6 +1012,7 @@ CREATE SEQUENCE IF NOT EXISTS occinspectionfee_feeID_seq
     NO MAXVALUE
     CACHE 1;
 
+-- for Adam
 CREATE TABLE occinspectionfee
 (
     feeID                           INTEGER DEFAULT nextval('occinspectionfee_feeID_seq') CONSTRAINT occinspecfee_feeID_pk PRIMARY KEY,
@@ -995,6 +1032,7 @@ CREATE SEQUENCE IF NOT EXISTS occupancyPermitType_typeID_seq
     NO MAXVALUE
     CACHE 1;
 
+-- for Adam
 CREATE TABLE occpermittype
 (
     typeID                          INTEGER DEFAULT nextval('occupancyPermitType_typeID_seq') CONSTRAINT occpermittype_typeID_pk PRIMARY KEY,
@@ -1012,6 +1050,7 @@ CREATE SEQUENCE IF NOT EXISTS occupancyPermit_permitID_seq
     NO MAXVALUE
     CACHE 1;
 
+-- for Adam
 CREATE TABLE occupancypermit
 (
     permitID                        INTEGER DEFAULT nextval('occupancyPermit_permitID_seq') CONSTRAINT occpermit_permitID_pk PRIMARY KEY,
@@ -1080,6 +1119,7 @@ CREATE SEQUENCE IF NOT EXISTS paymentType_typeID_seq
     NO MAXVALUE
     CACHE 1;
 
+-- for Adam
 CREATE TABLE paymenttype
 (
     typeId                          INTEGER DEFAULT nextval('paymentType_typeID_seq') CONSTRAINT pmttype_typeID_pk PRIMARY KEY ,
@@ -1095,11 +1135,12 @@ CREATE SEQUENCE IF NOT EXISTS payment_paymentID_seq
     CACHE 1;
 
 
+-- payment
 CREATE TABLE payment
   (
     paymentId              INTEGER DEFAULT nextval('payment_paymentID_seq') CONSTRAINT payment_paymentID_pk PRIMARY KEY ,
     occInspec_inspectionID INTEGER NOT NULL CONSTRAINT occInspection_inspectionID_fk REFERENCES occupancyinspection (inspectionID) ,
-    paymentType_typeId     INTEGER NOT NULL CONSTRAINT payment_paymenttypeID_fk REFERENCES paymenttype,
+    paymentType_typeId     INTEGER NOT NULL CONSTRAINT payment_paymenttypeID_fk REFERENCES paymenttype (typeId),
     dateReceived           TIMESTAMP WITH TIME ZONE NOT NULL, 
     dateDeposited          TIMESTAMP WITH TIME ZONE NOT NULL,
     amount                 MONEY NOT NULL,

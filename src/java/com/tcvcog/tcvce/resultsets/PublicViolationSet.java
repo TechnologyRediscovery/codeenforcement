@@ -18,7 +18,6 @@ package com.tcvcog.tcvce.resultsets;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import java.sql.*;
-import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 import java.util.LinkedList;
 import javax.faces.component.UISelectItem;
 import java.util.HashMap;

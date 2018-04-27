@@ -335,5 +335,10 @@ public class Person {
     public void setMuniCode(int muniCode) {
         this.muniCode = muniCode;
     }
+    
+    @Override
+    public String toString(){
+        return this.firstName + this.lastName;
+    }
 
 }

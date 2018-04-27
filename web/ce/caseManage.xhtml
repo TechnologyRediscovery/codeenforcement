@@ -208,13 +208,80 @@
 
                                     <h2>Citations</h2>
 
-                                    <h:form id="citationForm">
                                         <p:commandButton ajax="false" action="#{caseManageBB.createCitation}"
                                                          value="Issue a new citation"/>
+                                        
+                                        <p:spacer height="15px"/>
+                                        
+                                        
+                                        
+                                    <p:dataTable
+                                        id="citationTable"
+                                        var="citation"
+                                        selectionMode="single"
+                                        selection="#{caseManageBB.selectedCitation}"
+                                        rowKey="#{citation.citationID}"
+                                        value="#{caseManageBB.citationList}"
+                                        tableStyleClass="primeDataTable"
+                                        expandedRow="true"
+                                        rowExpandMode="multiple"
+                                        draggableColumns="true"
+                                        reflow="true">
 
 
+                                        <p:column width="4%">
+                                            <p:rowToggler />
+                                        </p:column>
+                                        <p:column width="10%">
+                                            <f:facet name="header">
+                                                <h:outputText value="Citation ID" />
+                                            </f:facet>
+                                            <h:outputText value="#{citation.citationID}"/>
+                                        </p:column>
+                                        <p:column width="10%">
+                                            <f:facet name="header">
+                                                <h:outputText value="Citation No." />
+                                            </f:facet>
+                                            <h:outputText value="#{citation.citationNo}"/>
+                                        </p:column>
+                                        <p:column width="10%">
+                                            <f:facet name="header">
+                                                <h:outputText value="Court Entity ID" />
+                                            </f:facet>
+                                            <h:outputText value="#{citation.origin_courtentity_entityID}"/>
+                                        </p:column>
+                                        <p:column width="15%">
+                                            <f:facet name="header">
+                                                <h:outputText value="Issuer" />
+                                            </f:facet>
+                                            <h:outputText value="#{citation.userOwner.LName}"/>
+                                        </p:column>
+                                        <p:column width="10%">
+                                            <f:facet name="header">
+                                                <h:outputText value="Date of record" />
+                                            </f:facet>
+                                            <h:outputText value="#{citation.dateOfRecord}"/>
+                                        </p:column>
+                                        <p:column width="10%">
+                                            <f:facet name="header">
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <h:outputText value="#{citation.isActive}"/>
+                                        </p:column>
+                                        
+                                        <p:rowExpansion>
+                                            <h:outputLabel value="Notes: "/>
+                                                <h:outputText value="#{citation.notes}"/>
+                                            <p:spacer height="10px"/>
+                                            <h:outputLabel value="Active: "/>
+                                                <h:outputText value="#{citation.isActive}"/>
+                                            <p:spacer height="10px"/>
+                                            <h:outputLabel value="Entry Timestamp: "/>
+                                                <h:outputText value="#{citation.timeStamp}"/>
+                                            <p:spacer height="10px"/>
+                                        </p:rowExpansion>
 
-                                    </h:form>
+                                    </p:dataTable>
 
 
                                     <p:separator/>
@@ -253,7 +320,7 @@
                                             </h:outputLabel>
 
                                              <p:selectOneListbox style="width: 300px;" id="categoryList" value="#{eventAddBB.selectedEventCategory}" tabindex="10">
-                                                 <p:ajax update="selectedEventCategoryDescription, selectedEventCategoryDescription, selectedEventCateogryRequiresViewConfirm, selectedEventCateogryNotifiesCaseMonitors" immediate="true"/>
+                                                <p:ajax update="selectedEventCategoryDescription, selectedEventCategoryDescription, selectedEventCateogryRequiresViewConfirm, selectedEventCateogryNotifiesCaseMonitors" immediate="true"/>
                                                 <f:converter converterId="eventCategoryConverter"/>
                                                 <f:selectItems  id="catItemsList" value="#{eventAddBB.eventCategoryList}" var="ec" itemValue="#{ec}" itemLabel="#{ec.eventCategoryTitle}"/>
                                             </p:selectOneListbox>
