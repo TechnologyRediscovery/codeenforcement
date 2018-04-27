@@ -17,12 +17,14 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.entities;
 
+import java.util.Objects;
+
 /**
  *
  * @author sylvia
  */
 public class Municipality {
-    
+
     private int muniCode;
     private String muniName;
     private String address_street;
@@ -34,6 +36,79 @@ public class Municipality {
     private String email;
     private String managerName;
     private String managerPhone;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + this.muniCode;
+        hash = 47 * hash + Objects.hashCode(this.muniName);
+        hash = 47 * hash + Objects.hashCode(this.address_street);
+        hash = 47 * hash + Objects.hashCode(this.address_city);
+        hash = 47 * hash + Objects.hashCode(this.address_state);
+        hash = 47 * hash + Objects.hashCode(this.address_zip);
+        hash = 47 * hash + Objects.hashCode (this.phone);
+        hash = 47 * hash + Objects.hashCode(this.fax);
+        hash = 47 * hash + Objects.hashCode(this.email);
+        hash = 47 * hash + Objects.hashCode(this.managerName);
+        hash = 47 * hash + Objects.hashCode(this.managerPhone);
+        hash = 47 * hash + this.population;
+        hash = 47 * hash + (this.activeInProgram ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Municipality other = (Municipality) obj;
+        if (this.muniCode != other.muniCode) {
+            return false;
+        }
+        if (this.population != other.population) {
+            return false;
+        }
+        if (this.activeInProgram != other.activeInProgram) {
+            return false;
+        }
+        if (!Objects.equals(this.muniName, other.muniName)) {
+            return false;
+        }
+        if (!Objects.equals(this.address_street, other.address_street)) {
+            return false;
+        }
+        if (!Objects.equals(this.address_city, other.address_city)) {
+            return false;
+        }
+        if (!Objects.equals(this.address_state, other.address_state)) {
+            return false;
+        }
+        if (!Objects.equals(this.address_zip, other.address_zip)) {
+            return false;
+        }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (!Objects.equals(this.fax, other.fax)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.managerName, other.managerName)) {
+            return false;
+        }
+        if (!Objects.equals(this.managerPhone, other.managerPhone)) {
+            return false;
+        }
+        return true;
+    }
     private int population;
     private boolean activeInProgram;
 
@@ -218,5 +293,5 @@ public class Municipality {
     public void setPopulation(int population) {
         this.population = population;
     }
-    
+
 }

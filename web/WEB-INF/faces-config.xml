@@ -710,6 +710,13 @@
         </nanavigation-case>
     </navigation-rule>
     <navigation-rule>
+        <from-view-id>/occ/occupancyInspection.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>occupancyInspectionManage</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/ce/violationEdit.xhtml</from-view-id>
         <nanavigation-case>
             <from-action>#{violationEditBB.backToCaseManager}</from-action>

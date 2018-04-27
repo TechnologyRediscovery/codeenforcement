@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  *
@@ -123,6 +124,33 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
     public void updateMuni(Municipality muni){
         
         
+    }
+    
+    public LinkedList<Municipality> getMuniList() throws IntegrationException{
+        LinkedList<Municipality> muniList = new LinkedList<>();
+        
+        Connection con = getPostgresCon();
+        String query = "SELECT muniCode FROM municipality;";
+        ResultSet rs = null;
+        Statement stmt = null;
+ 
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                muniList.add(getMuniFromMuniCode(rs.getInt("muniCode")));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Exception in MunicipalityIntegrator.generateCompleteMuniNameIDMap", ex);
+
+        } finally{
+           if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+           if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+           if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+        
+        return muniList;
     }
    
 

@@ -28,13 +28,19 @@ import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.ExerciseIntegrator;
 import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyInspectionFeeIntegrator;
 import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyPermitTypeIntegrator;
+import com.tcvcog.tcvce.integration.PaymentIntegrator;
+import com.tcvcog.tcvce.integration.PaymentTypeIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
@@ -88,6 +94,9 @@ public class BackingBeanUtils implements Serializable{
     
     private UserIntegrator userIntegrator;
     private SpaceTypeIntegrator spaceTypeIntegrator;
+    
+    private OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator;
+    private OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator;
     
     
     
@@ -251,17 +260,75 @@ public class BackingBeanUtils implements Serializable{
         
         return spaceTypeIntegrator;
      }
+     
+     public OccupancyPermitTypeIntegrator getOccupancyPermitTypeIntegrator(){
+         FacesContext context = getFacesContext();
+         OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator = context.getApplication()
+            .evaluateExpressionGet(
+                    context,
+                    "#{occupancyPermitTypeIntegrator}",
+                    OccupancyPermitTypeIntegrator.class);
+         
+         return occupancyPermitTypeIntegrator;
+     }
+     
+     public OccupancyInspectionFeeIntegrator getOccupancyInspectionFeeIntegrator(){
+         FacesContext context = getFacesContext();
+         OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator = context.getApplication()
+            .evaluateExpressionGet(
+                    context,
+                    "#{occupancyInspectionFeeIntegrator}",
+                    OccupancyInspectionFeeIntegrator.class);
+         
+         return occupancyInspectionFeeIntegrator;
+     }
+     
+     public CitationIntegrator getCitationIntegrator(){
+         FacesContext context = getFacesContext();
+         CitationIntegrator citationIntegrator = context.getApplication()
+            .evaluateExpressionGet(
+                    context,
+                    "#{citationIntegrator}",
+                    CitationIntegrator.class);
+         
+         return citationIntegrator;
+     }
     
     //adam creation of occupancy inspeciton integrator
-    public OccupancyInspectionIntegrator getOccupancyInpsectionIntegrator(){
+    public OccupancyInspectionIntegrator getOccupancyInspectionIntegrator(){
         FacesContext context = getFacesContext();
         OccupancyInspectionIntegrator occupancyInspectionIntegrator = context.getApplication()
-                .evaluateExpressionGet(context, 
+                .evaluateExpressionGet(
+                        context, 
                         "#{occupancyInspectionIntegrator}", 
                         OccupancyInspectionIntegrator.class);
+        
         return occupancyInspectionIntegrator;
     }
-     
+    
+    //adam creation of PaymentTypeIntegrator
+    public PaymentTypeIntegrator getPaymentTypeIntegrator(){
+        FacesContext context = getFacesContext();
+        PaymentTypeIntegrator paymentTypeIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{paymentTypeIntegrator}", 
+                        PaymentTypeIntegrator.class);
+        
+        return paymentTypeIntegrator;
+    }
+    
+    //adam creation of CourtEntityIntegrator
+    public CourtEntityIntegrator getCourtEntityIntegrator(){
+         FacesContext context = getFacesContext();
+         CourtEntityIntegrator courtEntityIntegrator = context.getApplication()
+            .evaluateExpressionGet(
+                    context,
+                    "#{courtEntityIntegrator}",
+                    CourtEntityIntegrator.class);
+         return courtEntityIntegrator;
+     }
+    
     //adams creation of a weathertestintegrator in the backingbeanutils
     public WeatherTestIntegrator getWeatherTestIntegrator(){
         FacesContext context = getFacesContext();
@@ -272,6 +339,19 @@ public class BackingBeanUtils implements Serializable{
                         WeatherTestIntegrator.class);
         
         return weatherIntegrator;
+        
+    }
+    
+    //adams creation of a payment integrator
+    public PaymentIntegrator getPaymentIntegrator(){
+        FacesContext context = getFacesContext();
+        PaymentIntegrator paymentIntegrator = context.getApplication()
+                .evaluateExpressionGet(
+                        context, 
+                        "#{paymentIntegrator}", 
+                        PaymentIntegrator.class);
+        
+        return paymentIntegrator;
         
     }
     

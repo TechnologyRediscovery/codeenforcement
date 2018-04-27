@@ -24,25 +24,11 @@ import java.util.LinkedList;
  * @author Emily
  */
 public class Inspection {
-    private LinkedList<RoomTypeInspectableCodeElement> iceFails;
+
     private int inspectionId;
     private LocalDateTime inspecationDate;
     private String inspectionContact;
     private String inspectionCEofficer;
-
-    /**
-     * @return the iceFails
-     */
-    public LinkedList<RoomTypeInspectableCodeElement> getIceFails() {
-        return iceFails;
-    }
-
-    /**
-     * @param iceFails the iceFails to set
-     */
-    public void setIceFails(LinkedList<RoomTypeInspectableCodeElement> iceFails) {
-        this.iceFails = iceFails;
-    }
 
     /**
      * @return the inspectionId

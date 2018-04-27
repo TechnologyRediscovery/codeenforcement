@@ -91,6 +91,51 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
         return "inspectableCodeElementManage";
     }
     
+    public void commitInspectableCodeElementUpdates(ActionEvent e){
+        InspectableCodeElementIntegrator iceIntegrator = getInspectableCodeElementIntegrator();
+        InspectableCodeElement ice = selectedIce;
+        
+        ice.setCodeElementID(formCodeElementID);
+        ice.setInspectionTips(formInspectionTips);
+        ice.setInspectionPriority(formInspectionPriority);
+        //oif.setOccupancyInspectionFeeNotes(formOccupancyInspectionFeeNotes);
+        try{
+            iceIntegrator.updateInspectableCodeElement(ice);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Inspectable code element record updated!", ""));
+        } catch (IntegrationException ex){
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Unable to update Inspectable code element record in database.",
+                    "This must be corrected by the System Administrator"));
+        }
+    }
+    
+    public void deleteSelectedInspectableCodeElement(ActionEvent e){
+        InspectableCodeElementIntegrator iceIntegrator = getInspectableCodeElementIntegrator();
+        if(getSelectedIce() != null){
+            try {
+                iceIntegrator.deleteInspectableCodeElement(getSelectedIce());
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Inspectable code element record deleted forever!", ""));
+            } catch (IntegrationException ex) {
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to delete Inspectable code element record--probably because it is used "
+                                    + "somewhere in the database. Sorry.", 
+                            "This category will always be with us."));
+            }
+            
+        } else {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please select a citation record from the table to delete", ""));
+        }
+    }
+    
+    
     public LinkedList<InspectableCodeElement> getInspectableCodeElementList() {
         try {
             InspectableCodeElementIntegrator ic = getInspectableCodeElementIntegrator();
@@ -110,6 +155,19 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
             return inspectableCodeElementList;
         }
         
+    }
+    
+    public void editInspectableCodeElement(ActionEvent e){
+        if(getSelectedIce() != null){
+            setFormCodeElementID(selectedIce.getCodeElementID());
+            setFormInspectionTips(selectedIce.getInspectionTips());
+            setFormInspectionPriority(selectedIce.getInspectionPriority());
+            
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Please select an inspectable code element record to update", ""));
+        }
     }
 
     /**

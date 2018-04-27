@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2018 Adam Gutonski
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Citation Status Manage</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./tempHeadFoot.xhtml">
+            <ui:define name="content">
+                <div class="mainContainer">
+                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                            
+                    <h1>Citation Status Management Tool</h1>
+                    <p>View, create, and manage citations</p>
+                    <f:view>
+                        <h:form id="citations">
+                            <h2>Citation Details</h2>
+                    <p:dataTable
+                                    id="citations"
+                                    var="c"
+                                    selectionMode="single"
+                                    selection="#{citationBB.selectedCitation}"
+                                    rowKey="#{c.citationID}"
+                                    value="#{citationBB.citationList}"
+                                    tableStyleClass="primeDataTable"
+                                    tabindex="1">
+                                    <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                    <p:column width="5%">
+                                        <f:facet name="header">
+                                            <h:outputText value="ID" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.citationID}"/>
+                                    </p:column>
+                                    
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Citation No" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.citationNo}"/>
+                                    </p:column>
+                                    
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Case ID" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.caseID}"/>
+                                    </p:column>
+                                    
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="User ID" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.userID}"/>
+                                    </p:column>
+                                    
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Date of Record" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.dateOfRecord}"/>
+                                    </p:column>
+                                    
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Date of Trans." />
+                                        </f:facet>
+                                        <h:outputText value="#{c.transTimeStamp}"/>
+                                    </p:column>
+     
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Active" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.isActive}"/>
+                                    </p:column>
+                                    
+                                    <p:column width="10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Notes" />
+                                        </f:facet>
+                                        <h:outputText value="#{c.notes}"/>
+                                    </p:column>
+                                    
+                               
+                                    
+                                </p:dataTable>
+                            <p:spacer height="10px"/>
+                            <p:commandButton ajax="false" 
+                                             actionListener="#{citationBB.editCitation}"
+                                             value="Update Selected Citation" tabindex="2"/>
+                            <p:commandButton ajax="false" 
+                                             actionListener="#{citationBB.deleteSelectedCitation}"
+                                            value="Nuke Selected Category Forever" tabindex="3"/>
+                            
+                         </h:form>    
+                             
+                             
+                            <!--<p:fieldset legend="Update occupancy inspection "
+                                toggleable="true" collapsed="false" tabindex="4">
+                                    <h:form id="updateCategoryForm">
+                                        <p:spacer height="10px"/>
+                                        <p:outputLabel for="occInsFeeName">
+                                           <h:outputText value="Name:"/>
+                                        </p:outputLabel>
+                                        <p:inputText id="occInsFeeName" value="{occupancyInspectionFeeBB.formOccupancyInspectionFeeName}" 
+                                                 style="width: 50%;" tabindex="5" required="true" styleClass="inputText"/>
+                                        <h:message for="occInsFeeName" showDetail="false" showSummary="true" 
+                                              warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                        <p:spacer height="20px"/>
+                                        
+                                       
+                                    </h:form>  
+                                </p:fieldset>-->
+                            
+                           
+                        <h:form id="poccInsFeeAddForm">
+                            <h2>Add New Citation Status</h2>
+                            <p>The more fields you can populate, the better. (Data integrity hangs in the balance.)</p>
+                            <h:panelGrid columns="4" border="0" 
+                                         cellpadding="1" columnClasses="gridTd, gridTd, gridTd, gridTd"
+                                         footerClass="gridFooter">
+                                
+                                             
+                                <h:outputLabel value="Record" for="dateOfRecord"/>
+                                <h:panelGroup>
+                                    <p:calendar 
+                                        value="#{citationBB.formDateOfRecord}" 
+                                            styleClass="occInsFeeDateCal"
+                                            mode="popup" tabindex="13"
+                                            id="dateOfRecord"
+                                            showOn="button"
+                                            pattern="EEE, dd MMM, yyyy"
+                                            navigator="true"
+                                            showButtonPanel="true"
+                                            showTodayButton="false"
+                                            required="true"/>
+                                    <h:message for="dateOfRecord" showDetail="true" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                
+                                
+
+                                <h:outputLabel value="Citation No:" for="citationNo"/>
+                                <h:panelGroup>
+                                    <p:inputText id="citationNo" value="#{citationBB.formCitationNo}" 
+                                                 style="width: 150px;" tabindex="6" required="false" styleClass="inputText" maxlength="100"/>
+                                    <h:message for="citationNo" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                
+                                 <h:outputLabel value="Trans" for="transTimestamp"/>
+                                <h:panelGroup>
+                                    <p:calendar 
+                                        value="#{citationBB.formTransTimeStamp}" 
+                                            styleClass="occInsFeeDateCal"
+                                            mode="popup" tabindex="13"
+                                            id="transTimestamp"
+                                            showOn="button"
+                                            pattern="EEE, dd MMM, yyyy"
+                                            navigator="true"
+                                            showButtonPanel="true"
+                                            showTodayButton="false"
+                                            required="true"/>
+                                    <h:message for="transTimestamp" showDetail="true" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                
+                                <h:outputLabel value="Court:" for="courtEntityOriginID"/>
+                                <h:panelGroup>
+                                    <p:inputText id="courtEntityOriginID" value="#{citationBB.formCourtEntityOriginID}" 
+                                                 style="width: 150px;" tabindex="6" required="false" styleClass="inputText" maxlength="100"/>
+                                    <h:message for="courtEntityOriginID" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                    
+                               
+                                
+                                
+                                <h:outputLabel value="Case ID:" for="caseID"/>
+                                <h:panelGroup>
+                                    <p:inputText id="caseID" value="#{citationBB.formCaseID}" 
+                                                 style="width: 150px;" tabindex="6" required="false" styleClass="citationFormat" maxlength="100"/>
+                                    <h:message for="caseID" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+
+                                <h:outputLabel value="User ID:" for="userID"/>
+                                <h:panelGroup>
+                                    <p:inputText id="userID" value="#{citationBB.formUserID}" 
+                                           style="width: 150px;" tabindex="1" required="true" styleClass="inputText"/>
+                                    <h:message for="userID" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                
+                                
+        
+                                
+                                <h:outputLabel value="Active:"/>
+                                    <h:panelGroup>    
+                                        <p:inputSwitch id="formIsActive" value="#{citationBB.formIsActive}" 
+                                                   tabindex="10" onLabel="Yes" offLabel="No"/>
+                                        <h:message for="formIsActive" showDetail="true" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+       
+                                <h:outputLabel value="Notes:" for="citationNotes"/>
+                                <h:panelGroup>
+                                    <p:inputText id="citationNotes" value="#{citationBB.formNotes}" 
+                                           style="width: 50px;" tabindex="10" required="true" styleClass="inputText"/>
+                                    <h:message for="citationNotes" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+                                
+                                
+                                <f:facet name="footer">
+                                </f:facet>   
+                                
+                                <p:spacer height="15"/>
+                                
+                            </h:panelGrid>
+                            <p:spacer height="10px"/>
+                            <p:commandButton ajax="false" value="Add Citation Status" action="#{citationBB.addCitation}" />
+                            <p:commandButton ajax="false" 
+                                             actionListener="#{citationBB.commitCitationUpdates}"
+                                                  value="Commit Updates" tabindex="7"/>
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

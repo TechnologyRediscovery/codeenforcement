@@ -18,47 +18,46 @@ Council of Governments, PA
 package com.tcvcog.tcvce.util;
 
 import com.tcvcog.tcvce.entities.EventCategory;
+import com.tcvcog.tcvce.entities.Municipality;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 /**
- * Converter for EventCategory objects
+ * Converter for Municipality objects
  * @author Eric Darsow
  */
 
-@FacesConverter(forClass=EventCategory.class, value="eventCategoryConverter")
-public class EventCategoryConverter extends EntityConverter implements Converter{
+@FacesConverter(forClass=Municipality.class, value="muniConverter")
+public class MuniConverter extends EntityConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String titleS) {
-        System.out.println("EventCategoryConverter.getAsObject | titleS: " + titleS);
+        System.out.println("MunicipalityConverter.getAsObject | titleS: " + titleS);
         if(titleS.isEmpty()) {
             return null; 
         }
         
-        EventCategory o = (EventCategory) this.getViewMap(fc).get(titleS);
-        
-        System.out.println("EventCategoryConverter.getAsObject | Retrieved obj: " + o.getEventCategoryDesc());
-        
-        return o;
+        Municipality m = (Municipality) this.getViewMap(fc).get(titleS);
+               
+        return m;
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        System.out.println("EventCategoryConverter.getAsString");
+        System.out.println("MunicipalityConverter.getAsString");
         
         if (o == null){
             return "";
         }
         
-        EventCategory ec = (EventCategory) o;
-        String title = ec.getEventCategoryTitle();
+        Municipality m = (Municipality) o;
+        String title = m.getMuniName();
         if (title != null){
             this.getViewMap(fc).put(title,o);
-            System.out.println("EventCategoryConverter.getAsString | putKey: " + title);
-            System.out.println("EventCategoryConverter.getAsString | putValue: " + o.toString());
+            System.out.println("MunicipalityConverter.getAsString | putKey: " + title);
+            System.out.println("MunicipalityConverter.getAsString | putValue: " + o.toString());
             
             return title;
             

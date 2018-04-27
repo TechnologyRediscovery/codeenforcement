@@ -28,14 +28,14 @@ public class InspectableCodeElement {
     //data from DB and display it on the screen, can't be worried yet about aligning the
     //foreign keys between codeElement table and inspectableCodeElement table
     private int codeElementID;
-    
+    private int inspectableCodeElementId;
     //private String inspectionGuidelines;
     //private String noncomplianceNotes;
     //private LocalDateTime iceDate;
     private String inspectionTips;
     private boolean inspectionPriority;
     
-    private int inspectableCodeElementId;
+    
 
     /**
      * @return the codeElement

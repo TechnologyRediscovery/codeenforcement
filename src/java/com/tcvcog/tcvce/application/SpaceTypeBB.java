@@ -75,6 +75,99 @@ public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
             return spaceTypeList;
         }
     }
+    
+    public void editSpaceType(ActionEvent e){
+        if(getSelectedSpaceType() != null){
+            setFormSpaceTypeID(selectedSpaceType.getSpaceTypeID());
+            setFormSpaceTypeTitle(selectedSpaceType.getSpaceTypeTitle());
+            setFormSpaceTypeDescription(selectedSpaceType.getSpaceTypeDescription());
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Please select a space type to update", ""));
+        }
+    }
+    
+    public void deleteSelectedSpaceType(ActionEvent e){
+        SpaceTypeIntegrator sti = getSpaceTypeIntegrator();
+        if(getSelectedSpaceType() != null){
+            try {
+                sti.deleteSpaceType(getSelectedSpaceType());
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Space type deleted forever!", ""));
+            } catch (IntegrationException ex) {
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to delete space type--probably because it is used "
+                                    + "somewhere in the database. Sorry.", 
+                            "This category will always be with us."));
+            }
+            
+        } else {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please select a space type from the table to delete", ""));
+        }
+    }
+    
+    public void commitSpaceTypeUpdates(ActionEvent e){
+        SpaceTypeIntegrator sti = getSpaceTypeIntegrator();
+        SpaceType spaceType = selectedSpaceType;
+        
+        spaceType.setSpaceTypeTitle(formSpaceTypeTitle);
+        spaceType.setSpaceTypeDescription(formSpaceTypeDescription);
+        //oif.setOccupancyInspectionFeeNotes(formOccupancyInspectionFeeNotes);
+        try{
+            System.out.println("ATTEMPTING TO UPDATE SPACE TYPE");
+            sti.updateSpaceType(spaceType);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Space type updated!", ""));
+        } catch (IntegrationException ex){
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Unable to update space type in database.",
+                    "This must be corrected by the System Administrator"));
+        }
+    }
+    
+
+    public String addSpaceType(){
+        
+        SpaceType s = new SpaceType();
+        SpaceTypeIntegrator si = new SpaceTypeIntegrator();
+//need to add the getInspectableCodeElementIntegrator(); method to BBUtils        
+//InspectableCodeElementIntegrator ei = getInspectableCodeElementIntegrator();
+        
+        s.setSpaceTypeID(formSpaceTypeID);
+        s.setSpaceTypeTitle(formSpaceTypeTitle);
+        s.setSpaceTypeDescription(formSpaceTypeDescription);
+        //i.setHighImportance(formHighImportance);
+        //i.setIceDate(formIceDate.toInstant()
+        //        .atZone(ZoneId.systemDefault())
+        //        .toLocalDateTime());
+               
+        // placeholder for lastupdated
+        
+        try {
+            si.insertSpaceType(s);
+            getFacesContext().addMessage(null,
+                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                         "Successfully added "/* + i.getCodeElement() + */+ 
+                                 " space type to the Database!", ""));
+
+        } catch (IntegrationException ex) {
+            System.out.println(ex.toString());
+               getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to add spaceType to the database, my apologies!", "Check server print out!"));
+            return "";
+        }
+        
+        return "spaceTypeManage";
+    }
+    
 
     /**
      * @param spaceTypeList the spaceTypeList to set

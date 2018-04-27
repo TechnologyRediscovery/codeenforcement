@@ -17,6 +17,8 @@
 package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
+
+import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
 import com.tcvcog.tcvce.occupancy.OccupancyInspection;
 import java.io.Serializable;
@@ -27,6 +29,7 @@ import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -37,6 +40,7 @@ import javax.faces.bean.ViewScoped;
 public class OccupancyInspectionBB extends BackingBeanUtils implements Serializable {
     
     private LinkedList<OccupancyInspection> occupancyInspectionList;
+    private OccupancyInspection selectedOccupancyInspection;
     private int formInspectionID;
     private int formPropertyUnitID;
     private int formLoginUserID;
@@ -54,9 +58,88 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     public OccupancyInspectionBB() {
     }
     
+    public void editOccupancyInspection(ActionEvent e){
+        if(getSelectedOccupancyInspection() != null){
+            setFormInspectionID(selectedOccupancyInspection.getInspectionID());
+            setFormPropertyUnitID(selectedOccupancyInspection.getPropertyUnitID());
+            setFormLoginUserID(selectedOccupancyInspection.getLoginUserID());
+            setFormFirstInspectionPass(selectedOccupancyInspection.isFirstInspectionPass());
+            setFormSecondInspectionPass(selectedOccupancyInspection.isSecondInspectionPass());
+            setFormResolved(selectedOccupancyInspection.isResolved());
+            setFormTotalFeePaid(selectedOccupancyInspection.isTotalFeePaid());
+            setFormOccupancyInspectionNotes(selectedOccupancyInspection.getOccupancyInspectionNotes());
+            //setFormOccupancyInspectionFeeNotes(selectedOccupancyInspectionFee.getOccupancyInspectionFeeNotes());
+            /*
+            Have to figure out what to do w/ setting dates...
+            setFormOccupancyInspectionFeeEffDate(formOccupancyInspectionFeeEffDate.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime());
+            */
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Please select an occupancy inspection record to update", ""));
+        }
+    }
+    
+    public void deleteSelectedOccupancyInspection(ActionEvent e){
+        OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
+        if(getSelectedOccupancyInspection() != null){
+            try {
+                oii.deleteOccupancyInspection(getSelectedOccupancyInspection());
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Occupancy inspection record deleted forever!", ""));
+            } catch (IntegrationException ex) {
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to delete occupancy inspection record--probably because it is used "
+                                    + "somewhere in the database. Sorry.", 
+                            "This category will always be with us."));
+            }
+            
+        } else {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please select a court entity from the table to delete", ""));
+        }
+    }
+
+    public void commitOccupancyInspectionUpdates(ActionEvent e){
+        OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
+        OccupancyInspection occInspection = selectedOccupancyInspection;
+        
+        occInspection.setInspectionID(formInspectionID);
+        occInspection.setPropertyUnitID(formPropertyUnitID);
+        occInspection.setLoginUserID(formLoginUserID);
+        occInspection.setFirstInspectionDate(formFirstInspectionDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
+        occInspection.setFirstInspectionPass(formFirstInspectionPass);
+        occInspection.setSecondInspectionDate(formSecondInspectionDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
+        occInspection.setSecondInspectionPass(formSecondInspectionPass);
+        occInspection.setResolved(formResolved);
+        occInspection.setTotalFeePaid(formTotalFeePaid);
+        occInspection.setOccupancyInspectionNotes(formOccupancyInspectionNotes);
+        //oif.setOccupancyInspectionFeeNotes(formOccupancyInspectionFeeNotes);
+        try{
+            oii.updateOccupancyInspection(occInspection);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Occupancy Inspection Record updated!", ""));
+        } catch (IntegrationException ex){
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Unable to update occupancy inspection record in database.",
+                    "This must be corrected by the System Administrator"));
+        }
+    }
+    
     public String addOccupancyInspection(){
         OccupancyInspection o = new OccupancyInspection();
-        OccupancyInspectionIntegrator oi = new OccupancyInspectionIntegrator();
+        OccupancyInspectionIntegrator oii =  getOccupancyInspectionIntegrator();
         
         o.setPropertyUnitID(formPropertyUnitID);
         o.setLoginUserID(formLoginUserID);
@@ -73,7 +156,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
         o.setOccupancyInspectionNotes(formOccupancyInspectionNotes);
     
     try{
-        oi.insertOccupanyInspection(o);
+        oii.insertOccupanyInspection(o);
         getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Succcessfully added occupancy inspection to the database!", ""));
@@ -91,7 +174,21 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
      * @return the occupancyInspectionList
      */
     public LinkedList<OccupancyInspection> getOccupancyInspectionList() {
+        try {
+            OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
+            occupancyInspectionList = oii.getOccupancyInspectionList();
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Unable to load Occupancy Inspection List",
+                        "This must be corrected by the system administrator"));
+        }
+        if(occupancyInspectionList != null){
         return occupancyInspectionList;
+        }else{
+         occupancyInspectionList = new LinkedList();
+         return occupancyInspectionList;
+        }
     }
 
     /**
@@ -239,6 +336,20 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
      */
     public void setFormPropertyUnitID(int formPropertyUnitID) {
         this.formPropertyUnitID = formPropertyUnitID;
+    }
+
+    /**
+     * @return the selectedOccupancyInspection
+     */
+    public OccupancyInspection getSelectedOccupancyInspection() {
+        return selectedOccupancyInspection;
+    }
+
+    /**
+     * @param selectedOccupancyInspection the selectedOccupancyInspection to set
+     */
+    public void setSelectedOccupancyInspection(OccupancyInspection selectedOccupancyInspection) {
+        this.selectedOccupancyInspection = selectedOccupancyInspection;
     }
     
 }

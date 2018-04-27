@@ -23,13 +23,19 @@ import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.ExerciseIntegrator;
 import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyInspectionFeeIntegrator;
 import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyPermitTypeIntegrator;
+import com.tcvcog.tcvce.integration.PaymentIntegrator;
+import com.tcvcog.tcvce.integration.PaymentTypeIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
@@ -128,6 +134,25 @@ public class Initializer implements ServletContextListener{
         
         SpaceTypeIntegrator spaceTypeIntegrator = new SpaceTypeIntegrator();
         servletContext.setAttribute("spaceTypeIntegrator", spaceTypeIntegrator);
+        
+        OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator = new OccupancyPermitTypeIntegrator();
+        servletContext.setAttribute("occupancyPermitTypeIntegrator", occupancyPermitTypeIntegrator);
+        
+        OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator = new OccupancyInspectionFeeIntegrator();
+        servletContext.setAttribute("occupancyInspectionFeeIntegrator", occupancyInspectionFeeIntegrator);
+        
+        PaymentTypeIntegrator paymentTypeIntegrator = new PaymentTypeIntegrator();
+        servletContext.setAttribute("paymentTypeIntegrator", paymentTypeIntegrator);
+        
+        PaymentIntegrator paymentIntegrator = new PaymentIntegrator();
+        servletContext.setAttribute("paymentIntegrator", paymentIntegrator);
+        
+        CourtEntityIntegrator courtEntityIntegrator = new CourtEntityIntegrator();
+        servletContext.setAttribute("courtEntityIntegrator", courtEntityIntegrator);
+        
+        CitationIntegrator citationIntegrator = new CitationIntegrator();
+        servletContext.setAttribute("citationIntegrator", citationIntegrator);
+        
         
         CEActionRequestIntegrator ari = new CEActionRequestIntegrator();
         servletContext.setAttribute("ceActionRequestIntegrator", ari);

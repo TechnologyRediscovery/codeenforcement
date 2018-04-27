@@ -394,3 +394,24 @@ tr.caseOpen{
 .iceButton{
     margin-top: 10px;
 }
+
+.spaceTypeCommand{
+    margin-bottom: 10px;
+}
+
+.occInsFeeDateCal input{
+    width: 158px;
+}
+
+.occPermitTypeMuniSelect{
+    margin-right: 10px;
+}
+
+.citationFormat {
+    margin-left: 50px;
+}
+
+.colWidth {
+    width: 150px;
+    border: none;
+}

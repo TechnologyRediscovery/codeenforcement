@@ -20,7 +20,67 @@
                     </h:messages>
                     <h1>Inspectable Code Element (test)</h1>
                     <f:view>
+                                                <h:form>
+                            <p:dataTable
+                                id="inspectableCodeElements"
+                                var="i"
+                                selectionMode="single"
+                                selection="#{inspectableCodeElementBB.selectedIce}"
+                                rowKey="#{i.inspectableCodeElementId}"
+                                value="#{inspectableCodeElementBB.inspectableCodeElementList}"
+                                tableStyleClass="primeDataTable"
+                                tabindex="1">
+                                <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="ID:" />
+                                        </f:facet>
+                                    <h:outputText value="#{i.inspectableCodeElementId}"/>
+                                </p:column>
+                                
+                                 <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Code Element ID:" />
+                                        </f:facet>
+                                     <h:outputText value="#{i.codeElementID}"/>
+                                </p:column>
+                                
+                                
+                                <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Inspection Tips:" />
+                                        </f:facet>
+                                    <h:outputText value="#{i.inspectionTips}"/>
+                                </p:column>
+                                <!--<p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Non-compliance Notes" />
+                                        </f:facet>
+                                        <h:outputText value="#"/>
+                                </p:column>-->
+                                <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Inspection Priority:" />
+                                        </f:facet>
+                                    <h:outputText value="#{i.inspectionPriority}"/>
+                                </p:column>
+                                <!--<p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Date" />
+                                        </f:facet>
+                                    <h:outputText value="#"/>
+                                </p:column>-->
+                            </p:dataTable>
+                                                    
+                            <p:spacer height="10px"/>                        
+                            
+                            <p:commandButton id="newIceCommand" ajax="false" value="Update Selected Code Element:" actionListener="#{inspectableCodeElementBB.editInspectableCodeElement}" styleClass="iceButton"/>
+                            <p:commandButton id="deleteIceCommand" ajax="false" value="Nuke Selected Category:" actionListener="#{inspectableCodeElementBB.deleteSelectedInspectableCodeElement}" styleClass="iceButton"/>
+                            
+                        </h:form>
+                        
                         <h:form>
+                            <h2>Add New Inspectable Code Element</h2>
+                            <p>The more fields you can populate, the better. (Data integrity hangs in the balance.)</p>
                              <h:panelGrid cellpadding="5" border="0" footerClass="gridFooter"
                                          columnClasses="gridTd, gridTd, gridTd,">
                                 
@@ -47,6 +107,11 @@
                                         <h:message for="formInspectionPriority" showDetail="true" showSummary="true" 
                                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                     </h:panelGroup>
+                                
+                                <f:facet name="footer">
+                                </f:facet>   
+                                
+                                <p:spacer height="15"/>
                                 <!--<h:panelGroup>
                                     <h:outputLabel>
                                     <h:outputText value="Add date: " />
@@ -66,7 +131,7 @@
 
                                 </h:panelGroup>-->
                              </h:panelGrid>
-                            <p:commandButton ajax="false" value="Add Inspectable Code Element" action="#{inspectableCodeElementBB.addInspectableCodeElement}" />
+                            <p:commandButton ajax="false" value="Add Code Element" action="#{inspectableCodeElementBB.addInspectableCodeElement}" />
                         </h:form>
                        <!--Add "#" tags to expression lang. <h:form>
                             <p:dataTable

@@ -17,48 +17,48 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.util;
 
-import com.tcvcog.tcvce.entities.EventCategory;
+//import com.tcvcog.tcvce.entities.EventCategory;
+//import com.tcvcog.tcvce.entities.Municipality;
+import com.tcvcog.tcvce.occupancy.PaymentType;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 /**
- * Converter for EventCategory objects
- * @author Eric Darsow
+ * Converter for PaymentType objects
+ * @author Adam Gutonski
  */
 
-@FacesConverter(forClass=EventCategory.class, value="eventCategoryConverter")
-public class EventCategoryConverter extends EntityConverter implements Converter{
+@FacesConverter(forClass=PaymentType.class, value="paymentTypeConverter")
+public class PaymentTypeConverter extends EntityConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String titleS) {
-        System.out.println("EventCategoryConverter.getAsObject | titleS: " + titleS);
+        System.out.println("PaymentTypeConverter.getAsObject | titleS: " + titleS);
         if(titleS.isEmpty()) {
             return null; 
         }
         
-        EventCategory o = (EventCategory) this.getViewMap(fc).get(titleS);
-        
-        System.out.println("EventCategoryConverter.getAsObject | Retrieved obj: " + o.getEventCategoryDesc());
-        
-        return o;
+        PaymentType pt = (PaymentType) this.getViewMap(fc).get(titleS);
+               
+        return pt;
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        System.out.println("EventCategoryConverter.getAsString");
+        System.out.println("PaymentTypeConverter.getAsString");
         
         if (o == null){
             return "";
         }
         
-        EventCategory ec = (EventCategory) o;
-        String title = ec.getEventCategoryTitle();
+        PaymentType pt = (PaymentType) o;
+        String title = pt.getPaymentTypeTitle();
         if (title != null){
             this.getViewMap(fc).put(title,o);
-            System.out.println("EventCategoryConverter.getAsString | putKey: " + title);
-            System.out.println("EventCategoryConverter.getAsString | putValue: " + o.toString());
+            System.out.println("PaymentTypeConverter.getAsString | putKey: " + title);
+            System.out.println("PaymentTypeConverter.getAsString | putValue: " + o.toString());
             
             return title;
             

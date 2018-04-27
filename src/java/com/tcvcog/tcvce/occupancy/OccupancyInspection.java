@@ -30,10 +30,10 @@ public class OccupancyInspection {
     private LocalDateTime firstInspectionDate;
     private boolean firstInspectionPass;
     private LocalDateTime secondInspectionDate;
-    private boolean SecondInspectionPass;
+    private boolean secondInspectionPass;
     private boolean resolved;
     private boolean totalFeePaid;
-    private String occupancyInspectionNotes;
+    private String notes;
 
     /**
      * @return the inspectionID
@@ -123,14 +123,14 @@ public class OccupancyInspection {
      * @return the SecondInspectionPass
      */
     public boolean isSecondInspectionPass() {
-        return SecondInspectionPass;
+        return secondInspectionPass;
     }
 
     /**
      * @param SecondInspectionPass the SecondInspectionPass to set
      */
     public void setSecondInspectionPass(boolean SecondInspectionPass) {
-        this.SecondInspectionPass = SecondInspectionPass;
+        this.secondInspectionPass = SecondInspectionPass;
     }
 
     /**
@@ -165,14 +165,14 @@ public class OccupancyInspection {
      * @return the occupancyInspectionNotes
      */
     public String getOccupancyInspectionNotes() {
-        return occupancyInspectionNotes;
+        return notes;
     }
 
     /**
      * @param occupancyInspectionNotes the occupancyInspectionNotes to set
      */
     public void setOccupancyInspectionNotes(String occupancyInspectionNotes) {
-        this.occupancyInspectionNotes = occupancyInspectionNotes;
+        this.notes = occupancyInspectionNotes;
     }
     
     
