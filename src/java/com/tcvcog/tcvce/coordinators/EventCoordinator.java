@@ -30,14 +30,9 @@ import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import java.io.Serializable;
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
-import jdk.nashorn.internal.runtime.Context;
 import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -110,6 +105,17 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         ei.insertEvent(event);
 
         
+    }
+    
+    public LinkedList getEmptyEventPersonList(){
+        return new LinkedList<>();
+    }
+    
+    public String updateEvent(Event event) throws IntegrationException{
+        EventIntegrator ei = getEventIntegrator();
+        ei.updateEvent(event);
+        
+        return "caseManage";
     }
     
     /**

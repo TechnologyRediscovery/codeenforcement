@@ -48,19 +48,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     // add event form fields
     private LinkedList<EventCategory> eventCategoryList;
     
-    private LinkedList catComList;
-    private LinkedList catActionList;
-    private LinkedList catMeetingList;
-    private LinkedList catCustomList;
-    
-    private EventCategory selectedEventCategory;
-    private String selectedEventCateogryDescription;
-    private boolean selectedEventRequiresViewConfirmation;
-    private boolean selectedEventNotifiesCaseMonitors;
-    private EventType selectedEventType;
-    private EventType[] userAdminEventTypeList;
-    
-    private CECase ceCase;
+  
     private Event event;
     
     private String formEventDesc;
@@ -81,16 +69,8 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
         
     }
     
-    public String startNewEvent(){
-        System.out.println("EventAddBB.startNewEvent | category: " + selectedEventCategory.getEventCategoryTitle());
-        SessionManager sm = getSessionManager();
-        EventCoordinator ec = getEventCoordinator();
-        event = ec.getInitializedEvent(selectedEventCategory);
-        sm.getVisit().setActiveEvent(event);
-        return "eventAdd";
-    }
-    
-    public String addEvent(){
+
+    public String editEvent(){
         EventCoordinator ec = getEventCoordinator();
         SessionManager sm = getSessionManager();
         Event e = sm.getVisit().getActiveEvent();
@@ -110,23 +90,17 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
         // now check for persons to connect
         
         try {
-            ec.processEvent(ceCase, event);
+            ec.updateEvent(e);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "Successfully logged event.", ""));
+                            "Successfully updated event.", ""));
         } catch (IntegrationException ex) {
             System.out.println(ex);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             ex.getMessage(), 
                             "This is a non-user system-level error that must be fixed by your Sys Admin"));
-        } catch (CaseLifecyleException ex) {
-            Logger.getLogger(EventEditBB.class.getName()).log(Level.SEVERE, null, ex);
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            ex.getMessage(), 
-                            "This is a non-user system-level error that must be fixed by your Sys Admin"));
-        }
+        } 
         
         
         
@@ -252,23 +226,6 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
    
 
     /**
-     * @return the ceCase
-     */
-    public CECase getCeCase() {
-        SessionManager sm = getSessionManager();
-        ceCase = sm.getVisit().getActiveCase();
-        return ceCase;
-    }
-
-    /**
-     * @param ceCase the ceCase to set
-     */
-    public void setCeCase(CECase ceCase) {
-        
-        this.ceCase = ceCase;
-    }
-
-    /**
      * @return the formSelectedPersons
      */
     public ArrayList<Person> getFormSelectedPersons() {
@@ -299,203 +256,8 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
         this.event = event;
     }
 
-    /**
-     * @return the eventCategoryList
-     */
-    public LinkedList getEventCategoryList() {
-        EventIntegrator ei = getEventIntegrator();
-        
-        if(selectedEventType != null){
-            
-            try {
-                eventCategoryList = ei.getEventCategoryList(selectedEventType);
-            } catch (IntegrationException ex) {
-                // do nothing
-            }
-        }
-        return eventCategoryList;
-    }
-
-    /**
-     * @param eventCategoryList the eventCategoryList to set
-     */
-    public void setEventCategoryList(LinkedList eventCategoryList) {
-        this.eventCategoryList = eventCategoryList;
-    }
-
+  
    
-
-    /**
-     * @return the catComList
-     */
-    public LinkedList getCatComList() {
-        EventIntegrator ei = getEventIntegrator();
-        try {
-            catComList = ei.getEventCategoryList(EventType.Communication);
-        } catch (IntegrationException ex) {
-            // do nothing
-        }
-        return catComList;
-    }
-
-   
-    /**
-     * @return the catActionList
-     */
-    public LinkedList getCatActionList() {
-          EventIntegrator ei = getEventIntegrator();
-        try {
-            catActionList = ei.getEventCategoryList(EventType.Action);
-        } catch (IntegrationException ex) {
-            // do nothing
-        }
-        return catActionList;
-    }
-
-    
-    /**
-     * @return the catMeetingList
-     */
-    public LinkedList getCatMeetingList() {
-                  EventIntegrator ei = getEventIntegrator();
-        try {
-            catMeetingList = ei.getEventCategoryList(EventType.Meeting);
-        } catch (IntegrationException ex) {
-            // do nothing
-        }
-        return catMeetingList;
-    }
-
-    /**
-     * @param catComList the catComList to set
-     */
-    public void setCatComList(LinkedList catComList) {
-        this.catComList = catComList;
-    }
-
-    /**
-     * @param catActionList the catActionList to set
-     */
-    public void setCatActionList(LinkedList catActionList) {
-        this.catActionList = catActionList;
-    }
-
-
-    /**
-     * @param catMeetingList the catMeetingList to set
-     */
-    public void setCatMeetingList(LinkedList catMeetingList) {
-        this.catMeetingList = catMeetingList;
-    }
-
-    /**
-     * @return the selectedEventCategory
-     */
-    public EventCategory getSelectedEventCategory() {
-        return selectedEventCategory;
-    }
-
-    /**
-     * @param selectedEventCategory the selectedEventCategory to set
-     */
-    public void setSelectedEventCategory(EventCategory selectedEventCategory) {
-        this.selectedEventCategory = selectedEventCategory;
-    }
-
-    /**
-     * @return the catCustomList
-     */
-    public LinkedList getCatCustomList() {
-        return catCustomList;
-    }
-
-    /**
-     * @param catCustomList the catCustomList to set
-     */
-    public void setCatCustomList(LinkedList catCustomList) {
-        this.catCustomList = catCustomList;
-    }
-
-    /**
-     * @return the selectedEventType
-     */
-    public EventType getSelectedEventType() {
-        return selectedEventType;
-    }
-
-    /**
-     * @param selectedEventType the selectedEventType to set
-     */
-    public void setSelectedEventType(EventType selectedEventType) {
-        this.selectedEventType = selectedEventType;
-    }
-
-    /**
-     * @return the userAdminEventTypeList
-     */
-    public EventType[] getUserAdminEventTypeList() {
-        EventCoordinator ec = getEventCoordinator();
-        userAdminEventTypeList = ec.getUserAdmnisteredEventTypeList();
-        return userAdminEventTypeList;
-    }
-
-    /**
-     * @param userAdminEventTypeList the userAdminEventTypeList to set
-     */
-    public void setUserAdminEventTypeList(EventType[] userAdminEventTypeList) {
-        this.userAdminEventTypeList = userAdminEventTypeList;
-    }
-
-    /**
-     * @return the selectedEventCateogryDescription
-     */
-    public String getSelectedEventCateogryDescription() {
-        if(selectedEventCategory != null){
-            selectedEventCateogryDescription = selectedEventCategory.getEventCategoryDesc();
-        }
-        return selectedEventCateogryDescription;
-    }
-
-    /**
-     * @param selectedEventCateogryDescription the selectedEventCateogryDescription to set
-     */
-    public void setSelectedEventCateogryDescription(String selectedEventCateogryDescription) {
-        this.selectedEventCateogryDescription = selectedEventCateogryDescription;
-    }
-
-    /**
-     * @return the selectedEventRequiresViewConfirmation
-     */
-    public boolean isSelectedEventRequiresViewConfirmation() {
-        if(selectedEventCategory != null){
-            selectedEventRequiresViewConfirmation = selectedEventCategory.isRequiresviewconfirmation();
-        }
-        return selectedEventRequiresViewConfirmation;
-    }
-
-    /**
-     * @return the selectedEventNotifiesCaseMonitors
-     */
-    public boolean isSelectedEventNotifiesCaseMonitors() {
-          if(selectedEventCategory != null){
-            selectedEventNotifiesCaseMonitors = selectedEventCategory.isNotifycasemonitors();
-        }
-        return selectedEventNotifiesCaseMonitors;
-    }
-
-    /**
-     * @param selectedEventRequiresViewConfirmation the selectedEventRequiresViewConfirmation to set
-     */
-    public void setSelectedEventRequiresViewConfirmation(boolean selectedEventRequiresViewConfirmation) {
-        this.selectedEventRequiresViewConfirmation = selectedEventRequiresViewConfirmation;
-    }
-
-    /**
-     * @param selectedEventNotifiesCaseMonitors the selectedEventNotifiesCaseMonitors to set
-     */
-    public void setSelectedEventNotifiesCaseMonitors(boolean selectedEventNotifiesCaseMonitors) {
-        this.selectedEventNotifiesCaseMonitors = selectedEventNotifiesCaseMonitors;
-    }
 
     /**
      * @return the formRequireViewConfirmation

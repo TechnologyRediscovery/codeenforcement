@@ -24,6 +24,7 @@ import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.Person;
@@ -55,8 +56,9 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     private LinkedList<NoticeOfViolation> noticeList;
     private NoticeOfViolation selectedNotice;
     
-    private LinkedList<CodeViolation> citationList;
-    private CodeViolation code;
+    private LinkedList<Citation> citationList;
+    private Citation selectedCitation;
+    
     
     
     
@@ -133,14 +135,14 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     public String editSelectedEvent(){
 
-        if(selectedViolation != null){
+        if(selectedEvent != null){
             SessionManager sm = getSessionManager();
-            sm.getVisit().setActiveCodeViolation(selectedViolation);
-            return "";
+            sm.getVisit().setActiveEvent(selectedEvent);
+            return "eventEdit";
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Please select a violation and try again", ""));
+                            "Please select an event to edit and try again", ""));
             return "";
 
             }
@@ -351,5 +353,33 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      */
     public void setNoticeList(LinkedList<NoticeOfViolation> noticeList) {
         this.noticeList = noticeList;
+    }
+
+    /**
+     * @return the citationList
+     */
+    public LinkedList<Citation> getCitationList() {
+        return citationList;
+    }
+
+    /**
+     * @return the selectedCitation
+     */
+    public Citation getSelectedCitation() {
+        return selectedCitation;
+    }
+
+    /**
+     * @param citationList the citationList to set
+     */
+    public void setCitationList(LinkedList<Citation> citationList) {
+        this.citationList = citationList;
+    }
+
+    /**
+     * @param selectedCitation the selectedCitation to set
+     */
+    public void setSelectedCitation(Citation selectedCitation) {
+        this.selectedCitation = selectedCitation;
     }
 }

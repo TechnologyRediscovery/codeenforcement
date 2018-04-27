@@ -35,9 +35,11 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -71,8 +73,10 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private String formEventNotes;
     private boolean formRequireViewConfirmation;
     
-    private LinkedList<Person> propertyPersonList;
-    private ArrayList<Person> formSelectedPersons;
+    
+    private LinkedList<Person> candidatePersonList;
+    private Person selectedCadidatePerson;
+    private LinkedList<Person> formSelectedPersons;
     
     
     
@@ -105,7 +109,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         e.setDiscloseToPublic(formDiscloseToPublic);
         e.setRequiresViewConfirmation(formRequireViewConfirmation);
         e.setNotes(formEventDesc);
-        e.setEventPersons(propertyPersonList);
+        e.setEventPersons(formSelectedPersons);
         
         // now check for persons to connect
         
@@ -140,6 +144,8 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     public String getFormEventDesc() {
         return formEventDesc;
     }
+    
+    
 
     /**
      * @return the formEventDate
@@ -185,18 +191,19 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     }
 
     /**
-     * @return the propertyPersonList
+     * @return the candidatePersonList
      */
-    public LinkedList<Person> getPropertyPersonList() {
+    public LinkedList<Person> getCandidatePersonList() {
+        System.out.println("EventAddBB.getCandidatePersonList | inside method");
         PersonIntegrator pi = getPersonIntegrator();
         SessionManager sm = getSessionManager();
         
         try {
-            propertyPersonList = pi.getPersonListByPropertyID(sm.getVisit().getActiveProp());
+            candidatePersonList = pi.getPersonListByPropertyID(sm.getVisit().getActiveCase().getProperty());
         } catch (IntegrationException ex) {
             // do nothing
         }
-        return propertyPersonList;
+        return candidatePersonList;
     }
 
     /**
@@ -243,10 +250,10 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     }
 
     /**
-     * @param propertyPersonList the propertyPersonList to set
+     * @param candidatePersonList the candidatePersonList to set
      */
-    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
-        this.propertyPersonList = propertyPersonList;
+    public void setCandidatePersonList(LinkedList<Person> candidatePersonList) {
+        this.candidatePersonList = candidatePersonList;
     }
 
    
@@ -267,18 +274,40 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         
         this.ceCase = ceCase;
     }
+    
+    public void attachSelectedPerson(){
+        System.out.println("EventAddBB.attachSelectedPersons | In listener method");
+        if(selectedCadidatePerson != null){
+            System.out.println("EventAddBB.attachSelectedPeople | AddingPerson:  " + selectedCadidatePerson);
+            formSelectedPersons.add(selectedCadidatePerson);
+            
+        } else {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                    "Please select one or more people to attach to this event", 
+                    "This is a non-user system-level error that must be fixed by your Sys Admin"));
+            
+        }
+    }
 
     /**
      * @return the formSelectedPersons
      */
-    public ArrayList<Person> getFormSelectedPersons() {
+    public LinkedList<Person> getFormSelectedPersons() {
+        EventCoordinator ec = getEventCoordinator();
+        if(formSelectedPersons == null){   
+            System.out.println("EventAddBB.getFormSelectedPersons | getting empty LL");
+            formSelectedPersons = ec.getEmptyEventPersonList();
+        }
+        System.out.println("EventAddBB.getFormSelectedPersons | ll size: " + formSelectedPersons.size());
+        
         return formSelectedPersons;
     }
 
     /**
      * @param formSelectedPersons the formSelectedPersons to set
      */
-    public void setFormSelectedPersons(ArrayList<Person> formSelectedPersons) {
+    public void setFormSelectedPersons(LinkedList<Person> formSelectedPersons) {
         this.formSelectedPersons = formSelectedPersons;
     }
 
@@ -509,6 +538,20 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      */
     public void setFormRequireViewConfirmation(boolean formRequireViewConfirmation) {
         this.formRequireViewConfirmation = formRequireViewConfirmation;
+    }
+
+    /**
+     * @return the selectedCadidatePersons
+     */
+    public Person getSelectedCadidatePerson() {
+        return selectedCadidatePerson;
+    }
+
+    /**
+     * @param p
+     */
+    public void setSelectedCadidatePerson(Person p) {
+        this.selectedCadidatePerson = p;
     }
 
    
