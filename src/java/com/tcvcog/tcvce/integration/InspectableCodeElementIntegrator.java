@@ -40,7 +40,7 @@ public class InspectableCodeElementIntegrator extends BackingBeanUtils implement
 
     public LinkedList<InspectableCodeElement> getInspectableCodeElementList() throws IntegrationException{
 
-    String query = "SELECT inspectablecodeelementid, codeelementid, inspectionpriority, inspectiontips"
+    String query = "SELECT inspectablecodelelementid, codeelementid, inspectionpriority, inspectiontips"
             + "  FROM public.inspectablecodelement";
     Connection con = getPostgresCon();
     ResultSet rs = null;
@@ -81,7 +81,7 @@ public class InspectableCodeElementIntegrator extends BackingBeanUtils implement
     
     public void insertInspectableCodeElement(InspectableCodeElement inspectableCodeElement) throws IntegrationException{
         String query = "INSERT INTO public.inspectablecodelement(\n" +
-                "         inspectablecodeelementid, codeelementid, inspectionpriority, inspectiontips) \n" +
+                "         inspectablecodelelementid, codeelementid, inspectionpriority, inspectiontips) \n" +
                 "    VALUES (DEFAULT, ?, ?, ?)";
         
         Connection con = getPostgresCon();
@@ -120,6 +120,55 @@ public class InspectableCodeElementIntegrator extends BackingBeanUtils implement
         
     }
     
+    public void updateInspectableCodeElement (InspectableCodeElement ice) throws IntegrationException {
+        String query = "UPDATE public.inspectablecodelement\n" +
+                        "   SET codeelementid=?, inspectionpriority=?, \n" +
+                        "       inspectiontips=?\n" +
+                        " WHERE inspectablecodelelementid=?;";
+        
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+        
+        try{
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, ice.getCodeElementID());
+            stmt.setBoolean(2, ice.getInspectionPriority());
+            stmt.setString(3, ice.getInspectionTips());
+            stmt.setInt(4, ice.getInspectableCodeElementId());
+            System.out.println("TRYING TO EXECUTE UPDATE METHOD");
+            stmt.executeUpdate();
+        } catch (SQLException ex){
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to update Inspectable Code Element", ex);
+        } finally {
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        }
+        
+    }
+    
+    public void deleteInspectableCodeElement(InspectableCodeElement ice) throws IntegrationException {
+         String query = "DELETE FROM public.inspectablecodelement\n" +
+                        " WHERE inspectablecodelelementid=?;";
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, ice.getInspectableCodeElementId());
+            stmt.execute();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot delete inspectable code element--probably because another"
+                    + "part of the database has a reference item.", ex);
+
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+    }
+    
     private InspectableCodeElement generateInspectablecodeElement(ResultSet rs) throws IntegrationException{
         InspectableCodeElement newIce = new InspectableCodeElement();
         
@@ -129,7 +178,7 @@ public class InspectableCodeElementIntegrator extends BackingBeanUtils implement
             newIce.setInspectionTips(rs.getString("inspectiontips"));
             newIce.setInspectionPriority(rs.getBoolean("inspectionpriority"));
             //newIce.setHighImportance(rs.getBoolean("high_importance"));
-            newIce.setInspectableCodeElementId(rs.getInt("inspectablecodeelementid"));
+            newIce.setInspectableCodeElementId(rs.getInt("inspectablecodelelementid"));
             //java.sql.Timestamp s = rs.getTimestamp("date");
             //if(s != null){
             //    newIce.setIceDate(s.toLocalDateTime());

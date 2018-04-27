@@ -30,17 +30,21 @@ import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.ExerciseIntegrator;
 import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyInspectionFeeIntegrator;
 import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyPermitTypeIntegrator;
+import com.tcvcog.tcvce.integration.PaymentIntegrator;
+import com.tcvcog.tcvce.integration.PaymentTypeIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
 import com.tcvcog.tcvce.integration.WeatherTestIntegrator;
-import com.tcvcog.tcvce.occupancy.InspectableCodeElement;
 import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -88,6 +92,15 @@ public class BackingBeanUtils implements Serializable{
     
     private UserIntegrator userIntegrator;
     private SpaceTypeIntegrator spaceTypeIntegrator;
+    
+    private PaymentTypeIntegrator paymentTypeIntegrator;
+    
+    private OccupancyInspectionIntegrator occupancyInspectionIntegrator;
+    private OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator;
+    
+    private CourtEntityIntegrator courtEntityIntegrator;
+    private OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator;
+    private PaymentIntegrator paymentIntegrator;
     
     
     
@@ -522,6 +535,113 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setViolationCoordinator(ViolationCoordinator violationCoordinator) {
         this.violationCoordinator = violationCoordinator;
+    }
+    
+    public PaymentTypeIntegrator getPaymentTypeIntegrator(){
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{paymentTypeIntegrator}", PaymentTypeIntegrator.class);
+        paymentTypeIntegrator = (PaymentTypeIntegrator) ve.getValue(context.getELContext());
+        return paymentTypeIntegrator;
+        
+    }
+
+    /**
+     * @param paymentTypeIntegrator the paymentTypeIntegrator to set
+     */
+    public void setPaymentTypeIntegrator(PaymentTypeIntegrator paymentTypeIntegrator) {
+        this.paymentTypeIntegrator = paymentTypeIntegrator;
+    }
+
+    /**
+     * @return the occupancyInspectionIntegrator
+     */
+    public OccupancyInspectionIntegrator getOccupancyInspectionIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{occupancyInspectionIntegrator}", OccupancyInspectionIntegrator.class);
+        occupancyInspectionIntegrator = (OccupancyInspectionIntegrator) ve.getValue(context.getELContext());
+        return occupancyInspectionIntegrator;
+    }
+
+    /**
+     * @param occupancyInspectionIntegrator the occupancyInspectionIntegrator to set
+     */
+    public void setOccupancyInspectionIntegrator(OccupancyInspectionIntegrator occupancyInspectionIntegrator) {
+        this.occupancyInspectionIntegrator = occupancyInspectionIntegrator;
+    }
+
+    /**
+     * @return the occupancyInspectionFeeIntegrator
+     */
+    public OccupancyInspectionFeeIntegrator getOccupancyInspectionFeeIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{occupancyInspectionFeeIntegrator}", OccupancyInspectionFeeIntegrator.class);
+        occupancyInspectionFeeIntegrator = (OccupancyInspectionFeeIntegrator) ve.getValue(context.getELContext());
+        return occupancyInspectionFeeIntegrator;
+    }
+
+    /**
+     * @param occupancyInspectionFeeIntegrator the occupancyInspectionFeeIntegrator to set
+     */
+    public void setOccupancyInspectionFeeIntegrator(OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator) {
+        this.occupancyInspectionFeeIntegrator = occupancyInspectionFeeIntegrator;
+    }
+
+    /**
+     * @return the courtEntityIntegrator
+     */
+    public CourtEntityIntegrator getCourtEntityIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{courtEntityIntegrator}", CourtEntityIntegrator.class);
+        courtEntityIntegrator = (CourtEntityIntegrator) ve.getValue(context.getELContext());
+        return courtEntityIntegrator;
+    }
+
+    /**
+     * @return the occupancyPermitTypeIntegrator
+     */
+    public OccupancyPermitTypeIntegrator getOccupancyPermitTypeIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{occupancyPermitTypeIntegrator}", OccupancyPermitTypeIntegrator.class);
+        occupancyPermitTypeIntegrator = (OccupancyPermitTypeIntegrator) ve.getValue(context.getELContext());
+        
+        return occupancyPermitTypeIntegrator;
+    }
+
+    /**
+     * @return the paymentIntegrator
+     */
+    public PaymentIntegrator getPaymentIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{paymentIntegrator}", PaymentIntegrator.class);
+        paymentIntegrator = (PaymentIntegrator) ve.getValue(context.getELContext());
+        return paymentIntegrator;
+    }
+
+    /**
+     * @param courtEntityIntegrator the courtEntityIntegrator to set
+     */
+    public void setCourtEntityIntegrator(CourtEntityIntegrator courtEntityIntegrator) {
+        this.courtEntityIntegrator = courtEntityIntegrator;
+    }
+
+    /**
+     * @param occupancyPermitTypeIntegrator the occupancyPermitTypeIntegrator to set
+     */
+    public void setOccupancyPermitTypeIntegrator(OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator) {
+        this.occupancyPermitTypeIntegrator = occupancyPermitTypeIntegrator;
+    }
+
+    /**
+     * @param paymentIntegrator the paymentIntegrator to set
+     */
+    public void setPaymentIntegrator(PaymentIntegrator paymentIntegrator) {
+        this.paymentIntegrator = paymentIntegrator;
     }
 
 }
