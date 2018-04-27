@@ -1,0 +1,17 @@
+# ignoring files for individual project build
+
+dist/
+setup/
+rental/
+sys/
+build/empty/
+build/generated-sources/
+build/
+nbproject/ant-deploy.xml
+nbproject/private/
+
+nbproject/ant-deploy.xml
+nbproject/build-impl.xml
+nbproject/genfiles.properties
+nbproject/project.properties
+nbproject/project.xml
