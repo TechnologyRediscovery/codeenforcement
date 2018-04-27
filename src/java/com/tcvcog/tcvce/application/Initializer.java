@@ -139,6 +139,8 @@ public class Initializer implements ServletContextListener{
         servletContext.setAttribute("violationCoordinator", vc);
         
         
+        
+        
     }
     
     @Override

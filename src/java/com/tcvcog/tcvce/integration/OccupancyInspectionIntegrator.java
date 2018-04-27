@@ -76,6 +76,74 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
                 
     }
     
+    public void updateOccupancyInspection(OccupancyInspection occInspection) throws IntegrationException {
+        String query = "UPDATE public.occupancyinspection\n" +
+                        "   SET propertyunitid=?, login_userid=?, firstinspectiondate=?, \n" +
+                        "       firstinspectionpass=?, secondinspectiondate=?, secondinspectionpass=?, \n" +
+                        "       resolved=?, totalfeepaid=?, notes=?\n" +
+                        " WHERE inspectionid=?;";
+        
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+        
+        try{
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, occInspection.getPropertyUnitID());
+            stmt.setInt(2, occInspection.getLoginUserID());
+            //update first inspection date
+            if(occInspection.getFirstInspectionDate() != null){
+                stmt.setTimestamp(3, java.sql.Timestamp.valueOf(occInspection.getFirstInspectionDate()));
+                
+            } else {
+                stmt.setNull(3, java.sql.Types.NULL);
+            }
+            stmt.setBoolean(4, occInspection.isFirstInspectionPass());
+            //update second inspection date
+            if(occInspection.getSecondInspectionDate() != null){
+                stmt.setTimestamp(5, java.sql.Timestamp.valueOf(occInspection.getSecondInspectionDate()));
+                
+            } else {
+                stmt.setNull(5, java.sql.Types.NULL);
+            }
+            stmt.setBoolean(6, occInspection.isSecondInspectionPass());
+            stmt.setBoolean(7, occInspection.isResolved());
+            stmt.setBoolean(8, occInspection.isTotalFeePaid());
+            stmt.setString(9, occInspection.getOccupancyInspectionNotes());
+            stmt.setInt(10, occInspection.getInspectionID());
+            System.out.println("TRYING TO EXECUTE UPDATE METHOD");
+            stmt.executeUpdate();
+        } catch (SQLException ex){
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to update occupancy inspection record", ex);
+        } finally {
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        }
+        
+    }
+    
+    public void deleteOccupancyInspection(OccupancyInspection occInspection) throws IntegrationException{
+         String query = "DELETE FROM public.occupancyinspection\n" +
+                        " WHERE inspectionid=?;";
+        Connection con = getPostgresCon();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, occInspection.getInspectionID());
+            stmt.execute();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot delete occupancy inspeciton--probably because another"
+                    + "part of the database has a reference item.", ex);
+
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+    }
+    
     private OccupancyInspection generateOccupancyInspection(ResultSet rs) throws IntegrationException{
         OccupancyInspection newInspection = new OccupancyInspection();
         
@@ -109,9 +177,9 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     
     public LinkedList<OccupancyInspection> getOccupancyInspectionList() throws IntegrationException{
         String query = "SELECT inspectionid, propertyunitid, login_userid, firstinspectiondate, \n" +
-"       firstinspectionpass, secondinspectiondate, secondinspectionpass, \n" +
-"       resolved, totalfeepaid, notes" +
-                "FROM public.occupancyinspection";
+                    "       firstinspectionpass, secondinspectiondate, secondinspectionpass, \n" +
+                    "       resolved, totalfeepaid, notes\n" +
+                    "  FROM public.occupancyinspection;";
     Connection con = getPostgresCon();
     ResultSet rs = null;
     PreparedStatement stmt = null;
