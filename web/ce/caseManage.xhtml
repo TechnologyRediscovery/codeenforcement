@@ -43,8 +43,8 @@
                                     <p:dataTable
                                         id="violationTable"
                                         var="v"
-                                        selectionMode="single"
-                                        selection="#{caseManageBB.selectedViolation}"
+                                        selectionMode="mulitiple"
+                                        selection="#{caseManageBB.selectedViolations}"
                                         rowKey="#{v.violationID}"
                                         value="#{caseManageBB.violationList}"
                                         tableStyleClass="primeDataTable"
@@ -55,9 +55,7 @@
 
 
                                         <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
-                                        <f:facet name="header">
-                                            Expand rows to see detailed info about each violation
-                                        </f:facet>
+                                        
                                         <p:column width="4%">
                                             <p:rowToggler />
                                         </p:column>
@@ -123,11 +121,29 @@
 
                                     <p:spacer height="5px"/>
 
-                                    <p:commandButton ajax="false" action="#{caseManageBB.recordCompliance}"
+                                    <h3>Notice of violation action</h3>
+                                        <p:commandButton ajax="false" action="#{caseManageBB.recordCompliance}"
                                                      value="Record Compliance "/>
 
-                                    <p:commandButton ajax="false" action="#{caseManageBB.editViolation}"
-                                                     value="Edit Details"/>
+                                        <p:commandButton ajax="false" action="#{caseManageBB.editViolation}"
+                                                     value="Edit violation details"/>
+                                    <p:spacer height="5px"/>
+                                    
+                                    <h3>Notice of violation action</h3>
+                                        <p:commandButton ajax="false" action="#{caseManageBB.createNewNoticeOfViolation}"
+                                                     value="Generate Notice Letter for all Violations"/>
+
+                                        <p:commandButton disabled="true" ajax="false" action="caseManage"
+                                                     value="Generate Notice Letter for selected violations"/>
+                                    <p:spacer height="5px"/>
+                                    
+                                    <h3>Citation actions</h3>
+                                    
+                                        <p:commandButton ajax="false" action="#{caseManageBB.createCitationFromSelected}"
+                                                     value="Generate citation for selected violations"/>
+                                    
+                                        <p:commandButton ajax="false" action="#{caseManageBB.createCitationForAllViolations}"
+                                                     value="Generate citation for all Violations"/>
 
 <!--                                    <p:commandButton ajax="false" action="caseManageBB.deleteViolation"
                                                      value="Nuke Violation Forever"/>-->
@@ -148,8 +164,6 @@
 
                                     <h2>Notices of Violation</h2>
 
-                                    <p:commandButton ajax="false" action="#{caseManageBB.createNewNoticeOfViolation}"
-                                                     value="Generate notice letter for all violations in case"/>
                                     <p:spacer height="15px"/>
 
 
@@ -168,9 +182,7 @@
 
 
                                         <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
-                                        <f:facet name="header">
-                                            Expand rows to see detailed info about each violation
-                                        </f:facet>
+                                       
                                         <p:column width="4%">
                                             <p:rowToggler />
                                         </p:column>
@@ -208,9 +220,6 @@
 
                                     <h2>Citations</h2>
 
-                                        <p:commandButton ajax="false" action="#{caseManageBB.createCitation}"
-                                                         value="Issue a new citation"/>
-                                        
                                         <p:spacer height="15px"/>
                                         
                                         
@@ -223,7 +232,7 @@
                                         rowKey="#{citation.citationID}"
                                         value="#{caseManageBB.citationList}"
                                         tableStyleClass="primeDataTable"
-                                        expandedRow="true"
+                                        expandedRow="false"
                                         rowExpandMode="multiple"
                                         draggableColumns="true"
                                         reflow="true">
@@ -248,7 +257,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="Court Entity ID" />
                                             </f:facet>
-                                            <h:outputText value="#{citation.origin_courtentity_entityID}"/>
+                                            <h:outputText value="#{citation.origin_courtentity.courtEntityName}"/>
                                         </p:column>
                                         <p:column width="15%">
                                             <f:facet name="header">
@@ -266,7 +275,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="Status" />
                                             </f:facet>
-                                            <h:outputText value="#{citation.isActive}"/>
+                                            <h:outputText value="#{citation.status.statusTitle}"/>
                                         </p:column>
                                         
                                         <p:rowExpansion>
@@ -283,6 +292,11 @@
 
                                     </p:dataTable>
 
+                                        <p:commandButton ajax="false" action="#{caseManageBB.updateCitation}"
+                                                     value="Updated selected citation"/>
+                                        
+                                        <p:commandButton ajax="false" action="#{caseManageBB.deleteCitation}"
+                                                     value="Nuke selected citation forever"/>
 
                                     <p:separator/>
                                 </h:form>

@@ -707,7 +707,7 @@ CREATE SEQUENCE IF NOT EXISTS citationStatus_statusID_seq
 
 CREATE TABLE citationstatus
 (
-    statusID                INTEGER nextval('citationStatus_statusID_seq') CONSTRAINT citationStatus_statusID_pk PRIMARY KEY,
+    statusID                INTEGER DEFAULT nextval('citationStatus_statusID_seq') CONSTRAINT citationStatus_statusID_pk PRIMARY KEY,
     statusName              text NOT NULL,
     description             text NOT NULL,
 
@@ -722,26 +722,16 @@ CREATE SEQUENCE IF NOT EXISTS citation_citationID_seq
 
 CREATE TABLE citation
 (
-    citationID                      INTEGER DEFAULT nextval('citation_citationID_seq') NOT NULL, 
+    citationID                      INTEGER DEFAULT nextval('citation_citationID_seq') NOT NULL CONSTRAINT citation_citationID_pk PRIMARY KEY, 
     citationNo                      text, --collaborvely created with munis
-    status_statusID                 INTEGER NOT NULL CONSTRAINT citation_citationStatusID_fk REFERENCES citationstatus (statusID),
-    origin_courtentity_entityID     INTEGER NOT NULL, --fk
-    codeViolation_violationID       INTEGER NOT NULL CONSTRAINT citationviolationID_fk REFERENCES codeviolation (violationID),
-    login_userID                    INTEGER NOT NULL, --fk
+    status_statusID                 INTEGER NOT NULL CONSTRAINT citation_citationStatusID_fk REFERENCES citationstatus (statusID), -- fx
+    origin_courtentity_entityID     INTEGER NOT NULL CONSTRAINT citation_courtentity_entityID_fk REFERENCES courtentity ( entityID ) , --fk
+    login_userID                    INTEGER NOT NULL CONSTRAINT citation_login_userID_login_fk REFERENCES login (userid), --fk
     dateOfRecord                    TIMESTAMP WITH TIME ZONE NOT NULL,
     transTimeStamp                  TIMESTAMP WITH TIME ZONE NOT NULL,
     isActive                        boolean DEFAULT TRUE,
     notes                           text
-    -- this is just a skeleton for a citation: more fields likely as system develops
 ) ;
-
-ALTER TABLE citation ADD CONSTRAINT citation_citationID_pk PRIMARY KEY ( citationID );
-
-ALTER TABLE citation ADD CONSTRAINT citation_courtentity_entityID_fk FOREIGN KEY (origin_courtentity_entityID ) REFERENCES courtentity ( entityID ) ;
-
-ALTER TABLE citation ADD CONSTRAINT citation_cecase_caseID_fk FOREIGN KEY (cecase_caseID ) REFERENCES cecase (caseID) ;
-
-ALTER TABLE citation ADD CONSTRAINT citation_login_userID_login_fk FOREIGN KEY (login_userid) REFERENCES login;
 
 
 CREATE SEQUENCE IF NOT EXISTS citationviolation_cvid_seq
@@ -774,8 +764,6 @@ CREATE TABLE codeviolation
     violationID                 INTEGER DEFAULT nextval('codeviolation_violationID_seq') NOT NULL,
     codeSetElement_elementID    INTEGER NOT NULL , -- foreign key from codeelement
     cecase_caseID               INTEGER NOT NULL , -- foreign key from cecase
-    citation_citationID         INTEGER, --fk
-    dateOfCitation              TIMESTAMP WITH TIME ZONE,
     dateOfRecord                TIMESTAMP WITH TIME ZONE,
     entryTimeStamp              TIMESTAMP WITH TIME ZONE NOT NULL,
     stipulatedComplianceDate    TIMESTAMP WITH TIME ZONE NOT NULL, -- auto generated base on the default compliance timeframe for each violation
@@ -847,7 +835,9 @@ CREATE TABLE noticeofviolation
     dateOfRecord                TIMESTAMP WITH TIME ZONE NOT NULL,
     requestToSend               boolean,
     letterSent                  boolean,
-    letterSendDate              TIMESTAMP WITH TIME ZONE NOT NULL
+    letterSendDate              TIMESTAMP WITH TIME ZONE NOT NULL,
+    letterReturnedDate          TIMESTAMP WITH TIME ZONE NOT NULL
+
   ) ;
 
 ALTER TABLE noticeofviolation ADD CONSTRAINT noticeViolation_noticeID_pk PRIMARY KEY ( noticeID ) ;

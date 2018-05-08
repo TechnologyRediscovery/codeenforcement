@@ -18,15 +18,12 @@ package com.tcvcog.tcvce.application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.entities.Exercise;
 
-import com.tcvcog.tcvce.integration.ExerciseIntegrator;
 import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.occupancy.InspectableCodeElement;
 
 import java.io.Serializable;
 import javax.faces.event.*;
-import java.time.*;
 //imported when adding @ManagedBean and @ViewScoped
 
 import java.util.*;

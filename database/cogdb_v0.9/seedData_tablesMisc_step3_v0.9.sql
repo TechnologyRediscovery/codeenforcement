@@ -103,13 +103,6 @@ INSERT INTO public.codesetelement(
             100, 600, 'Usually reduced by magistrate to 400', 30, 
             'Start with 30 but folks usually take longer');
 
-INSERT INTO public.codeviolation(
-            violationid, codesetelement_elementid, cecase_caseid, citation_citationid, 
-            dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, 
-            actualcompliancdate, penalty, description, notes)
-    VALUES (DEFAULT, 1, 1000, NULL, 
-            '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-02-20 14:49:06.219519-05', 
-            NULL, 100, 'No bathroom, only bucket', 'We need a policy on buckets');
 
     
 -- probably 1002
@@ -118,7 +111,7 @@ INSERT INTO public.codeviolation(
 INSERT INTO public.cecase(
             caseid, ceCasePublicCC, property_propertyid, propertyunit_unitid, login_userid, 
             casename, casephase, originationdate, closingdate, notes)
-    VALUES (1000, 12345 ,11997, NULL, 100, 
+    VALUES (1000, 12345 ,11997, NULL, 101, 
             'Goat Breeding', 'PrelimInvestigationPending', now(), NULL, 'Checking into legality of goat breeding in COG Land. Municipal Records are a mess, however, and this is proving challenging');
 -- first default ID val is 1000
 
@@ -165,8 +158,22 @@ INSERT INTO public.codeelement(
     VALUES (DEFAULT, 1001, 10, 5, 
             'Plumping facilities and fixutre requirements', '502', 'Required Facilities', '502.1', 'Dwelling Units', 
             'Every dwelling unit shall contain its own bathtub or shower, lavatory, water closet and kitchen sink which shall be maintained in a sanitary, safe working condition', 'All dwelling units need a bathroom and kitchen with basic amenities', 3.5, TRUE, 
-            TRUE, 'www.kitchen.com', 'Ask property owner to see the ''bathroom'' and ''kitchen''', now());
+            TRUE, 'www.kitchen.com', 'Ask property owner to see the bathroom and kitchen', now());
+
+
+
+INSERT INTO public.codeelement(
+            elementid, codeelementtype_cdeltypeid, codesource_sourceid, ordchapterno, 
+            ordchaptertitle, ordsecnum, ordsectitle, ordsubsecnum, ordsubsectitle, 
+            ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, isactive, 
+            isenforcementpriority, resourceurl, inspectiontips, dateCreated)
+    VALUES (666, 1001, 10, 5, 
+            'Electrical protection', '506', 'GFCI', '22.1', 'Placement', 
+            'Put a GFCI in your kitchen and bathroom, darn it', 'Gotta be working', 222.20, TRUE, 
+            TRUE, 'www.kitchen.com', 'Ask property owner to see the power', now());
 --Default is 100
+
+
 
 
 INSERT INTO public.codesetelement(
@@ -177,13 +184,43 @@ INSERT INTO public.codesetelement(
             100, 600, 'Usually reduced by magistrate to 400', 30, 
             'Start with 30 but folks usually take longer');
 
+
+INSERT INTO public.codesetelement(
+            codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, 
+            elementminpenalty, elementnormpenalty, penaltynotes, normdaystocomply, 
+            daystocomplynotes)
+    VALUES (666, 10, 100, 1000, 
+            666, 4, 'never above 10', 30, 
+            'Start with 30 but folks usually take longer');
+
 INSERT INTO public.codeviolation(
-            violationid, codesetelement_elementid, cecase_caseid, citation_citationid, 
+            violationid, codesetelement_elementid, cecase_caseid,  
             dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, 
             actualcompliancdate, penalty, description, notes)
-    VALUES (DEFAULT, 1, 1000, NULL, 
+    VALUES (666, 1, 1000, 
             '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-02-20 14:49:06.219519-05', 
             NULL, 100, 'No bathroom, only bucket', 'We need a policy on buckets');
+
+
+INSERT INTO public.codeviolation(
+            violationid, codesetelement_elementid, cecase_caseid,  
+            dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, 
+            actualcompliancdate, penalty, description, notes)
+    VALUES (667, 1, 1000, 
+            '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-02-20 14:49:06.219519-05', 
+            NULL, 100, 'No bathroom, only bucket', 'We need a policy on buckets');
+
+
+
+INSERT INTO public.codeviolation(
+            violationid, codesetelement_elementid, cecase_caseid,  
+            dateofcitation, dateofrecord, entrytimestamp, stipulatedcompliancedate, 
+            actualcompliancdate, penalty, description, notes)
+    VALUES (668, 666, 1000, 
+            '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', '2018-02-20 14:49:06.219519-05', 
+            NULL, 100, 'No bathroom, only bucket', 'We need a policy on buckets');
+
+
 
 
 INSERT INTO public.coglog(
@@ -223,3 +260,39 @@ INSERT INTO public.propertyusetype(
 INSERT INTO public.propertyusetype(
             propertyusetypeid, name, description)
     VALUES (DEFAULT, 'Condominium', 'Please define Condominium');
+
+
+INSERT INTO public.citationstatus(
+        statusid, statusname, description)
+VALUES (666, 'active-unpaid', 'issued but not paid');
+
+
+INSERT INTO public.citation(
+            citationid, citationno, status_statusid, origin_courtentity_entityid, 
+            login_userid, dateofrecord, transtimestamp, isactive, 
+            notes)
+    VALUES (666, '234D23', 666, 666, 
+            101, '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', 
+            true, 'noNotes');
+
+
+
+INSERT INTO public.citation(
+            citationid, citationno, status_statusid, origin_courtentity_entityid, 
+            login_userid, dateofrecord, transtimestamp, isactive, 
+            notes)
+    VALUES (667, '222234D23', 666, 666, 
+            101, '2018-01-20 14:49:06.219519-05', '2018-01-20 14:49:06.219519-05', 
+            true, 'noNotes');
+
+INSERT INTO public.citationviolation(
+            citationviolationid, citation_citationid, codeviolation_violationid)
+    VALUES (666, 666, 666);
+
+INSERT INTO public.citationviolation(
+            citationviolationid, citation_citationid, codeviolation_violationid)
+    VALUES (667, 667, 666);
+
+INSERT INTO public.citationviolation(
+            citationviolationid, citation_citationid, codeviolation_violationid)
+    VALUES (668, 667, 668);

@@ -16,6 +16,8 @@
  */
 package com.tcvcog.tcvce.entities;
 
+import java.util.Objects;
+
 /**
  *
  * @author Adam Gutonski
@@ -35,6 +37,79 @@ public class CourtEntity {
     private String phone;
     private String url;
     private String notes;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.courtEntityID;
+        hash = 37 * hash + Objects.hashCode(this.courtEntityOfficialNum);
+        hash = 37 * hash + Objects.hashCode(this.jurisdictionLevel);
+        hash = 37 * hash + Objects.hashCode(this.municipality);
+        hash = 37 * hash + Objects.hashCode(this.courtEntityName);
+        hash = 37 * hash + Objects.hashCode(this.addressStreet);
+        hash = 37 * hash + Objects.hashCode(this.addressCity);
+        hash = 37 * hash + Objects.hashCode(this.addressZip);
+        hash = 37 * hash + Objects.hashCode(this.addressState);
+        hash = 37 * hash + Objects.hashCode(this.addressCounty);
+        hash = 37 * hash + Objects.hashCode(this.phone);
+        hash = 37 * hash + Objects.hashCode(this.url);
+        hash = 37 * hash + Objects.hashCode(this.notes);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CourtEntity other = (CourtEntity) obj;
+        if (this.courtEntityID != other.courtEntityID) {
+            return false;
+        }
+        if (!Objects.equals(this.courtEntityOfficialNum, other.courtEntityOfficialNum)) {
+            return false;
+        }
+        if (!Objects.equals(this.jurisdictionLevel, other.jurisdictionLevel)) {
+            return false;
+        }
+        if (!Objects.equals(this.courtEntityName, other.courtEntityName)) {
+            return false;
+        }
+        if (!Objects.equals(this.addressStreet, other.addressStreet)) {
+            return false;
+        }
+        if (!Objects.equals(this.addressCity, other.addressCity)) {
+            return false;
+        }
+        if (!Objects.equals(this.addressZip, other.addressZip)) {
+            return false;
+        }
+        if (!Objects.equals(this.addressState, other.addressState)) {
+            return false;
+        }
+        if (!Objects.equals(this.addressCounty, other.addressCounty)) {
+            return false;
+        }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (!Objects.equals(this.url, other.url)) {
+            return false;
+        }
+        if (!Objects.equals(this.notes, other.notes)) {
+            return false;
+        }
+        if (!Objects.equals(this.municipality, other.municipality)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @return the courtEntityID

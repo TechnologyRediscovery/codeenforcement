@@ -19,6 +19,7 @@ package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  *
@@ -27,7 +28,8 @@ import java.util.LinkedList;
 public class Citation {
     private int citationID;
     private String citationNo;
-    private int origin_courtentity_entityID;
+    private CitationStatus status;
+    private CourtEntity origin_courtentity;
     private CECase ceCase;
     private User userOwner;
     private LocalDateTime dateOfRecord;
@@ -50,13 +52,7 @@ public class Citation {
         return citationNo;
     }
 
-    /**
-     * @return the origin_courtentity_entityID
-     */
-    public int getOrigin_courtentity_entityID() {
-        return origin_courtentity_entityID;
-    }
-
+   
     /**
      * @return the ceCase
      */
@@ -93,7 +89,7 @@ public class Citation {
     }
 
     /**
-     * @return the notes
+     * @return the notesO
      */
     public String getNotes() {
         return notes;
@@ -113,12 +109,6 @@ public class Citation {
         this.citationNo = citationNo;
     }
 
-    /**
-     * @param origin_courtentity_entityID the origin_courtentity_entityID to set
-     */
-    public void setOrigin_courtentity_entityID(int origin_courtentity_entityID) {
-        this.origin_courtentity_entityID = origin_courtentity_entityID;
-    }
 
     /**
      * @param ceCase the ceCase to set
@@ -175,6 +165,94 @@ public class Citation {
     public void setViolationList(LinkedList<CodeViolation> violationList) {
         this.violationList = violationList;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + this.citationID;
+        hash = 71 * hash + Objects.hashCode(this.citationNo);
+        hash = 71 * hash + Objects.hashCode(this.ceCase);
+        hash = 71 * hash + Objects.hashCode(this.userOwner);
+        hash = 71 * hash + Objects.hashCode(this.dateOfRecord);
+        hash = 71 * hash + Objects.hashCode(this.timeStamp);
+        hash = 71 * hash + (this.isActive ? 1 : 0);
+        hash = 71 * hash + Objects.hashCode(this.notes);
+        hash = 71 * hash + Objects.hashCode(this.violationList);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Citation other = (Citation) obj;
+        if (this.citationID != other.citationID) {
+            return false;
+        }
+        if (this.getOrigin_courtentity() != other.getOrigin_courtentity()) {
+            return false;
+        }
+        if (this.isActive != other.isActive) {
+            return false;
+        }
+        if (!Objects.equals(this.citationNo, other.citationNo)) {
+            return false;
+        }
+        if (!Objects.equals(this.notes, other.notes)) {
+            return false;
+        }
+        if (!Objects.equals(this.ceCase, other.ceCase)) {
+            return false;
+        }
+        if (!Objects.equals(this.userOwner, other.userOwner)) {
+            return false;
+        }
+        if (!Objects.equals(this.dateOfRecord, other.dateOfRecord)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeStamp, other.timeStamp)) {
+            return false;
+        }
+        if (!Objects.equals(this.violationList, other.violationList)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return the status
+     */
+    public CitationStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(CitationStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the origin_courtentity
+     */
+    public CourtEntity getOrigin_courtentity() {
+        return origin_courtentity;
+    }
+
+    /**
+     * @param origin_courtentity the origin_courtentity to set
+     */
+    public void setOrigin_courtentity(CourtEntity origin_courtentity) {
+        this.origin_courtentity = origin_courtentity;
+    }
     
     
     
@@ -189,7 +267,7 @@ CREATE TABLE citation
 (
     citationID                      INTEGER DEFAULT nextval('citation_citationID_seq') NOT NULL, 
     citationNo                      text, --collaboratively created with munis
-    origin_courtentity_entityID     INTEGER NOT NULL, --fk
+    origin_courtentity     INTEGER NOT NULL, --fk
     cecase_caseID                   INTEGER NOT NULL, --fk
     login_userID                    INTEGER NOT NULL, --fk
     dateOfRecord                    TIMESTAMP WITH TIME ZONE NOT NULL,

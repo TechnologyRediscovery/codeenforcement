@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Turtle Creek Valley
+ * Copyright (C) 2018 Turtle Creek Valley
 Council of Governments, PA
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,19 +15,12 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.coordinators;
+package com.tcvcog.tcvce.application;
 
 /**
  *
  * @author sylvia
  */
-
-public class HumanActionCoordinator {
-
-    /**
-     * Creates a new instance of HumanActionCoordinator
-     */
-    public HumanActionCoordinator() {
-    }
+class courtEntityIntegrator {
     
 }

@@ -37,6 +37,9 @@ public class NoticeOfViolation {
     
     private LocalDateTime letterSentDate;
     private String letterSentDatePretty;
+    
+    private LocalDateTime letterReturnedDate;
+    private String letterReturnedDatePretty;
 
     /**
      * @return the noticeText
@@ -162,6 +165,34 @@ public class NoticeOfViolation {
      */
     public void setLetterSentDatePretty(String letterSentDatePretty) {
         this.letterSentDatePretty = letterSentDatePretty;
+    }
+
+    /**
+     * @return the letterReturnedDate
+     */
+    public LocalDateTime getLetterReturnedDate() {
+        return letterReturnedDate;
+    }
+
+    /**
+     * @param letterReturnedDate the letterReturnedDate to set
+     */
+    public void setLetterReturnedDate(LocalDateTime letterReturnedDate) {
+        this.letterReturnedDate = letterReturnedDate;
+    }
+
+    /**
+     * @return the letterReturnedDatePretty
+     */
+    public String getLetterReturnedDatePretty() {
+        return letterReturnedDatePretty;
+    }
+
+    /**
+     * @param letterReturnedDatePretty the letterReturnedDatePretty to set
+     */
+    public void setLetterReturnedDatePretty(String letterReturnedDatePretty) {
+        this.letterReturnedDatePretty = letterReturnedDatePretty;
     }
     
 }

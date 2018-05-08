@@ -11,48 +11,146 @@
           <h:outputStylesheet name="style.css" library="css"/>
           
         <title>Code Enforcement</title>
+        <script>
+            function setSideBarHeight(){
+                var height = $('.contentContainer').height();
+                $('.sideBar').height(height);
+            }
+            window.onload = setSideBarHeight;
+        </script>
+        
 
     </h:head>
 
     <h:body>
-        <div id="top">
+        
+        <div class="contentContainer">
+            
+            
+        
             <ui:insert name="top">
-                <f:view id="navview">
                     
                 
-                <div class="header">
-                    <h:graphicImage name="cedbHeader.jpg" width="1030" styleClass="header"/>
-                    <h:form id="navForm">
+                <div class="topBar">
+                    <f:view id="navview">
+                        <h:form id="navForm">
 
-                        <div class="headerLinks">
+                            <div class="headerLinks">
 
-                            <div class="headerLinkCont">
-                                <h:commandLink action="dashboard" value="Dashboard"/>
-                            </div>
+                                <div class="headerLinkCont">
+                                    <h:commandLink action="dashboard" value="Dashboard" styleClass="headerLink"/>
+                                </div>
 
-                            <div class="headerLinkCont">
-                                <h:commandLink action="propertySearch" value="Change Property"/>
-                            </div>
-                            
-                            <div class="headerLinkCont">
-                                <h:commandLink action="#{userCoordinator.accessPropertyProfile}" value="Property Profile"/>
-                            </div>
+                                <div class="headerLinkCont">
+                                    <h:commandLink action="propertySearch" value="Change Property" styleClass="headerLink"/>
+                                </div>
 
-                            <div class="headerLinkCont">
-                                <h:commandLink action="workflow" value="Muni Workflow"/>
-                            </div>
+                                <div class="headerLinkCont">
+                                    <h:commandLink action="#{userCoordinator.accessPropertyProfile}" value="Property Profile" styleClass="headerLink"/>
+                                </div>
 
-                            <div class="headerLinkCont">
-                                <h:commandLink action="#{userCoordinator.accessCaseProfile}" value="Case Profile"/>
-                            </div>
+                                <div class="headerLinkCont">
+                                    <h:commandLink action="workflow" value="Muni Workflow" styleClass="headerLink"/>
+                                </div>
 
-                            <div class="headerLinkCont">
-                                <h:commandLink action="#{authenticationBB.logout}" value="Logout"/>
+                                <div class="headerLinkCont">
+                                    <h:commandLink action="#{userCoordinator.accessCaseProfile}" value="Case Profile" styleClass="headerLink"/>
+                                </div>
+
+                                <div class="headerLinkCont">
+                                    <h:commandLink action="#{authenticationBB.logout}" value="Logout" styleClass="headerLink"/>
+                                </div>
+                                
+                                <div class="logoBox">
+                                    <h2>Turtle Creek<br/>Valley COG<br/>Code enforcement</h2>
+                                </div>
                             </div>
-                            
-                        </div>
-                    </h:form>
+                        </h:form>
+                    </f:view>
+                    
+                    
                 </div>
+                
+                
+                <div class="sideBar" id="mainSideBar">
+                      
+                        <h:form id="sideBarLinkForm">
+                        
+                            <p:commandLink ajax="false" value="Property Central" action="propertySearch"
+                                           styleClass="sblink"/>
+                            
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Human Resources" action="personManage" 
+                                           styleClass="sblink"/>
+                            
+                            <p:spacer height="8px"/>
+                                                        
+                            <p:commandLink ajax="false" value="Municipality Workflow" action="workflow"
+                                           styleClass="sblink"/>
+                            
+                            <p:spacer height="8px"/>
+                        
+                        <h2>Code enforcement</h2>
+                        <p:spacer height="8px"/>
+                        
+                            <p:commandLink ajax="false" value="Code enforcement action request form" action="codeEnforce" 
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Case Manager" action="caseManage"
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Event Configuration" action="eventManage"
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Court Entity Management" action="litigationManage"
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+
+                        <h2>Municipal Code</h2>
+                        
+                            <p:commandLink ajax="false" value="Code Source and Element Manager" action="codeSourceManage" 
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+
+                            <p:commandLink ajax="false" value="Element Types Manager" action="elementTypeManage" 
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+
+                            <p:commandLink ajax="false" value="Code Set Manager" action="codeSetManage"
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+                        <h2>Database Controls</h2>
+                        
+                            <p:commandLink ajax="false" value="User Manager" action="userManage"
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Log Jams" action="logManage"
+                                           styleClass="sblink"/>
+                            <p:spacer height="8px"/>
+                            
+                            <p:commandLink ajax="false" value="Municipality Manager" action="muniManage"
+                                           styleClass="sblink"/>
+                            
+                            <p:spacer height="8px"/>
+
+                        </h:form>
+                </div>
+                        
+                        
+                        
+                        
+                    
+                    
+                    
+            </ui:insert>
+            
+        
+                
                 <div class="sessionInfo">
                     <h:form id="sessionInfoForm">
                          <h:panelGrid columns="4" border="0" 
@@ -86,7 +184,7 @@
                              </h:panelGroup>
                              <h:panelGroup>
                                 <h:outputText value="#{sessionManager.visit.activeProp.address}"/> 
-                                (<h:outputText value="#{sessionManager.visit.activeProp.muni.muniName}"/>)
+                                <h:outputText value="#{sessionManager.visit.activeProp.muni.muniName}"/>
                              </h:panelGroup>
                              
                              <h:panelGroup>
@@ -107,18 +205,11 @@
 
                     </h:form>
                 </div>
-                        
-                        
-                        
-                        
-                    
-                    
-                    
-                </f:view>
-            </ui:insert>
-        </div>
+            
+            
+        
 
-        <div id="content" class="center_content">
+        <div id="pageContent" class="primaryContentContainer">
             <ui:insert name="content">
                 <p>I am content in the template content</p>
                 
@@ -136,6 +227,11 @@
                 
             </ui:insert>
         </div>
+            
+    </div>
+        
+        <div class="clearFix"></div>
+
 
     </h:body>
 

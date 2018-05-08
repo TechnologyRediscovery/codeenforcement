@@ -24,14 +24,18 @@ import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
+import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -161,27 +165,34 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     }
     
     public NoticeOfViolation generateNewNoticeOfViolation(CECase ceCase){
+        System.out.println("CaseCoordinator.genreateNewNOV | input case: " +ceCase.getViolationList());
         NoticeOfViolation newNotice = new NoticeOfViolation();
         StringBuilder sb = new StringBuilder();
         
         sb.append("Automatically generated letter content<br><br>");
         
         LinkedList<CodeViolation> violationList = ceCase.getViolationList();
-        Iterator vi = violationList.iterator();
         
-        for (CodeViolation listElement : violationList) {
-            sb.append(listElement.getCodeViolated().getOrdchapterTitle());
-            sb.append("<br>");
-            sb.append(listElement.getCodeViolated().getOrdsecTitle());
-            sb.append("<br>");
-            sb.append(listElement.getCodeViolated().getOrdSubSecTitle());
+        for(Iterator<CodeViolation> iter = violationList.iterator()
+                ;iter.hasNext() ; ){
+            CodeViolation cv = (CodeViolation) iter.next();
+            System.out.println("CaseCoordinator.genreateNewNOV | violation adding: " + cv.getDescription());
+            
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdchapterNo());
+            sb.append(" : ");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSecNum());
+            sb.append(" : ");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecNum());
+            sb.append(" - ");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecTitle());
             sb.append("<br><br>");
             sb.append("Ordinance Technical Text:");
-            sb.append(listElement.getCodeViolated().getOrdTechnicalText());
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdTechnicalText());
             sb.append("<br>");
             sb.append("**************************");
         } //close for
         
+        System.out.println("CaseCoordinator.genreateNewNOV | notice text: " + sb.toString());
         newNotice.setNoticeText(sb.toString());
         
         return newNotice;
@@ -230,4 +241,46 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             }
         }
     }
+    
+   public Citation generateNewCitation(LinkedList<CodeViolation> violationList){
+       Citation newCitation = new Citation();
+       newCitation.setViolationList(violationList);
+       return newCitation;
+   }
+   
+   public Citation generateNewCitation(ArrayList<CodeViolation> violationList){
+       Citation newCitation = new Citation();
+       LinkedList<CodeViolation> ll = new LinkedList<>();
+       ListIterator<CodeViolation> li = violationList.listIterator();
+       CodeViolation cv;
+       
+       while(li.hasNext()){
+           
+           cv = li.next();
+           System.out.println("CaseCoordinator.generateNewCitation | linked list item: " 
+                   + cv.getDescription());
+           ll.add(cv);
+           
+       }
+       newCitation.setViolationList(ll);
+       return newCitation;
+   }
+   
+   public void deleteCitation(Citation c) throws IntegrationException{
+       CitationIntegrator citint = getCitationIntegrator();
+       citint.deleteCitation(c);
+              
+   }
+   
+   public void issueCitation(Citation c) throws IntegrationException{
+       CitationIntegrator citint = getCitationIntegrator();
+       citint.insertCitation(c);
+       
+   }
+   
+   public void updateCitation(Citation c) throws IntegrationException{
+       CitationIntegrator citint = getCitationIntegrator();
+       citint.updateCitation(c);
+       
+   }
 }
