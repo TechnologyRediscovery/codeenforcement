@@ -25,6 +25,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,6 +47,7 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
         
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
+        System.out.println("CourtEntityIntegrator.updateCourtEntity | updated name: " + courtEntity.getCourtEntityName());
         
         try{
             stmt = con.prepareStatement(query);
@@ -61,7 +64,7 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
             stmt.setString(11, courtEntity.getUrl());
             stmt.setString(12, courtEntity.getNotes());
             stmt.setInt(13, courtEntity.getCourtEntityID());
-            System.out.println("TRYING TO EXECUTE UPDATE METHOD");
+            System.out.println("CourtEntityIntegrator.updateCourtEntity | sql: " + stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex){
             System.out.println(ex.toString());
@@ -87,7 +90,6 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
             stmt = con.prepareStatement(query);
             System.out.println("");
             rs = stmt.executeQuery();
-            System.out.println("OccupancyInspectionFeeIntegrator.getOccupancyInspectionFeeList | SQL: " + stmt.toString());
             while(rs.next()){
                 ceList.add(generateCourtEntity(rs));
             }
@@ -129,7 +131,6 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
             stmt.setString(11, courtEntity.getUrl());
             stmt.setString(12, courtEntity.getNotes());
             System.out.println("CourtEntityIntegrator.courtEntityIntegrator | sql: " + stmt.toString());
-            System.out.println("TRYING TO EXECUTE INSERT METHOD");
             stmt.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -142,8 +143,40 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
         
     }
     
+    public CourtEntity getCourtEntity(int entityID) throws IntegrationException{
+        
+         String query = "SELECT * FROM public.courtentity where entityID=?;";
+            Connection con = getPostgresCon();
+            ResultSet rs = null;
+            PreparedStatement stmt = null;
+            CourtEntity ce = null;
+        
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, entityID);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                ce = generateCourtEntity(rs);
+                
+            }
+            
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+                throw new IntegrationException("Cannot generate court entity due to SQL error", ex);
+            } catch (IntegrationException ex) {
+                throw new IntegrationException("Cannot generate court entity", ex);
+        } finally {
+                if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+                if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+                if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+            }
+            return ce;   
+        
+        
+    }
+    
     public void deleteCourtEntity(CourtEntity courtEntity) throws IntegrationException {
-         String query = "DELETE FROM public.courtentity\n" +
+        String query = "DELETE FROM public.courtentity\n" +
                         " WHERE entityid= ?;";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;

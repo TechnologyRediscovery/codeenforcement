@@ -218,7 +218,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public LinkedList geteventList(CECase currentCase) throws IntegrationException{
+    public LinkedList getEventList(CECase currentCase) throws IntegrationException{
         EventIntegrator ei = getEventIntegrator();
         LinkedList<Event> ll = ei.getEventsByCaseID(currentCase.getCaseID());
         return ll;

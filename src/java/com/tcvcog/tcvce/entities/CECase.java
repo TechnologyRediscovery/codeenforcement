@@ -23,7 +23,6 @@ public class CECase {
 
     private LinkedList<CodeViolation> violationList;
     private LinkedList<Event> eventList;
-    private LinkedList<Person> casePeople;
     
     private String caseName;
     private CasePhase casePhase;
@@ -32,6 +31,12 @@ public class CECase {
     private LocalDateTime closingDate;
     private LocalDateTime creationTimestamp;
     private String notes;
+    
+    
+    @Override
+    public String toString(){
+        return caseName;
+    }
     
     /**
      * @return the caseID
@@ -187,19 +192,6 @@ public class CECase {
         this.eventList = eventList;
     }
 
-    /**
-     * @return the casePeople
-     */
-    public LinkedList<Person> getCasePeople() {
-        return casePeople;
-    }
-
-    /**
-     * @param casePeople the casePeople to set
-     */
-    public void setCasePeople(LinkedList<Person> casePeople) {
-        this.casePeople = casePeople;
-    }
 
     /**
      * @return the publicControlCode

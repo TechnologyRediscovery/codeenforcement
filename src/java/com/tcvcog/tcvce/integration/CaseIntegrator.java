@@ -127,6 +127,8 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
     public CECase getCECase(int ceCaseID) throws IntegrationException{
         PropertyIntegrator pi = getPropertyIntegrator();
         UserIntegrator ui = getUserIntegrator();
+        EventIntegrator ei = getEventIntegrator();
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
         String query = "SELECT caseid, cecasepubliccc, property_propertyid, propertyunit_unitid, \n" +
             "       login_userid, casename, casephase, originationdate, closingdate, \n" +
             "       notes, creationtimestamp \n" +
@@ -151,6 +153,12 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
                 c.setPropertyUnit(null); // change when units are integrated
                 
                 c.setUser(ui.getUserByUserID(rs.getInt("login_userid")));
+                
+                // big list additions here
+                c.setEventList(ei.getEventsByCaseID(ceCaseID));
+                c.setViolationList(cvi.getCodeViolations(ceCaseID));
+                
+                
                 c.setCaseName(rs.getString("casename"));
                 c.setCasePhase(CasePhase.valueOf(rs.getString("casephase")));
                 c.setOriginationDate(rs.getTimestamp("originationdate")

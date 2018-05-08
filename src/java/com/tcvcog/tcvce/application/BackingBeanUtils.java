@@ -28,11 +28,11 @@ import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
-import com.tcvcog.tcvce.integration.ExerciseIntegrator;
 import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.OccupancyInspectionFeeIntegrator;
@@ -44,8 +44,6 @@ import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
-import com.tcvcog.tcvce.integration.WeatherTestIntegrator;
-import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +51,6 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 
@@ -73,8 +70,6 @@ public class BackingBeanUtils implements Serializable{
     private CaseCoordinator caseCoordinator;
     private CaseIntegrator caseIntegrator;
     
-    //testing weather test integrator
-    private WeatherTestIntegrator weatherTestIntegrator;
     
     private EventCoordinator eventCoordinator;
     private EventIntegrator eventIntegrator;
@@ -101,6 +96,8 @@ public class BackingBeanUtils implements Serializable{
     private CourtEntityIntegrator courtEntityIntegrator;
     private OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator;
     private PaymentIntegrator paymentIntegrator;
+    
+    private CitationIntegrator citationIntegrator;
     
     
     
@@ -230,17 +227,6 @@ public class BackingBeanUtils implements Serializable{
         
     }
     
-    public ExerciseIntegrator getExerciseIntegrator(){
-        FacesContext context = getFacesContext();
-        ExerciseIntegrator exerciseIntegrator = context.getApplication()
-                .evaluateExpressionGet(
-                        context, 
-                        "#{exerciseIntegrator}", 
-                        ExerciseIntegrator.class);
-        
-        return exerciseIntegrator;
-        
-    }
     //adams creation of getInspectableCodeElementIntegrator()
      public InspectableCodeElementIntegrator getInspectableCodeElementIntegrator(){
         FacesContext context = getFacesContext();
@@ -275,18 +261,6 @@ public class BackingBeanUtils implements Serializable{
         return occupancyInspectionIntegrator;
     }
      
-    //adams creation of a weathertestintegrator in the backingbeanutils
-    public WeatherTestIntegrator getWeatherTestIntegrator(){
-        FacesContext context = getFacesContext();
-        WeatherTestIntegrator weatherIntegrator = context.getApplication()
-                .evaluateExpressionGet(
-                        context, 
-                        "#{personIntegrator}", 
-                        WeatherTestIntegrator.class);
-        
-        return weatherIntegrator;
-        
-    }
     
     public MunicipalityIntegrator getMunicipalityIntegrator(){
         FacesContext context = getFacesContext();
@@ -642,6 +616,33 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setPaymentIntegrator(PaymentIntegrator paymentIntegrator) {
         this.paymentIntegrator = paymentIntegrator;
+    }
+
+    /**
+     * @param spaceTypeIntegrator the spaceTypeIntegrator to set
+     */
+    public void setSpaceTypeIntegrator(SpaceTypeIntegrator spaceTypeIntegrator) {
+        this.spaceTypeIntegrator = spaceTypeIntegrator;
+    }
+
+    /**
+     * @return the citationIntegrator
+     */
+    public CitationIntegrator getCitationIntegrator() {
+        
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{citationIntegrator}", CitationIntegrator.class);
+        citationIntegrator = (CitationIntegrator) ve.getValue(context.getELContext());
+        
+        return citationIntegrator;
+    }
+
+    /**
+     * @param citationIntegrator the citationIntegrator to set
+     */
+    public void setCitationIntegrator(CitationIntegrator citationIntegrator) {
+        this.citationIntegrator = citationIntegrator;
     }
 
 }

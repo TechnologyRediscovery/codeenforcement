@@ -38,7 +38,6 @@ import javax.faces.application.FacesMessage;
  * @author sylvia
  */
 public class NoticeOfViolationBB extends BackingBeanUtils implements Serializable {
-
     
     private String formLetterText;
     private Date formDateOfRecord;
@@ -124,6 +123,8 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      * @return the formLetterText
      */
     public String getFormLetterText() {
+        formLetterText = currentNotice.getNoticeText();
+        
         return formLetterText;
     }
 

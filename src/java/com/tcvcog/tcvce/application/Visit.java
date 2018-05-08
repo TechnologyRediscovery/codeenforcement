@@ -10,6 +10,7 @@ import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.entities.CEActionRequest;
+import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
@@ -35,6 +36,7 @@ public class Visit {
     private NoticeOfViolation activeNotice;
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
+    private Citation activeCitation;
     private EnforcableCodeElement selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
     //private LinkedList<EnforcableCodeElement> eceList;
@@ -197,6 +199,20 @@ public class Visit {
      */
     public void setActiveNotice(NoticeOfViolation activeNotice) {
         this.activeNotice = activeNotice;
+    }
+
+    /**
+     * @return the activeCitation
+     */
+    public Citation getActiveCitation() {
+        return activeCitation;
+    }
+
+    /**
+     * @param activeCitation the activeCitation to set
+     */
+    public void setActiveCitation(Citation activeCitation) {
+        this.activeCitation = activeCitation;
     }
 
 }

@@ -30,8 +30,10 @@ import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
+import com.tcvcog.tcvce.integration.CitationIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -51,7 +53,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     private Event selectedEvent;
     
     private LinkedList<CodeViolation> violationList;
-    private CodeViolation selectedViolation;
+    private ArrayList<CodeViolation> selectedViolations;
     
     private LinkedList<NoticeOfViolation> noticeList;
     private NoticeOfViolation selectedNotice;
@@ -70,30 +72,12 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public CaseManageBB() {
     }
     
-    public String editViolation(){
-        
-        if(selectedViolation != null){
-            SessionManager sm = getSessionManager();
-            sm.getVisit().setActiveCodeViolation(selectedViolation);
-            return "violationEdit";
-        } else {
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Please select a violation and try again", ""));
-            return "";
-            
-        }
-    }
-    
-    public String createCitation(){
-        return "";
-    }
     
     public String recordCompliance(){
         
-        if(selectedViolation != null){
+        if(selectedViolations != null){
             ViolationCoordinator vc = getViolationCoordinator();
-            
+            // finish
             return "eventCompliance";
         } else {
             getFacesContext().addMessage(null,
@@ -104,31 +88,139 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         }
     }
     
-
-    public void deleteViolation(ActionEvent e){
-        if(selectedViolation != null){
-            ViolationCoordinator vc = getViolationCoordinator();
-            try {
-                vc.deleteViolation(selectedViolation);
-            } catch (IntegrationException ex) {
-                getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                                "Unable to delete selected violation", 
-                                "Check if the violation has been referenced in a citation."
-                                        + "If so, and you still wish to delete, you must remove"
-                                        + "the citation first, then delete the violation."));
-            }
-            
+    
+    public String editViolation(){
+        LinkedList<CodeViolation> ll = new LinkedList();
+        
+        if(!selectedViolations.isEmpty()){
+            SessionManager sm = getSessionManager();
+            sm.getVisit().setActiveCodeViolation(selectedViolations.get(0));
+            return "violationEdit";
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Please select a violation and try again", ""));
+            return "";
             
+        }
+    }
+    
+    
+    
+    public String createNewNoticeOfViolation(){
+        CaseCoordinator cc = getCaseCoordinator();
+        SessionManager sm = getSessionManager();
+        currentCase = sm.getVisit().getActiveCase();
+        System.out.println("CaseManageBB.createNewNoticeOfViolation | current case: " + currentCase);
+        if(!violationList.isEmpty()){
+            NoticeOfViolation nov = cc.generateNewNoticeOfViolation(currentCase);
+            sm.getVisit().setActiveNotice(nov);
+            return "noticeOfViolationEditor";
+        }
+        getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to generate new Notice of Violation, Sorry.", ""));
+        return "";
+    }
+    
+    
+    public String createCitationForAllViolations(){
+        System.out.println("CaseManageBB.createCitationForAllViolations | current case tostring: " 
+                + currentCase);
+//        if(!currentCase.getViolationList().isEmpty()){
+        if(currentCase != null){
+            SessionManager sm = getSessionManager();
+            CaseCoordinator cc = getCaseCoordinator();
+            sm.getVisit().setActiveCitation(cc.generateNewCitation(violationList));
+            return "citationEdit";
+        }
+        getFacesContext().addMessage(null,
+        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "Please select a violation and try again", ""));
+        return "";
+    }
+    
+    public String createCitationFromSelected(){
+        System.out.println("CaseManageBB.createCitationFromSelected");
+        if(!selectedViolations.isEmpty()){
+            SessionManager sm = getSessionManager();
+            CaseCoordinator cc = getCaseCoordinator();
+
+            sm.getVisit().setActiveCitation(cc.generateNewCitation(selectedViolations));
+
+            return "citationEdit";
+            
+        }
+        
+        getFacesContext().addMessage(null,
+        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "Please select a violation and try again", ""));
+        return "";
+    }
+    
+    public String updateCitation(){
+        if(selectedCitation != null){
+            SessionManager sm = getSessionManager();
+            sm.getVisit().setActiveCitation(selectedCitation);
+            return "citationEdit";
+        }
+        
+        getFacesContext().addMessage(null,
+        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "Please select a citation and try again", ""));
+        return "";
+        
+    }
+    
+    public String deleteCitation(){
+        if(selectedCitation != null){
+            CaseCoordinator cc = getCaseCoordinator();
+            try {
+                cc.deleteCitation(selectedCitation);
+            } catch (IntegrationException ex) {
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                "Unable to delete citation, sorry: "
+                                        + "probably because it is linked to another DB entity", ""));
+
+                System.out.println(ex);
+            
+            }
+        }
+        return "";
+    }
+    
+
+    public void deleteViolation(ActionEvent e){
+        if(selectedViolations != null){
+            if(selectedViolations.size() == 1){
+                ViolationCoordinator vc = getViolationCoordinator();
+                try {
+                    vc.deleteViolation(selectedViolations.get(0));
+                } catch (IntegrationException ex) {
+                    getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to delete selected violation", 
+                            "Check if the violation has been referenced in a citation."
+                                    + "If so, and you still wish to delete, you must remove"
+                                    + "the citation first, then delete the violation."));
+                    }
+            } else {
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Don't get wreckless, now! You may only delete one violation at a time!", ""));
+
+            }
+        } else {
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                "Please select a violation and try again", ""));
         }
     }
     
     public String addViolation(){
         // no logic needed in the backing bean
+        // sinec we just forward to the selectElement page
         
         return "violationSelectElement";
     }
@@ -146,15 +238,6 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
             return "";
 
             }
-    }
-    
-    public String createNewNoticeOfViolation(){
-        CaseCoordinator cc = getCaseCoordinator();
-        NoticeOfViolation nov = cc.generateNewNoticeOfViolation(currentCase);
-        SessionManager sm = getSessionManager();
-        sm.getVisit().setActiveNotice(nov);
-             
-        return "noticeOfViolationEditor";
     }
     
     
@@ -235,6 +318,10 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public CECase getCurrentCase() {
         SessionManager sm = getSessionManager();
         currentCase = sm.getVisit().getActiveCase();
+        if(currentCase != null){
+            System.out.println("CaseManageBB.getCurrentCase | currentCase Info: " + currentCase.getCaseName());
+            
+        }
         return currentCase;
     }
 
@@ -250,14 +337,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      * @return the eventList
      */
     public LinkedList<Event> getEventList() {
-        EventCoordinator ec = getEventCoordinator();
-        try {
-            eventList = ec.geteventList(currentCase);
-        } catch (IntegrationException ex) {
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Could not load event list for this case", ""));
-        }
+        eventList = currentCase.getEventList();
         return eventList;
     }
 
@@ -291,8 +371,8 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the selectedViolation
      */
-    public CodeViolation getSelectedViolation() {
-        return selectedViolation;
+    public ArrayList<CodeViolation> getSelectedViolations() {
+        return selectedViolations;
     }
 
     /**
@@ -319,8 +399,8 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @param selectedViolation the selectedViolation to set
      */
-    public void setSelectedViolation(CodeViolation selectedViolation) {
-        this.selectedViolation = selectedViolation;
+    public void setSelectedViolations(ArrayList<CodeViolation> selectedViolation) {
+        this.selectedViolations = selectedViolation;
     }
 
     
@@ -359,6 +439,14 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      * @return the citationList
      */
     public LinkedList<Citation> getCitationList() {
+        CitationIntegrator ci = getCitationIntegrator();
+        SessionManager sm = getSessionManager();
+        
+        try {
+            citationList = ci.getCitationsByCase(sm.getVisit().getActiveCase());
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
         return citationList;
     }
 

@@ -445,7 +445,7 @@
         
         <navigation-case>
             <from-outcome>litigationManage</from-outcome>
-            <to-view-id>/ce/litigationManage.xhtml</to-view-id>
+            <to-view-id>/ce/courtEntityManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
@@ -453,17 +453,7 @@
             <from-outcome>codeSourceManage</from-outcome>
             <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
             <redirect />
-        </navigation-case>
-        
-        
-        <!--
-        <navigation-case>
-            <from-outcome>sourceManCommand</from-outcome>
-            <to-view-id>/ce/codeSourceAdd.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        -->
-        
+        </navigation-case>   
         <navigation-case>
             <from-outcome>elementTypeManage</from-outcome>
             <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
@@ -761,6 +751,16 @@
     <managed-bean>
         <managed-bean-name>personConnectBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.PersonConnectBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>citationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CitationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>courtEntityIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.CourtEntityIntegrator</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

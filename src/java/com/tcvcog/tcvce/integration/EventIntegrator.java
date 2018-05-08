@@ -21,6 +21,7 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.EventExceptionDeprecated;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
@@ -472,7 +473,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         return ev;
     }
     
-    public LinkedList getEventsByCaseID(int caseID) throws IntegrationException{
+    public LinkedList<Event> getEventsByCaseID(int caseID) throws IntegrationException{
         LinkedList<Event> eventList = new LinkedList();
         
         String query = "SELECT * FROM public.ceevent WHERE cecase_caseid = ?;";

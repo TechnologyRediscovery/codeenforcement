@@ -20,8 +20,11 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CourtEntity;
 import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -37,6 +40,9 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     
     private LinkedList<CourtEntity> courtEntityList;
     private CourtEntity selectedCourtEntity;
+    private LinkedList<Municipality> muniList;
+    
+    
     private int formCourtEntityID;
     private String formCourtEntityOfficialNum;
     private String formJurisdictionLevel;
@@ -78,26 +84,30 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
         }
     }
     
-    public void commitCourtEntityUpdates(ActionEvent e){
+    public String commitCourtEntityUpdates(){
         CourtEntityIntegrator cei = getCourtEntityIntegrator();
-        CourtEntity courtEntity = selectedCourtEntity;
         
-        courtEntity.setCourtEntityOfficialNum(formCourtEntityOfficialNum);
-        courtEntity.setJurisdictionLevel(formJurisdictionLevel);
-        courtEntity.setMunicipality(formMunicipality);
-        courtEntity.setCourtEntityName(formCourtEntityName);
-        courtEntity.setAddressStreet(formAddressStreet);
-        courtEntity.setAddressCity(formAddressCity);
-        courtEntity.setAddressZip(formAddressZip);
-        courtEntity.setAddressState(formAddressState);
-        courtEntity.setAddressCounty(formAddressCounty);
-        courtEntity.setPhone(formPhone);
-        courtEntity.setUrl(formUrl);
-        courtEntity.setNotes(formNotes);
+        CourtEntity ce = selectedCourtEntity;
+        System.out.println("CourtEntityBB.commitCourtEntityUpdates | ceNamebefore = " + ce.getCourtEntityName());
+        
+        ce.setCourtEntityOfficialNum(formCourtEntityOfficialNum);
+        ce.setJurisdictionLevel(formJurisdictionLevel);
+        ce.setMunicipality(formMunicipality);
+        ce.setCourtEntityName(formCourtEntityName);
+        ce.setAddressStreet(formAddressStreet);
+        ce.setAddressCity(formAddressCity);
+        ce.setAddressZip(formAddressZip);
+        ce.setAddressState(formAddressState);
+        ce.setAddressCounty(formAddressCounty);
+        ce.setPhone(formPhone);
+        ce.setUrl(formUrl);
+        ce.setNotes(formNotes);
+        System.out.println("CourtEntityBB.commitCourtEntityUpdates | ceNameafter = " + ce.getCourtEntityName());
         //oif.setOccupancyInspectionFeeNotes(formOccupancyInspectionFeeNotes);
         try{
             System.out.println("ATTEMPTING TO UPDATE COURT ENTITY");
-            cei.updateCourtEntity(courtEntity);
+            cei.updateCourtEntity(ce);
+            System.out.println("CourtEntityBB.commitCourtEntityUpdates | after integrator");
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "Court Entity updated!", ""));
@@ -107,6 +117,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
                     "Unable to update Court Entity in database.",
                     "This must be corrected by the System Administrator"));
         }
+        return "";
     }
     
     public String addCourtEntity(){
@@ -261,6 +272,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
      * @param formMunicipality the formMunicipality to set
      */
     public void setFormMunicipality(Municipality formMunicipality) {
+        System.out.println("CourtEntityBB.setFormMunicipality");
         this.formMunicipality = formMunicipality;
     }
 
@@ -388,5 +400,25 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
      */
     public void setFormNotes(String fomrNotes) {
         this.formNotes = fomrNotes;
+    }
+
+    /**
+     * @return the muniList
+     */
+    public LinkedList<Municipality> getMuniList() {
+        MunicipalityIntegrator mi = getMunicipalityIntegrator();
+        try {
+            muniList = mi.getAllMuniList();
+        } catch (IntegrationException ex) {
+            System.out.println("ex");
+        }
+        return muniList;
+    }
+
+    /**
+     * @param muniList the muniList to set
+     */
+    public void setMuniList(LinkedList<Municipality> muniList) {
+        this.muniList = muniList;
     }
 }

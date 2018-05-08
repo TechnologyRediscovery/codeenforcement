@@ -23,20 +23,23 @@ import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
+import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
-import com.tcvcog.tcvce.integration.ExerciseIntegrator;
 import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyInspectionFeeIntegrator;
 import com.tcvcog.tcvce.integration.OccupancyInspectionIntegrator;
+import com.tcvcog.tcvce.integration.OccupancyPermitTypeIntegrator;
+import com.tcvcog.tcvce.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
-import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
@@ -89,17 +92,6 @@ public class Initializer implements ServletContextListener{
         EventCoordinator ec = new EventCoordinator();
         servletContext.setAttribute("eventCoordinator", ec);
         
-        //adding integrator build for exercise
-        ExerciseIntegrator exerciseIntegrator = new ExerciseIntegrator();
-        servletContext.setAttribute("exerciseIntegrator", exerciseIntegrator);
-        
-        //adding integrator for occupancy inspection
-        OccupancyInspectionIntegrator occupancyInspectionIntegrator = new OccupancyInspectionIntegrator();
-        servletContext.setAttribute("occupancyInspectionIntegrator", occupancyInspectionIntegrator);
-        
-        //add integrator build for inspectable code element
-        InspectableCodeElementIntegrator inspectableCEIntegrator = new InspectableCodeElementIntegrator();
-        servletContext.setAttribute("inspectableCodeElementIntegrator", inspectableCEIntegrator);
        
         
         CodeIntegrator codeIntegrator = new CodeIntegrator();
@@ -137,6 +129,41 @@ public class Initializer implements ServletContextListener{
         
         ViolationCoordinator vc = new ViolationCoordinator();
         servletContext.setAttribute("violationCoordinator", vc);
+        
+        PaymentIntegrator pmtInt = new PaymentIntegrator();
+        servletContext.setAttribute("paymentIntegrator", pmtInt);
+
+        CourtEntityIntegrator cei = new CourtEntityIntegrator();
+        servletContext.setAttribute("courtEntityIntegrator", cei);
+        
+        
+         //adding integrator for occupancy inspection
+        OccupancyInspectionIntegrator occupancyInspectionIntegrator = new OccupancyInspectionIntegrator();
+        servletContext.setAttribute("occupancyInspectionIntegrator", occupancyInspectionIntegrator);
+        
+                
+        OccupancyInspectionFeeIntegrator occInspecFeeInt = new OccupancyInspectionFeeIntegrator();
+        servletContext.setAttribute("occupancyInspectionFeeIntegrator", occInspecFeeInt);
+        
+        //add integrator build for inspectable code element
+        InspectableCodeElementIntegrator inspectableCEIntegrator = new InspectableCodeElementIntegrator();
+        servletContext.setAttribute("inspectableCodeElementIntegrator", inspectableCEIntegrator);
+       
+        OccupancyPermitTypeIntegrator opti = new OccupancyPermitTypeIntegrator();
+        servletContext.setAttribute("occupancyPermitTypeIntegrator", opti);
+        
+        
+        CitationIntegrator citint = new CitationIntegrator();
+        servletContext.setAttribute("citationIntegrator", citint);
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

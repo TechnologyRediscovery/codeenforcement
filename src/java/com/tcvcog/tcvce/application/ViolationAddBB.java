@@ -73,7 +73,7 @@ public class ViolationAddBB extends BackingBeanUtils implements Serializable {
              // giving the event coordinator info for an update event
              getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "Success! Violation updated.", ""));
+                            "Success! Violation added.", ""));
             return "case";
         } catch (IntegrationException ex) {
             System.out.println(ex);

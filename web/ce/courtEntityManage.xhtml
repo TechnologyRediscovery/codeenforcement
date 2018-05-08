@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <title>Court Entity Configuration</title>
     </h:head>
     <h:body>
-        <ui:composition template="./tempHeadFoot.xhtml">
+        <ui:composition template="./../tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </h:messages>
                             
                     <h1>Court Entity Configuration Tool</h1>
-                    <p>View, create, and manage court entites</p>
+                    <p>View, create, and manage court entities</p>
                     <f:view>
                         <h:form id="courtEntities">
                             <h2>Court Entity Details</h2>
@@ -47,7 +47,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     value="#{courtEntityBB.courtEntityList}"
                                     tableStyleClass="primeDataTable"
                                     tabindex="1">
-                                    <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
 
                                     <p:column width="5%">
                                         <f:facet name="header">
@@ -156,28 +155,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             
                          </h:form>    
                              
-                             
-                            <!--<p:fieldset legend="Update occupancy inspection "
-                                toggleable="true" collapsed="false" tabindex="4">
-                                    <h:form id="updateCategoryForm">
-                                        <p:spacer height="10px"/>
-                                        <p:outputLabel for="occInsFeeName">
-                                           <h:outputText value="Name:"/>
-                                        </p:outputLabel>
-                                        <p:inputText id="occInsFeeName" value="{occupancyInspectionFeeBB.formOccupancyInspectionFeeName}" 
-                                                 style="width: 50%;" tabindex="5" required="true" styleClass="inputText"/>
-                                        <h:message for="occInsFeeName" showDetail="false" showSummary="true" 
-                                              warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-
-                                        <p:spacer height="20px"/>
-                                        
-                                       
-                                    </h:form>  
-                                </p:fieldset>-->
-                            
                            
-                        <h:form id="poccInsFeeAddForm">
-                            <h2>Add New Occupancy Inspection Fee</h2>
+                        <h:form id="courtEntityFieldForm">
+                            <h2>Court Entity Fields</h2>
                             <p>The more fields you can populate, the better. (Data integrity hangs in the balance.)</p>
                             <h:panelGrid columns="4" border="0" 
                                          cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
@@ -186,7 +166,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Name:" for="newCourtEntityName"/>
                                 <h:panelGroup>
                                     <p:inputText id="newCourtEntityName" value="#{courtEntityBB.formCourtEntityName}" 
-                                                 style="width: 250px;" tabindex="6" required="false" styleClass="inputText" maxlength="100"/>
+                                                 style="width: 250px;" tabindex="4" required="false" styleClass="inputText" maxlength="100"/>
                                     <h:message for="newCourtEntityName" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -195,13 +175,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <h:outputText value="Municipality:"/>
                                 </p:outputLabel>
                                 <h:panelGroup>
-                                    <p:selectOneMenu id="muniSelectMenu" tabindex="11" required="false" value="#{courtEntityBB.formMunicipality}">
+                                    <p:selectOneListbox id="muniSelectMenu" tabindex="5" value="#{courtEntityBB.formMunicipality}">
                                         <f:converter converterId="muniConverter"/>
-                                        <f:selectItems id="muniNameList" value="#{muniBB.muniList}" var="m" itemValue="#{m}" itemLabel="#{m.muniName}"/>
-                                    </p:selectOneMenu>
+                                        <f:selectItems id="muniNameList" value="#{courtEntityBB.muniList}" 
+                                                       var="muni" itemValue="#{muni}" itemLabel="#{muni.muniName}"/>
+                                    </p:selectOneListbox>
+                                    <h:message for="muniSelectMenu" showDetail="true" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                     
-                                    <!--<h:message for="muniSelectMenu" showDetail="false" showSummary="true" 
-                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />-->
                                 </h:panelGroup>
                                 
                                 <h:outputLabel value="Official Num:" for="officialNum"/>
@@ -215,7 +196,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Jurisdiction Level:" for="jurisdictionLevel"/>
                                 <h:panelGroup>
                                     <p:inputText id="jurisdictionLevel" value="#{courtEntityBB.formJurisdictionLevel}" 
-                                           style="width: 250px;" tabindex="1" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="7" required="true" styleClass="inputText"/>
                                     <h:message for="jurisdictionLevel" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -223,7 +204,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Street:" for="addressStreet"/>
                                 <h:panelGroup>
                                     <p:inputText id="addressStreet" value="#{courtEntityBB.formAddressStreet}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="8" required="true" styleClass="inputText"/>
                                     <h:message for="addressStreet" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -231,7 +212,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="City:" for="addressCity"/>
                                 <h:panelGroup>
                                     <p:inputText id="addressCity" value="#{courtEntityBB.formAddressCity}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="9" required="true" styleClass="inputText"/>
                                     <h:message for="addressCity" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -247,7 +228,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Zipcode:" for="addressZip"/>
                                 <h:panelGroup>
                                     <p:inputText id="addressZip" value="#{courtEntityBB.formAddressZip}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="11" required="true" styleClass="inputText"/>
                                     <h:message for="addressZip" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -255,7 +236,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="County:" for="addressCounty"/>
                                 <h:panelGroup>
                                     <p:inputText id="addressCounty" value="#{courtEntityBB.formAddressCounty}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="12" required="true" styleClass="inputText"/>
                                     <h:message for="addressCounty" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -263,7 +244,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Phone:" for="phone"/>
                                 <h:panelGroup>
                                     <p:inputText id="phone" value="#{courtEntityBB.formPhone}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="13" required="true" styleClass="inputText"/>
                                     <h:message for="phone" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -271,7 +252,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Url:" for="url"/>
                                 <h:panelGroup>
                                     <p:inputText id="url" value="#{courtEntityBB.formUrl}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="14" required="true" styleClass="inputText"/>
                                     <h:message for="url" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -279,7 +260,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 <h:outputLabel value="Notes:" for="notes"/>
                                 <h:panelGroup>
                                     <p:inputText id="notes" value="#{courtEntityBB.formNotes}" 
-                                           style="width: 250px;" tabindex="10" required="true" styleClass="inputText"/>
+                                           style="width: 250px;" tabindex="15" required="true" styleClass="inputText"/>
                                     <h:message for="notes" showDetail="false" showSummary="true" 
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
@@ -291,10 +272,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 
                             </h:panelGrid>
                             <p:spacer height="10px"/>
-                            <p:commandButton ajax="false" value="Add Court Entity" action="#{courtEntityBB.addCourtEntity}" />
-                            <p:commandButton ajax="false" 
-                                             actionListener="#{courtEntityBB.commitCourtEntityUpdates}"
-                                                  value="Commit Updates" tabindex="7"/>
+                            <p:commandButton ajax="false" immediate="false" value="Add Court Entity" 
+                                             actionListener="#{courtEntityBB.addCourtEntity}" tabindex="16"/>
+                            
+                            <p:commandButton ajax="false"  
+                                             action="#{courtEntityBB.commitCourtEntityUpdates}"
+                                             value="Commit Updates" tabindex="17"/>
                         </h:form>
                     </f:view>
                 </div>
