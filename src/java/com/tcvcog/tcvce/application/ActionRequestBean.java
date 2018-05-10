@@ -138,7 +138,6 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
 
         try { 
             // send the request into the DB
-            System.out.println("ActionRequestBean.submitActionRequest | propID:" + selectedProperty.getPropertyID());
             integrator.submitCEActionRequest(currentRequest);
             getFacesContext().addMessage(null,
                new FacesMessage(FacesMessage.SEVERITY_INFO, 

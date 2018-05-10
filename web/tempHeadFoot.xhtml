@@ -18,7 +18,7 @@
             }
             window.onload = setSideBarHeight;
         </script>
-        
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 
     </h:head>
 
@@ -33,110 +33,154 @@
                 
                 <div class="topBar">
                     <f:view id="navview">
-                        <h:form id="navForm">
-
-                            <div class="headerLinks">
-
-                                <div class="headerLinkCont">
-                                    <h:commandLink action="dashboard" value="Dashboard" styleClass="headerLink"/>
-                                </div>
-
-                                <div class="headerLinkCont">
-                                    <h:commandLink action="propertySearch" value="Change Property" styleClass="headerLink"/>
-                                </div>
-
-                                <div class="headerLinkCont">
-                                    <h:commandLink action="#{userCoordinator.accessPropertyProfile}" value="Property Profile" styleClass="headerLink"/>
-                                </div>
-
-                                <div class="headerLinkCont">
-                                    <h:commandLink action="workflow" value="Muni Workflow" styleClass="headerLink"/>
-                                </div>
-
-                                <div class="headerLinkCont">
-                                    <h:commandLink action="#{userCoordinator.accessCaseProfile}" value="Case Profile" styleClass="headerLink"/>
-                                </div>
-
-                                <div class="headerLinkCont">
-                                    <h:commandLink action="#{authenticationBB.logout}" value="Logout" styleClass="headerLink"/>
-                                </div>
+                            
+                            <div class="userToolBar">
                                 
-                                <div class="logoBox">
-                                    <h2>Turtle Creek<br/>Valley COG<br/>Code enforcement</h2>
-                                </div>
-                            </div>
-                        </h:form>
+                            <h:form id="navForm">
+                            
+                              <h:panelGrid columns="3" border="0" 
+                                         cellpadding="2" columnClasses="userBarTd,  userBarTd, userBarTd"
+                                 footerClass="gridFooter" >
+                            
+
+
+
+
+                                      
+                                  <h:panelGroup>
+                                      <div class="icon-container">
+                                        <div class="icon-box-centered">
+                                              <i class="material-icons userToolBar-icon">calendar_today</i>
+                                        </div>
+                                      </div>
+                                           
+                                  </h:panelGroup>
+                                  <h:panelGroup>
+                                      <div class="icon-container">
+                                        <div class="icon-box-centered">
+                                            <i class="material-icons">settings</i>
+                                        </div>
+                                      </div>
+                                  </h:panelGroup>
+                                    
+                                  <h:panelGroup>
+                                      <div class="icon-container">
+                                        <div class="icon-box-centered">
+                                            <i class="material-icons">search</i>
+                                        </div>
+                                      </div>
+                                  </h:panelGroup>
+                                  <h:panelGroup>
+                                        <div class="under-icon-link-container">
+                                            <h:commandLink action="#{authenticationBB.logout}" value="Schedule" styleClass="headerLink"/>
+                                          
+                                        </div>
+                                  </h:panelGroup>
+                                
+                                
+                                  <h:panelGroup>
+                                        <div class="under-icon-link-container">
+                                            <h:commandLink action="#{authenticationBB.logout}" value="Settings" styleClass="headerLink"/>
+                                        </div>
+                                  </h:panelGroup>
+
+                                
+                                  <h:panelGroup>
+                                        <div class="under-icon-link-container">
+                                            <h:commandLink action="#{authenticationBB.logout}" value="Logout" styleClass="headerLink"/>
+                                        </div>
+                                  </h:panelGroup>
+                                
+                              </h:panelGrid>
+
+                            </h:form>
+                        </div>
+
+
+                        <div class="logoBox">
+                            <h2 id="logoHeader">TCVCOG<br/>Code Enforcement<br />Data Hub</h2>
+                        </div>
                     </f:view>
-                    
-                    
                 </div>
+                    
+                    
                 
                 
                 <div class="sideBar" id="mainSideBar">
                       
                         <h:form id="sideBarLinkForm">
-                        
-                            <p:commandLink ajax="false" value="Property Central" action="propertySearch"
+                            
+                             <h:panelGrid columns="2" border="0" 
+                                         cellpadding="2" columnClasses="gridTd,  gridTd"
+                                 footerClass="gridFooter">
+                                             
+                                <i class="material-icons">search</i>
+                                <h:commandLink action="propertySearch" value="Property Search" styleClass="sblink"/>
+
+                                <i class="material-icons">home</i>
+                                 
+                                 <h:panelGroup>
+                                    <p:commandLink ajax="false" value="Property Profile" action="propertySearch"
                                            styleClass="sblink"/>
+                                     
+                                 </h:panelGroup>
+                                <i class="material-icons">face</i>
                             
-                            <p:spacer height="8px"/>
+                                <h:panelGroup>
+                                    <p:commandLink ajax="false" value="Persons" action="personManage" 
+                                                    styleClass="sblink"/>
+                                 </h:panelGroup>
                             
-                            <p:commandLink ajax="false" value="Human Resources" action="personManage" 
-                                           styleClass="sblink"/>
-                            
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">developer_board</i>
                                                         
-                            <p:commandLink ajax="false" value="Municipality Workflow" action="workflow"
-                                           styleClass="sblink"/>
-                            
-                            <p:spacer height="8px"/>
-                        
-                        <h2>Code enforcement</h2>
-                        <p:spacer height="8px"/>
+                                <h:panelGroup>
+                                    <p:commandLink ajax="false" value="Municipality Dashboard" action="workflow"
+                                               styleClass="sblink"/>
+                                </h:panelGroup>
+                                <i class="material-icons">assignment</i>
                         
                             <p:commandLink ajax="false" value="Code enforcement action request form" action="codeEnforce" 
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
                             
-                            <p:commandLink ajax="false" value="Case Manager" action="caseManage"
+                            <i class="material-icons">chrome_reader_mode</i>
+                            
+                            <p:commandLink ajax="false" value="Case Profile" action="caseManage"
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">event_note</i>
                             
                             <p:commandLink ajax="false" value="Event Configuration" action="eventManage"
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
                             
+                                <i class="material-icons">gavel</i>
                             <p:commandLink ajax="false" value="Court Entity Management" action="litigationManage"
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">book</i>
 
-                        <h2>Municipal Code</h2>
                         
                             <p:commandLink ajax="false" value="Code Source and Element Manager" action="codeSourceManage" 
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">filter_b_and_w</i>
 
                             <p:commandLink ajax="false" value="Element Types Manager" action="elementTypeManage" 
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">category</i>
 
                             <p:commandLink ajax="false" value="Code Set Manager" action="codeSetManage"
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
-                        <h2>Database Controls</h2>
+                                <i class="material-icons">directions_run</i>
                         
-                            <p:commandLink ajax="false" value="User Manager" action="userManage"
+                            <p:commandLink ajax="false" value="User Configuration" action="userManage"
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">file_copy</i>
                             
-                            <p:commandLink ajax="false" value="Log Jams" action="logManage"
+                            <p:commandLink ajax="false" value="System Logs" action="logManage"
                                            styleClass="sblink"/>
-                            <p:spacer height="8px"/>
+                                <i class="material-icons">account_balance</i>
                             
                             <p:commandLink ajax="false" value="Municipality Manager" action="muniManage"
                                            styleClass="sblink"/>
                             
-                            <p:spacer height="8px"/>
+                            </h:panelGrid>
 
                         </h:form>
                 </div>
@@ -153,55 +197,20 @@
                 
                 <div class="sessionInfo">
                     <h:form id="sessionInfoForm">
-                         <h:panelGrid columns="4" border="0" 
-                                         cellpadding="2" columnClasses="gridTd, gridTd, gridTd, gridTd,"
-                                 footerClass="gridFooter">
-                             
-                             <h:panelGroup>
-                                 <span class="bold"><h:outputText value="User: "/></span>
-                             </h:panelGroup>
-                             <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.activeUser.FName}"/>,   
-                                 <h:outputText value="#{sessionManager.visit.activeUser.LName}"/>
-                             </h:panelGroup>
-                             
-                             <h:panelGroup>
-                                 <span class="bold"><h:outputText value="Permissions: "/></span>
-                             </h:panelGroup>
-                             <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}"/>   
-                             </h:panelGroup>
-                                             
-                             <h:panelGroup>
-                                 <span class="bold"><h:outputText value="Default Municipality: "/></span>
-                             </h:panelGroup>
-                             <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName}"/> 
-                             </h:panelGroup>
-                             
-                             <h:panelGroup>
-                                 <span class="bold"><h:outputText value="Active Property: "/></span>
-                             </h:panelGroup>
-                             <h:panelGroup>
+                                <h:outputText value="User: "/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.FName}"/>   
+                                <h:outputText value="#{sessionManager.visit.activeUser.LName}"/>
+                                <h:outputText value="Permissions: "/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}"/>   
+                                <h:outputText value="Default Municipality: "/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName}"/> 
+                                <h:outputText value="Active Property: "/>
                                 <h:outputText value="#{sessionManager.visit.activeProp.address}"/> 
                                 <h:outputText value="#{sessionManager.visit.activeProp.muni.muniName}"/>
-                             </h:panelGroup>
-                             
-                             <h:panelGroup>
-                                 <span class="bold"><h:outputText value="Active Case:"/></span>
-                             </h:panelGroup>
-                             <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.activeCase.caseName}"/>, 
-                             </h:panelGroup>
-                             
-                             <h:panelGroup>
-                                 <span class="bold"><h:outputText value="Code Set: "/></span>
-                             </h:panelGroup>
-                             <h:panelGroup>
-                                 <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/> 
-                             </h:panelGroup>
-                             
-                         </h:panelGrid>
+                                <h:outputText value="Active Case:"/>
+                                <h:outputText value="#{sessionManager.visit.activeCase.caseName}"/> 
+                                <h:outputText value="Code Set: "/>
+                                <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/> 
 
                     </h:form>
                 </div>
