@@ -14,16 +14,14 @@
         
         <h:outputStylesheet name="public_style.css" library="css"/>
           
-        <title>Case Look Up Test</title>
+        <title>Occupancy Permit Access Portal</title>
 
     </h:head>
     
     <h:body>
-<f:view>
-    <h:form>    
 <!--wrapping the nav in a container class aligns it w/in the page,
     meaning the div background does not span entire computer screen-->
-     <nav class="navbar navbar-default" id="navbar-override">
+        <nav class="navbar navbar-default" id="navbar-override">
             <div class="navbar-header">
 <!--the button will be displayed when viewport is small enough to collapse the navigation bar-->
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -34,7 +32,7 @@
 <!--the id= seeks the #myNavbar button element and when the navbar reaches 768px breakpoint, displays the icon for navigation-->                
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li><p:commandLink ajax="false" value="Home" action="publicDashHome"/></li>
+                    <li><a href="#">Home</a></li>
                     <li><a href="#">Link 1</a></li>
                     <li><a href="#">Link 2</a></li>
                     <li><a href="#">Link 3</a></li>
@@ -42,7 +40,6 @@
                 </ul>
             </div>    
     </nav>
-    </h:form>
         <!--### OLD NAVBAR, PRE-BOOTSTRAP CLASSES
         <div class="container">
             <div class="navMenu">
@@ -57,20 +54,20 @@
         </div>
         -->
         
-  
+    <f:view>
                 
     <div class="container">
         <div class="header">            
-          <h2>Action request control code look-up</h2>
+          <h2>Occupancy Permit Access Portal</h2>
         </div>  
     </div>
 
     <div class="container">                
         <div class="userInput">
                 <h:form>
-                    <h:outputLabel value="Enter Code: "/>
-                        <p:inputText id="formEntry" value="" styleClass="controlCodeInput"/>
-                        <h:message for="formCodeElementID" showDetail="false" showSummary="true" 
+                    <h:outputLabel value="Enter Permit Number: "/>
+                        <p:inputText id="formEntry" value="" styleClass="permitInput"/>
+                        <h:message for="formEntry" showDetail="false" showSummary="true" 
                             warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                 </h:form>
 
@@ -79,7 +76,22 @@
                     <p:commandButton ajax="false" value="Search"/>
                 </h:form>
         </div>
-    </div>    
+    </div>  
+        <div class="container">
+            <hr/>
+        </div>
+    <div class="container">                
+        <div class="userSchedule">
+                <h:form>
+                    <h:outputLabel value="Schedule an occupancy inspection at this property and unit"/>
+                </h:form>
+
+                <h:form>
+                    <p:spacer height="50px"/>
+                    <p:commandButton ajax="false" value="Schedule"/>
+                </h:form>
+        </div>
+    </div>  
 
     <div class="container">
         <div class="cogInfo">
@@ -88,7 +100,7 @@
         </div>
     </div>
         
-<!--testing grounds for w3schools.com Bootstrap tutorial-->
+<!--testing grounds for w3schools.com Bootstrap tutorial
     <div class="container">
         <div class="contextColors">
             <h2>Contextual Colors</h2>
@@ -116,8 +128,8 @@
 
     <div class="container">
         <h2>Basic Table</h2>
-        <p>The .table class adds light padding and horiz. dividers to table</p>
-<!--There are various class settings for table, see w3schools.com-->
+        <p>The .table class adds light padding and horiz. dividers to table</p>-->
+<!--There are various class settings for table, see w3schools.com
         <table class="table table-hover table-condensed">
             <thead>
                 <th>Firstname</th>
@@ -143,7 +155,7 @@
             </tbody>
         </table>
 
-    </div>
+    </div>-->
 
     </f:view>
     </h:body>

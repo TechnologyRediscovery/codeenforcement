@@ -25,18 +25,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-@viewport {
-  width: device-width;
-  margin: auto;
-}
 
 /*
 removes bullets and browser default settings for padding/margins
-*/
+
 .mainContainer {
 
 }
-
+ For previous non-bootstrap navigation styling
 .navMenu ul {
     font-family: 'roboto', sans-serif;
     list-style-type: none;
@@ -47,11 +43,10 @@ removes bullets and browser default settings for padding/margins
     
 }
 
-/*
+
 makes vertical nav bar
-*/
+
 .navMenu li {
-    
     float: left;
 }
 
@@ -60,10 +55,10 @@ makes vertical nav bar
     padding: 8px;
 }
 
-/*
+
 block elements make makes whole link area clickable, setting width at 60px leaves
 60px of link clickable
-*/
+
 .navMenu li a {
     display: block;
     width: 60px;
@@ -73,6 +68,7 @@ block elements make makes whole link area clickable, setting width at 60px leave
 .navMenu li a:hover {
     background-color: black;
 }
+*/
 
 .header {
     font-family: 'roboto', sans-serif;
@@ -80,6 +76,8 @@ block elements make makes whole link area clickable, setting width at 60px leave
     padding: 30px;
     text-align: center;
     font-size: 35px;
+    /*border-radius: 5px;*/
+
 }
 
 
@@ -89,15 +87,64 @@ block elements make makes whole link area clickable, setting width at 60px leave
     height: 100px;
     text-align: center;
 }
+/*this class exists on occupancyPermitAccessPortal page*/
+.userSchedule {
+    font-family: 'roboto', sans-serif;
+    padding: 10px;
+    height: 100px;
+    text-align: center;
+}
 
 /* Style the footer */
-.footer {
+.cogInfo {
     font-family: 'roboto', sans-serif;
     background-color: #abb;
     padding: 10px;
     text-align: center;
+    /*border-radius: 5px;*/
+
 }
 
 .controlCodeInput {
     margin-left: 10px;
+}
+
+.permitInput {
+    margin-left: 10px;
+}
+
+.contextBackgrounds {
+    background-color: #abb;
+
+}
+
+/*
+.navbar-custom {
+    color: #FFFFFF;
+    background-color: #abb;
+    only way i have found to remove the custom-navbar default rounded borders
+    border-radius: 5px !important;
+}
+/*
+
+/*styles the title jumbotron element of publicDashboard.xhtml*/
+#jumbo-override {
+    background-color: #abb;
+}
+
+#navbar-override {
+    color: #FFFFFF;
+    background-color: #abb;
+}
+
+#navbar-override .navbar-brand {
+    color: #0040ff;
+}
+
+#navbar-override .navbar-nav > li > a {
+    color: #0040ff;
+}
+
+#navbar-override .navbar-nav > li :hover{
+    color: whitesmoke;
 }

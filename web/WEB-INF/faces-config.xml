@@ -424,7 +424,7 @@
             <to-view-id>/propertySearch.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    
+        
         <navigation-case>
             <from-outcome>personManage</from-outcome>
             <to-view-id>/personManage.xhtml</to-view-id>
@@ -593,6 +593,23 @@
         </nanavigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/public/publicDashboardTest.xhtml</from-view-id>  
+        <navigation-case>
+            <from-outcome>ceCaseLookup</from-outcome>
+            <to-view-id>/public/caseLookUp_Bootstrap_Test.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/public/caseLookUp_Bootstrap_Test.xhtml</from-view-id>  
+        <navigation-case>
+            <from-outcome>publicDashHome</from-outcome>
+            <to-view-id>/public/publicDashboardTest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
     
     <managed-bean>
