@@ -54,37 +54,55 @@ columns of buttons!  The grid is split into three columns (col-sm-4)-->
 <div class="container text-center">    
   <h3>Select an Option</h3>
   <div class="row">
+      
     <div class="col-sm-4">
       <div class="well">
-       <button type="button" class="btn btn-primary btn-lg">Request Investigation</button> 
+        <p:outputLabel value="Ipsum Lorem"/>
+            <p:commandLink ajax="false" action="publicDashHome">
+                <h:graphicImage value="/images/tcvcoglogo.png"/>
+            </p:commandLink>
       </div>
       <div class="well">
-       <button type="button" class="btn btn-primary btn-lg">Look-up Occupancy Permit</button> 
+       <p:outputLabel value="Look-up Occupancy Permit"/>
+            <p:commandLink ajax="false" action="publicDashHome">
+                <h:graphicImage value="/images/alligator.jpeg"/>
+            </p:commandLink>  
       </div>
     </div>
+      
     <div class="col-sm-4"> 
       <div class="well">
-          <button type="button" class="btn btn-primary btn-lg">Investigation Status Request</button> 
+          <p:outputLabel value="Investigation Status Report"/>
+            <p:commandLink ajax="false" action="publicDashHome">
+                <h:graphicImage value="/images/triceratops.jpeg"/>
+            </p:commandLink> 
       </div>
       <div class="well">
-       <button type="button" class="btn btn-primary btn-lg">Register Your Landlord</button> 
+        <p:outputLabel value="Register Your LandLord"/>
+            <p:commandLink ajax="false" action="ceCaseLookup">
+                <h:graphicImage value="/images/oldHouseEdit.jpg"/>
+            </p:commandLink> 
       </div>
-
-        
     </div>
+      
     <div class="col-sm-4">
       <div class="well">
-           <p:commandLink ajax="false" value="Look-up CE Case" action="ceCaseLookup"/>
+        <p:outputLabel value="Look-up CE Case"/>
+            <p:commandLink ajax="false" action="ceCaseLookup">
+                <h:graphicImage value="/images/bees.jpeg"/>
+            </p:commandLink>
       </div>
       <div class="well">
-       <button type="button" class="btn btn-primary btn-lg">Schedule Occupancy Inspection</button> 
+       <button type="button" class="btn btn-primary btn-lg">Ipsum Lorem Doonum</button> 
       </div>
+        
    
     </div>
   </div>
 </div>
 </h:form>
-</f:view>    
+</f:view> 
+
 <footer class="container-fluid text-center">
 <p>This database application is <kbd>maintained</kbd> and <mark>updated</mark> by the Turtle Creek Valley Council of Governments.</p>
 </footer>
