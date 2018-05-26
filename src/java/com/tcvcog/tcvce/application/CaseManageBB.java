@@ -68,7 +68,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public CaseManageBB() {
     }
     
-    public String recordCompliance(){
+    public String recordCompliance() throws IntegrationException{
         
         if(selectedViolations != null){
             ViolationCoordinator vc = getViolationCoordinator();

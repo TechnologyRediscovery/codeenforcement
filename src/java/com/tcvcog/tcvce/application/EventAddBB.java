@@ -22,6 +22,7 @@ import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.EventCategory;
@@ -105,7 +106,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         return "eventAdd";
     }
     
-    public String addEvent(){
+    public String addEvent() throws ViolationException{
         EventCoordinator ec = getEventCoordinator();
         SessionManager sm = getSessionManager();
         Event e = sm.getVisit().getActiveEvent();
