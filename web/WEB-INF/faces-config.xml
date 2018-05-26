@@ -17,6 +17,7 @@
         </resource-bundle>
         
     </application>
+    
     <managed-bean>
         <description>Establishes the connection to the Code Enforcement Database for use throughout a session</description>
         <managed-bean-name>dBConnection</managed-bean-name>
@@ -340,7 +341,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/exitLanding.xhtml</from-view-id>
+        <from-view-id>*</from-view-id>
         <navigation-case>
             <from-action>gotoLogin</from-action>
             <to-view-id>/login.xhtml</to-view-id>
@@ -594,19 +595,55 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/public/publicDashboardTest.xhtml</from-view-id>  
+        <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
             <from-outcome>ceCaseLookup</from-outcome>
-            <to-view-id>/public/caseLookUp_Bootstrap_Test.xhtml</to-view-id>
+            <to-view-id>/public/codeEnforcementCaseLookUp.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/public/caseLookUp_Bootstrap_Test.xhtml</from-view-id>  
+        <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
+        <navigation-case>
+            <from-outcome>scheduleOccIns</from-outcome>
+            <to-view-id>/public/scheduleOccupancyInspection.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
+        <navigation-case>
+            <from-outcome>registerLandlord</from-outcome>
+            <to-view-id>/public/registerYourLandlord.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
+        <navigation-case>
+            <from-outcome>checkRequestStatus</from-outcome>
+            <to-view-id>/public/checkCodeEnforcementStatus.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
+        <navigation-case>
+            <from-outcome>occPermitAccessPortal</from-outcome>
+            <to-view-id>/public/occupancyPermitAccessPortal.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>  
         <navigation-case>
             <from-outcome>publicDashHome</from-outcome>
-            <to-view-id>/public/publicDashboardTest.xhtml</to-view-id>
+            <to-view-id>/public/publicDashboard.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
