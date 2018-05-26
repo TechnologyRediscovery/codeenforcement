@@ -89,8 +89,18 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     public String startNewEvent(){
         System.out.println("EventAddBB.startNewEvent | category: " + selectedEventCategory.getEventCategoryTitle());
         SessionManager sm = getSessionManager();
+        CECase c = sm.getVisit().getActiveCase();
         EventCoordinator ec = getEventCoordinator();
-        event = ec.getInitializedEvent(selectedEventCategory);
+        try {
+            event = ec.getInitializedEvent(c, selectedEventCategory);
+        } catch (CaseLifecyleException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            ex.getMessage(), ""));
+            
+            
+        }
         sm.getVisit().setActiveEvent(event);
         return "eventAdd";
     }

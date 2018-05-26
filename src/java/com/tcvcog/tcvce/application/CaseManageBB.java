@@ -72,8 +72,13 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         
         if(selectedViolations != null){
             ViolationCoordinator vc = getViolationCoordinator();
-            // finish
-            return "eventCompliance";
+            EventCoordinator ec = getEventCoordinator();
+            // generate event for compliance with selected violations
+            ec.generateViolationComplianceEvent(violationList);
+            // allow user to edit event details
+            
+            // when event is submitted, send violation list to c
+            return "eventAdd";
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -104,7 +109,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         System.out.println("CaseManageBB.createNewNoticeOfViolation | current case: " + currentCase);
 
         if(!violationList.isEmpty()){
-            sm.getVisit().setWorkingViolationList(violationList);
+            sm.getVisit().setActiveViolationList(violationList);
             return "noticeOfViolationBuilder";
         }
         getFacesContext().addMessage(null,
@@ -120,7 +125,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         System.out.println("CaseManageBB.createNewNoticeOfViolationForSelected | current case: " + currentCase);
         
         if(!violationList.isEmpty()){
-            sm.getVisit().setWorkingViolationList(selectedViolations);
+            sm.getVisit().setActiveViolationList(selectedViolations);
             return "noticeOfViolationBuilder";
         } else {
             getFacesContext().addMessage(null,

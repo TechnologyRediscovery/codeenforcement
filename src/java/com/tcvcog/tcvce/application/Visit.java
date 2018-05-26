@@ -40,7 +40,7 @@ public class Visit {
     private Citation activeCitation;
     private EnforcableCodeElement selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
-    private ArrayList<CodeViolation> workingViolationList;
+    private ArrayList<CodeViolation> activeViolationList;
     //private LinkedList<EnforcableCodeElement> eceList;
 
     /**
@@ -218,17 +218,17 @@ public class Visit {
     }
 
     /**
-     * @return the workingViolationList
+     * @return the activeViolationList
      */
-    public ArrayList<CodeViolation> getWorkingViolationList() {
-        return workingViolationList;
+    public ArrayList<CodeViolation> getActiveViolationList() {
+        return activeViolationList;
     }
 
     /**
-     * @param workingViolationList the workingViolationList to set
+     * @param activeViolationList the activeViolationList to set
      */
-    public void setWorkingViolationList(ArrayList<CodeViolation> workingViolationList) {
-        this.workingViolationList = workingViolationList;
+    public void setActiveViolationList(ArrayList<CodeViolation> activeViolationList) {
+        this.activeViolationList = activeViolationList;
     }
 
 }

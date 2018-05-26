@@ -22,6 +22,7 @@ import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
 import com.tcvcog.tcvce.entities.Citation;
@@ -38,10 +39,7 @@ import com.tcvcog.tcvce.util.Constants;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -84,25 +82,77 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
      * @param e the event to add to the case also included in this call
      * @throws com.tcvcog.tcvce.domain.CaseLifecyleException
      * @throws com.tcvcog.tcvce.domain.IntegrationException
+     * @throws com.tcvcog.tcvce.domain.ViolationException
      */
-    public void auditAndProcessCEEvent(CECase c, Event e) throws CaseLifecyleException, IntegrationException{
+    public void processCEEvent(CECase c, Event e) 
+            throws CaseLifecyleException, IntegrationException, ViolationException{
         EventType et = e.getCategory().getEventType();
-        
-        // check to make sure the case isn't closed before allowing event into the switched blocks
-        if(c.getCasePhase() == CasePhase.Closed && 
-                (e.getCategory().getEventType() == EventType.Action
-                || e.getCategory().getEventType() == EventType.Origination)){
-            
-            throw new CaseLifecyleException("This event cannot be attached to closed cases");
-        }
         
         switch(et){
             case Action:
                 processActionEvent(c, e);
+            case Compliance:
+                processComplianceEvent(c,e);
             default:
                 processGeneralEvent(c, e);
-            
+        } // close switch
+    } // close method
+    
+    /**
+     * Core business logic method for recording compliance for CodeViolations
+     * Checks for timeline fidelity before updating each violation.
+     * If all is well, a call to updateViolation on the ViolationCoordinato is called.
+     * After the violations have been marked with compliance, a review of the entire case
+     * is conducted and if all violations on the case have a compliance date, 
+     * the case phase is automatically changed to closed due to compliance
+     * 
+     * @param c the current case
+     * @param e the Compliance event
+     * @throws ViolationException in the case of a malformed violation
+     * @throws IntegrationException in the case of a DB error
+     * @throws CaseLifecyleException in the case of date mismatch
+     */
+    public void processComplianceEvent(CECase c, Event e) 
+            throws ViolationException, IntegrationException, CaseLifecyleException{
+        
+        SessionManager sm = getSessionManager();
+        ViolationCoordinator vc = getViolationCoordinator();
+        ArrayList<CodeViolation> violationList = sm.getVisit().getActiveViolationList();
+        ListIterator<CodeViolation> li = violationList.listIterator();
+        CodeViolation cv;
+        
+        while(li.hasNext()){
+            cv = li.next();
+            cv.setActualComplianceDate(e.getDateOfRecord());
+            if(cv.getActualComplianceDate().isAfter(cv.getDateOfRecord())){
+                vc.updateCodeViolation(cv);
+            } else {
+                throw new CaseLifecyleException(
+                        "Violation Compliance date must be after the violation's date of record.");
+            }
+        } // close while
+        
+        // now check all the case's violations for compliance dates
+        // we have to access all the violations again because a compliance event may not
+        // apply to all the CodeViolations
+        
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        ArrayList caseViolationList = cvi.getCodeViolations(c);
+        boolean complianceWithAllViolations = false;
+        ListIterator<CodeViolation> fullViolationLi = caseViolationList.listIterator();
+        
+        while(fullViolationLi.hasNext())
+        {
+            cv = fullViolationLi.next();
+            if(cv.getActualComplianceDate() == null){
+                break;
+            } else {
+                
+            }
         }
+        
+        
+        
     }
     
     

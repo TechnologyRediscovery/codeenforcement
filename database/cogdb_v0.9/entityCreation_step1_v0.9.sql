@@ -81,7 +81,8 @@ CREATE TYPE ceEventType as ENUM
     'Communication',
     'Meeting',
     'Notice',
-    'Custom'
+    'Custom',
+    'Compliance'
 ) ;
 
 

@@ -20,7 +20,8 @@
                     
                     <h:outputText value="Current Case: #{eventAddBB.ceCase.caseName}"/>
                     <p:spacer height="5px"/>
-                    <h:outputText value="Event Type: #{eventAddBB.event.category.eventCategoryTitle}"/>
+                    <h:outputText value="Event Type: #{eventAddBB.event.category.eventType.label}"/>
+                    <h:outputText value="Event Category: #{eventAddBB.event.category.eventCategoryTitle}"/>
                         
                     <h:form id="addNewEventForm">
 

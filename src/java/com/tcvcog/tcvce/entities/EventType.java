@@ -23,14 +23,15 @@ package com.tcvcog.tcvce.entities;
  */
 public enum EventType {
     Origination("Case Origination"),
-    Action("Human Action"),
+    Action("Officer Action"),
     PhaseChange("Case Phase Change"),
     Closing("Case Closing"),
     Timeline("Case Timeline"),
     Communication("Communication"),
     Meeting("Meeting"),
     Notice("Notice"),
-    Custom("Custom");
+    Custom("Custom"),
+    Compliance("Compliance");
 
     private final String label;
 

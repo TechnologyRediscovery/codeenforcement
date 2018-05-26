@@ -373,7 +373,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      */
     public ArrayList<CodeViolation> getActiveVList() {
         SessionManager sm = getSessionManager();
-        activeVList = sm.getVisit().getWorkingViolationList();
+        activeVList = sm.getVisit().getActiveViolationList();
         return activeVList;
     }
 

@@ -22,6 +22,7 @@ import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
 import com.tcvcog.tcvce.entities.CodeViolation;
@@ -35,8 +36,7 @@ import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ListIterator;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -60,7 +60,23 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public Event getInitializedEvent(EventCategory ec){
+    public Event getInitializedEvent(CECase c, EventCategory ec) throws CaseLifecyleException{
+        
+        // check to make sure the case isn't closed before allowing event into the switched blocks
+        if(c.getCasePhase() == CasePhase.Closed && 
+                (
+                    ec.getEventType() == EventType.Action
+                    || 
+                    ec.getEventType() == EventType.Origination
+                    ||
+                    ec.getEventType() == EventType.Compliance
+                )
+        ){
+            
+            throw new CaseLifecyleException("This event cannot be attached to a closed cases");
+            
+        }
+        
         // the moment of event instantiaion
         Event event = new Event();
         event.setCategory(ec);
@@ -73,6 +89,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         EventCategory ec =  new EventCategory();
         ec.setUserdeployable(true);
         ec.setHidable(true);
+        // TODO: finishing autoconfiguring these 
         return ec;
     }
     
@@ -109,6 +126,34 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
+    public Event generateViolationComplianceEvent(ArrayList<CodeViolation> violationList) throws IntegrationException{
+        Event e = new Event();
+        EventIntegrator ei = getEventIntegrator();
+        e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("complianceEvent"))));
+        e.setEventDescription("Compliance with municipal code achieved");
+        
+        ListIterator<CodeViolation> li = violationList.listIterator();
+        CodeViolation cv;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Compliance with the following code violations was observed:");
+        sb.append("<br/><br/>");
+        
+        while(li.hasNext()){
+            cv = li.next();
+            sb.append(cv.getViolatedEnfElement().getOrdchapterNo());
+            sb.append(".");
+            sb.append(cv.getViolatedEnfElement().getOrdSecNum());
+            sb.append(".");
+            sb.append(cv.getViolatedEnfElement().getOrdSubSecNum());
+            sb.append(":");
+            sb.append(cv.getViolatedEnfElement().getOrdSubSecTitle());
+            sb.append("<br/><br/>");
+        }
+        e.setNotes(sb.toString());
+        return e;
+    }
+    
     /**
      * At its current impelementation, this amounts to a factory for ArrayLists
      * that are populated by the user when creating events
@@ -132,10 +177,22 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public void initiateEventProcessing(CECase c, Event e) throws IntegrationException, CaseLifecyleException{
+    /**
+     * a pass through method called by the eventAddBB which sends the event and case
+     * over to the case coordinator for the meat of the processing cycle. This exists
+     * such that the eventAddBB is interacting only with the methods on the EventCoordinator
+     * and allows the implementation of event-specific logic before interacting with the
+     * CaseCoordinator.
+     * @param c the current case
+     * @param e the event to be processed which is passed over to the CaseCoordinator
+     * @throws IntegrationException
+     * @throws CaseLifecyleException
+     * @throws ViolationException 
+     */
+    public void initiateEventProcessing(CECase c, Event e) throws IntegrationException, CaseLifecyleException, ViolationException{
         CaseCoordinator cc = getCaseCoordinator();
         
-        cc.auditAndProcessCEEvent(c, e);
+        cc.processCEEvent(c, e);
         
     }
     
@@ -152,11 +209,12 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         return ll;
     }
     
-    public void generateAndInsertPhaseChangeEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException{
+    public void generateAndInsertPhaseChangeEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException, CaseLifecyleException{
         
         EventIntegrator ei = getEventIntegrator();
         SessionManager sm = getSessionManager();
-        Event event = getInitializedEvent(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+        CECase c = sm.getVisit().getActiveCase();
+        Event event = getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseChangeEventCatID"))));
         
         StringBuilder sb = new StringBuilder();
@@ -183,6 +241,17 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
 
     } // close method
     
+    
+    
+    /**
+     * An unused method for generating the appropriate event that will advance a case
+     * to the next phase of its life cycle. Currently called by the method 
+     * getEventForTriggeringCasePhaseAdvancement in CaseManageBB
+     * @param c
+     * @return
+     * @throws IntegrationException
+     * @throws CaseLifecyleException 
+     */
     public Event getActionEventForCaseAdvancement(CECase c) throws IntegrationException, CaseLifecyleException{
         CasePhase cp = c.getCasePhase();
         EventIntegrator ei = getEventIntegrator();
