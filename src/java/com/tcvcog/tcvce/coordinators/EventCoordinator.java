@@ -28,10 +28,12 @@ import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
+import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import java.io.Serializable;
 import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +76,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         return ec;
     }
     
-    public void logCodeViolationUpdate(CECase ceCase, CodeViolation cv, Event event) throws IntegrationException, EventException{
+    public void generateAndInsertCodeViolationUpdateEvent(CECase ceCase, CodeViolation cv, Event event) throws IntegrationException, EventException{
         EventIntegrator ei = getEventIntegrator();
         SessionManager sm = getSessionManager();
         
@@ -107,8 +109,13 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public LinkedList getEmptyEventPersonList(){
-        return new LinkedList<>();
+    /**
+     * At its current impelementation, this amounts to a factory for ArrayLists
+     * that are populated by the user when creating events
+     * @return 
+     */
+    public ArrayList<Person> getEmptyEventPersonList(){
+        return new ArrayList<>();
     }
     
     public String updateEvent(Event event) throws IntegrationException{
@@ -118,104 +125,25 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         return "caseManage";
     }
     
-    /**
-     * Main controller method for event-related life cycle events. Requires event to be
-     * loaded up with a caseID and an eventType. No eventID is required since it
-     * has not yet been logged into the db.
-     * @param c code enforcement case
-     * @param event event to process
-     * @throws com.tcvcog.tcvce.domain.CaseLifecyleException 
-     */
-    public void processEvent(CECase c, Event event) throws CaseLifecyleException, IntegrationException{
-        
-        CaseCoordinator cc = getCaseCoordinator();
-        
-        Integer.parseInt(getResourceBundle(Constants.EVENT_CATEGORY_BUNDLE).getString("updateViolationEventCategoryID"));
-        
-        CasePhase phase = c.getCasePhase();
-        int evCatID = event.getCategory().getCategoryID();
-        EventType catEvType = event.getCategory().getEventType();
-        
-        // check to see if the event triggers a case phase chage. If so,
-        // carry out that function with the case coordinator, creating phase change
-        // event along the way. 
-        
-        try {
-                // event trigger: deployed notice of violation
-            if(phase == CasePhase.PrelimInvestigationPending 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToNoticeDelivery"))){
-            
-                cc.advanceToNextCasePhase(c, CasePhase.NoticeDelivery);
-                logCommittedCasePhaseChange(c, phase);
-            
-                // event trigger: notice of violation sent
-            } else if(phase == CasePhase.NoticeDelivery 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToInitialComplianceTimeframe"))){
-                
-                cc.advanceToNextCasePhase(c, CasePhase.InitialComplianceTimeframe);
-                logCommittedCasePhaseChange(c, phase);
-                
-                // event trigger: property inspection
-            } else if(phase == CasePhase.InitialComplianceTimeframe 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryComplianceTimeframe"))){
-            
-                cc.advanceToNextCasePhase(c, CasePhase.SecondaryComplianceTimeframe);
-                logCommittedCasePhaseChange(c, phase);
-            
-                // Event Trigger: Citation Filed
-            } else if(phase == CasePhase.SecondaryComplianceTimeframe 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToAwaitingHearingDate"))){
-                
-                cc.advanceToNextCasePhase(c, CasePhase.AwaitingHearingDate);
-                logCommittedCasePhaseChange(c, phase);
-                
-                // event trigger: hearing date scheduled
-            } else if(phase == CasePhase.AwaitingHearingDate 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToHearingPreparation"))){
-                
-                cc.advanceToNextCasePhase(c, CasePhase.HearingPreparation);
-                logCommittedCasePhaseChange(c, phase);
-                
-                // event trigger: hearing held
-            } else if(phase == CasePhase.HearingPreparation 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToInitialPostHearingComplianceTimeframe"))){
-                
-                cc.advanceToNextCasePhase(c, CasePhase.InitialPostHearingComplianceTimeframe);
-                logCommittedCasePhaseChange(c, phase);
-                
-                // event trigger: property inspection
-            } else if(phase == CasePhase.InitialPostHearingComplianceTimeframe 
-                    && evCatID == Integer.parseInt(getResourceBundle(
-                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryPostHearingComplianceTimeframe"))){
-                
-                cc.advanceToNextCasePhase(c, CasePhase.SecondaryPostHearingComplianceTimeframe);
-                logCommittedCasePhaseChange(c, phase);
-                
-            } else if(catEvType == EventType.Closing){
-                cc.advanceToNextCasePhase(c, CasePhase.Closed);
-                logCommittedCasePhaseChange(c, phase);
-                
-            }
-        
-        } catch (IntegrationException ex) {
-            Logger.getLogger(EventCoordinator.class.getName()).log(Level.SEVERE, null, ex);
-            throw new CaseLifecyleException("Cannot update case phase",  ex);
-        }
-        
-        // finally, insert event into system
-        insertEvent(event);
-    }
     
-    private void insertEvent(Event e) throws IntegrationException{
+    public void insertEvent(Event e) throws IntegrationException{
         EventIntegrator ei = getEventIntegrator();
         ei.insertEvent(e);
         
+    }
+    
+    public void initiateEventProcessing(CECase c, Event e) throws IntegrationException, CaseLifecyleException{
+        CaseCoordinator cc = getCaseCoordinator();
+        
+        cc.auditAndProcessCEEvent(c, e);
+        
+    }
+    
+    public void insertPopulatedAutomatedEvent(Event ev) throws IntegrationException{
+        // the event must come to this method all ready to be sent
+        // down to the integrattor, which is what insertEvent will do.
+        System.out.println("EventCoordinator.insertAutomatedEvent | event Description: " + ev.getEventDescription());
+        insertEvent(ev);
     }
     
     public LinkedList getEventList(CECase currentCase) throws IntegrationException{
@@ -224,7 +152,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         return ll;
     }
     
-    public void logCommittedCasePhaseChange(CECase currentCase, CasePhase pastPhase) throws IntegrationException{
+    public void generateAndInsertPhaseChangeEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException{
         
         EventIntegrator ei = getEventIntegrator();
         SessionManager sm = getSessionManager();
@@ -248,10 +176,70 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
         insertEvent(event);
         
-         getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "The case phase has been automatically "
-                            + "advanced after a magic event occurred", ""));
-        
+        getFacesContext().addMessage(null,
+            new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                    "The case phase has been automatically "
+                    + "advanced after a magic event occurred", ""));
+
     } // close method
-}
+    
+    public Event getActionEventForCaseAdvancement(CECase c) throws IntegrationException, CaseLifecyleException{
+        CasePhase cp = c.getCasePhase();
+        EventIntegrator ei = getEventIntegrator();
+        Event e = new Event();
+        
+        switch(cp){
+            case PrelimInvestigationPending:
+
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                   Constants.EVENT_CATEGORY_BUNDLE).getString("advToNoticeDelivery"))));
+               return e;
+             
+            case NoticeDelivery:
+                
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                    Constants.EVENT_CATEGORY_BUNDLE).getString("advToInitialComplianceTimeframe"))));
+                return e;
+            
+            case InitialComplianceTimeframe:
+            
+               e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+               Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryComplianceTimeframe"))));
+               return e;
+             
+            case SecondaryComplianceTimeframe:
+             
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("advToAwaitingHearingDate"))));
+                return e;
+         
+            case AwaitingHearingDate:
+             
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("advToHearingPreparation"))));
+                return e;
+
+            case HearingPreparation:
+             
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("advToInitialPostHearingComplianceTimeframe"))));
+                return e;
+
+            case InitialPostHearingComplianceTimeframe:
+             
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryPostHearingComplianceTimeframe"))));
+                return e;
+            
+            case SecondaryPostHearingComplianceTimeframe:
+             
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("advToAwaitingHearingDate"))));
+                return e;
+         
+            default: 
+                throw new CaseLifecyleException("Cannot determine next action in case protocol");
+            
+         } // close switch
+    } // close method
+} // close class

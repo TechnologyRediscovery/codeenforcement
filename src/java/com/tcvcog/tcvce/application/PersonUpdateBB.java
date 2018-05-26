@@ -84,7 +84,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
         Person p = new Person();
         PersonIntegrator pi = getPersonIntegrator();
         
-        p.setPersonid(person.getPersonid());
+        p.setPersonID(person.getPersonID());
         p.setPersonType(formPersonType);
         p.setMuniCode(formMuniCode);
         

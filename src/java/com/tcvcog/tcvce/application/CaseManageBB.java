@@ -24,17 +24,16 @@ import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.CasePhase;
 import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.Event;
-import com.tcvcog.tcvce.entities.Person;
-import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.integration.CitationIntegrator;
+import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.EventIntegrator;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,30 +47,26 @@ import javax.faces.event.ActionEvent;
 public class CaseManageBB extends BackingBeanUtils implements Serializable{
 
     private CECase currentCase;
+    private CasePhase nextPhase;
+    private Event eventForTriggeringCasePhaseAdvancement;
     
     private LinkedList<Event> eventList;
     private Event selectedEvent;
     
-    private LinkedList<CodeViolation> violationList;
+    private ArrayList<CodeViolation> violationList;
     private ArrayList<CodeViolation> selectedViolations;
     
-    private LinkedList<NoticeOfViolation> noticeList;
+    private ArrayList<NoticeOfViolation> noticeList;
     private NoticeOfViolation selectedNotice;
     
-    private LinkedList<Citation> citationList;
+    private ArrayList<Citation> citationList;
     private Citation selectedCitation;
-    
-    
-    
-    
-    
     
     /**
      * Creates a new instance of CaseManageBB
      */
     public CaseManageBB() {
     }
-    
     
     public String recordCompliance(){
         
@@ -84,10 +79,8 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Please select a violation and try again", ""));
             return "";
-            
         }
     }
-    
     
     public String editViolation(){
         LinkedList<CodeViolation> ll = new LinkedList();
@@ -101,26 +94,41 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Please select a violation and try again", ""));
             return "";
-            
         }
     }
     
-    
-    
-    public String createNewNoticeOfViolation(){
-        CaseCoordinator cc = getCaseCoordinator();
+    public String createNewNoticeForAllViolations(){
         SessionManager sm = getSessionManager();
         currentCase = sm.getVisit().getActiveCase();
+
         System.out.println("CaseManageBB.createNewNoticeOfViolation | current case: " + currentCase);
+
         if(!violationList.isEmpty()){
-            NoticeOfViolation nov = cc.generateNewNoticeOfViolation(currentCase);
-            sm.getVisit().setActiveNotice(nov);
-            return "noticeOfViolationEditor";
+            sm.getVisit().setWorkingViolationList(violationList);
+            return "noticeOfViolationBuilder";
         }
         getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                         "Unable to generate new Notice of Violation, Sorry.", ""));
         return "";
+    }
+    
+    public String createNewNoticeForSelectedViolations(){
+        SessionManager sm = getSessionManager();
+        currentCase = sm.getVisit().getActiveCase();
+        
+        System.out.println("CaseManageBB.createNewNoticeOfViolationForSelected | current case: " + currentCase);
+        
+        if(!violationList.isEmpty()){
+            sm.getVisit().setWorkingViolationList(selectedViolations);
+            return "noticeOfViolationBuilder";
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "You must select at least one violation from the list "
+                                    + "to generate a letter from selected violations", ""));
+            return "";
+        }
     }
     
     
@@ -149,7 +157,6 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
             sm.getVisit().setActiveCitation(cc.generateNewCitation(selectedViolations));
 
             return "citationEdit";
-            
         }
         
         getFacesContext().addMessage(null,
@@ -164,12 +171,10 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
             sm.getVisit().setActiveCitation(selectedCitation);
             return "citationEdit";
         }
-        
         getFacesContext().addMessage(null,
         new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                 "Please select a citation and try again", ""));
         return "";
-        
     }
     
     public String deleteCitation(){
@@ -182,9 +187,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                                 "Unable to delete citation, sorry: "
                                         + "probably because it is linked to another DB entity", ""));
-
                 System.out.println(ex);
-            
             }
         }
         return "";
@@ -233,14 +236,12 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
             return "eventEdit";
         } else {
             getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Please select an event to edit and try again", ""));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please select an event to edit and try again", ""));
             return "";
 
             }
     }
-    
-    
     
     public String editNoticeOfViolation(){
         SessionManager sm = getSessionManager();
@@ -255,61 +256,107 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         SessionManager sm = getSessionManager();
         sm.getVisit().setActiveNotice(selectedNotice);
         try {
-            caseCoord.deleteNoticeOfViolation(selectedNotice);
-        } catch (CaseLifecyleException ex) {
             
+            caseCoord.deleteNoticeOfViolation(selectedNotice);
+            caseCoord.refreshCase(currentCase);
             getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to delete this notice of violation, "
-                                    + "probably because it has been sent already", ""));
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Notice no. " + selectedNotice.getNoticeID() + " has been nuked forever", ""));
+            
+        } catch (CaseLifecyleException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "Unable to delete this notice of violation, "
+                        + "probably because it has been sent already", ""));
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "Unable to refresh case, Sorry. Please reslect the csae from the muni dashboard", ""));
+            
         }
     }
     
-    public void deployNoticeOfViolation(ActionEvent event){
-        SessionManager sm = getSessionManager();
-        sm.getVisit().setActiveNotice(selectedNotice);
-        CaseCoordinator cc = getCaseCoordinator();
-        try {
-            cc.deployNoticeOfViolation(currentCase, selectedNotice);
-        } catch (CaseLifecyleException ex) {
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to deploy notice of violation", "Case phase remains unchanged"));
-            
-        } catch (IntegrationException ex) {
-            
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to communicate effectively with the database", ""));
-        } catch (EventException ex) {
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to generate case event to log phase change", 
-                            "Note that because this message is being displayed, the phase change"
-                                    + "has probably succeeded"));
-        } // close try/catch \
-        
-    }
     
-    public void markNoticeOfViolationAsSent(Event event){
+    public String markNoticeOfViolationAsSent(){
         CaseCoordinator caseCoord = getCaseCoordinator();
         try {
-            caseCoord.markNoticeOfViolationAsSent(currentCase, selectedNotice);
+            
+            if(selectedNotice.getLetterSentDate() == null 
+                    && selectedNotice.isRequestToSend() == true){
+                caseCoord.markNoticeOfViolationAsSent(currentCase, selectedNotice);
+                caseCoord.refreshCase(currentCase);
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "Marked notice as sent and added event to case", 
+                        ""));
+                
+            } else {
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                        "Oops! The letter you selected has either "
+                                + "NOT been queued for sending or has ALREADY been marked as sent", 
+                        ""));
+            }
+
         } catch (CaseLifecyleException ex) {
             getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            ex.toString(), "This must be corrected by a "
-                                    + "system administrator, sorry"));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        ex.toString(), "This must be corrected by a "
+                                + "system administrator, sorry"));
             
         } catch (EventException ex) {
+            System.out.println(ex);
             getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to generate case event to log phase change", 
-                            "Note that because this message is being displayed, the phase change"
-                                    + "has probably succeeded"));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to generate case event to log phase change", 
+                        "Note that because this message is being displayed, the phase change"
+                                + "has probably succeeded"));
+            
+            
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to mark selected notice as sent", 
+                        ""));
             
             
         } // close try/cathc section
+        return "caseNotices";
+    }
+    
+    public String markNoticeOfViolationAsReturned(){
+        CaseCoordinator caseCoord = getCaseCoordinator();
+        
+        try {
+        // check to make sure that the nootice has both been sent and not
+        // marked as retuned
+            if(selectedNotice.getLetterSentDate() != null 
+                    && selectedNotice.getLetterReturnedDate() == null){
+
+                caseCoord.processReturnedNotice(currentCase, selectedNotice);
+                caseCoord.refreshCase(currentCase);
+
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Notice no. " + selectedNotice.getNoticeID() 
+                                + " has been marked as returned on today's date", ""));
+
+            } else {
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Notice no. " + selectedNotice.getNoticeID() 
+                        + " has either NOT been queued for sending "
+                        + "(and therefore cant be returned) or has already been marked as returned", ""));
+            }
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to mark notice as returned", ""));
+        }
+        return "caseNotices";
     }
     
     /**
@@ -351,7 +398,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the violationList
      */
-    public LinkedList<CodeViolation> getViolationList() {
+    public ArrayList<CodeViolation> getViolationList() {
         ViolationCoordinator vc = getViolationCoordinator();
         try {
             violationList = vc.getCodeViolations(currentCase);
@@ -392,7 +439,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @param violationList the violationList to set
      */
-    public void setViolationList(LinkedList<CodeViolation> violationList) {
+    public void setViolationList(ArrayList<CodeViolation> violationList) {
         this.violationList = violationList;
     }
 
@@ -402,10 +449,6 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public void setSelectedViolations(ArrayList<CodeViolation> selectedViolation) {
         this.selectedViolations = selectedViolation;
     }
-
-    
-
-    
 
     /**
      * @return the selectedNotice
@@ -424,21 +467,28 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the noticeList
      */
-    public LinkedList<NoticeOfViolation> getNoticeList() {
+    public ArrayList<NoticeOfViolation> getNoticeList() {
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        SessionManager sm = getSessionManager();
+        try {
+            noticeList = cvi.getNoticeOfViolationList(sm.getVisit().getActiveCase());
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
         return noticeList;
     }
 
     /**
      * @param noticeList the noticeList to set
      */
-    public void setNoticeList(LinkedList<NoticeOfViolation> noticeList) {
+    public void setNoticeList(ArrayList<NoticeOfViolation> noticeList) {
         this.noticeList = noticeList;
     }
 
     /**
      * @return the citationList
      */
-    public LinkedList<Citation> getCitationList() {
+    public ArrayList<Citation> getCitationList() {
         CitationIntegrator ci = getCitationIntegrator();
         SessionManager sm = getSessionManager();
         
@@ -447,6 +497,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         } catch (IntegrationException ex) {
             System.out.println(ex);
         }
+        System.out.println("CaseManageBB.getCitationList | list size: " + citationList.size());
         return citationList;
     }
 
@@ -460,7 +511,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @param citationList the citationList to set
      */
-    public void setCitationList(LinkedList<Citation> citationList) {
+    public void setCitationList(ArrayList<Citation> citationList) {
         this.citationList = citationList;
     }
 
@@ -469,5 +520,69 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      */
     public void setSelectedCitation(Citation selectedCitation) {
         this.selectedCitation = selectedCitation;
+    }
+
+   
+    
+    public String takeNextAction(){
+        Event e = getEventForTriggeringCasePhaseAdvancement();
+        SessionManager sm = getSessionManager();
+        sm.getVisit().setActiveEvent(e);
+        
+        return "eventAdd";
+    }
+
+    /**
+     * @return the eventForTriggeringCasePhaseAdvancement
+     */
+    public Event getEventForTriggeringCasePhaseAdvancement() {
+        EventCoordinator ec = getEventCoordinator();
+
+        try {
+            eventForTriggeringCasePhaseAdvancement = ec.getActionEventForCaseAdvancement(currentCase);
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Error connecting to DB. This must be corrected by a system administrator", ""));
+            
+        } catch (CaseLifecyleException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Error generating next action event for advancing the case phase", ""));
+        }
+        return eventForTriggeringCasePhaseAdvancement;
+    }
+
+    /**
+     * @param eventForTriggeringCasePhaseAdvancement the eventForTriggeringCasePhaseAdvancement to set
+     */
+    public void setEventForTriggeringCasePhaseAdvancement(Event eventForTriggeringCasePhaseAdvancement) {
+        this.eventForTriggeringCasePhaseAdvancement = eventForTriggeringCasePhaseAdvancement;
+    }
+
+    /**
+     * @return the nextPhase
+     */
+    public CasePhase getNextPhase() {
+        CaseCoordinator cc = getCaseCoordinator();
+        try {
+            nextPhase = cc.getNextCasePhase(currentCase);
+        } catch (CaseLifecyleException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Error generating next case phase, sorry!", ""));
+            
+        }
+        return nextPhase;
+    }
+
+    /**
+     * @param nextPhase the nextPhase to set
+     */
+    public void setNextPhase(CasePhase nextPhase) {
+        this.nextPhase = nextPhase;
     }
 }

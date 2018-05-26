@@ -16,6 +16,8 @@
             <var>eventCategories</var>
         </resource-bundle>
         
+      
+        
     </application>
     <managed-bean>
         <description>Establishes the connection to the Code Enforcement Database for use throughout a session</description>
@@ -403,7 +405,7 @@
     
     <navigation-rule>
         
-        <from-view-id>/personAdd.xhtml</from-view-id>
+        <from-view-id>*</from-view-id>
         
         <navigation-case>
             <from-outcome>personManage</from-outcome>
@@ -417,7 +419,7 @@
 
     <navigation-rule>
         
-        <from-view-id>/dashboard.xhtml</from-view-id>
+        <from-view-id>*</from-view-id>
         
         <navigation-case>
             <from-outcome>propertySearch</from-outcome>
@@ -480,7 +482,7 @@
         
         <navigation-case>
             <from-outcome>muniManage</from-outcome>
-            <to-view-id>/muiniManage.xhtml</to-view-id>
+            <to-view-id>/muniManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
@@ -495,22 +497,47 @@
             <to-view-id>/workflow.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseViolations</from-outcome>
+            <to-view-id>/ce/caseViolations.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseNotices</from-outcome>
+            <to-view-id>/ce/caseNotices.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseCitations</from-outcome>
+            <to-view-id>/ce/caseCitations.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseEvents</from-outcome>
+            <to-view-id>/ce/caseEvents.xhtml</to-view-id>
+        </navigation-case>
     
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>muniBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.MuniBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>personAddBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.PersonAddBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>propertyProfileBB</managed-bean-name>
-        <managed-bean-class>PropertyProfileBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropertyProfileBB</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    
     <navigation-rule>
         <from-view-id>/propertyProfile.xhtml</from-view-id>
         <nanavigation-case>
@@ -518,11 +545,13 @@
             <to-view-id>/propertyUpdate.xhtml</to-view-id>
         </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>propertySearchBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.PropertySearchBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <navigation-rule>
         <from-view-id>/propertySearch.xhtml</from-view-id>
         <nanavigation-case>
@@ -535,11 +564,13 @@
             <to-view-id>/propertyUpdate.xhtml</to-view-id>
         </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>propertyUpdateBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.PropertyUpdateBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <navigation-rule>
         <from-view-id>/propertyUpdate.xhtml</from-view-id>
         <nanavigation-case>
@@ -548,11 +579,13 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>actionRequestConfirmation</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestConfirmation</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>workflowBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.WorkflowBB</managed-bean-class>
@@ -573,9 +606,6 @@
             <to-view-id>/ce/caseManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
-    
-    
     
     <managed-bean>
         <managed-bean-name>caseManageBB</managed-bean-name>
@@ -617,6 +647,7 @@
         <managed-bean-class>com.tcvcog.tcvce.application.UserBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <navigation-rule>
         <from-view-id>/userManage.xhtml</from-view-id>
         <nanavigation-case>
@@ -653,20 +684,25 @@
         <managed-bean-class>com.tcvcog.tcvce.application.UserUpdateBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>actionRequestManageBB</managed-bean-name>
         <managed-bean-class>ActionRequestManageBB.ActionRequestManageBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>eventConfigurationBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.EventConfigurationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>violationAddBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ViolationAddBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>violationSelectElementBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ViolationSelectElementBB</managed-bean-class>
@@ -681,16 +717,19 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>weatherBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.WeatherBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>inspectableCodeElementBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.InspectableCodeElementBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <navigation-rule>
         <from-view-id>inspectableCodeElement.xhtml</from-view-id>
         <nanavigation-case>
@@ -699,6 +738,7 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/ce/violationEdit.xhtml</from-view-id>
         <nanavigation-case>
@@ -708,11 +748,13 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>violationEditBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.ViolationEditBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <navigation-rule>
         <from-view-id>/ce/caseManage.xhtml</from-view-id>
         <nanavigation-case>
@@ -722,11 +764,28 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>noticeOfViolationBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.NoticeOfViolationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <nanavigation-case>
+            <from-outcome>noticeOfViolationBuilder</from-outcome>
+            <to-view-id>/ce/noticeOfViolationBuilder.xhtml</to-view-id>
+        </nanavigation-case>
+        <nanavigation-case>
+            <from-outcome>noticeOfViolationEditor</from-outcome>
+            <to-view-id>/ce/noticeOfViolationEditor.xhtml</to-view-id>
+        </nanavigation-case>
+    </navigation-rule>
+    
+    
     <managed-bean>
         <managed-bean-name>eventAddBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.EventAddBB</managed-bean-class>
@@ -747,20 +806,36 @@
             <to-view-id>/ce/eventAdd.xhtml</to-view-id>
             <redirect />
         </nanavigation-case>
+        <nanavigation-case>
+            <from-action>#{eventAddBB.takeNextAction}</from-action>
+            <from-outcome>eventAdd</from-outcome>
+            <to-view-id>/ce/eventAdd.xhtml</to-view-id>
+            <redirect />
+        </nanavigation-case>
     </navigation-rule>
+    
     <managed-bean>
         <managed-bean-name>personConnectBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.PersonConnectBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>citationBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CitationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>courtEntityIntegrator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.integration.CourtEntityIntegrator</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>navigationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.NavigationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
 </faces-config>

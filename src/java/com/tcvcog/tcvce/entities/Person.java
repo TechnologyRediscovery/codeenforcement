@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 public class Person {
     
-    private int personid;
+    private int personID;
     private PersonType personType;
     private Municipality muni;
     private int muniCode;
@@ -56,17 +56,17 @@ public class Person {
     private boolean isUnder18;
 
     /**
-     * @return the personid
+     * @return the personID
      */
-    public int getPersonid() {
-        return personid;
+    public int getPersonID() {
+        return personID;
     }
 
     /**
-     * @param personid the personid to set
+     * @param personID the personID to set
      */
-    public void setPersonid(int personid) {
-        this.personid = personid;
+    public void setPersonID(int personID) {
+        this.personID = personID;
     }
 
   

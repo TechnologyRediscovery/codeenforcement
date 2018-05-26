@@ -81,7 +81,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
              
              // if update succeeds without throwing an error, then generate an
              // update violation event
-             eventCoordinator.logCodeViolationUpdate(ceCase, currentViolation, event);
+             eventCoordinator.generateAndInsertCodeViolationUpdateEvent(ceCase, currentViolation, event);
 
              getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 

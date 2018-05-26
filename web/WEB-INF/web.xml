@@ -8,6 +8,10 @@
         <param-name>javax.faecs.CONFIG_FILES</param-name>
         <param-value>/WEB-INF/faces-config.xml</param-value>
     </context-param>
+      <context-param>
+            <param-name>primefaces.FONT_AWESOME</param-name>
+            <param-value>true</param-value>
+        </context-param>
     <context-param>
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>.xhtml</param-value>

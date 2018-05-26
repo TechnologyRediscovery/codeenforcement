@@ -24,14 +24,14 @@
 
     <h:body>
         
-        <div class="contentContainer">
+        <div class="flex-box-container">
             
             
         
             <ui:insert name="top">
                     
                 
-                <div class="topBar">
+                <div class="flexing-box-topbar">
                     <f:view id="navview">
                             
                             <div class="userToolBar">
@@ -66,7 +66,7 @@
                                   <h:panelGroup>
                                       <div class="icon-container">
                                         <div class="icon-box-centered">
-                                            <i class="material-icons">search</i>
+                                            <i class="material-icons">not_interested</i>
                                         </div>
                                       </div>
                                   </h:panelGroup>
@@ -87,7 +87,7 @@
                                 
                                   <h:panelGroup>
                                         <div class="under-icon-link-container">
-                                            <h:commandLink action="#{authenticationBB.logout}" value="Logout" styleClass="headerLink"/>
+                                            <h:commandLink  action="#{authenticationBB.logout}" value="Logout" styleClass="headerLink"/>
                                         </div>
                                   </h:panelGroup>
                                 
@@ -102,11 +102,17 @@
                         </div>
                     </f:view>
                 </div>
-                    
-                    
+            </ui:insert>
                 
-                
-                <div class="sideBar" id="mainSideBar">
+            
+        </div>
+         
+        
+        <div class="flex-box-container">
+                <div class="flexing-box-sidebar">
+                    
+                    <f:view id="sideBarView">
+                        
                       
                         <h:form id="sideBarLinkForm">
                             
@@ -119,24 +125,18 @@
 
                                 <i class="material-icons">home</i>
                                  
-                                 <h:panelGroup>
-                                    <p:commandLink ajax="false" value="Property Profile" action="propertySearch"
+                                <p:commandLink ajax="false" value="Property Profile" action="#{navigationBB.gotoPropertyProfile}"
                                            styleClass="sblink"/>
                                      
-                                 </h:panelGroup>
                                 <i class="material-icons">face</i>
                             
-                                <h:panelGroup>
                                     <p:commandLink ajax="false" value="Persons" action="personManage" 
                                                     styleClass="sblink"/>
-                                 </h:panelGroup>
                             
                                 <i class="material-icons">developer_board</i>
                                                         
-                                <h:panelGroup>
                                     <p:commandLink ajax="false" value="Municipality Dashboard" action="workflow"
                                                styleClass="sblink"/>
-                                </h:panelGroup>
                                 <i class="material-icons">assignment</i>
                         
                             <p:commandLink ajax="false" value="Code enforcement action request form" action="codeEnforce" 
@@ -144,11 +144,33 @@
                             
                             <i class="material-icons">chrome_reader_mode</i>
                             
-                            <p:commandLink ajax="false" value="Case Profile" action="caseManage"
+                            <p:commandLink ajax="false" value="Case Profile" action="#{navigationBB.gotoCaseProfile}"
                                            styleClass="sblink"/>
-                                <i class="material-icons">event_note</i>
                             
-                            <p:commandLink ajax="false" value="Event Configuration" action="eventManage"
+                            <h:panelGroup>
+                            </h:panelGroup>
+                                
+                            <p:commandLink ajax="false" value="Violations" action="#{navigationBB.gotoCaseViolations}"
+                                           styleClass="sblink"/>
+                            <h:panelGroup>
+                            </h:panelGroup>
+                                
+                            <p:commandLink ajax="false" value="Notices " action="#{navigationBB.gotoCaseNotices}"
+                                           styleClass="sblink"/>
+                            <h:panelGroup>
+                            </h:panelGroup>
+                                
+                            <p:commandLink ajax="false" value="Citations" action="#{navigationBB.gotoCaseCitations}"
+                                           styleClass="sblink"/>
+                            <h:panelGroup>
+                            </h:panelGroup>
+                                
+                            <p:commandLink ajax="false" value="Events" action="#{navigationBB.gotoCaseEvents}"
+                                           styleClass="sblink"/>
+    
+                            <i class="material-icons">event_note</i>
+                            
+                                <p:commandLink ajax="false" value="Event Configuration" action="eventManage"
                                            styleClass="sblink"/>
                             
                                 <i class="material-icons">gavel</i>
@@ -183,55 +205,56 @@
                             </h:panelGrid>
 
                         </h:form>
+                    </f:view>
                 </div>
-                        
-                        
-                        
-                        
                     
-                    
-                    
-            </ui:insert>
-            
-        
                 
-                <div class="sessionInfo">
-                    <h:form id="sessionInfoForm">
+            
+            <div class="flexing-box-interior">
+                
+                <div class="flex-box-container-interior">
+                    <f:view id="sessionInfoView">
+                        
+
+                        <div class="flexing-box-sessioninfo">
+                            <h:form id="sessionInfoForm">
                                 <h:outputText value="User: "/>
-                                <h:outputText value="#{sessionManager.visit.activeUser.FName}"/>   
-                                <h:outputText value="#{sessionManager.visit.activeUser.LName}"/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.FName} "/>   
+                                <h:outputText value="#{sessionManager.visit.activeUser.LName}  | "/>
                                 <h:outputText value="Permissions: "/>
-                                <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}"/>   
+                                <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}  | "/>   
                                 <h:outputText value="Default Municipality: "/>
-                                <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName}"/> 
+                                <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName} "/><br/> 
                                 <h:outputText value="Active Property: "/>
-                                <h:outputText value="#{sessionManager.visit.activeProp.address}"/> 
-                                <h:outputText value="#{sessionManager.visit.activeProp.muni.muniName}"/>
+                                <h:outputText value="#{sessionManager.visit.activeProp.address} "/> 
+                                <h:outputText value="(#{sessionManager.visit.activeProp.muni.muniName}  ) | "/>
                                 <h:outputText value="Active Case:"/>
-                                <h:outputText value="#{sessionManager.visit.activeCase.caseName}"/> 
+                                <h:outputText value="#{sessionManager.visit.activeCase.caseName}  | "/> 
                                 <h:outputText value="Code Set: "/>
-                                <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/> 
+                                <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}  | " /> 
 
-                    </h:form>
+                            </h:form>
+                        </div>
+
+                        <div class="flexing-box-pagecontent">
+                            <ui:insert name="content">
+                                <p>I am content in the template content</p>
+
+                            </ui:insert>
+
+                        </div>
+                    </f:view>
                 </div>
-            
-            
-        
-
-        <div id="pageContent" class="primaryContentContainer">
-            <ui:insert name="content">
-                <p>I am content in the template content</p>
-                
-            </ui:insert>
-            
+            </div>
         </div>
+        <div class="flex-box-container">
 
-        <div class="foot">
+        <div class="flexing-box-footer">
             <ui:insert name="bottom">
                 <div class="footer">
-                
-                    <p>This database application is maintained and updated by the Turtle
-                    Creek Valley Council of Governments.</p>
+                    <f:view id="footerView">
+                        <p>This database application is maintained and updated by the Turtle Creek Valley Council of Governments.</p>
+                    </f:view>
                 </div>
                 
             </ui:insert>
@@ -239,7 +262,7 @@
             
     </div>
         
-        <div class="clearFix"></div>
+        <!--<div class="clearFix"></div>-->
 
 
     </h:body>

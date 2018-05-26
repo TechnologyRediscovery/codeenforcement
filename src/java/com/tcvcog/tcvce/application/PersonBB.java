@@ -98,7 +98,7 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
         System.out.println("PersonBB.deletePerson | in method");
         PersonIntegrator pi = getPersonIntegrator();
         try {
-            pi.deletePerson(selectedPerson.getPersonid());
+            pi.deletePerson(selectedPerson.getPersonID());
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         selectedPerson.getFirstName() + " has been permanently deleted; Goodbye " 

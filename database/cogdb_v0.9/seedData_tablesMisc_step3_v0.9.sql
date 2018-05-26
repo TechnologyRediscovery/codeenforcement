@@ -70,7 +70,7 @@ INSERT INTO public.codesource(
 
 INSERT INTO public.codeset(
             codesetid, name, description, municipality_municode)
-    VALUES (DEFAULT, 'COG Land Municpal Code', 'Test Code Set for COG Land', 999);
+    VALUES (1, 'COG Land Municpal Code', 'Test Code Set for COG Land', 999);
 --default first val is 10
 
 INSERT INTO public.codeelementtype(
@@ -260,6 +260,37 @@ INSERT INTO public.propertyusetype(
 INSERT INTO public.propertyusetype(
             propertyusetypeid, name, description)
     VALUES (DEFAULT, 'Condominium', 'Please define Condominium');
+
+INSERT INTO public.textblockcateogry(
+            categoryid, cateogrytitle)
+    VALUES (1, 'Notice header');
+
+INSERT INTO public.textblockcateogry(
+            categoryid, cateogrytitle)
+    VALUES (2, 'Notice top paragraph');
+
+INSERT INTO public.textblockcateogry(
+            categoryid, cateogrytitle)
+    VALUES (3, 'Notice bottom paragraph');
+
+INSERT INTO public.textblockcateogry(
+            categoryid, cateogrytitle)
+    VALUES (4, 'Notice QOL explanation');
+
+INSERT INTO public.textblockcateogry(
+            categoryid, cateogrytitle)
+    VALUES (5, 'Notice closing');
+
+
+INSERT INTO public.textblock(
+            blockid, textblockcateogry_catid, muni_municode, blockname, blocktext)
+    VALUES (1, 1, 999, 'First header', 'This is a paragraph that Ive typed into the SQL seed script to symbolize a letter header');
+
+
+INSERT INTO public.textblock(
+            blockid, textblockcateogry_catid, muni_municode, blockname, blocktext)
+    VALUES (1, 2, 999, 'first top paragraph', 'Paragraphs run in families, much like cancer or a large nose. If paragraph A is 
+        internalized by family member R, then proginy S will receive the paragraph text without corruption by intervening spirits.');
 
 
 INSERT INTO public.citationstatus(

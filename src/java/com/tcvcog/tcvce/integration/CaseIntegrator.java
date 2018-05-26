@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.LinkedList;
 
@@ -161,11 +162,16 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
                 
                 c.setCaseName(rs.getString("casename"));
                 c.setCasePhase(CasePhase.valueOf(rs.getString("casephase")));
+                
                 c.setOriginationDate(rs.getTimestamp("originationdate")
                         .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+                c.setOriginiationDatePretty(getPrettyDate(c.getOriginationDate()));
+                
                 if(rs.getTimestamp("closingdate") != null){
                     c.setClosingDate(rs.getTimestamp("closingdate")
                             .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+                    c.setClosingDatePretty(getPrettyDate(c.getClosingDate()));
+                    
                 }
                 c.setNotes(rs.getString("notes"));
                 if(rs.getTimestamp("creationtimestamp") != null){

@@ -19,15 +19,12 @@
                         
                         <h2>Notice of Violation editor</h2>
                         
-                        <p>Set the proper letter meta-data in the settings below 
-                            and adjust the text in the rich editor below</p>
-                        
-                        <h:outputText value="You are editing a code violatoin with ID: #{noticeOfViolationBB.currentNotice.noticeID}"/>
+                        <p>Current Notice ID (0 for new notice): <h:outputText value="#{noticeOfViolationBB.currentNotice.noticeID}"/> </p>
                         
                         
                         <h:outputLabel for="noticeDateOfRecord">
                             <h:outputText value="Letter's Date of Record"/>
-                        </h:outputLabel>>
+                        </h:outputLabel>
                         <p:calendar value="#{noticeOfViolationBB.formDateOfRecord}" 
                                             mode="popup" tabindex="13"
                                             id="noticeDateOfRecord"
@@ -44,8 +41,6 @@
                         
                         <h3>Notice of violation letter text:</h3>
 
-
-
                         <p:editor value="#{noticeOfViolationBB.formLetterText}"
                                   controls="bold italic underline strikethrough font size style color 
                                   bullets numbering center undo redo rule link removeformat outdent 
@@ -53,17 +48,19 @@
                                   width="1000"
                                   height="400"/>
                         
+                        <p:spacer height="15px"/>
+                        
                         <p:commandButton ajax="false" action="#{noticeOfViolationBB.saveNoticeDraft}"
-                                                 value="Save letter draft without sending"/>
+                                                icon="fa fa-save" value="Save notice draft (do not queue)"/>
                         
+                        <p:commandButton ajax="false" action="#{noticeOfViolationBB.queueNotice}"
+                                                icon="fa fa-paper-plane" value="Queue notice for mailing"/>
                         
-                        
+                        <p:commandButton ajax="false" action="caseNotices"
+                                                 icon="fa fa-times-circle-o" value="Cancel: Return to Notice manager"/>
                         
                     </h:form>
-                    
                 </div>
-                
-                
                 
             </ui:define>
         </ui:composition>

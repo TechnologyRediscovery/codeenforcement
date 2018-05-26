@@ -6,6 +6,7 @@
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -21,15 +22,20 @@ public class CECase {
     private PropertyUnit propertyUnit;
     private User user;
 
-    private LinkedList<CodeViolation> violationList;
+    private ArrayList<CodeViolation> violationList;
     private LinkedList<Event> eventList;
     
     private String caseName;
     private CasePhase casePhase;
+    
     private LocalDateTime originationDate;
+    private String originiationDatePretty;
 
     private LocalDateTime closingDate;
+    private String closingDatePretty;
+    
     private LocalDateTime creationTimestamp;
+    
     private String notes;
     
     
@@ -167,14 +173,14 @@ public class CECase {
     /**
      * @return the violationList
      */
-    public LinkedList<CodeViolation> getViolationList() {
+    public ArrayList<CodeViolation> getViolationList() {
         return violationList;
     }
 
     /**
      * @param violationList the violationList to set
      */
-    public void setViolationList(LinkedList<CodeViolation> violationList) {
+    public void setViolationList(ArrayList<CodeViolation> violationList) {
         this.violationList = violationList;
     }
 
@@ -219,6 +225,34 @@ public class CECase {
      */
     public void setCreationTimestamp(LocalDateTime creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
+    }
+
+    /**
+     * @return the originiationDatePretty
+     */
+    public String getOriginiationDatePretty() {
+        return originiationDatePretty;
+    }
+
+    /**
+     * @return the closingDatePretty
+     */
+    public String getClosingDatePretty() {
+        return closingDatePretty;
+    }
+
+    /**
+     * @param originiationDatePretty the originiationDatePretty to set
+     */
+    public void setOriginiationDatePretty(String originiationDatePretty) {
+        this.originiationDatePretty = originiationDatePretty;
+    }
+
+    /**
+     * @param closingDatePretty the closingDatePretty to set
+     */
+    public void setClosingDatePretty(String closingDatePretty) {
+        this.closingDatePretty = closingDatePretty;
     }
     
     

@@ -59,7 +59,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     private String formEventNotes;
     private boolean formRequireViewConfirmation;
     
-    private LinkedList<Person> propertyPersonList;
+    private ArrayList<Person> propertyPersonList;
     private ArrayList<Person> formSelectedPersons;
     
     
@@ -161,7 +161,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the propertyPersonList
      */
-    public LinkedList<Person> getPropertyPersonList() {
+    public ArrayList<Person> getPropertyPersonList() {
         PersonIntegrator pi = getPersonIntegrator();
         SessionManager sm = getSessionManager();
         
@@ -219,7 +219,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     /**
      * @param propertyPersonList the propertyPersonList to set
      */
-    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
+    public void setPropertyPersonList(ArrayList<Person> propertyPersonList) {
         this.propertyPersonList = propertyPersonList;
     }
 

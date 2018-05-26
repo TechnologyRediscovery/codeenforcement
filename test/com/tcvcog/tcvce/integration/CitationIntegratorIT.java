@@ -22,6 +22,7 @@ import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CitationStatus;
 import com.tcvcog.tcvce.entities.Property;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -109,7 +110,7 @@ public class CitationIntegratorIT {
         CECase ceCase = null;
         CitationIntegrator instance = new CitationIntegrator();
         LinkedList<Citation> expResult = null;
-        LinkedList<Citation> result = instance.getCitationsByCase(ceCase);
+        ArrayList<Citation> result = instance.getCitationsByCase(ceCase);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

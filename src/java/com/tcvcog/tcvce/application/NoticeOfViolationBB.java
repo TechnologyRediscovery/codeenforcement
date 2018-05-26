@@ -22,15 +22,23 @@ import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.CodeViolation;
+import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
-import com.tcvcog.tcvce.integration.CaseIntegrator;
-import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.entities.Person;
+import com.tcvcog.tcvce.entities.Property;
+import com.tcvcog.tcvce.entities.TextBlock;
+import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -42,44 +50,232 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     private String formLetterText;
     private Date formDateOfRecord;
     private NoticeOfViolation currentNotice;
+    private ArrayList<CodeViolation> activeVList;
+    private LinkedList<TextBlock> blockListByMuni;
+    
+    private Person selectedRecipient;
+    private ArrayList<Person> personCandidateAL;
+    
+    private boolean addPersonByID;
+    private int recipientPersonID;
+    
+    private TextBlock greetingBlock;
+    private TextBlock introBlock;
+    private boolean useTb1;
+    private TextBlock tb1;
+    private boolean useTb2;
+    private TextBlock tb2;
+    private TextBlock complianceBlock;
+    private TextBlock penaltyBlock;
+    private boolean useTb3;
+    private TextBlock tb3;
+    private boolean useTb4;
+    private TextBlock tb4;
+    private TextBlock closing;
     
     /**
      * Creates a new instance of NoticeOfViolationBB
      */
     public NoticeOfViolationBB() {
+        useTb1 = false;
+        useTb2 = false;
+        useTb3 = false;
+        useTb4 = false;
+    }
+    
+    public String assembleNotice(){
+        
+        if(selectedRecipient == null || (addPersonByID == true && recipientPersonID == 0)){
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "A notice needs a recipient! Please either select a person from the table or add a person by ID",""));
+            return "";
+        }
+        
+        currentNotice = new NoticeOfViolation();
+        StringBuilder sb = new StringBuilder();
+        SessionManager sm = getSessionManager();
+        PersonIntegrator pi = getPersonIntegrator();
+        
+        if(isAddPersonByID()){
+            try {
+                System.out.println("NoticeOfViolationBB.assembleNotice | entered person ID " + recipientPersonID );
+                currentNotice.setRecipient(pi.getPerson(recipientPersonID));
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "Unable to load code violation list", 
+                    "This is a system-level error that must be corrected by Eric"));
+                
+            }
+        } else {
+            currentNotice.setRecipient(selectedRecipient);
+        }
+        
+        sb.append(getPrettyDate(LocalDateTime.now()));
+        sb.append("<br/><br/>");
+        appendRecipientAddrBlock(sb, currentNotice.getRecipient());
+        
+        appendTextBlockAsPara(greetingBlock, sb);
+        appendTextBlockAsPara(introBlock, sb);
+        
+        if(useTb1){
+            appendTextBlockAsPara(tb1, sb);
+        }
+        
+        if(useTb2){
+            appendTextBlockAsPara(tb2, sb);
+        }
+        
+        appendViolationList(activeVList, sb);
+        
+        appendTextBlockAsPara(complianceBlock, sb);
+        appendTextBlockAsPara(penaltyBlock, sb);
+        
+        if(useTb3){
+            appendTextBlockAsPara(tb3, sb);
+        }
+        
+        if(useTb4){
+            appendTextBlockAsPara(tb4, sb);
+        }
+        
+        appendSignatureBlock(sb);
+        
+        // finally, extract the String from the StringBuilder and add to our
+        // current notice, which we'll make the active notice for editing
+        currentNotice.setNoticeText(sb.toString());
+        sm.getVisit().setActiveNotice(currentNotice);
+        
+        return "noticeOfViolationEditor";
     }
 
     
-    public String insertNoticeOfViolation(){
+    private StringBuilder appendViolationList(ArrayList<CodeViolation> vlist, StringBuilder sb){
+        
+        Iterator<CodeViolation> iter = vlist.iterator();
+        
+        while(iter.hasNext()){
+            CodeViolation cv = (CodeViolation) iter.next();
+            
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdchapterNo());
+            sb.append(" : ");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSecNum());
+            sb.append(" : ");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecNum());
+            sb.append(" - ");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecTitle());
+            sb.append("<br><br>");
+            sb.append("Ordinance Technical Text:");
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdTechnicalText());
+            sb.append("<br>");
+        } //close while
+        
+        System.out.println("NoticeOfViolationBB.buildStringFromViolationList | notice text: " + sb.toString());
+        return sb;
+    }
+    
+    private StringBuilder appendTextBlockAsPara(TextBlock tb, StringBuilder sb){
+        sb.append("<p>");
+        sb.append(tb.getTextBlockText());
+        sb.append("</p>");
+        return sb;
+    }
+    
+    private StringBuilder appendSignatureBlock(StringBuilder sb){
         SessionManager sm = getSessionManager();
+        User u = sm.getVisit().getActiveUser();
+        sb.append("<p>");
+        sb.append(u.getFName());
+        sb.append(" ");
+        sb.append(u.getLName());
+        sb.append("<br>");
+        sb.append(u.getWorkTitle());
+        sb.append("<br>");
+        sb.append(u.getMuni().getMuniName());
+        sb.append("<br>");
+        sb.append(u.getPhoneWork());
+        sb.append("<br>");
+        sb.append(u.getEmail());
+        sb.append("</p>");
+        return sb;
         
+    }
+    
+    private StringBuilder appendRecipientAddrBlock(StringBuilder sb, Person p){
+        sb.append(p.getFirstName());
+        sb.append(" ");
+        sb.append(p.getLastName());
+        sb.append("<br>");
+        sb.append(p.getAddress_street());
+        sb.append("<br>");
+        sb.append(p.getAddress_city());
+        sb.append(", ");
+        sb.append(p.getAddress_state());
+        sb.append(" ");
+        sb.append(p.getAddress_zip());
+        sb.append("<br>");
         
-        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        NoticeOfViolation notice = new NoticeOfViolation();
+        return sb;
+        
+    }
+    
+    public String queueNotice(){
+        System.out.println("NoticeOfViolationBB.QueueNotice");
+        CaseCoordinator caseCoord = getCaseCoordinator();
+        SessionManager sm = getSessionManager();
+        CECase ceCase = sm.getVisit().getActiveCase();
+
+        NoticeOfViolation notice = sm.getVisit().getActiveNotice();
+//        NoticeOfViolation notice = caseCoord.generateNoticeSkeleton(ceCase);
+        
         notice.setNoticeText(formLetterText);
         notice.setDateOfRecord(formDateOfRecord.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
-        
-        
+
         try {
-            cvi.insertViolationLetter(sm.getVisit().getActiveCase(), notice);
+            
+            caseCoord.queueNoticeOfViolation(ceCase, currentNotice);
+            
+        } catch (CaseLifecyleException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to deploy notice due to a business process corruption hazard. "
+                                + "Please make a notice event to discuss with Eric and Team", ""));
         } catch (IntegrationException ex) {
             System.out.println(ex);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to saveDraft of notice letter", ""));
+                        "Unable to update case phase due to a database connectivity error",
+                        "this issue must be corrected by a system administrator, sorry"));
+        } catch (EventException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                        "The automatic event generation associated with this action has thrown an error. "
+                                + "Please create an event manually which logs this letter being queued for mailing", ""));
+            
         }
+        
         return "caseManage";
+        
     }
     
     public String saveNoticeDraft(){
         SessionManager sm = getSessionManager();
         CECase c = sm.getVisit().getActiveCase();
+        NoticeOfViolation notice = sm.getVisit().getActiveNotice();
         
         CodeViolationIntegrator ci = getCodeViolationIntegrator();
+        
+        notice.setNoticeText(formLetterText);
+        notice.setDateOfRecord(formDateOfRecord.toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
         try {
         
-            if(currentNotice.getNoticeID() == 0){
+            if(currentNotice.getInsertionTimeStamp() == null){
                 ci.insertViolationLetter(c, currentNotice);
                 
             } else {
@@ -87,38 +283,17 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
             }
             
         } catch (IntegrationException ex) {
+            System.out.println("NoticeOfViolationBB.saveNoticeDraft");
             System.out.println(ex);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to saveDraft of notice letter", ""));
+                        "Unable to saveDraft of notice letter due to a database error. "
+                                + "This must be corrected by Eric.", ""));
+            return "";
         }
-        return "caseManage";
+        return "caseViolations";
     } // close method
     
-    public String deployNotice() throws EventException{
-        
-        CaseCoordinator caseCoord = getCaseCoordinator();
-        SessionManager sm = getSessionManager();
-        CECase ceCase = sm.getVisit().getActiveCase();
-        try {
-            caseCoord.deployNoticeOfViolation(ceCase, currentNotice);
-        } catch (CaseLifecyleException ex) {
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to deploy notice due to a business logic error", ""));
-        } catch (IntegrationException ex) {
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to update case phase due to a database connectivity error",
-                "this issue must be corrected by a system administrator, sorry"));
-        }
-        
-        return "caseManage";
-        
-    }
-    
-    
-
     /**
      * @return the formLetterText
      */
@@ -139,7 +314,13 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      * @return the formDateOfRecord
      */
     public Date getFormDateOfRecord() {
-        return formDateOfRecord;
+        if(currentNotice.getDateOfRecord() != null){
+            formDateOfRecord = java.util.Date.from(currentNotice.getDateOfRecord().toInstant(ZoneOffset.UTC));
+            
+        } else {
+            formDateOfRecord = null;
+        }
+            return formDateOfRecord;
     }
 
     /**
@@ -163,6 +344,290 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      */
     public void setCurrentNotice(NoticeOfViolation currentNotice) {
         this.currentNotice = currentNotice;
+    }
+
+    /**
+     * @return the textBlockListByMuni
+     */
+    public LinkedList<TextBlock> getTextBlockListByMuni() {
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        SessionManager sm = getSessionManager();
+        Municipality m = sm.getVisit().getActiveCodeSet().getMuni();
+        try {
+            blockListByMuni = cvi.getTextBlocks(m);
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
+        return blockListByMuni;
+    }
+
+    /**
+     * @param textBlockListByMuni the textBlockListByMuni to set
+     */
+    public void setTextBlockListByMuni(LinkedList<TextBlock> textBlockListByMuni) {
+        this.blockListByMuni = textBlockListByMuni;
+    }
+
+    /**
+     * @return the activeVList
+     */
+    public ArrayList<CodeViolation> getActiveVList() {
+        SessionManager sm = getSessionManager();
+        activeVList = sm.getVisit().getWorkingViolationList();
+        return activeVList;
+    }
+
+    /**
+     * @param activeVList the activeVList to set
+     */
+    public void setActiveVList(ArrayList<CodeViolation> activeVList) {
+        this.activeVList = activeVList;
+    }
+
+    /**
+     * @return the greetingBlock
+     */
+    public TextBlock getGreetingBlock() {
+        return greetingBlock;
+    }
+
+    /**
+     * @return the introBlock
+     */
+    public TextBlock getIntroBlock() {
+        return introBlock;
+    }
+
+    /**
+     * @return the tb1
+     */
+    public TextBlock getTb1() {
+        return tb1;
+    }
+
+    /**
+     * @return the tb2
+     */
+    public TextBlock getTb2() {
+        return tb2;
+    }
+
+    /**
+     * @return the complianceBlock
+     */
+    public TextBlock getComplianceBlock() {
+        return complianceBlock;
+    }
+
+    /**
+     * @return the penaltyBlock
+     */
+    public TextBlock getPenaltyBlock() {
+        return penaltyBlock;
+    }
+
+    /**
+     * @return the tb3
+     */
+    public TextBlock getTb3() {
+        return tb3;
+    }
+
+    /**
+     * @return the tb4
+     */
+    public TextBlock getTb4() {
+        return tb4;
+    }
+
+    /**
+     * @return the closing
+     */
+    public TextBlock getClosing() {
+        return closing;
+    }
+
+    /**
+     * @param greetingBlock the greetingBlock to set
+     */
+    public void setGreetingBlock(TextBlock greetingBlock) {
+        this.greetingBlock = greetingBlock;
+    }
+
+    /**
+     * @param introBlock the introBlock to set
+     */
+    public void setIntroBlock(TextBlock introBlock) {
+        this.introBlock = introBlock;
+    }
+
+    /**
+     * @param tb1 the tb1 to set
+     */
+    public void setTb1(TextBlock tb1) {
+        this.tb1 = tb1;
+    }
+
+    /**
+     * @param tb2 the tb2 to set
+     */
+    public void setTb2(TextBlock tb2) {
+        this.tb2 = tb2;
+    }
+
+    /**
+     * @param complianceBlock the complianceBlock to set
+     */
+    public void setComplianceBlock(TextBlock complianceBlock) {
+        this.complianceBlock = complianceBlock;
+    }
+
+    /**
+     * @param penaltyBlock the penaltyBlock to set
+     */
+    public void setPenaltyBlock(TextBlock penaltyBlock) {
+        this.penaltyBlock = penaltyBlock;
+    }
+
+    /**
+     * @param tb3 the tb3 to set
+     */
+    public void setTb3(TextBlock tb3) {
+        this.tb3 = tb3;
+    }
+
+    /**
+     * @param tb4 the tb4 to set
+     */
+    public void setTb4(TextBlock tb4) {
+        this.tb4 = tb4;
+    }
+
+    /**
+     * @param closing the closing to set
+     */
+    public void setClosing(TextBlock closing) {
+        this.closing = closing;
+    }
+
+    /**
+     * @return the selectedRecipient
+     */
+    public Person getSelectedRecipient() {
+        return selectedRecipient;
+    }
+
+    /**
+     * @param selectedRecipient the selectedRecipient to set
+     */
+    public void setSelectedRecipient(Person selectedRecipient) {
+        this.selectedRecipient = selectedRecipient;
+    }
+
+    /**
+     * @return the personCandidateAL
+     */
+    public ArrayList<Person> getPersonCandidateAL() {
+        PersonIntegrator pi = getPersonIntegrator();
+        SessionManager sm = getSessionManager();
+        Property prop = sm.getVisit().getActiveProp();
+        try {
+            personCandidateAL = pi.getPersonListByPropertyID(prop);
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
+        return personCandidateAL;
+    }
+
+    /**
+     * @param personCandidateAL the personCandidateAL to set
+     */
+    public void setPersonCandidateAL(ArrayList<Person> personCandidateAL) {
+        this.personCandidateAL = personCandidateAL;
+    }
+
+    /**
+     * @return the recipientPersonID
+     */
+    public int getRecipientPersonID() {
+        return recipientPersonID;
+    }
+
+    /**
+     * @param recipientPersonID the recipientPersonID to set
+     */
+    public void setRecipientPersonID(int recipientPersonID) {
+        this.recipientPersonID = recipientPersonID;
+    }
+
+    /**
+     * @return the addPersonByID
+     */
+    public boolean isAddPersonByID() {
+        return addPersonByID;
+    }
+
+    /**
+     * @param addPersonByID the addPersonByID to set
+     */
+    public void setAddPersonByID(boolean addPersonByID) {
+        this.addPersonByID = addPersonByID;
+    }
+
+    /**
+     * @return the useTb1
+     */
+    public boolean isUseTb1() {
+        return useTb1;
+    }
+
+    /**
+     * @return the useTb2
+     */
+    public boolean isUseTb2() {
+        return useTb2;
+    }
+
+    /**
+     * @return the useTb3
+     */
+    public boolean isUseTb3() {
+        return useTb3;
+    }
+
+    /**
+     * @return the useTb4
+     */
+    public boolean isUseTb4() {
+        return useTb4;
+    }
+
+    /**
+     * @param useTb1 the useTb1 to set
+     */
+    public void setUseTb1(boolean useTb1) {
+        this.useTb1 = useTb1;
+    }
+
+    /**
+     * @param useTb2 the useTb2 to set
+     */
+    public void setUseTb2(boolean useTb2) {
+        this.useTb2 = useTb2;
+    }
+
+    /**
+     * @param useTb3 the useTb3 to set
+     */
+    public void setUseTb3(boolean useTb3) {
+        this.useTb3 = useTb3;
+    }
+
+    /**
+     * @param useTb4 the useTb4 to set
+     */
+    public void setUseTb4(boolean useTb4) {
+        this.useTb4 = useTb4;
     }
     
 }

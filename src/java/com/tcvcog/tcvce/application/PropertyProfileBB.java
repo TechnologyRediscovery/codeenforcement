@@ -1,3 +1,5 @@
+package com.tcvcog.tcvce.application;
+
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.application.SessionManager;
@@ -8,6 +10,7 @@ import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +39,7 @@ Council of Governments, PA
  */
 public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     private Property currentProperty;
-    private LinkedList<Person> propertyPersonList;
+    private ArrayList<Person> propertyPersonList;
     private Person selectedPerson;
     
     
@@ -84,7 +87,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the propertyPersonList
      */
-    public LinkedList<Person> getPropertyPersonList() {
+    public ArrayList<Person> getPropertyPersonList() {
         PersonIntegrator pi = getPersonIntegrator();
         try {
             propertyPersonList = pi.getPersonListByPropertyID(currentProperty);
@@ -111,7 +114,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     /**
      * @param propertyPersonList the propertyPersonList to set
      */
-    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
+    public void setPropertyPersonList(ArrayList<Person> propertyPersonList) {
         this.propertyPersonList = propertyPersonList;
     }
 

@@ -40,7 +40,7 @@
                                  
                                 <p:commandButton
                                     value="Search All Municipalities" tabindex="2" ajax="false"
-                                    actionListener="#{propertySearchBB.searchForPropertiesAllMunis}" />
+                                    icon="fa fa-search" actionListener="#{propertySearchBB.searchForPropertiesAllMunis}" />
                                  
                                  <h:panelGroup>
                                      <!--place holder-->
@@ -69,7 +69,7 @@
 
                                 <p:commandButton
                                     value="Search only in Selected Municipality" tabindex="5" ajax="false"
-                                    actionListener="#{propertySearchBB.searchForPropertiesSingleMuni}" />
+                                    icon="fa fa-indent"  actionListener="#{propertySearchBB.searchForPropertiesSingleMuni}" />
                                  
                                  
                              </h:panelGrid>
@@ -88,10 +88,10 @@
                             
                             
                             <p:commandButton ajax="fakse" value="Update Selected Property Info" 
-                                             tabindex="7" action="#{propertySearchBB.updateProperty}"/>
+                                             icon="fa fa-edit" tabindex="7" action="#{propertySearchBB.updateProperty}"/>
                             
                             <p:commandButton ajax="false" value="View Profile for Selected Property &rarr;" 
-                                             tabindex="8" action="#{propertySearchBB.viewProperty}"/>
+                                             icon="fa fa-home" tabindex="8" action="#{propertySearchBB.viewProperty}"/>
                             <p:spacer height="10px"/>
                             
                              <p:dataTable

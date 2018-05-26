@@ -6,6 +6,7 @@
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -49,7 +50,7 @@ public class Event {
     
     private String notes;
     
-    private LinkedList<Person> eventPersons;
+    private ArrayList<Person> eventPersons;
     
     /**
      * @return the eventID
@@ -224,14 +225,14 @@ public class Event {
     /**
      * @return the eventPersons
      */
-    public LinkedList<Person> getEventPersons() {
+    public ArrayList<Person> getEventPersons() {
         return eventPersons;
     }
 
     /**
      * @param eventPersons the eventPersons to set
      */
-    public void setEventPersons(LinkedList<Person> eventPersons) {
+    public void setEventPersons(ArrayList<Person> eventPersons) {
         this.eventPersons = eventPersons;
     }
 

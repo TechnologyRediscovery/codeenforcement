@@ -22,7 +22,7 @@
                     <f:view>
                         <h2>Add a new person:</h2>
                         <h:form id="personNavForm">
-                            <p:commandButton id="addNewPersonCB" action="personAdd" value="Add person form -->" ajax="false"/>
+                            <p:commandButton id="addNewPersonCB" action="personAdd" value="Add new person" ajax="false"/>
                             
                         </h:form>
                         <h:form id="personManageForm">
@@ -97,10 +97,16 @@
                             value="#{personBB.personList}"
                             selectionMode="single"
                             selection="#{personBB.selectedPerson}"
-                            rowKey="#{p.personid}"
+                            rowKey="#{p.personID}"
                             tableStyleClass="primeDataTable">
                                 <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
                                 
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="ID" />
+                                </f:facet>
+                                <h:outputText value="#{p.personID}"/>
+                            </p:column>
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="Person Type" />

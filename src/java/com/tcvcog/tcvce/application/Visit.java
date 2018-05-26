@@ -16,6 +16,7 @@ import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.entities.Person;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.annotation.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,6 +40,7 @@ public class Visit {
     private Citation activeCitation;
     private EnforcableCodeElement selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
+    private ArrayList<CodeViolation> workingViolationList;
     //private LinkedList<EnforcableCodeElement> eceList;
 
     /**
@@ -213,6 +215,20 @@ public class Visit {
      */
     public void setActiveCitation(Citation activeCitation) {
         this.activeCitation = activeCitation;
+    }
+
+    /**
+     * @return the workingViolationList
+     */
+    public ArrayList<CodeViolation> getWorkingViolationList() {
+        return workingViolationList;
+    }
+
+    /**
+     * @param workingViolationList the workingViolationList to set
+     */
+    public void setWorkingViolationList(ArrayList<CodeViolation> workingViolationList) {
+        this.workingViolationList = workingViolationList;
     }
 
 }

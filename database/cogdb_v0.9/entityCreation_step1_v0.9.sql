@@ -444,8 +444,11 @@ ALTER TABLE coglog ADD CONSTRAINT coglog_user_userID_fk FOREIGN KEY (user_userID
 --*************** EVENTS ************************
 
 
+-- Note that user created events will have IDs starting at 200. Pre-created events get manually assigned 
+-- IDs under 200
+
 CREATE SEQUENCE IF NOT EXISTS ceeventcategory_categoryID_seq
-    START WITH 100
+    START WITH 200
     INCREMENT BY 1
     MINVALUE 100
     NO MAXVALUE
@@ -735,9 +738,9 @@ CREATE TABLE citation
 
 
 CREATE SEQUENCE IF NOT EXISTS citationviolation_cvid_seq
-    START WITH 1
+    START WITH 1000
     INCREMENT BY 1
-    MINVALUE 1
+    MINVALUE 1000
     NO MAXVALUE
     CACHE 1;
 
@@ -819,6 +822,39 @@ ALTER TABLE propertyphotodoc ADD CONSTRAINT propertyphotodoc_pdid_fk FOREIGN KEY
 ALTER TABLE propertyphotodoc ADD CONSTRAINT propertyphotodoc_prop_fk FOREIGN KEY (property_propertyID) REFERENCES property (propertyID);
 
 
+
+
+CREATE SEQUENCE IF NOT EXISTS blockcategory_categoryid_seq
+    START WITH 100
+    INCREMENT BY 1
+    MINVALUE 100
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE textblockcategory 
+(
+    categoryID              INTEGER DEFAULT nextval('blockcategory_categoryid_seq') NOT NULL CONSTRAINT blockCategory_catID_pk PRIMARY KEY,
+    cateogryTitle           text NOT NULL
+)
+
+
+
+CREATE SEQUENCE IF NOT EXISTS textblock_blockid_seq
+    START WITH 100
+    INCREMENT BY 1
+    MINVALUE 100
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE textblock
+(
+    blockID                     INTEGER DEFAULT nextval('textblock_blockid_seq') NOT NULL CONSTRAINT textblock_blockID_pk PRIMARY KEY,
+    blockCategory_catID         INTEGER NOT NULL CONSTRAINT blockCategory_catID_FK REFERENCES blockcategory (categoryid),
+    muni_muniCode               INTEGER NOT NULL CONSTRAINT muni_muniCode_fk REFERENCES municipality (muniCode),
+    blockName                   text NOT NULL,
+    blockText                   text NOT NULL
+)
+
 CREATE SEQUENCE IF NOT EXISTS noticeofviolation_noticeID_seq
     START WITH 1000
     INCREMENT BY 1
@@ -826,17 +862,19 @@ CREATE SEQUENCE IF NOT EXISTS noticeofviolation_noticeID_seq
     NO MAXVALUE
     CACHE 1;
 
+
 CREATE TABLE noticeofviolation
   (
     noticeID                    INTEGER DEFAULT nextval('noticeofviolation_noticeID_seq') NOT NULL,
     caseID                      INTEGER NOT NULL,
+    personid_recipient          INTEGER NOT NULL CONSTRAINT noticeOfViolation_recipient_fk REFERENCES person (personID),
     letterText                  text,
     insertionTimeStamp          TIMESTAMP WITH TIME ZONE NOT NULL,
     dateOfRecord                TIMESTAMP WITH TIME ZONE NOT NULL,
     requestToSend               boolean,
     letterSent                  boolean,
-    letterSendDate              TIMESTAMP WITH TIME ZONE NOT NULL,
-    letterReturnedDate          TIMESTAMP WITH TIME ZONE NOT NULL
+    letterSendDate              TIMESTAMP WITH TIME ZONE,
+    letterReturnedDate          TIMESTAMP WITH TIME ZONE
 
   ) ;
 

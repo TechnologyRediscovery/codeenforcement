@@ -21,8 +21,6 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElementType;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -31,7 +29,6 @@ import javax.faces.event.ActionEvent;
  * @author sylvia
  */
 public class CodeElementTypeBB extends BackingBeanUtils implements Serializable {
-
     
     private int codeElementTypeID;
     

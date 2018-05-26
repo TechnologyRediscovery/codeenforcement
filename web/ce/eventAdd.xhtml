@@ -87,7 +87,7 @@
                                     
                                     <h:panelGroup>
                                         <h:outputLabel for="requireViewConfirmationSwitch">
-                                            <h:outputText value="Disclose to Public"/>
+                                            <h:outputText value="Require view confirmation by case manager"/>
                                         </h:outputLabel>
                                         <p:spacer height="5px"/>
                                         <p:inputSwitch tabindex="18" id="requireViewConfirmationSwitch" value="#{eventAddBB.formRequireViewConfirmation}" onLabel="Yes" offLabel="No" />
@@ -131,7 +131,7 @@
                                     id="personTable"
                                     var="p"
                                     value="#{eventAddBB.formSelectedPersons}"
-                                    rowKey="#{p.personid}"
+                                    rowKey="#{p.personID}"
                                     tableStyleClass="primeDataTable">
                                         <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
 

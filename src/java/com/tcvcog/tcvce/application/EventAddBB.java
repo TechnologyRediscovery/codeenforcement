@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
@@ -32,6 +33,7 @@ import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -73,9 +75,9 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private boolean formRequireViewConfirmation;
     
     
-    private LinkedList<Person> candidatePersonList;
+    private ArrayList<Person> candidatePersonList;
     private Person selectedCadidatePerson;
-    private LinkedList<Person> formSelectedPersons;
+    private ArrayList<Person> formSelectedPersons;
     
     
     
@@ -97,6 +99,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         EventCoordinator ec = getEventCoordinator();
         SessionManager sm = getSessionManager();
         Event e = sm.getVisit().getActiveEvent();
+        CaseCoordinator cc = getCaseCoordinator();
         
         // category is already set from initialization sequence
         e.setCaseID(sm.getVisit().getActiveCase().getCaseID());
@@ -113,7 +116,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         // now check for persons to connect
         
         try {
-            ec.processEvent(ceCase, event);
+            ec.initiateEventProcessing(ceCase, e);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Successfully logged event.", ""));
@@ -192,7 +195,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the candidatePersonList
      */
-    public LinkedList<Person> getCandidatePersonList() {
+    public ArrayList<Person> getCandidatePersonList() {
         System.out.println("EventAddBB.getCandidatePersonList | inside method");
         PersonIntegrator pi = getPersonIntegrator();
         SessionManager sm = getSessionManager();
@@ -251,7 +254,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @param candidatePersonList the candidatePersonList to set
      */
-    public void setCandidatePersonList(LinkedList<Person> candidatePersonList) {
+    public void setCandidatePersonList(ArrayList<Person> candidatePersonList) {
         this.candidatePersonList = candidatePersonList;
     }
 
@@ -292,7 +295,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the formSelectedPersons
      */
-    public LinkedList<Person> getFormSelectedPersons() {
+    public ArrayList<Person> getFormSelectedPersons() {
         EventCoordinator ec = getEventCoordinator();
         if(formSelectedPersons == null){   
             System.out.println("EventAddBB.getFormSelectedPersons | getting empty LL");
@@ -306,7 +309,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @param formSelectedPersons the formSelectedPersons to set
      */
-    public void setFormSelectedPersons(LinkedList<Person> formSelectedPersons) {
+    public void setFormSelectedPersons(ArrayList<Person> formSelectedPersons) {
         this.formSelectedPersons = formSelectedPersons;
     }
 

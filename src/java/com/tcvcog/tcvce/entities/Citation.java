@@ -18,6 +18,7 @@ Council of Governments, PA
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public class Citation {
     private LocalDateTime timeStamp;
     private boolean isActive;
     private String notes;
-    private LinkedList<CodeViolation> violationList;
+    private ArrayList<CodeViolation> violationList;
 
     /**
      * @return the citationID
@@ -155,14 +156,14 @@ public class Citation {
     /**
      * @return the violationList
      */
-    public LinkedList<CodeViolation> getViolationList() {
+    public ArrayList<CodeViolation> getViolationList() {
         return violationList;
     }
 
     /**
      * @param violationList the violationList to set
      */
-    public void setViolationList(LinkedList<CodeViolation> violationList) {
+    public void setViolationList(ArrayList<CodeViolation> violationList) {
         this.violationList = violationList;
     }
 

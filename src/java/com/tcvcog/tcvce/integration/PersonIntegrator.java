@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -129,7 +130,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         MunicipalityIntegrator muniIntegrator = getMunicipalityIntegrator();
 
         try {
-            newPerson.setPersonid(rs.getInt("personid"));
+            newPerson.setPersonID(rs.getInt("personid"));
             System.out.println("PersonIntegrator.generatePersonFromResultSet | person Type from db: " + rs.getString("personType"));
             newPerson.setPersonType(PersonType.valueOf(rs.getString("personType")));
             newPerson.setMuni(muniIntegrator.getMuniFromMuniCode(rs.getInt("muni_muniCode")));
@@ -253,7 +254,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         int newPersonID = insertPerson(person);
         // Now that th person is in the DB, i've got the person ID to store in the
         // bridge table: propertyperson
-        person.setPersonid(newPersonID);
+        person.setPersonID(newPersonID);
         // now send in a fully-baked person to an entry in the db
         connectPersonToProperty(person, prop);
 
@@ -270,7 +271,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         try {
             stmt = con.prepareStatement(query);
             stmt.setInt(1, prop.getPropertyID());
-            stmt.setInt(2, person.getPersonid());
+            stmt.setInt(2, person.getPersonID());
 
             System.out.println("PersonIntegrator.connectPersonToProperty | sql: " + stmt.toString());
             stmt.execute();
@@ -413,7 +414,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         try {
             stmt = con.prepareStatement(query);
             stmt.setInt(1, ev.getEventID());
-            stmt.setInt(2, p.getPersonid());
+            stmt.setInt(2, p.getPersonID());
 
             System.out.println("PersonIntegrator.connectPersonToEvent | sql: " + stmt.toString());
             stmt.execute();
@@ -533,7 +534,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setBoolean(16, personToUpdate.isIsActive());
             stmt.setBoolean(17, personToUpdate.isIsUnder18());
 
-            stmt.setInt(18, personToUpdate.getPersonid());
+            stmt.setInt(18, personToUpdate.getPersonID());
             System.out.println("PersonIntegrator.updatePerson | sql: " + stmt.toString());
             stmt.execute();
 
@@ -557,11 +558,11 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     } // close updatePerson
 
-    public LinkedList getPersonListByPropertyID(Property p) throws IntegrationException {
+    public ArrayList getPersonListByPropertyID(Property p) throws IntegrationException {
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        LinkedList<Person> ll = new LinkedList();
+        ArrayList<Person> al = new ArrayList();
 
         try {
             String s = "SELECT * FROM public.propertyperson WHERE property_propertyid = ?;";
@@ -574,7 +575,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             while (rs.next()) {
                 Person pers = getPerson(rs.getInt("person_personid"));
                 System.out.println("PersonIntegrator.getPersonListByPropertyID | adding person: " + pers.getFirstName());
-                ll.add(pers);
+                al.add(pers);
             }
 
         } catch (SQLException ex) {
@@ -603,7 +604,7 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             }
         } // close finally
 
-        return ll;
+        return al;
 
     }
 

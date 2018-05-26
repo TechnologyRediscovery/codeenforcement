@@ -30,6 +30,7 @@ import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,9 +64,10 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     private boolean formIsActive;
     private String formNotes;
     
-    private LinkedList<CodeViolation> violationList;
+    private ArrayList<CodeViolation> violationList;
     
     public String updateCitation(){
+        System.out.println("CitationBB.updateCitation");
         CaseCoordinator cc = getCaseCoordinator();
         SessionManager sm = getSessionManager();
         Citation c= sm.getVisit().getActiveCitation();
@@ -91,6 +93,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     }
     
     public String issueCitation(){
+        System.out.println("CitationBB.IssueCitation");
         CaseCoordinator cc = getCaseCoordinator();
         SessionManager sm = getSessionManager();
         Citation c = currentCitation;
@@ -104,6 +107,10 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
         c.setNotes(formNotes);
         try {
             cc.issueCitation(c);
+              
+            getFacesContext().addMessage(null,
+               new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                       "New citation added to database!", ""));
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -191,7 +198,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the violationList
      */
-    public LinkedList<CodeViolation> getViolationList() {
+    public ArrayList<CodeViolation> getViolationList() {
         violationList = currentCitation.getViolationList();
         return violationList;
     }
@@ -241,7 +248,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     /**
      * @param violationList the violationList to set
      */
-    public void setViolationList(LinkedList<CodeViolation> violationList) {
+    public void setViolationList(ArrayList<CodeViolation> violationList) {
         this.violationList = violationList;
     }
 

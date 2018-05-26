@@ -33,6 +33,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -329,12 +330,12 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         
         // now connect people to event that has already been logged
         
-        LinkedList<Person> ll = event.getEventPersons();
+        ArrayList<Person> al = event.getEventPersons();
         event.setEventID(insertedEventID);
         
-        if(ll != null){
-            if( ll.size() > 0 && event.getEventID() != 0){
-                pi.connectPersonsToEvent(event, ll);
+        if(al != null){
+            if( al.size() > 0 && event.getEventID() != 0){
+                pi.connectPersonsToEvent(event, al);
             } 
         }
         

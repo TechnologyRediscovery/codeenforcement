@@ -26,6 +26,7 @@ import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -103,10 +104,10 @@ public class ViolationCoordinator extends BackingBeanUtils implements Serializab
         cvi.deleteCodeViolation(cv);
     }
     
-    public LinkedList getCodeViolations(CECase ceCase) throws IntegrationException{
+    public ArrayList getCodeViolations(CECase ceCase) throws IntegrationException{
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        LinkedList ll = cvi.getCodeViolations(ceCase);
-        return ll;
+        ArrayList al = cvi.getCodeViolations(ceCase);
+        return al;
     }
     
 }

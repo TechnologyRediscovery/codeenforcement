@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 public class NoticeOfViolation {
     
     private int noticeID;
+    private Person recipient;
+    
     private String noticeText;
     private LocalDateTime insertionTimeStamp;
     private String insertionTimeStampPretty;
@@ -193,6 +195,20 @@ public class NoticeOfViolation {
      */
     public void setLetterReturnedDatePretty(String letterReturnedDatePretty) {
         this.letterReturnedDatePretty = letterReturnedDatePretty;
+    }
+
+    /**
+     * @return the recipient
+     */
+    public Person getRecipient() {
+        return recipient;
+    }
+
+    /**
+     * @param recipient the recipient to set
+     */
+    public void setRecipient(Person recipient) {
+        this.recipient = recipient;
     }
     
 }
