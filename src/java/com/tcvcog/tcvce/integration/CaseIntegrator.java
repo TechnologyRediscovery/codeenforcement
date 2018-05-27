@@ -275,20 +275,6 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public void addCodeViolationToCECase(CECase cecase, CodeViolation violation){
-        
-    }
-    
-    public void addEventToCECase(CECase cecase, Event event){
-        
-        
-    }
-    
-    public void addPersonToCECase(CECase cecase, Person p){
-        
-        
-    }
-    
     /**
      * The calling method is responsible for setting the new case phase
      * This is just a plain old update operation. The CaseCoordinator is responsible

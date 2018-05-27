@@ -31,12 +31,9 @@ import com.tcvcog.tcvce.entities.Event;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
-import com.tcvcog.tcvce.integration.EventIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -48,12 +45,15 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
 
     private CECase currentCase;
     private CasePhase nextPhase;
+    private CasePhase[] casePhaseList;
+    private CasePhase selectedCasePhase;
+    
     private Event eventForTriggeringCasePhaseAdvancement;
     
     private LinkedList<Event> eventList;
     private Event selectedEvent;
     
-    private ArrayList<CodeViolation> violationList;
+    private ArrayList<CodeViolation> fullCaseViolationList;
     private ArrayList<CodeViolation> selectedViolations;
     
     private ArrayList<NoticeOfViolation> noticeList;
@@ -68,16 +68,44 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public CaseManageBB() {
     }
     
-    public String recordCompliance() throws IntegrationException{
-        
-        if(selectedViolations != null){
-            ViolationCoordinator vc = getViolationCoordinator();
-            EventCoordinator ec = getEventCoordinator();
-            // generate event for compliance with selected violations
-            ec.generateViolationComplianceEvent(violationList);
-            // allow user to edit event details
+    /**
+     * 
+     * @return 
+     */
+    public String overrideCasePhase(){
+        CaseCoordinator cc = getCaseCoordinator();
+        try {
+            cc.manuallyChangeCasePhase(currentCase, selectedCasePhase);
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to write case phase changes to DB", 
+                            "This error must be corrected by a system administrator, sorry"));
+        } catch (CaseLifecyleException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to change case phase due to a case lifecycle exception", 
+                            "Please check with your system administrator"));
             
+        }
+        return "";
+    }
+    
+    public String recordCompliance() throws IntegrationException{
+        CaseCoordinator cc = getCaseCoordinator();
+        SessionManager sm = getSessionManager();
+        EventCoordinator ec = getEventCoordinator();
+        System.out.println("CaseManageBB.recordCompliance | selectedViolations size: " + selectedViolations.size());
+        if(!selectedViolations.isEmpty()){
+
+            // generate event for compliance with selected violations
+            Event e = ec.generateViolationComplianceEvent(selectedViolations);
+
             // when event is submitted, send violation list to c
+            sm.getVisit().setActiveEvent(e);
+            sm.getVisit().setActiveViolationList(selectedViolations);
             return "eventAdd";
         } else {
             getFacesContext().addMessage(null,
@@ -108,8 +136,8 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
 
         System.out.println("CaseManageBB.createNewNoticeOfViolation | current case: " + currentCase);
 
-        if(!violationList.isEmpty()){
-            sm.getVisit().setActiveViolationList(violationList);
+        if(!fullCaseViolationList.isEmpty()){
+            sm.getVisit().setActiveViolationList(fullCaseViolationList);
             return "noticeOfViolationBuilder";
         }
         getFacesContext().addMessage(null,
@@ -124,7 +152,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         
         System.out.println("CaseManageBB.createNewNoticeOfViolationForSelected | current case: " + currentCase);
         
-        if(!violationList.isEmpty()){
+        if(!fullCaseViolationList.isEmpty()){
             sm.getVisit().setActiveViolationList(selectedViolations);
             return "noticeOfViolationBuilder";
         } else {
@@ -144,7 +172,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         if(currentCase != null){
             SessionManager sm = getSessionManager();
             CaseCoordinator cc = getCaseCoordinator();
-            sm.getVisit().setActiveCitation(cc.generateNewCitation(violationList));
+            sm.getVisit().setActiveCitation(cc.generateNewCitation(fullCaseViolationList));
             return "citationEdit";
         }
         getFacesContext().addMessage(null,
@@ -401,14 +429,12 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the violationList
+     * @return the fullCaseViolationList
      */
-    public ArrayList<CodeViolation> getViolationList() {
+    public ArrayList<CodeViolation> getFullCaseViolationList() {
         ViolationCoordinator vc = getViolationCoordinator();
         try {
-            violationList = vc.getCodeViolations(currentCase);
-            if(violationList != null){
-            }
+            fullCaseViolationList = vc.getCodeViolations(currentCase);
         } catch (IntegrationException ex) {
             System.out.println(ex);
              getFacesContext().addMessage(null,
@@ -417,7 +443,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
                                 "This is a system-level error that msut be corrected by an administrator, Sorry!"));
             
         }
-        return violationList;
+        return fullCaseViolationList;
     }
 
     /**
@@ -442,10 +468,10 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @param violationList the violationList to set
+     * @param fullCaseViolationList the fullCaseViolationList to set
      */
-    public void setViolationList(ArrayList<CodeViolation> violationList) {
-        this.violationList = violationList;
+    public void setFullCaseViolationList(ArrayList<CodeViolation> fullCaseViolationList) {
+        this.fullCaseViolationList = fullCaseViolationList;
     }
 
     /**
@@ -589,5 +615,34 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      */
     public void setNextPhase(CasePhase nextPhase) {
         this.nextPhase = nextPhase;
+    }
+
+    /**
+     * @return the casePhaseList
+     */
+    public CasePhase[] getCasePhaseList() {
+        casePhaseList = CasePhase.values();
+        return casePhaseList;
+    }
+
+    /**
+     * @param casePhaseList the casePhaseList to set
+     */
+    public void setCasePhaseList(CasePhase[] casePhaseList) {
+        this.casePhaseList = casePhaseList;
+    }
+
+    /**
+     * @return the selectedCasePhase
+     */
+    public CasePhase getSelectedCasePhase() {
+        return selectedCasePhase;
+    }
+
+    /**
+     * @param selectedCasePhase the selectedCasePhase to set
+     */
+    public void setSelectedCasePhase(CasePhase selectedCasePhase) {
+        this.selectedCasePhase = selectedCasePhase;
     }
 }

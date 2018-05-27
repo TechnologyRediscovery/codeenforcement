@@ -320,12 +320,13 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
             if (v.getActualComplianceDate() != null) {
                 stmt.setTimestamp(5, java.sql.Timestamp.valueOf(v.getActualComplianceDate()));
             } else {
-                stmt.setNull(6, java.sql.Types.NULL);
+                stmt.setNull(5, java.sql.Types.NULL);
             }
 
-            stmt.setDouble(7, v.getPenalty());
-            stmt.setString((8), v.getDescription());
-            stmt.setString(9, v.getNotes());
+            stmt.setDouble(6, v.getPenalty());
+            stmt.setString((7), v.getDescription());
+            stmt.setString(8, v.getNotes());
+            stmt.setInt(9, v.getViolationID());
 
             System.out.println("CodeViolationIntegrator.updateViolation | stmt: " + stmt.toString());
 
@@ -447,6 +448,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
         try {
             stmt = con.prepareStatement(query);
             stmt.setInt(1, c.getCaseID());
+            System.out.println("CodeViolationCoordinator.getCodeViolations | stmt: " + stmt.toString());
             rs = stmt.executeQuery();
 
             while (rs.next()) {

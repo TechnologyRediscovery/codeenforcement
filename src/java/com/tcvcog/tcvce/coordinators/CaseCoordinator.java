@@ -35,6 +35,7 @@ import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -69,6 +70,31 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     }
     
     /**
+     * Called by the CaseManageBB when the user requests to change the case phase manually.
+     * Note that this method is responsible for storing the case's phase before the change, 
+     * updating the case Object itself, and then passing the updated CECase object
+     * and the phase phase to the EventCoordinator which will take care of logging the event
+     * 
+     * @param c the case before its phase has been changed
+     * @param newPhase the CasePhase to which we to change the case
+     * @throws IntegrationException
+     * @throws CaseLifecyleException 
+     */
+    public void manuallyChangeCasePhase(CECase c, CasePhase newPhase) throws IntegrationException, CaseLifecyleException{
+        EventCoordinator ec = getEventCoordinator();
+        CaseIntegrator ci = getCaseIntegrator();
+        CasePhase pastPhase = c.getCasePhase();
+        // this call to changeCasePhase requires that the case we pass in already has
+        // its phase changed
+        c.setCasePhase(newPhase);
+        ci.changeCECasePhase(c);
+        
+        ec.generateAndInsertManualCasePhaseOverrideEvent(c, pastPhase);
+        refreshCase(c);
+    }
+    
+    
+    /**
      * Primary event life cycle control method which is called
      * each time an event is added to the case. The primary business
      * logic related to which events can be attached to a case at any
@@ -86,18 +112,23 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
      */
     public void processCEEvent(CECase c, Event e) 
             throws CaseLifecyleException, IntegrationException, ViolationException{
-        EventType et = e.getCategory().getEventType();
+        EventType eventType = e.getCategory().getEventType();
         
-        switch(et){
+        switch(eventType){
             case Action:
                 processActionEvent(c, e);
+                break;
             case Compliance:
-                processComplianceEvent(c,e);
+                processComplianceEvent(c, e);
+                break;
+            case Closing:
+                processClosingEvent(c, e);
+                break;
             default:
                 processGeneralEvent(c, e);
         } // close switch
     } // close method
-    
+   
     /**
      * Core business logic method for recording compliance for CodeViolations
      * Checks for timeline fidelity before updating each violation.
@@ -112,13 +143,15 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
      * @throws IntegrationException in the case of a DB error
      * @throws CaseLifecyleException in the case of date mismatch
      */
-    public void processComplianceEvent(CECase c, Event e) 
+    private void processComplianceEvent(CECase c, Event e) 
             throws ViolationException, IntegrationException, CaseLifecyleException{
         
         SessionManager sm = getSessionManager();
         ViolationCoordinator vc = getViolationCoordinator();
-        ArrayList<CodeViolation> violationList = sm.getVisit().getActiveViolationList();
-        ListIterator<CodeViolation> li = violationList.listIterator();
+        EventCoordinator ec = getEventCoordinator();
+        
+        ArrayList<CodeViolation> activeViolationList = sm.getVisit().getActiveViolationList();
+        ListIterator<CodeViolation> li = activeViolationList.listIterator();
         CodeViolation cv;
         
         while(li.hasNext()){
@@ -132,28 +165,94 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             }
         } // close while
         
-        // now check all the case's violations for compliance dates
-        // we have to access all the violations again because a compliance event may not
-        // apply to all the CodeViolations
+        // first insert our nice compliance event for all selected violations
+        ec.insertEvent(e);
+        // then look at the whole case and close if necessary
+        checkForFullComplianceAndCloseCaseIfTriggered(c);
         
+        refreshCase(c);
+    } // close method
+    
+    /**
+     * Iterates over all of a case's violations and checks for compliance. 
+     * If all of the violations have a compliance date, the case is automatically
+     * closed and a case closing event is generated and added to the case
+     * 
+     * @param c the case whose violations should be checked for compliance
+     * @throws IntegrationException
+     * @throws CaseLifecyleException
+     * @throws ViolationException 
+     */
+    private void checkForFullComplianceAndCloseCaseIfTriggered(CECase c) 
+            throws IntegrationException, CaseLifecyleException, ViolationException{
+        
+        EventCoordinator ec = getEventCoordinator();
+        EventIntegrator ei = getEventIntegrator();
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        SessionManager sm = getSessionManager();
+        
         ArrayList caseViolationList = cvi.getCodeViolations(c);
         boolean complianceWithAllViolations = false;
         ListIterator<CodeViolation> fullViolationLi = caseViolationList.listIterator();
+        CodeViolation cv;
         
         while(fullViolationLi.hasNext())
         {
             cv = fullViolationLi.next();
-            if(cv.getActualComplianceDate() == null){
-                break;
-            } else {
+                   
+            // if there are any outstanding code violations, toggle switch to 
+            // false and exit the loop. Phase change will not occur
+            if(cv.getActualComplianceDate() != null){
+                complianceWithAllViolations = true;
                 
+                System.out.println("CaseCoordinator.processComplianceEvent | "
+                    + "Found violation with a compliance date and toggled to true: " + cv.getActualComplianceDate());
+                
+            } else {
+                complianceWithAllViolations = false;
+                
+                System.out.println("CaseCoordinator.processComplianceEvent | Found uncomplied violations, toggling to false and breaking out of while");
+                
+                break;
             }
-        }
+            System.out.println("CaseCoordinator.processComplianceEvent | "
+                    + "inside while loop for compliance check with all violations: " + complianceWithAllViolations);
+        } // close while
         
+        Event complianceClosingEvent;
         
+        if (complianceWithAllViolations){
+            System.out.println("CaseCoordinator.processComplianceEvent | "
+                    + "Inside clase closing if");
+                   
+            complianceClosingEvent = ec.getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("closingAfterFullCompliance"))));
+            complianceClosingEvent.setDateOfRecord(LocalDateTime.now());
+            complianceClosingEvent.setEventOwnerUser(sm.getVisit().getActiveUser());
+            processCEEvent(c, complianceClosingEvent);
+            
+        } // close if
         
     }
+    
+     
+    private void processClosingEvent(CECase c, Event e) throws IntegrationException{
+        CaseIntegrator ci = getCaseIntegrator();
+        EventIntegrator ei = getEventIntegrator();
+        CasePhase closedPhase = CasePhase.Closed;
+        c.setCasePhase(closedPhase);
+        ci.changeCECasePhase(c);
+        c.setClosingDate(LocalDateTime.now());
+        // now load up the closing event before inserting it
+        // we'll probably want to get this text from a resource file instead of
+        // hardcoding it down here in the Java
+        e.setEventDescription("Automatic case closure after full compliance achieved");
+        e.setNotes("Autmatically generated event and phase change based on all "
+                + "CodeViolations assocaited with this case having been marked with a compliance date");
+        ei.insertEvent(e);
+        refreshCase(c);
+    }
+    
     
     
     /**
@@ -165,12 +264,21 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
      * @throws com.tcvcog.tcvce.domain.CaseLifecyleException 
      * @throws com.tcvcog.tcvce.domain.IntegrationException 
      */
-    public void processActionEvent(CECase c, Event e) throws CaseLifecyleException, IntegrationException{
+    private void processActionEvent(CECase c, Event e) throws CaseLifecyleException, IntegrationException{
         
+        EventCoordinator ec = getEventCoordinator();
+        // insert the triggering action event
+        ec.insertEvent(e); 
+        //then pass event to check for phase changes
+        checkForAndCarryOutCasePhaseChange(c, e);
+        refreshCase(c);
+    }
+    
+    private void checkForAndCarryOutCasePhaseChange(CECase c, Event e) throws CaseLifecyleException, IntegrationException{
+        
+        CaseIntegrator ci = getCaseIntegrator();
         CasePhase initialCasePhase = c.getCasePhase();
         EventCoordinator ec = getEventCoordinator();
-        CaseIntegrator ci = getCaseIntegrator();
-        
         // this value is used to compare to the category IDs listed in the resource bundle
         int evCatID = e.getCategory().getCategoryID();
         
@@ -217,9 +325,6 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             && evCatID == Integer.parseInt(getResourceBundle(
             Constants.EVENT_CATEGORY_BUNDLE).getString("advToSecondaryPostHearingComplianceTimeframe")))
         ){
-            // insert the triggering action event
-            ec.insertEvent(e); 
-            
             // write the phase change to the DB
             // we must ship the case to the integrator with the case phase updated
             // because the integrator does not implement any business logic
@@ -229,12 +334,10 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             // generate event for phase change and write
             ec.generateAndInsertPhaseChangeEvent(c, initialCasePhase); 
 
-        } else {
-            // if no combination of a case's phase and the event match the triggers, 
-            // just go ahead and log the event being processed without any phase-related changes
-            ec.insertEvent(e); // the triggering action evennt
-            
-        }
+        } 
+        
+        refreshCase(c);
+        
     }
     
     
@@ -247,9 +350,10 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
      * @throws IntegrationException thrown if the integrator cannot get the data
      * into the DB
      */
-    public void processGeneralEvent(CECase c, Event e) throws IntegrationException{
+    private void processGeneralEvent(CECase c, Event e) throws IntegrationException{
         EventCoordinator ec = getEventCoordinator();
         ec.insertEvent(e);
+        refreshCase(c);
         
     }
     
@@ -263,7 +367,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
      */
     public CasePhase getNextCasePhase(CECase c) throws CaseLifecyleException{
         CasePhase currentPhase = c.getCasePhase();
-        CasePhase nextPhaseInSequence;
+        CasePhase nextPhaseInSequence = null;
         
         switch(currentPhase){
             
@@ -301,8 +405,9 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
                 break;
                 
             case Closed:
-                throw new CaseLifecyleException("Cannot advance a closed case to any other phase");
-            
+                // TODO deal with this later
+//                throw new CaseLifecyleException("Cannot advance a closed case to any other phase");
+                break;
             case InactiveHolding:
                 throw new CaseLifecyleException("Cases in inactive holding must have "
                         + "their case phase overriden manually to return to the case management flow");
@@ -368,7 +473,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         al.add(nov.getRecipient());
         noticeEvent.setEventPersons(al);
         
-        evCoord.insertPopulatedAutomatedEvent(noticeEvent);
+        evCoord.insertEvent(noticeEvent);
         
         refreshCase(c);
         

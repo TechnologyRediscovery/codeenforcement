@@ -49,7 +49,7 @@ import javax.faces.event.ActionEvent;
  */
 public class EventAddBB extends BackingBeanUtils implements Serializable {
     
-    // add event form fields
+    // add currentEvent form fields
     private LinkedList<EventCategory> eventCategoryList;
     
     private LinkedList catComList;
@@ -65,7 +65,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private EventType[] userAdminEventTypeList;
     
     private CECase ceCase;
-    private Event event;
+    private Event currentEvent;
     
     private String formEventDesc;
     private Date formEventDate;
@@ -75,12 +75,9 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private String formEventNotes;
     private boolean formRequireViewConfirmation;
     
-    
     private ArrayList<Person> candidatePersonList;
     private Person selectedCadidatePerson;
     private ArrayList<Person> formSelectedPersons;
-    
-    
     
     // constructor
     public EventAddBB(){
@@ -93,7 +90,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         CECase c = sm.getVisit().getActiveCase();
         EventCoordinator ec = getEventCoordinator();
         try {
-            event = ec.getInitializedEvent(c, selectedEventCategory);
+            currentEvent = ec.getInitializedEvent(c, selectedEventCategory);
         } catch (CaseLifecyleException ex) {
             System.out.println(ex);
             getFacesContext().addMessage(null,
@@ -102,18 +99,19 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
             
             
         }
-        sm.getVisit().setActiveEvent(event);
+        sm.getVisit().setActiveEvent(currentEvent);
         return "eventAdd";
     }
     
     public String addEvent() throws ViolationException{
-        EventCoordinator ec = getEventCoordinator();
         SessionManager sm = getSessionManager();
-        Event e = sm.getVisit().getActiveEvent();
+        //Event e = sm.getVisit().getActiveEvent();
+        Event e = currentEvent;
         CaseCoordinator cc = getCaseCoordinator();
         
         // category is already set from initialization sequence
         e.setCaseID(sm.getVisit().getActiveCase().getCaseID());
+        System.out.println("EventAddBB.addEvent | CaseID: " + e.getCaseID());
         e.setEventDescription(formEventDesc);
         e.setActiveEvent(activeEvent);
         e.setEventOwnerUser(sm.getVisit().getActiveUser());
@@ -127,7 +125,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         // now check for persons to connect
         
         try {
-            ec.initiateEventProcessing(ceCase, e);
+            cc.processCEEvent(ceCase, e);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Successfully logged event.", ""));
@@ -145,9 +143,24 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
                             "This is a non-user system-level error that must be fixed by your Sys Admin"));
         }
         
-        
-        
-        return "caseManage";
+        try {
+            cc.refreshCase(ceCase);
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            ex.getMessage(), 
+                            "This is a non-user system-level error that must be fixed by your Sys Admin"));
+            
+        }
+        // get user back to the most logical case page
+        switch(e.getCategory().getEventType()){
+            case Compliance:
+                return "caseViolations";
+            default:
+                return "caseManage";
+                
+        }
     }
     
     
@@ -155,6 +168,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the formEventDesc
      */
     public String getFormEventDesc() {
+        formEventDesc = currentEvent.getEventDescription();
         return formEventDesc;
     }
     
@@ -179,6 +193,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the formDiscloseToMuni
      */
     public boolean isFormDiscloseToMuni() {
+        formDiscloseToMuni = currentEvent.isDiscloseToMunicipality();
         return formDiscloseToMuni;
     }
 
@@ -186,6 +201,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the formDiscloseToPublic
      */
     public boolean isFormDiscloseToPublic() {
+        formDiscloseToPublic = currentEvent.isDiscloseToPublic();
         return formDiscloseToPublic;
     }
 
@@ -193,6 +209,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the activeEvent
      */
     public boolean isActiveEvent() {
+        activeEvent = currentEvent.isActiveEvent();
         return activeEvent;
     }
 
@@ -200,6 +217,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the formEventNotes
      */
     public String getFormEventNotes() {
+        formEventNotes = currentEvent.getNotes();
         return formEventNotes;
     }
 
@@ -325,20 +343,20 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     }
 
     /**
-     * @return the event
+     * @return the currentEvent
      */
-    public Event getEvent() {
+    public Event getCurrentEvent() {
         SessionManager sm = getSessionManager();
         Event currentEvent = sm.getVisit().getActiveEvent();
-        event = currentEvent;
-        return event;
+        this.currentEvent = currentEvent;
+        return this.currentEvent;
     }
 
     /**
-     * @param event the event to set
+     * @param currentEvent the currentEvent to set
      */
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setCurrentEvent(Event currentEvent) {
+        this.currentEvent = currentEvent;
     }
 
     /**
@@ -543,6 +561,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the formRequireViewConfirmation
      */
     public boolean isFormRequireViewConfirmation() {
+        formRequireViewConfirmation = currentEvent.isRequiresViewConfirmation();
         return formRequireViewConfirmation;
     }
 

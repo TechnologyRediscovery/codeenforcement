@@ -80,6 +80,8 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         // the moment of event instantiaion
         Event event = new Event();
         event.setCategory(ec);
+        event.setActiveEvent(true);
+        event.setHidden(false);
         System.out.println("EventCoordinator.getInitalizedEvent | eventCat: " 
                 + event.getCategory().getEventCategoryTitle());
         return event;
@@ -141,13 +143,13 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
         while(li.hasNext()){
             cv = li.next();
-            sb.append(cv.getViolatedEnfElement().getOrdchapterNo());
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdchapterNo());
             sb.append(".");
-            sb.append(cv.getViolatedEnfElement().getOrdSecNum());
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSecNum());
             sb.append(".");
-            sb.append(cv.getViolatedEnfElement().getOrdSubSecNum());
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecNum());
             sb.append(":");
-            sb.append(cv.getViolatedEnfElement().getOrdSubSecTitle());
+            sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecTitle());
             sb.append("<br/><br/>");
         }
         e.setNotes(sb.toString());
@@ -196,12 +198,6 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
     }
     
-    public void insertPopulatedAutomatedEvent(Event ev) throws IntegrationException{
-        // the event must come to this method all ready to be sent
-        // down to the integrattor, which is what insertEvent will do.
-        System.out.println("EventCoordinator.insertAutomatedEvent | event Description: " + ev.getEventDescription());
-        insertEvent(ev);
-    }
     
     public LinkedList getEventList(CECase currentCase) throws IntegrationException{
         EventIntegrator ei = getEventIntegrator();
@@ -218,11 +214,11 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
                 Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseChangeEventCatID"))));
         
         StringBuilder sb = new StringBuilder();
-        sb.append("Case phase automatically advanced from  \'");
+        sb.append("Case phase changed from  \'");
         sb.append(pastPhase.toString());
         sb.append("\' to \'");
         sb.append(currentCase.getCasePhase().toString());
-        sb.append("\' triggered by an action-type event.");
+        sb.append("\' by an action event or manual override.");
         event.setEventDescription(sb.toString());
         
         event.setCaseID(currentCase.getCaseID());
@@ -236,15 +232,43 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         
         getFacesContext().addMessage(null,
             new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                    "The case phase has been automatically "
-                    + "advanced after a magic event occurred", ""));
+                    "The case phase has been changed", ""));
 
     } // close method
+    
+    public void generateAndInsertManualCasePhaseOverrideEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException, CaseLifecyleException{
+          EventIntegrator ei = getEventIntegrator();
+        SessionManager sm = getSessionManager();
+        CECase c = sm.getVisit().getActiveCase();
+        Event event = getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseManualOverride"))));
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("Manual case phase change from  \'");
+        sb.append(pastPhase.toString());
+        sb.append("\' to \'");
+        sb.append(currentCase.getCasePhase().toString());
+        sb.append("\' by a a case officer.");
+        event.setEventDescription(sb.toString());
+        
+        event.setCaseID(currentCase.getCaseID());
+        event.setDateOfRecord(LocalDateTime.now());
+        // not sure if I can access the session level info for the specific user here in the
+        // coordinator bean
+        event.setEventOwnerUser(sm.getVisit().getActiveUser());
+        event.setActiveEvent(true);
+        
+        insertEvent(event);
+        
+        getFacesContext().addMessage(null,
+            new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                    "The case phase has been changed", ""));
+    }
     
     
     
     /**
-     * An unused method for generating the appropriate event that will advance a case
+     * An unused (but very schnazzy) method for generating the appropriate event that will advance a case
      * to the next phase of its life cycle. Currently called by the method 
      * getEventForTriggeringCasePhaseAdvancement in CaseManageBB
      * @param c
@@ -307,7 +331,12 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
                 return e;
          
             default: 
-                throw new CaseLifecyleException("Cannot determine next action in case protocol");
+                // this is a holding default event to allow for debugging without other issues
+                e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
+                Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseManualOverride"))));
+                return e;
+                
+                //throw new CaseLifecyleException("Cannot determine next action in case protocol");
             
          } // close switch
     } // close method

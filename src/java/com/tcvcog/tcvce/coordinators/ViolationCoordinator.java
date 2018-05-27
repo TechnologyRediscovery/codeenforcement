@@ -94,11 +94,6 @@ public class ViolationCoordinator extends BackingBeanUtils implements Serializab
         
     }
     
-    public void recordCompliance(CodeViolation cv){
-        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        
-    }
-    
     public void deleteViolation(CodeViolation cv) throws IntegrationException{
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
         cvi.deleteCodeViolation(cv);
