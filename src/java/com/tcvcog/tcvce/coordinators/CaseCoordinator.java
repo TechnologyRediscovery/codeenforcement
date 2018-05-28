@@ -227,8 +227,6 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
                    
             complianceClosingEvent = ec.getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("closingAfterFullCompliance"))));
-            complianceClosingEvent.setDateOfRecord(LocalDateTime.now());
-            complianceClosingEvent.setEventOwnerUser(sm.getVisit().getActiveUser());
             processCEEvent(c, complianceClosingEvent);
             
         } // close if
@@ -236,19 +234,24 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     }
     
      
-    private void processClosingEvent(CECase c, Event e) throws IntegrationException{
+    private void processClosingEvent(CECase c, Event e) throws IntegrationException, CaseLifecyleException{
         CaseIntegrator ci = getCaseIntegrator();
         EventIntegrator ei = getEventIntegrator();
+        SessionManager sm = getSessionManager();
         CasePhase closedPhase = CasePhase.Closed;
         c.setCasePhase(closedPhase);
         ci.changeCECasePhase(c);
+        
         c.setClosingDate(LocalDateTime.now());
+        updateCase(c);
         // now load up the closing event before inserting it
         // we'll probably want to get this text from a resource file instead of
         // hardcoding it down here in the Java
-        e.setEventDescription("Automatic case closure after full compliance achieved");
-        e.setNotes("Autmatically generated event and phase change based on all "
-                + "CodeViolations assocaited with this case having been marked with a compliance date");
+        e.setDateOfRecord(LocalDateTime.now());
+        e.setEventOwnerUser(sm.getVisit().getActiveUser());
+        e.setEventDescription(getResourceBundle(Constants.MESSAGE_BUNDLE).getString("automaticClosingEventDescription"));
+        e.setNotes(getResourceBundle(Constants.MESSAGE_BUNDLE).getString("automaticClosingEventNotes"));
+        e.setCaseID(c.getCaseID());
         ei.insertEvent(e);
         refreshCase(c);
     }
@@ -540,6 +543,16 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
        }
        newCitation.setViolationList(al);
        return newCitation;
+   }
+   
+   public void updateCase(CECase c) throws CaseLifecyleException, IntegrationException{
+       CaseIntegrator ci = getCaseIntegrator();
+       if(c.getClosingDate() != null){
+            if(c.getClosingDate().isBefore(c.getOriginationDate())){
+                throw new CaseLifecyleException("You cannot update a case's origination date to be after its closing date");
+            }
+       }
+       ci.updateCECase(c);
    }
    
    public void deleteCitation(Citation c) throws IntegrationException{

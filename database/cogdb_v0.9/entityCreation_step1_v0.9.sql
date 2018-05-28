@@ -186,8 +186,6 @@ CREATE TABLE property
     lotAndBlock                     text NOT NULL,
     address                         text NOT NULL,
     propertyUseType_UseID           INTEGER,
-    rental                          boolean ,
-    multiUnit                       boolean ,
     useGroup                        text,
     constructionType                text,
     countyCode                      text DEFAULT '02',
@@ -965,20 +963,18 @@ CREATE SEQUENCE IF NOT EXISTS spacetypeice_spacetypeiceid_seq
     CACHE 1;
 
 
-
-
-CREATE TABLE spacetypeelement 
+CREATE TABLE spacetypeice 
 (
     spaceTypeIceID                  INTEGER NOT NULL PRIMARY KEY,
     spaceTypeID                     INTEGER NOT NULL, --fk
-    codelement_eleID                INTEGER NOT NULL, --fk
+    inspectablecodelement_eleid     INTEGER NOT NULL, --fk
     notes                           text
 
 ) ;
 
 ALTER TABLE spacetypeice ADD CONSTRAINT spaceType_typeID_fk FOREIGN KEY ( spaceTypeID ) REFERENCES spacetype (spaceTypeID) ;
 
-ALTER TABLE spacetypeice ADD CONSTRAINT codelementID_fk FOREIGN KEY ( codelement_eleID ) REFERENCES codelement (codelElementID) ;
+ALTER TABLE spacetypeice ADD CONSTRAINT inspectablecodelementid_fk FOREIGN KEY (inspectablecodelement_eleid)  REFERENCES inspectablecodelement (inspectablecodelelementid);
 
 CREATE SEQUENCE IF NOT EXISTS checklist_checklistID_seq
     START WITH 10
@@ -1004,17 +1000,25 @@ CREATE SEQUENCE IF NOT EXISTS chklistSTICEID_seq
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE checklistspacetypeelement
+
+CREATE TABLE checklistspacetypeice
 (
-    chklistSpaceTypeElementID                   INTEGER DEFAULT nextval('chklistSTICEID_seq') CONSTRAINT chklistSTICEID_pk PRIMARY KEY,
-    chklist_checklistID                         INTEGER NOT NULL,
-    spacetypeice_typeID                         CREATE TABLE codeelement                   INTEGER NOT NULL,
-    required                                    boolean
-) ;
+  chkliststiceid                        integer NOT NULL DEFAULT nextval('chkliststiceid_seq'::regclass),
+  chklist_checklistid                   integer NOT NULL,
+  spacetypeice_typeid                   integer NOT NULL,
+  required                              boolean,
+  
+  CONSTRAINT chkliststiceid_pk PRIMARY KEY (chkliststiceid),
 
-ALTER TABLE checklistspacetypeice ADD CONSTRAINT cklist_spacetypeice_checklistID_fk FOREIGN KEY ( chklist_checklistID ) REFERENCES inspectionchecklist (checklistID);
+  CONSTRAINT cklist_spacetypeice_checklistid_fk FOREIGN KEY (chklist_checklistid)
+      REFERENCES public.inspectionchecklist (checklistid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
 
-ALTER TABLE checklistspacetypeice ADD CONSTRAINT cklist_spacetypeice_fk FOREIGN KEY (spacetypeice_typeID) REFERENCES spacetypeice (spaceTypeIceID);
+  CONSTRAINT cklist_spacetypeice_fk FOREIGN KEY (spacetypeice_typeid)
+      REFERENCES public.spacetypeice (spacetypeiceid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
 
 CREATE SEQUENCE IF NOT EXISTS inspectedspacetypeice_inspectedsticeID_seq
     START WITH 100
@@ -1090,7 +1094,7 @@ CREATE TABLE occupancypermit
     dateExpires                     TIMESTAMP WITH TIME ZONE,
     issuedUnder                     INTEGER NOT NULL CONSTRAINT codesource_sourceID_fk REFERENCES codesource,
     specialConditions               text,
-    permitComments                  text
+    notes                           text
 
 ) ;
 

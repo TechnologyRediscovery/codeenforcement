@@ -90,7 +90,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     public ArrayList<Person> getPropertyPersonList() {
         PersonIntegrator pi = getPersonIntegrator();
         try {
-            propertyPersonList = pi.getPersonListByPropertyID(currentProperty);
+            propertyPersonList = pi.getPersonList(currentProperty);
         } catch (IntegrationException ex) {
             // do nothing
         }

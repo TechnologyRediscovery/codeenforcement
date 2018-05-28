@@ -780,9 +780,9 @@
     
     <managed-bean>
         <managed-bean-name>inspectableCodeElementBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.InspectableCodeElementBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.application.InspectableCodeElementBB</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
     
     <navigation-rule>
         <from-view-id>inspectableCodeElement.xhtml</from-view-id>
@@ -891,5 +891,39 @@
         <managed-bean-class>com.tcvcog.tcvce.application.NavigationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>caseUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CaseUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>occupancyCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.coordinators.OccupancyCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>paymentCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.coordinators.PaymentCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>occupancyPermitApplicationIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.OccupancyPermitApplicationIntegrator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>inspectedSpaceTypeICEIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.InspectedSpaceTypeICEIntegrator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>inspectionChecklistIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator</managed-bean-class>
     
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>occupancyPermitIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 </faces-config>

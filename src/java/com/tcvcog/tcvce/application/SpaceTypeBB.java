@@ -19,9 +19,9 @@ package com.tcvcog.tcvce.application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.integration.SpaceTypeIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.SpaceTypeIntegrator;
 
-import com.tcvcog.tcvce.occupancy.SpaceType;
+import com.tcvcog.tcvce.occupancy.entities.SpaceType;
 
 import java.io.Serializable;
 import javax.faces.event.*;

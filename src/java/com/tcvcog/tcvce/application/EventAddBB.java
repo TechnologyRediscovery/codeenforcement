@@ -230,7 +230,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         SessionManager sm = getSessionManager();
         
         try {
-            candidatePersonList = pi.getPersonListByPropertyID(sm.getVisit().getActiveCase().getProperty());
+            candidatePersonList = pi.getPersonList(sm.getVisit().getActiveCase().getProperty());
         } catch (IntegrationException ex) {
             // do nothing
         }

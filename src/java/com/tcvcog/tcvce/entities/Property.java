@@ -5,16 +5,12 @@
  */
 package com.tcvcog.tcvce.entities;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
+import java.util.ArrayList;
 
 /**
- *SELECT propertyid, municipality_municode, parid, lotandblock, address, 
-       propertyusetype_propertyuseid, rental, multiunit, usegroup, constructiontype, 
-       countycode, apartmentno
-  FROM public.property;
- * 
- * @author cedba
+ * Foundational entity for the system: Property
+ * @author Eric Darsow
  */
 
 public class Property {
@@ -29,18 +25,16 @@ public class Property {
     private String propertyUseTypeName;
     private int propertyUseTypeID;
 
-    private boolean rental;
-    private boolean multiUnit;
-    
     private String useGroup;
     private String constructionType;
     private String countyCode;
     
     private String notes;
     
-    private LinkedList<CECase> propertyCaseList;
-    private HashMap<PropertyUnit, Integer> propertyUnitHashMap;
-    private LinkedList<Person> propertyPersonList;
+    private ArrayList<CECase> propertyCaseList;
+    private ArrayList<PropertyUnit> propertyUnitList;
+    private ArrayList<Person> propertyPersonList;
+    
     
     
   /**
@@ -135,34 +129,6 @@ public class Property {
     }
 
     /**
-     * @return the rental
-     */
-    public boolean isRental() {
-        return rental;
-    }
-
-    /**
-     * @param rental the rental to set
-     */
-    public void setRental(boolean rental) {
-        this.rental = rental;
-    }
-
-    /**
-     * @return the multiUnit
-     */
-    public boolean isMultiUnit() {
-        return multiUnit;
-    }
-
-    /**
-     * @param multiUnit the multiUnit to set
-     */
-    public void setMultiUnit(boolean multiUnit) {
-        this.multiUnit = multiUnit;
-    }
-
-    /**
      * @return the useGroup
      */
     public String getUseGroup() {
@@ -207,14 +173,14 @@ public class Property {
     /**
      * @return the propertyCaseList
      */
-    public LinkedList<CECase> getPropertyCaseList() {
+    public ArrayList<CECase> getPropertyCaseList() {
         return propertyCaseList;
     }
 
     /**
      * @param propertyCaseList the propertyCaseList to set
      */
-    public void setPropertyCaseList(LinkedList<CECase> propertyCaseList) {
+    public void setPropertyCaseList(ArrayList<CECase> propertyCaseList) {
         this.propertyCaseList = propertyCaseList;
     }
 
@@ -222,14 +188,14 @@ public class Property {
     /**
      * @return the propertyPersonList
      */
-    public LinkedList<Person> getPropertyPersonList() {
+    public ArrayList<Person> getPropertyPersonList() {
         return propertyPersonList;
     }
 
     /**
      * @param propertyPersonList the propertyPersonList to set
      */
-    public void setPropertyPersonList(LinkedList<Person> propertyPersonList) {
+    public void setPropertyPersonList(ArrayList<Person> propertyPersonList) {
         this.propertyPersonList = propertyPersonList;
     }
 
@@ -276,21 +242,17 @@ public class Property {
     }
 
     /**
-     * @return the propertyUnitHashMap
+     * @return the propertyUnitList
      */
-    public HashMap<PropertyUnit, Integer> getPropertyUnitHashMap() {
-        return propertyUnitHashMap;
+    public ArrayList<PropertyUnit> getPropertyUnitList() {
+        return propertyUnitList;
     }
 
     /**
-     * @param propertyUnitHashMap the propertyUnitHashMap to set
+     * @param propertyUnitList the propertyUnitList to set
      */
-    public void setPropertyUnitHashMap(HashMap<PropertyUnit, Integer> propertyUnitHashMap) {
-        this.propertyUnitHashMap = propertyUnitHashMap;
+    public void setPropertyUnitList(ArrayList<PropertyUnit> propertyUnitList) {
+        this.propertyUnitList = propertyUnitList;
     }
-    
-  
 
-    
-    
 }

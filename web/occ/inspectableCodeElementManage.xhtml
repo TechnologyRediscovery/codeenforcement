@@ -25,7 +25,7 @@
                                 id="inspectableCodeElements"
                                 var="i"
                                 selectionMode="single"
-                                selection="#{inspectableCodeElementBB.selectedIce}"
+                                selection="#{inspectableCodeElementBB.selectedICE}"
                                 rowKey="#{i.inspectableCodeElementId}"
                                 value="#{inspectableCodeElementBB.inspectableCodeElementList}"
                                 tableStyleClass="primeDataTable"
@@ -112,7 +112,8 @@
                                 </f:facet>   
                                 
                                 <p:spacer height="15"/>
-                                <!--<h:panelGroup>
+                                <!--
+                                <h:panelGroup>
                                     <h:outputLabel>
                                     <h:outputText value="Add date: " />
                                     </h:outputLabel>
@@ -129,11 +130,13 @@
                                             <h:message for="iceDate" showDetail="true" showSummary="true" 
                                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
-                                </h:panelGroup>-->
+                                </h:panelGroup>
+                                -->
                              </h:panelGrid>
                             <p:commandButton ajax="false" value="Add Code Element" action="#{inspectableCodeElementBB.addInspectableCodeElement}" />
                         </h:form>
-                       <!--Add "#" tags to expression lang. <h:form>
+                       <!--Add "#" tags to expression lang. 
+                       <h:form>
                             <p:dataTable
                                 id="inspectableCodeElements"
                                 var="i"
@@ -163,7 +166,8 @@
                                 </p:column>
                             </p:dataTable>
                             
-                        </h:form>-->
+                        </h:form>
+                       -->
                     </f:view>
                         
                 </div>        

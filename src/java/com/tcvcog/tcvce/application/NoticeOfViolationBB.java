@@ -532,7 +532,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
         SessionManager sm = getSessionManager();
         Property prop = sm.getVisit().getActiveProp();
         try {
-            personCandidateAL = pi.getPersonListByPropertyID(prop);
+            personCandidateAL = pi.getPersonList(prop);
         } catch (IntegrationException ex) {
             System.out.println(ex);
         }

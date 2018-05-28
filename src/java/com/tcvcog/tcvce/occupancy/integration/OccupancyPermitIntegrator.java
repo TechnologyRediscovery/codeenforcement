@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2018 Adam Gutonski
+ * Copyright (C) 2018 Turtle Creek Valley
+Council of Governments, PA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,22 +15,81 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.integration;
+package com.tcvcog.tcvce.occupancy.integration;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.entities.OccupancyPermitType;
+import com.tcvcog.tcvce.integration.CodeIntegrator;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyPermitType;
 import java.io.Serializable;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
-
-
 
 /**
  *
- * @author Adam Gutonski
+ * @author sylvia
  */
-public class OccupancyPermitTypeIntegrator extends BackingBeanUtils implements Serializable {
+public class OccupancyPermitIntegrator extends BackingBeanUtils implements Serializable {
+
+    /**
+     * Creates a new instance of OccupancyPermitIntegrator
+     */
+    public OccupancyPermitIntegrator() {
+    }
+    
+    public OccupancyPermit getOccupancyPermit(int permitID) throws IntegrationException{
+        OccupancyPermit op = null;
+        
+        String query =  "SELECT permitid, referenceno, occinspec_inspectionid, permittype, dateissued, \n" +
+                        " dateexpires, issuedunder, specialconditions, notes\n" +
+                        " FROM public.occupancypermit WHERE permitid=?;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, permitID);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                op = generateOccupancyPermit(rs);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to build property unit list due to an DB integration error", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return op;
+        
+    }
+    
+    public OccupancyPermit generateOccupancyPermit(ResultSet rs) throws SQLException, IntegrationException{
+        OccupancyInspectionIntegrator ii = getOccupancyInpsectionIntegrator();
+        CodeIntegrator ci = getCodeIntegrator();
+        OccupancyPermit op = new OccupancyPermit();
+        op.setPermitID(rs.getInt("permitid"));
+        op.setReferenceNo(rs.getString("referenceno"));
+        op.setInspection(ii.getOccupancyInspection(rs.getInt("occinspec_inspectionid")));
+        op.setDateIssued(rs.getTimestamp("dateissued").toLocalDateTime());
+        op.setDateExpires(rs.getTimestamp("dateexpires").toLocalDateTime());
+        op.setIssuingCodeSource(ci.getCodeSource(rs.getInt("issuedunder")));
+        op.setSpecialConditions(rs.getString("specialconditions"));
+        op.setNotes(rs.getString("notes"));
+        
+        return op;
+    }
     
     public void updateOccupancyPermitType(OccupancyPermitType opt) throws IntegrationException {
         String query = "UPDATE public.occpermittype\n" +

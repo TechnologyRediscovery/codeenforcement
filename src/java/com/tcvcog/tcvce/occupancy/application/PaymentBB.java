@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.application;
+package com.tcvcog.tcvce.occupancy.application;
 
+import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.integration.PaymentIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.entities.Payment;
 import com.tcvcog.tcvce.entities.PaymentType;
 import java.io.Serializable;

@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.application;
+package com.tcvcog.tcvce.occupancy.application;
 
 
+import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Municipality;
-import com.tcvcog.tcvce.integration.OccupancyInspectionFeeIntegrator;
-import com.tcvcog.tcvce.entities.OccupancyInspectionFee;
+import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionFeeIntegrator;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyInspectionFee;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.*;

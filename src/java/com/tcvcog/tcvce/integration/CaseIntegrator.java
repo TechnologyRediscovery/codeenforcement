@@ -21,16 +21,14 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
-import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.Event;
-import com.tcvcog.tcvce.entities.Person;
+import com.tcvcog.tcvce.entities.Property;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -45,8 +43,8 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
     public CaseIntegrator() {
     }
     
-    public LinkedList getCECasesByProp(int propertyID) throws IntegrationException{
-        LinkedList<CECase> caseList = new LinkedList();
+    public ArrayList getCECasesByProp(Property p) throws IntegrationException{
+        ArrayList<CECase> caseList = new ArrayList();
         String query = "SELECT \n" +
             "  caseid\n" +
             "FROM \n" +
@@ -62,7 +60,7 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
         try {
             
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, propertyID);
+            stmt.setInt(1, p.getPropertyID());
             //System.out.println("CaseIntegrator.getCECasesByProp| sql: " + stmt.toString());
             rs = stmt.executeQuery();
             
@@ -150,7 +148,7 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
             while(rs.next()){
                 c.setCaseID(rs.getInt("caseid"));
                 c.setPublicControlCode(rs.getInt("cecasepubliccc"));
-                c.setProperty(pi.getProperty(rs.getInt("property_propertyid")));
+                c.setProperty(pi.getProperty(rs.getInt("property_propertyid"), true));
                 c.setPropertyUnit(null); // change when units are integrated
                 
                 c.setUser(ui.getUserByUserID(rs.getInt("login_userid")));
@@ -264,9 +262,42 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
      * violations, events, and people to a CE case.
      * 
      * @param cecase the case to updated, with updated member variables
+     * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public void updateCECase(CECase cecase){
+    public void updateCECase(CECase cecase) throws IntegrationException{
+        String query =  "UPDATE public.cecase\n" +
+                        "   SET cecasepubliccc=?, \n" +
+                        "       casename=?, originationdate=?, closingdate=?, notes=?\n" +
+                        " WHERE caseid=?;";
+        PreparedStatement stmt = null;
+        Connection con = null;
         
+        try {
+            
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, cecase.getPublicControlCode());
+            stmt.setString(2, cecase.getCaseName());
+            stmt.setTimestamp(3, java.sql.Timestamp
+                    .valueOf(cecase.getOriginationDate()));
+            if(cecase.getClosingDate() != null){
+                stmt.setTimestamp(4, java.sql.Timestamp
+                        .valueOf(cecase.getClosingDate()));
+                
+            }
+            stmt.setString(5, cecase.getNotes());
+            stmt.setInt(6, cecase.getCaseID());
+            stmt.execute();
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot udpate case due to a database storage issue", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
         
     }
     

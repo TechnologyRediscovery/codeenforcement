@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.application;
+package com.tcvcog.tcvce.occupancy.application;
+import com.tcvcog.tcvce.application.BackingBeanUtils;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import com.tcvcog.tcvce.domain.IntegrationException;
 
-import com.tcvcog.tcvce.integration.InspectableCodeElementIntegrator;
-import com.tcvcog.tcvce.occupancy.InspectableCodeElement;
+import com.tcvcog.tcvce.occupancy.integration.InspectableCodeElementIntegrator;
+import com.tcvcog.tcvce.occupancy.entities.InspectableCodeElement;
 
 import java.io.Serializable;
 import javax.faces.event.*;
@@ -40,7 +41,7 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
     //i believe this LinkList will load up the objects from our database to ship back
     //to the XHTML page...?
     private LinkedList<InspectableCodeElement> inspectableCodeElementList;
-    private InspectableCodeElement selectedIce;
+    private InspectableCodeElement selectedICE;
     private int formCodeElementID;
     private String formInspectionTips;
     //private String formNonComplianceNotes;
@@ -90,7 +91,7 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
     
     public void commitInspectableCodeElementUpdates(ActionEvent e){
         InspectableCodeElementIntegrator iceIntegrator = getInspectableCodeElementIntegrator();
-        InspectableCodeElement ice = selectedIce;
+        InspectableCodeElement ice = selectedICE;
         
         ice.setCodeElementID(formCodeElementID);
         ice.setInspectionTips(formInspectionTips);
@@ -111,9 +112,9 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
     
     public void deleteSelectedInspectableCodeElement(ActionEvent e){
         InspectableCodeElementIntegrator iceIntegrator = getInspectableCodeElementIntegrator();
-        if(getSelectedIce() != null){
+        if(getSelectedICE() != null){
             try {
-                iceIntegrator.deleteInspectableCodeElement(getSelectedIce());
+                iceIntegrator.deleteInspectableCodeElement(getSelectedICE());
                 getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Inspectable code element record deleted forever!", ""));
@@ -155,10 +156,10 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
     }
     
     public void editInspectableCodeElement(ActionEvent e){
-        if(getSelectedIce() != null){
-            setFormCodeElementID(selectedIce.getCodeElementID());
-            setFormInspectionTips(selectedIce.getInspectionTips());
-            setFormInspectionPriority(selectedIce.getInspectionPriority());
+        if(getSelectedICE() != null){
+            setFormCodeElementID(selectedICE.getCodeElementID());
+            setFormInspectionTips(selectedICE.getInspectionTips());
+            setFormInspectionPriority(selectedICE.getInspectionPriority());
             
         } else {
             getFacesContext().addMessage(null,
@@ -224,17 +225,17 @@ public class InspectableCodeElementBB extends BackingBeanUtils implements Serial
     }
 
     /**
-     * @return the selectedIce
+     * @return the selectedICE
      */
-    public InspectableCodeElement getSelectedIce() {
-        return selectedIce;
+    public InspectableCodeElement getSelectedICE() {
+        return selectedICE;
     }
 
     /**
-     * @param selectedIce the selectedIce to set
+     * @param selectedICE the selectedICE to set
      */
-    public void setSelectedIce(InspectableCodeElement selectedIce) {
-        this.selectedIce = selectedIce;
+    public void setSelectedICE(InspectableCodeElement selectedICE) {
+        this.selectedICE = selectedICE;
     }
 
     /**

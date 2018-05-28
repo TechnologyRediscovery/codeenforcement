@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.entities;
+package com.tcvcog.tcvce.occupancy.entities;
 
+import com.tcvcog.tcvce.entities.Municipality;
 import java.time.LocalDateTime;
 
 /**

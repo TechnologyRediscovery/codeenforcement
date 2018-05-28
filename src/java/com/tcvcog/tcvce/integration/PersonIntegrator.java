@@ -28,7 +28,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -87,26 +86,9 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             System.out.println(ex.toString());
             throw new IntegrationException("PersonIntegrator.getPerson | Unable to retrieve person", ex);
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    /* ignored */ }
-            }
+           if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+           if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+           if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         return person;
     }
@@ -215,26 +197,9 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             throw new IntegrationException("Cannot search for person", ex);
 
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    /* ignored */ }
-            }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
 
         return ll;
@@ -281,20 +246,8 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             throw new IntegrationException("Unable to insert person and connect to property", ex);
 
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
+           if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+           if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
 
     }
@@ -372,24 +325,9 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             System.out.println(ex);
             throw new IntegrationException("Error inserting new person", ex);
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException ex) {/* ignored */ }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    /* ignored */ }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
 
         return lastID;
@@ -424,20 +362,8 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             throw new IntegrationException("Unable to insert person and connect to property", ex);
 
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
+           if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+           if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
 
     }
@@ -543,22 +469,12 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             throw new IntegrationException("Unable to update person");
 
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException ex) {/* ignored */ }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
     } // close updatePerson
 
-    public ArrayList getPersonListByPropertyID(Property p) throws IntegrationException {
+    public ArrayList getPersonList(Property p) throws IntegrationException {
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -582,30 +498,43 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
             System.out.println(ex.toString());
             throw new IntegrationException("PersonIntegrator.getPerson | Unable to retrieve person", ex);
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    /* ignored */ }
-            }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
 
         return al;
 
+    }
+    
+    public ArrayList<Person> getPersonList(int propertyID) throws IntegrationException{
+        ArrayList<Person> personList = new ArrayList();
+        String query =  "SELECT person_personid\n" +
+                        "  FROM public.propertyunitperson WHERE propertyunit_unitid=?;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, propertyID);
+            System.out.println("PropertyIntegrator.getProperty | sql: " + stmt.toString());
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                personList.add(getPerson(rs.getInt("person_personid")));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("PropertyIntegrator.getProperty | Unable to retrieve property by ID number", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        
+        return personList;
+        
     }
 
     public HashMap getPersonMapByCaseID(int caseID) {
@@ -630,18 +559,8 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
                     + "this person has been attached to another database entity"
                     + "such as a case or event. (Best leave this person in.)");
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException ex) {/* ignored */ }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    /* ignored */
-                }
-            }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
     }
 

@@ -166,7 +166,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
         SessionManager sm = getSessionManager();
         
         try {
-            propertyPersonList = pi.getPersonListByPropertyID(sm.getVisit().getActiveProp());
+            propertyPersonList = pi.getPersonList(sm.getVisit().getActiveProp());
         } catch (IntegrationException ex) {
             // do nothing
         }

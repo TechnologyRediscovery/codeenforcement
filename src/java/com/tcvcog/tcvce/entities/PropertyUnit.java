@@ -17,7 +17,8 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.entities;
 
-import java.util.LinkedList;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
+import java.util.ArrayList;
 
 /**
  *
@@ -28,7 +29,12 @@ public class PropertyUnit {
     private int unitID;
     private String unitNumber;
     private String notes;
-    private LinkedList<Person> propertyUnitPeople;
+    private String otherKnownAddress;
+    private boolean rental;
+    private Property thisProperty;
+    private ArrayList<Person> propertyUnitPeople;
+    private ArrayList<OccupancyPermit> occupancyPermitList;
+    
 
     /**
      * @return the unitID
@@ -75,15 +81,71 @@ public class PropertyUnit {
     /**
      * @return the propertyUnitPeople
      */
-    public LinkedList<Person> getPropertyUnitPeople() {
+    public ArrayList<Person> getPropertyUnitPeople() {
         return propertyUnitPeople;
     }
 
     /**
      * @param propertyUnitPeople the propertyUnitPeople to set
      */
-    public void setPropertyUnitPeople(LinkedList<Person> propertyUnitPeople) {
+    public void setPropertyUnitPeople(ArrayList<Person> propertyUnitPeople) {
         this.propertyUnitPeople = propertyUnitPeople;
+    }
+
+    /**
+     * @return the otherKnownAddress
+     */
+    public String getOtherKnownAddress() {
+        return otherKnownAddress;
+    }
+
+    /**
+     * @param otherKnownAddress the otherKnownAddress to set
+     */
+    public void setOtherKnownAddress(String otherKnownAddress) {
+        this.otherKnownAddress = otherKnownAddress;
+    }
+
+    /**
+     * @return the rental
+     */
+    public boolean isRental() {
+        return rental;
+    }
+
+    /**
+     * @param rental the rental to set
+     */
+    public void setRental(boolean rental) {
+        this.rental = rental;
+    }
+
+    /**
+     * @return the occupancyPermitList
+     */
+    public ArrayList<OccupancyPermit> getOccupancyPermitList() {
+        return occupancyPermitList;
+    }
+
+    /**
+     * @param occupancyPermitList the occupancyPermitList to set
+     */
+    public void setOccupancyPermitList(ArrayList<OccupancyPermit> occupancyPermitList) {
+        this.occupancyPermitList = occupancyPermitList;
+    }
+
+    /**
+     * @return the thisProperty
+     */
+    public Property getThisProperty() {
+        return thisProperty;
+    }
+
+    /**
+     * @param thisProperty the thisProperty to set
+     */
+    public void setThisProperty(Property thisProperty) {
+        this.thisProperty = thisProperty;
     }
     
 }

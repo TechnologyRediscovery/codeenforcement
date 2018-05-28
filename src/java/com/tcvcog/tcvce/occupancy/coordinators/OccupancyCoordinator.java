@@ -15,16 +15,18 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.integration;
+package com.tcvcog.tcvce.occupancy.coordinators;
 
 /**
  *
  * @author sylvia
  */
+public class OccupancyCoordinator {
 
-import java.util.LinkedList;
-
-public class RoomIntegrator {
+    /**
+     * Creates a new instance of OccupancyCoordinator
+     */
+    public OccupancyCoordinator() {
+    }
     
-    StringBuilder rBuilder = new StringBuilder();
 }
