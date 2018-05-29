@@ -254,6 +254,7 @@ CREATE TABLE propertyunit
     unitID                          INTEGER DEFAULT nextval('propertunit_unitID_seq') NOT NULL,
     unitNumber                      text,
     property_propertyID             INTEGER NOT NULL,
+    rental                          boolean,
     otherKnownAddress               text,
     notes                           text
 ) ;
@@ -897,6 +898,7 @@ CREATE TABLE occupancyinspection
     propertyUnitID                  INTEGER NOT NULL, --fk 
     login_userID                    INTEGER NOT NULL, --fk
     firstInspectionDate             TIMESTAMP WITH TIME ZONE,
+    firstInspectionDate             TIMESTAMP WITH TIME ZONE,
     firstInspectionPass             boolean DEFAULT FALSE,
     secondInspectionDate            TIMESTAMP WITH TIME ZONE,
     secondInspectionPass            boolean DEFAULT FALSE,
@@ -916,27 +918,6 @@ ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_propUnit_fk FOREIGN KEY
 ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_assignedFee_fk FOREIGN KEY (assignedFee) REFERENCES occinspectionfee (feeID);
 
 
-
-CREATE SEQUENCE IF NOT EXISTS ice_iceID_seq
-    START WITH 1000
-    INCREMENT BY 1
-    MINVALUE 1000
-    NO MAXVALUE
-    CACHE 1;
-
-
-CREATE TABLE inspectablecodelement
-(
-    inspectableCodelElementID       INTEGER DEFAULT nextval('ice_iceID_seq') NOT NULL,
-    codeElementID                   INTEGER NOT NULL, --fk
-    inspectionPriority              boolean,
-    inspectionTips                  text
-
-) ;
-
-ALTER TABLE inspectablecodelement ADD CONSTRAINT inspectableCodelElementID_pk PRIMARY KEY (inspectableCodelElementID) ;
-
-ALTER TABLE inspectablecodelement ADD CONSTRAINT codeElementID_fk FOREIGN KEY ( codeElementID ) REFERENCES codeelement (elementID) ;
 
 CREATE SEQUENCE IF NOT EXISTS spacetype_spacetypeid_seq 
     START WITH 10
@@ -967,14 +948,14 @@ CREATE TABLE spacetypeice
 (
     spaceTypeIceID                  INTEGER NOT NULL PRIMARY KEY,
     spaceTypeID                     INTEGER NOT NULL, --fk
-    inspectablecodelement_eleid     INTEGER NOT NULL, --fk
+    codeelement_eleid                INTEGER NOT NULL, --fk
     notes                           text
 
 ) ;
 
 ALTER TABLE spacetypeice ADD CONSTRAINT spaceType_typeID_fk FOREIGN KEY ( spaceTypeID ) REFERENCES spacetype (spaceTypeID) ;
 
-ALTER TABLE spacetypeice ADD CONSTRAINT inspectablecodelementid_fk FOREIGN KEY (inspectablecodelement_eleid)  REFERENCES inspectablecodelement (inspectablecodelelementid);
+ALTER TABLE spacetypeice ADD CONSTRAINT inspectablecodelementid_fk FOREIGN KEY (codeelement_eleid)  REFERENCES codeelement (elementid);
 
 CREATE SEQUENCE IF NOT EXISTS checklist_checklistID_seq
     START WITH 10
@@ -1020,16 +1001,16 @@ CREATE TABLE checklistspacetypeice
 );
 
 
-CREATE SEQUENCE IF NOT EXISTS inspectedspacetypeice_inspectedsticeID_seq
+CREATE SEQUENCE IF NOT EXISTS inspectedspacetypeelement_inspectedstelid_seq
     START WITH 100
     INCREMENT BY 1
     MINVALUE 100
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE inspectedspacetypeice
+CREATE TABLE inspectedspacetypeelement
 (
-    inspectedSTICEID                            INTEGER DEFAULT nextval('inspectedspacetypeice_inspectedsticeID_seq') CONSTRAINT inspectedspacetypeice_inspectedsticeID PRIMARY KEY,
+    inspectedstelid                            INTEGER DEFAULT nextval('inspectedspacetypeelement_inspectedstelid_seq') CONSTRAINT inspectedspacetypeice_inspectedsticeID PRIMARY KEY,
     inspection_inspectionID                     INTEGER NOT NULL CONSTRAINT inspectedSTICE_inspection_inspectionID_fk REFERENCES occupancyinspection (inspectionID),
     chklistSTICE_ID                             INTEGER NOT NULL CONSTRAINT inspectedSTICE_chklistSTICE_ID_fk REFERENCES checklistspacetypeice (chklistSTICEID),
     compliance                                  boolean default FALSE,

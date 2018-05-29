@@ -18,7 +18,7 @@ Council of Governments, PA
 package com.tcvcog.tcvce.entities;
 
 /**
- *
+ *  Represents a codesetelement stated with fidelity to the ERD
  * @author sylvia
  */
 public class EnforcableCodeElement extends CodeElement{

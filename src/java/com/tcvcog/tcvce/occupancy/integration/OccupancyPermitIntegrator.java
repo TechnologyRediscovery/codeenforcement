@@ -19,6 +19,8 @@ package com.tcvcog.tcvce.occupancy.integration;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.Property;
+import com.tcvcog.tcvce.entities.PropertyUnit;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
@@ -29,6 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -90,6 +93,42 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
         
         return op;
     }
+    
+    public ArrayList<OccupancyPermit> getOccupancyPermitList(PropertyUnit pu){
+        
+    }
+    
+    public ArrayList<OccupancyPermit> getOccupancyPermitList(Property p){
+        
+        ArrayList<OccupancyPermit> permitList = new ArrayList();
+        String query =  " ";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, permitID);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                permitList.add(generateOccupancyPermit(rs.getInt("permitid")));
+                
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to build property unit list due to an DB integration error", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        
+    }
+    
+    
     
     public void updateOccupancyPermitType(OccupancyPermitType opt) throws IntegrationException {
         String query = "UPDATE public.occpermittype\n" +

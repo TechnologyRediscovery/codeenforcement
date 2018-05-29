@@ -243,7 +243,6 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
             }
             stmt.setString(6, oif.getOccupancyInspectionFeeNotes());
             stmt.setInt(7, oif.getOccupancyInspectionFeeID());
-            System.out.println("TRYING TO EXECUTE UPDATE METHOD");
             stmt.executeUpdate();
         } catch (SQLException ex){
             System.out.println(ex.toString());

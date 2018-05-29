@@ -96,12 +96,6 @@
         <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestBean</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    <managed-bean>
-        <description>Utility class for producting a hash map of action requestor types</description>
-        <managed-bean-name>requestorTypesMap</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.resultsets.RequestorTypesMap</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
     
     
     <managed-bean>

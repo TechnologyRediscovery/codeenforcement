@@ -222,7 +222,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     }
     
     
-    public Property getProperty(int propertyID, boolean populateObjectList) throws IntegrationException{
+     public Property getProperty(int propertyID, boolean populateObjectList) throws IntegrationException{
         Property p = new Property();
          String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
                 + " WHERE propertyid = ?;";

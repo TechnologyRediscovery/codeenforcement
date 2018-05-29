@@ -31,9 +31,7 @@ public class Property {
     
     private String notes;
     
-    private ArrayList<CECase> propertyCaseList;
-    private ArrayList<PropertyUnit> propertyUnitList;
-    private ArrayList<Person> propertyPersonList;
+  
     
     
     
@@ -170,34 +168,7 @@ public class Property {
         this.countyCode = countyCode;
     }
 
-    /**
-     * @return the propertyCaseList
-     */
-    public ArrayList<CECase> getPropertyCaseList() {
-        return propertyCaseList;
-    }
-
-    /**
-     * @param propertyCaseList the propertyCaseList to set
-     */
-    public void setPropertyCaseList(ArrayList<CECase> propertyCaseList) {
-        this.propertyCaseList = propertyCaseList;
-    }
-
    
-    /**
-     * @return the propertyPersonList
-     */
-    public ArrayList<Person> getPropertyPersonList() {
-        return propertyPersonList;
-    }
-
-    /**
-     * @param propertyPersonList the propertyPersonList to set
-     */
-    public void setPropertyPersonList(ArrayList<Person> propertyPersonList) {
-        this.propertyPersonList = propertyPersonList;
-    }
 
     /**
      * @return the muniCode
@@ -241,18 +212,6 @@ public class Property {
         this.propertyUseTypeID = propertyUseTypeID;
     }
 
-    /**
-     * @return the propertyUnitList
-     */
-    public ArrayList<PropertyUnit> getPropertyUnitList() {
-        return propertyUnitList;
-    }
-
-    /**
-     * @param propertyUnitList the propertyUnitList to set
-     */
-    public void setPropertyUnitList(ArrayList<PropertyUnit> propertyUnitList) {
-        this.propertyUnitList = propertyUnitList;
-    }
+  
 
 }
