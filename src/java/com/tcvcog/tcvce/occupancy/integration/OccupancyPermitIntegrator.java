@@ -81,7 +81,9 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     public OccupancyPermit generateOccupancyPermit(ResultSet rs) throws SQLException, IntegrationException{
         OccupancyInspectionIntegrator ii = getOccupancyInpsectionIntegrator();
         CodeIntegrator ci = getCodeIntegrator();
+        
         OccupancyPermit op = new OccupancyPermit();
+        
         op.setPermitID(rs.getInt("permitid"));
         op.setReferenceNo(rs.getString("referenceno"));
         op.setInspection(ii.getOccupancyInspection(rs.getInt("occinspec_inspectionid")));

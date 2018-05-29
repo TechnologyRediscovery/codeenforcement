@@ -897,7 +897,7 @@ CREATE TABLE occupancyinspection
     inspectionID                    INTEGER DEFAULT nextval('occupancyinspectionID_seq') NOT NULL,
     propertyUnitID                  INTEGER NOT NULL, --fk 
     login_userID                    INTEGER NOT NULL, --fk
-    firstInspectionDate             TIMESTAMP WITH TIME ZONE,
+    inspectionCreationTimestamp     TIMESTAMP WITH TIME ZONE,
     firstInspectionDate             TIMESTAMP WITH TIME ZONE,
     firstInspectionPass             boolean DEFAULT FALSE,
     secondInspectionDate            TIMESTAMP WITH TIME ZONE,
@@ -1010,11 +1010,11 @@ CREATE SEQUENCE IF NOT EXISTS inspectedspacetypeelement_inspectedstelid_seq
 
 CREATE TABLE inspectedspacetypeelement
 (
-    inspectedstelid                            INTEGER DEFAULT nextval('inspectedspacetypeelement_inspectedstelid_seq') CONSTRAINT inspectedspacetypeice_inspectedsticeID PRIMARY KEY,
+    inspectedstelid                             INTEGER DEFAULT nextval('inspectedspacetypeelement_inspectedstelid_seq') CONSTRAINT inspectedspacetypeice_inspectedsticeID PRIMARY KEY,
     inspection_inspectionID                     INTEGER NOT NULL CONSTRAINT inspectedSTICE_inspection_inspectionID_fk REFERENCES occupancyinspection (inspectionID),
     chklistSTICE_ID                             INTEGER NOT NULL CONSTRAINT inspectedSTICE_chklistSTICE_ID_fk REFERENCES checklistspacetypeice (chklistSTICEID),
     compliance                                  boolean default FALSE,
-    complianceDate                              TIMESTAMP WITH TIME ZONE NOT NULL,
+    complianceDate                              TIMESTAMP WITH TIME ZONE,
     notes                                       text
 ) ;
 
@@ -1052,7 +1052,10 @@ CREATE TABLE occpermittype
     typeID                          INTEGER DEFAULT nextval('occupancyPermitType_typeID_seq') CONSTRAINT occpermittype_typeID_pk PRIMARY KEY,
     muni_muniCode                   INTEGER NOT NULL,
     typeName                        text NOT NULL,
-    typeDescription                 text NOT NULL
+    typeDescription                 text NOT NULL,
+    defaultValidityLengthDays       INTEGER,
+    requiresPassedInspection        BOOLEAN DEFAULT TRUE
+
 ) ;
 
 ALTER TABLE occpermittype ADD CONSTRAINT occpermittype_muniCode_fk FOREIGN KEY (muni_muniCode) REFERENCES municipality (muniCode) ;
@@ -1109,9 +1112,11 @@ CREATE SEQUENCE IF NOT EXISTS occPermitApp_appID_seq
 
 CREATE TABLE occupancypermitapplication
 (
-    applicationID                   INTEGER DEFAULT nextval('occPermitApp_appID_seq') NOT NULL,
-    propertyUnitID                  INTEGER NOT NULL, 
-    notUnitConnected                boolean,
+    applicationID                   INTEGER DEFAULT nextval('occPermitApp_appID_seq') CONSTRAINT occpermitapp_applicationid_pk PRIMARY KEY,
+    -- note that this is unverified and thus cannot be inserted into the system by the applicant. 
+    -- code officer needs to check this manually against existing units and add this unit as needed when processing the application
+    propertyUnitID                  text, 
+    unitConnected                   boolean DEFAULT TRUE,
     reason_reasonID                 INTEGER NOT NULL CONSTRAINT reason_reasonID_fk REFERENCES occpermitapplicationreason (reasonID),
     submissionTimestamp             TIMESTAMP WITH TIME ZONE NOT NULL, 
     currentOwner_personID           INTEGER NOT NULL CONSTRAINT currOwner_personID_fk REFERENCES person (personID),
@@ -1161,7 +1166,8 @@ CREATE TABLE payment
     payerID                INTEGER NOT NULL CONSTRAINT payerID_person_fk REFERENCES person, -- personFK
     referenceNum           text,
     checkno                INTEGER,
-    cleared                boolean DEFAULT FALSE
+    cleared                boolean DEFAULT FALSE,
+    notes                  text
   ) ;
 
 -- COMMIT;
