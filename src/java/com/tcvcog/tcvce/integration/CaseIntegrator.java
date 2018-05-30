@@ -148,7 +148,7 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
             while(rs.next()){
                 c.setCaseID(rs.getInt("caseid"));
                 c.setPublicControlCode(rs.getInt("cecasepubliccc"));
-                c.setProperty(pi.getProperty(rs.getInt("property_propertyid"), true));
+                c.setProperty(pi.getProperty(rs.getInt("property_propertyid")));
                 c.setPropertyUnit(null); // change when units are integrated
                 
                 c.setUser(ui.getUserByUserID(rs.getInt("login_userid")));

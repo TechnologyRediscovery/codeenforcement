@@ -70,9 +70,6 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
         p.setAddress(formAddress);
         p.setPropertyUseTypeID(formPropertyUseTypeID);
         
-        p.setRental(formRental);
-        p.setMultiUnit(formMultiUnit);
-        
         p.setUseGroup(formUseGroup);
         p.setConstructionType(formConstructionType);
         p.setCountyCode(formCountyCode);
@@ -139,22 +136,6 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
         SessionManager sm = getSessionManager();
         formPropertyUseTypeID = sm.getVisit().getActiveProp().getPropertyUseTypeID();
         return formPropertyUseTypeID;
-    }
-
-    /**
-     * @return the formRental
-     */
-    public boolean isFormRental() {
-        formRental = property.isRental();
-        return formRental;
-    }
-
-    /**
-     * @return the formMultiUnit
-     */
-    public boolean isFormMultiUnit() {
-        formMultiUnit = property.isMultiUnit();
-        return formMultiUnit;
     }
 
     /**

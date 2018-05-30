@@ -20,6 +20,7 @@ import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.PropertyUnit;
+import com.tcvcog.tcvce.entities.PropertyWithLists;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,6 +58,48 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
        
         Property p = new Property();
+        
+        try{
+            p.setPropertyID(rs.getInt("propertyid"));
+            p.setMuni(mi.getMuniFromMuniCode(rs.getInt("municipality_muniCode")));
+            p.setMuniCode(rs.getInt("municipality_muniCode"));
+            p.setParID(rs.getString("parid"));
+            
+            p.setLotAndBlock(rs.getString("lotandblock"));
+            p.setAddress(rs.getString("address"));
+            p.setPropertyUseTypeName(rs.getString("name"));  //use type name
+            p.setPropertyUseTypeID(rs.getInt("propertyUseType_UseID"));
+            
+            p.setUseGroup(rs.getString("usegroup"));
+            p.setConstructionType(rs.getString("constructiontype"));
+            p.setCountyCode(rs.getString("countycode"));
+            p.setNotes(rs.getString("notes"));
+            
+           
+            //p.setNotes(rs.getString("notes"));
+            
+            
+        } catch (SQLException ex){
+            System.out.println(ex);
+            throw new IntegrationException("Error generating Property from ResultSet", ex);
+        }
+        return p;
+    }
+    
+    /** 
+     * Utility method for property search methods whose individual
+     * SQL statements implement various search features. These methods
+     * can send properly configured (i.e. cursor positioned) ResultSet
+     * objects to this method and get back a populated Property object
+     * 
+     * @param rs
+     * @return the fully baked Property with all fields set from DB data
+     */
+    private PropertyWithLists generatePropertyWithLists(ResultSet rs) throws IntegrationException{
+        
+        MunicipalityIntegrator mi = getMunicipalityIntegrator();
+       
+        PropertyWithLists p = new PropertyWithLists();
         
         try{
             p.setPropertyID(rs.getInt("propertyid"));
@@ -222,7 +265,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     }
     
     
-     public Property getProperty(int propertyID, boolean populateObjectList) throws IntegrationException{
+     public Property getProperty(int propertyID) throws IntegrationException{
         Property p = new Property();
          String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
                 + " WHERE propertyid = ?;";
@@ -237,9 +280,6 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             rs = stmt.executeQuery();
             while(rs.next()){
                 p = generatePropertyFromRS(rs);
-                if(populateObjectList){
-                    populatePropertyObjectLists(p);
-                }
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -254,14 +294,36 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         
     } // close getProperty()
     
-    private Property populatePropertyObjectLists(Property p) throws IntegrationException{
+    public PropertyWithLists getPropertyWithLists(int propID) throws IntegrationException{
+        PropertyWithLists p = new PropertyWithLists();
+         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
+                + " WHERE propertyid = ?;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
         CaseIntegrator ci = getCaseIntegrator();
         PersonIntegrator pi = getPersonIntegrator();
-         // set lists by retrieving them from the appropriate integrator
-        p.setPropertyCaseList(ci.getCECasesByProp(p));
-        p.setPropertyUnitList(getPropertyUnitList(p));
-        p.setPropertyPersonList(pi.getPersonList(p));
-
+ 
+        try {
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, propID);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                p = generatePropertyWithLists(rs);
+                p.setPropertyCaseList(ci.getCECasesByProp(p));
+                p.setPropertyUnitList(getPropertyUnitList(p));
+                p.setPropertyPersonList(pi.getPersonList(p));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("PropertyIntegrator.getProperty | Unable to retrieve property by ID number", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        
         return p;
         
     }
@@ -335,69 +397,21 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         pu.setNotes(rs.getString("notes"));
         pu.setOtherKnownAddress(rs.getString("otherknownaddress"));
         pu.setRental(rs.getBoolean("rental"));
-        pu.setThisProperty(getProperty(rs.getInt("property_propertyin"), false));
+        pu.setThisProperty(getProperty(rs.getInt("property_propertyin")));
         pu.setPropertyUnitPeople(persInt.getPersonList(rs.getInt("property_propertyid")));
         
         
         return pu;
     }
     
-    public void updatePropertyUnit(PropertyUnit pu){
+    public void updatePropertyUnit(PropertyUnit pu) throws IntegrationException{
         
-        Property p = new Property();
-         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
-                + " WHERE propertyid = ?;";
-        
-        Connection con = getPostgresCon();
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
- 
-        try {
-            stmt = con.prepareStatement(query);
-            stmt.setInt(1, pu.);
-            System.out.println("PropertyIntegrator.getProperty | sql: " + stmt.toString());
-            rs = stmt.executeQuery();
-            while(rs.next()){
-                p = generatePropertyFromRS(rs);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            throw new IntegrationException("PropertyIntegrator.getProperty | Unable to retrieve property by ID number", ex);
-        } finally{
-             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
-             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
-        } // close finally
         
     }
     
     public void deletePropertyUnit(PropertyUnit pu){
         
-        Property p = new Property();
-         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
-                + " WHERE propertyid = ?;";
-        
-        Connection con = getPostgresCon();
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
- 
-        try {
-            stmt = con.prepareStatement(query);
-            stmt.setInt(1, propertyID);
-            System.out.println("PropertyIntegrator.getProperty | sql: " + stmt.toString());
-            rs = stmt.executeQuery();
-            while(rs.next()){
-                p = generatePropertyFromRS(rs);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            throw new IntegrationException("PropertyIntegrator.getProperty | Unable to retrieve property by ID number", ex);
-        } finally{
-             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
-             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
-        } // close finally
-        
+       
     }
     
 } // close class

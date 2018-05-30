@@ -18,7 +18,7 @@ package com.tcvcog.tcvce.occupancy.application;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.occupancy.integration.PaymentTypeIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.entities.PaymentType;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -67,7 +67,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     }
     
     public void commitPaymentTypeUpdates(ActionEvent e){
-        PaymentTypeIntegrator pti = getPaymentTypeIntegrator();
+        PaymentIntegrator pti = getPaymentIntegrator();
         PaymentType pt = selectedPaymentType;
         
         pt.setPaymentTypeTitle(formPaymentTypeTitle);
@@ -87,7 +87,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     
     public String addPaymentType(){
         PaymentType pt = new PaymentType();
-        PaymentTypeIntegrator pti = new PaymentTypeIntegrator();
+        PaymentIntegrator pti = new PaymentIntegrator();
         pt.setPaymentTypeId(formPaymentTypeID);
         pt.setPaymentTypeTitle(formPaymentTypeTitle);
         try {
@@ -110,7 +110,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
      */
     public LinkedList<PaymentType> getPaymentTypeList() {
          try {
-            PaymentTypeIntegrator pti = getPaymentTypeIntegrator();
+            PaymentIntegrator pti = getPaymentIntegrator();
             paymentTypeList = pti.getPaymentTypeList();
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null, 
@@ -127,7 +127,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     }
     
     public void deleteSelectedPaymentType(ActionEvent e){
-        PaymentTypeIntegrator pti = getPaymentTypeIntegrator();
+        PaymentIntegrator pti = getPaymentIntegrator();
         if(getSelectedPaymentType() != null){
             try {
                 pti.deletePaymentType(getSelectedPaymentType());
@@ -244,7 +244,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
      * @return the paymentTypeTitleList
      */
     public LinkedList<PaymentType> getPaymentTypeTitleList() throws IntegrationException {
-        PaymentTypeIntegrator pi = getPaymentTypeIntegrator();
+        PaymentIntegrator pi = getPaymentIntegrator();
         paymentTypeTitleList = pi.getPaymentTypeList();
         return paymentTypeTitleList;
     }

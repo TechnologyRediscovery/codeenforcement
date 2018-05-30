@@ -20,10 +20,13 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.entities.Property;
+import com.tcvcog.tcvce.entities.PropertyUnit;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
 import java.io.Serializable;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
@@ -177,7 +180,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     public LinkedList<OccupancyInspection> getOccupancyInspectionList() {
         try {
             OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
-            occupancyInspectionList = oii.getOccupancyInspectionList();
+            ArrayList<OccupancyInspection> oil = oii.getOccupancyInspectionList(new PropertyUnit());
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,

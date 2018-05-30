@@ -33,17 +33,14 @@ import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionFeeIntegrator;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitTypeIntegrator;
 import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.PaymentTypeIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -86,16 +83,15 @@ public class BackingBeanUtils implements Serializable{
     private CEActionRequestIntegrator cEActionRequestIntegrator;
     
     private UserIntegrator userIntegrator;
-    private SpaceTypeIntegrator spaceTypeIntegrator;
     
-    private PaymentTypeIntegrator paymentTypeIntegrator;
     
     private OccupancyInspectionIntegrator occupancyInspectionIntegrator;
-    private OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator;
+    private ChecklistIntegrator checklistIntegrator;
+    private OccupancyPermitIntegrator occupancyPermitIntegrator;
+    private PaymentIntegrator paymentIntegrator;
+    
     
     private CourtEntityIntegrator courtEntityIntegrator;
-    private OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator;
-    private PaymentIntegrator paymentIntegrator;
     
     private CitationIntegrator citationIntegrator;
     
@@ -227,39 +223,6 @@ public class BackingBeanUtils implements Serializable{
         
     }
     
-    //adams creation of getInspectableCodeElementIntegrator()
-     public InspectableCodeElementIntegrator getInspectableCodeElementIntegrator(){
-        FacesContext context = getFacesContext();
-        InspectableCodeElementIntegrator inspectableCodeElementIntegrator = context.getApplication()
-                .evaluateExpressionGet(
-                        context, 
-                        "#{inspectableCodeElementIntegrator}", 
-                        InspectableCodeElementIntegrator.class);
-        
-        return inspectableCodeElementIntegrator;
-        
-    }
-     
-     public SpaceTypeIntegrator getSpaceTypeIntegrator(){
-        FacesContext context = getFacesContext();
-        SpaceTypeIntegrator spaceTypeIntegrator = context.getApplication()
-                .evaluateExpressionGet(
-                        context, 
-                        "#{spaceTypeIntegrator}", 
-                        SpaceTypeIntegrator.class);
-        
-        return spaceTypeIntegrator;
-     }
-    
-    //adam creation of occupancy inspeciton integrator
-    public OccupancyInspectionIntegrator getOccupancyInpsectionIntegrator(){
-        FacesContext context = getFacesContext();
-        OccupancyInspectionIntegrator occupancyInspectionIntegrator = context.getApplication()
-                .evaluateExpressionGet(context, 
-                        "#{occupancyInspectionIntegrator}", 
-                        OccupancyInspectionIntegrator.class);
-        return occupancyInspectionIntegrator;
-    }
      
     
     public MunicipalityIntegrator getMunicipalityIntegrator(){
@@ -511,22 +474,8 @@ public class BackingBeanUtils implements Serializable{
         this.violationCoordinator = violationCoordinator;
     }
     
-    public PaymentTypeIntegrator getPaymentTypeIntegrator(){
-        FacesContext context = getFacesContext();
-        ValueExpression ve = context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{paymentTypeIntegrator}", PaymentTypeIntegrator.class);
-        paymentTypeIntegrator = (PaymentTypeIntegrator) ve.getValue(context.getELContext());
-        return paymentTypeIntegrator;
-        
-    }
-
-    /**
-     * @param paymentTypeIntegrator the paymentTypeIntegrator to set
-     */
-    public void setPaymentTypeIntegrator(PaymentTypeIntegrator paymentTypeIntegrator) {
-        this.paymentTypeIntegrator = paymentTypeIntegrator;
-    }
-
+   
+   
     /**
      * @return the occupancyInspectionIntegrator
      */
@@ -545,24 +494,8 @@ public class BackingBeanUtils implements Serializable{
         this.occupancyInspectionIntegrator = occupancyInspectionIntegrator;
     }
 
-    /**
-     * @return the occupancyInspectionFeeIntegrator
-     */
-    public OccupancyInspectionFeeIntegrator getOccupancyInspectionFeeIntegrator() {
-        FacesContext context = getFacesContext();
-        ValueExpression ve = context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{occupancyInspectionFeeIntegrator}", OccupancyInspectionFeeIntegrator.class);
-        occupancyInspectionFeeIntegrator = (OccupancyInspectionFeeIntegrator) ve.getValue(context.getELContext());
-        return occupancyInspectionFeeIntegrator;
-    }
-
-    /**
-     * @param occupancyInspectionFeeIntegrator the occupancyInspectionFeeIntegrator to set
-     */
-    public void setOccupancyInspectionFeeIntegrator(OccupancyInspectionFeeIntegrator occupancyInspectionFeeIntegrator) {
-        this.occupancyInspectionFeeIntegrator = occupancyInspectionFeeIntegrator;
-    }
-
+    
+   
     /**
      * @return the courtEntityIntegrator
      */
@@ -574,18 +507,7 @@ public class BackingBeanUtils implements Serializable{
         return courtEntityIntegrator;
     }
 
-    /**
-     * @return the occupancyPermitTypeIntegrator
-     */
-    public OccupancyPermitTypeIntegrator getOccupancyPermitTypeIntegrator() {
-        FacesContext context = getFacesContext();
-        ValueExpression ve = context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{occupancyPermitTypeIntegrator}", OccupancyPermitTypeIntegrator.class);
-        occupancyPermitTypeIntegrator = (OccupancyPermitTypeIntegrator) ve.getValue(context.getELContext());
-        
-        return occupancyPermitTypeIntegrator;
-    }
-
+    
     /**
      * @return the paymentIntegrator
      */
@@ -604,12 +526,7 @@ public class BackingBeanUtils implements Serializable{
         this.courtEntityIntegrator = courtEntityIntegrator;
     }
 
-    /**
-     * @param occupancyPermitTypeIntegrator the occupancyPermitTypeIntegrator to set
-     */
-    public void setOccupancyPermitTypeIntegrator(OccupancyPermitTypeIntegrator occupancyPermitTypeIntegrator) {
-        this.occupancyPermitTypeIntegrator = occupancyPermitTypeIntegrator;
-    }
+    
 
     /**
      * @param paymentIntegrator the paymentIntegrator to set
@@ -618,12 +535,7 @@ public class BackingBeanUtils implements Serializable{
         this.paymentIntegrator = paymentIntegrator;
     }
 
-    /**
-     * @param spaceTypeIntegrator the spaceTypeIntegrator to set
-     */
-    public void setSpaceTypeIntegrator(SpaceTypeIntegrator spaceTypeIntegrator) {
-        this.spaceTypeIntegrator = spaceTypeIntegrator;
-    }
+    
 
     /**
      * @return the citationIntegrator
@@ -643,6 +555,44 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setCitationIntegrator(CitationIntegrator citationIntegrator) {
         this.citationIntegrator = citationIntegrator;
+    }
+
+    /**
+     * @return the checklistIntegrator
+     */
+    public ChecklistIntegrator getChecklistIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{checklistIntegrator}", ChecklistIntegrator.class);
+        checklistIntegrator = (ChecklistIntegrator) ve.getValue(context.getELContext());
+        
+        return checklistIntegrator;
+    }
+
+    /**
+     * @param checklistIntegrator the checklistIntegrator to set
+     */
+    public void setChecklistIntegrator(ChecklistIntegrator checklistIntegrator) {
+        this.checklistIntegrator = checklistIntegrator;
+    }
+
+    /**
+     * @return the occupancyPermitIntegrator
+     */
+    public OccupancyPermitIntegrator getOccupancyPermitIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{occupancyPermitIntegrator}", OccupancyPermitIntegrator.class);
+        occupancyPermitIntegrator = (OccupancyPermitIntegrator) ve.getValue(context.getELContext());
+        
+        return occupancyPermitIntegrator;
+    }
+
+    /**
+     * @param occupancyPermitIntegrator the occupancyPermitIntegrator to set
+     */
+    public void setOccupancyPermitIntegrator(OccupancyPermitIntegrator occupancyPermitIntegrator) {
+        this.occupancyPermitIntegrator = occupancyPermitIntegrator;
     }
 
 }

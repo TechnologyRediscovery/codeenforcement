@@ -79,7 +79,7 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     }
     
     public OccupancyPermit generateOccupancyPermit(ResultSet rs) throws SQLException, IntegrationException{
-        OccupancyInspectionIntegrator ii = getOccupancyInpsectionIntegrator();
+        OccupancyInspectionIntegrator ii = getOccupancyInspectionIntegrator();
         CodeIntegrator ci = getCodeIntegrator();
         
         OccupancyPermit op = new OccupancyPermit();
@@ -97,10 +97,10 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     }
     
     public ArrayList<OccupancyPermit> getOccupancyPermitList(PropertyUnit pu){
-        
+        return new ArrayList();
     }
     
-    public ArrayList<OccupancyPermit> getOccupancyPermitList(Property p){
+    public ArrayList<OccupancyPermit> getOccupancyPermitList(Property p) throws IntegrationException{
         
         ArrayList<OccupancyPermit> permitList = new ArrayList();
         String query =  " ";
@@ -112,10 +112,10 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
         try {
             
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, permitID);
+//            stmt.setInt(1, permitID);
             rs = stmt.executeQuery();
             while(rs.next()){
-                permitList.add(generateOccupancyPermit(rs.getInt("permitid")));
+                //permitList.add(generateOccupancyPermit(rs.getInt("permitid")));
                 
             }
             
@@ -127,6 +127,7 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
              if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
+        return new ArrayList();
         
     }
     

@@ -28,17 +28,13 @@ import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.InspectableCodeElementIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionFeeIntegrator;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitTypeIntegrator;
 import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.SpaceTypeIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -118,8 +114,6 @@ public class Initializer implements ServletContextListener{
         EventIntegrator ei = new EventIntegrator();
         servletContext.setAttribute("eventIntegrator", ei);
         
-        SpaceTypeIntegrator spaceTypeIntegrator = new SpaceTypeIntegrator();
-        servletContext.setAttribute("spaceTypeIntegrator", spaceTypeIntegrator);
         
         CEActionRequestIntegrator ari = new CEActionRequestIntegrator();
         servletContext.setAttribute("ceActionRequestIntegrator", ari);
@@ -141,29 +135,8 @@ public class Initializer implements ServletContextListener{
         OccupancyInspectionIntegrator occupancyInspectionIntegrator = new OccupancyInspectionIntegrator();
         servletContext.setAttribute("occupancyInspectionIntegrator", occupancyInspectionIntegrator);
         
-                
-        OccupancyInspectionFeeIntegrator occInspecFeeInt = new OccupancyInspectionFeeIntegrator();
-        servletContext.setAttribute("occupancyInspectionFeeIntegrator", occInspecFeeInt);
-        
-        //add integrator build for inspectable code element
-        InspectableCodeElementIntegrator inspectableCEIntegrator = new InspectableCodeElementIntegrator();
-        servletContext.setAttribute("inspectableCodeElementIntegrator", inspectableCEIntegrator);
-       
-        OccupancyPermitTypeIntegrator opti = new OccupancyPermitTypeIntegrator();
-        servletContext.setAttribute("occupancyPermitTypeIntegrator", opti);
-        
-        
         CitationIntegrator citint = new CitationIntegrator();
         servletContext.setAttribute("citationIntegrator", citint);
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         

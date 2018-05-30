@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.occupancy.integration.SpaceTypeIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
 
 import com.tcvcog.tcvce.occupancy.entities.SpaceType;
 
@@ -59,7 +59,7 @@ public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
     public LinkedList<SpaceType> getSpaceTypeList() {
         
         try {
-            SpaceTypeIntegrator si = getSpaceTypeIntegrator();
+            ChecklistIntegrator si = getChecklistIntegrator();
             spaceTypeList = si.getSpaceTypeList();
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,

@@ -20,7 +20,8 @@ package com.tcvcog.tcvce.occupancy.application;
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Municipality;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionFeeIntegrator;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
+import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.OccupancyInspectionFee;
 import java.io.Serializable;
 import java.time.ZoneId;
@@ -84,7 +85,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
     }
     
     public void commitOccupancyInspectionFeeUpdates(ActionEvent e){
-        OccupancyInspectionFeeIntegrator oifi = getOccupancyInspectionFeeIntegrator();
+        OccupancyInspectionIntegrator oifi = getOccupancyInspectionIntegrator();
         OccupancyInspectionFee oif = selectedOccupancyInspectionFee;
         
         oif.setMuni(formMuni);
@@ -111,7 +112,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
     }
     
     public void addNewOccupancyInspectionFee(ActionEvent e){
-        OccupancyInspectionFeeIntegrator oifi = getOccupancyInspectionFeeIntegrator();
+        OccupancyInspectionIntegrator oifi = getOccupancyInspectionIntegrator();
         OccupancyInspectionFee oif = new OccupancyInspectionFee();
         
         oif.setOccupancyInspectionFeeID(newFormOccupancyInspectionFeeID);
@@ -142,7 +143,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
     
     public String addOccupancyInspectionFee(){
         OccupancyInspectionFee oif = new OccupancyInspectionFee();
-        OccupancyInspectionFeeIntegrator oifi = new OccupancyInspectionFeeIntegrator();
+        OccupancyInspectionIntegrator oifi = new OccupancyInspectionIntegrator();
         oif.setOccupancyInspectionFeeID(formOccupancyInspectionFeeID);
         oif.setMuni(getFormMuni());
         oif.setOccupancyInspectionFeeName(formOccupancyInspectionFeeName);
@@ -172,7 +173,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
     }
     
     public void deleteSelectedOccupancyInspectionFee(ActionEvent e){
-        OccupancyInspectionFeeIntegrator oifi = getOccupancyInspectionFeeIntegrator();
+        OccupancyInspectionIntegrator oifi = getOccupancyInspectionIntegrator();
         if(getSelectedOccupancyInspectionFee() != null){
             try {
                 oifi.deleteOccupancyInspectionFee(getSelectedOccupancyInspectionFee());
@@ -199,8 +200,8 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
      */
     public LinkedList<OccupancyInspectionFee> getOccupancyInspectionFeeList() {
         try {
-            OccupancyInspectionFeeIntegrator oi = getOccupancyInspectionFeeIntegrator();
-            occupancyInspectionFeeList = oi.getOccupancyInspectionFeeList();
+            OccupancyInspectionIntegrator oi = getOccupancyInspectionIntegrator();
+            ArrayList<OccupancyInspectionFee> oil = oi.getOccupancyInspectionFeeList();
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
