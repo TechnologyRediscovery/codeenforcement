@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+        <h:outputStylesheet name="public_style.css" library="css"/>
+
+        <title>Pay-Pal Test</title>
+
+    </h:head>
+    <h:body>
+        <nav class="navbar navbar-default" id="navbar-override">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="glyphicon glyphicon-th-list"></span>
+                </button>
+                <div class="navbar-brand"><p:commandLink action="publicDashHome" value="Home"/></div>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><h:outputLink value="http://tcvcog.com/">TCVCOG Site</h:outputLink></li>
+                    <li><p:commandLink action="gotoLogin" value="Staff Login"/></li>
+                </ul>
+            </div>    
+        </nav>
+        <div class="container">
+            <div class="header">
+                <h2>Payment Portal</h2>
+            </div>
+        </div>
+        <p:spacer height="10px"/>
+
+        <div id="paypal-button"></div>
+        <script type="text/javascript">
+            //<![CDATA[
+            paypal.Button.render({
+               env: 'sandbox',
+                client: {
+                    sandbox: 'AZTUJbRsGaBMubbevN8Tn-L6Nh4jBz4rsrIpJXk1Mqgcq3sKuU_h24gpmX8bzCSL4_bfyjr_lRR2RSeM'
+                },
+                commit: true,
+                style: {
+                    color: 'gold',
+                    size: 'responsive'
+                },
+                payment: function (data, actions) {
+                    return actions.payment.create({
+                        payment: {
+                            transactions: [
+                                {
+                                    amount: {total: '1.00', currency: 'USD'}
+                                }
+                            ]
+                        }
+                    });
+
+                },
+                onAuthorize: function (data, actions) {
+                     return actions.payment.execute().then(function(payment) {
+
+                
+            });
+
+                },
+                onCancel: function (data, actions) {
+
+                },
+                onError: function (err) {
+
+                }
+            }, '#paypal-button');
+            //]]>
+        </script>
+
+    </h:body>
+</html>
