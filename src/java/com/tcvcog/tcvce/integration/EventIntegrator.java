@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.domain.EventExceptionDeprecated;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.entities.Person;
@@ -271,7 +271,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     }
     
-    public void insertEvent(Event event) throws IntegrationException{
+    public void insertEvent(EventCase event) throws IntegrationException{
         PersonIntegrator pi = getPersonIntegrator();
         int insertedEventID = 0;
         
@@ -344,7 +344,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
     
     
     
-    public void updateEvent(Event event) throws IntegrationException{
+    public void updateEvent(EventCase event) throws IntegrationException{
         String query = "UPDATE public.ceevent\n" +
             "   SET ceeventcategory_catid=?, cecase_caseid=?, dateofrecord=?, \n" +
             "       eventtimestamp=now(), eventdescription=?, login_userid=?, disclosetomunicipality=?, \n" +
@@ -388,7 +388,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public void deleteEvent(Event event) throws IntegrationException{
+    public void deleteEvent(EventCase event) throws IntegrationException{
         String query = "DELETE FROM public.ceevent WHERE eventid = ?;";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
@@ -412,8 +412,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    private Event generateEventFromRS(ResultSet rs) throws SQLException, IntegrationException{
-        Event ev = new Event();
+    private EventCase generateEventFromRS(ResultSet rs) throws SQLException, IntegrationException{
+        EventCase ev = new EventCase();
         UserIntegrator ui = getUserIntegrator();
         
         ev.setEventID(rs.getInt("eventid"));
@@ -442,8 +442,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         return ev;
     }
     
-    public Event getEventByEventID(int eventID) throws IntegrationException{
-        Event ev = null;
+    public EventCase getEventByEventID(int eventID) throws IntegrationException{
+        EventCase ev = null;
         
         String query = "SELECT * FROM public.ceevent WHERE eventid = ?;";
         Connection con = getPostgresCon();
@@ -474,8 +474,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         return ev;
     }
     
-    public LinkedList<Event> getEventsByCaseID(int caseID) throws IntegrationException{
-        LinkedList<Event> eventList = new LinkedList();
+    public LinkedList<EventCase> getEventsByCaseID(int caseID) throws IntegrationException{
+        LinkedList<EventCase> eventList = new LinkedList();
         
         String query = "SELECT * FROM public.ceevent WHERE cecase_caseid = ?;";
         Connection con = getPostgresCon();

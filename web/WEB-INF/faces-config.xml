@@ -372,7 +372,7 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <navigation-rule>
-        <from-view-id>/personManage.xhtml</from-view-id>
+        <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>personProfile</from-outcome>
             <to-view-id>/personProfile.xhtml</to-view-id>

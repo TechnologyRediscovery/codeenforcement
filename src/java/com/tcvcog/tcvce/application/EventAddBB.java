@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.entities.Person;
@@ -65,7 +65,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     private EventType[] userAdminEventTypeList;
     
     private CECase ceCase;
-    private Event currentEvent;
+    private EventCase currentEvent;
     
     private String formEventDesc;
     private Date formEventDate;
@@ -106,7 +106,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     public String addEvent() throws ViolationException{
         SessionManager sm = getSessionManager();
         //Event e = sm.getVisit().getActiveEvent();
-        Event e = currentEvent;
+        EventCase e = currentEvent;
         CaseCoordinator cc = getCaseCoordinator();
         
         // category is already set from initialization sequence
@@ -345,9 +345,9 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the currentEvent
      */
-    public Event getCurrentEvent() {
+    public EventCase getCurrentEvent() {
         SessionManager sm = getSessionManager();
-        Event currentEvent = sm.getVisit().getActiveEvent();
+        EventCase currentEvent = sm.getVisit().getActiveEvent();
         this.currentEvent = currentEvent;
         return this.currentEvent;
     }
@@ -355,7 +355,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @param currentEvent the currentEvent to set
      */
-    public void setCurrentEvent(Event currentEvent) {
+    public void setCurrentEvent(EventCase currentEvent) {
         this.currentEvent = currentEvent;
     }
 

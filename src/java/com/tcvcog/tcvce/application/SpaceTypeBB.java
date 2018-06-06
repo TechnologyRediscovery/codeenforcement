@@ -24,8 +24,6 @@ import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.SpaceType;
 
 import java.io.Serializable;
-import javax.faces.event.*;
-import java.time.*;
 //imported when adding @ManagedBean and @ViewScoped
 
 import java.util.*;

@@ -25,8 +25,11 @@ import java.util.ArrayList;
  */
 public class PropertyWithLists extends Property{
     
+    // cases store code enforcement data
     private ArrayList<CECase> propertyCaseList;
+    // property units store occupancy data
     private ArrayList<PropertyUnit> propertyUnitList;
+    // both are connected to Person objects all over teh place
     private ArrayList<Person> propertyPersonList;
 
     /**

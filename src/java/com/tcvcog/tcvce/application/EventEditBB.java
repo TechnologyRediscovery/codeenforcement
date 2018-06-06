@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.entities.Person;
@@ -49,7 +49,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     private LinkedList<EventCategory> eventCategoryList;
     
   
-    private Event event;
+    private EventCase event;
     
     private String formEventDesc;
     private Date formEventDate;
@@ -73,7 +73,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     public String editEvent(){
         EventCoordinator ec = getEventCoordinator();
         SessionManager sm = getSessionManager();
-        Event e = sm.getVisit().getActiveEvent();
+        EventCase e = sm.getVisit().getActiveEvent();
         
         // category is already set from initialization sequence
         e.setCaseID(sm.getVisit().getActiveCase().getCaseID());
@@ -242,9 +242,9 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the event
      */
-    public Event getEvent() {
+    public EventCase getEvent() {
         SessionManager sm = getSessionManager();
-        Event currentEvent = sm.getVisit().getActiveEvent();
+        EventCase currentEvent = sm.getVisit().getActiveEvent();
         event = currentEvent;
         return event;
     }
@@ -252,7 +252,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
     /**
      * @param event the event to set
      */
-    public void setEvent(Event event) {
+    public void setEvent(EventCase event) {
         this.event = event;
     }
 

@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Date;
@@ -61,7 +61,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
        EventCoordinator eventCoordinator = getEventCoordinator();
        currentViolation = sm.getVisit().getActiveCodeViolation();
        CECase ceCase = sm.getVisit().getActiveCase();
-       Event event = new Event();
+       EventCase event = new EventCase();
         
         currentViolation.setStipulatedComplianceDate(getStipulatedComplianceDate()
                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());

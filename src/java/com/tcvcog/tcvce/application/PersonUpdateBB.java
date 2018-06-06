@@ -40,7 +40,7 @@ import javax.faces.application.FacesMessage;
  */
 public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
 
-    private Person person;
+    private Person currentPerson;
     
     private int personid;
     private PersonType formPersonType;
@@ -81,10 +81,11 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
     
     
     public String updatePerson(){
+        System.out.println("PersonUpdateBB.updatePerson");
         Person p = new Person();
         PersonIntegrator pi = getPersonIntegrator();
         
-        p.setPersonID(person.getPersonID());
+        p.setPersonID(currentPerson.getPersonID());
         p.setPersonType(formPersonType);
         p.setMuniCode(formMuniCode);
         
@@ -142,7 +143,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formPersonType
      */
     public PersonType getFormPersonType() {
-        formPersonType = person.getPersonType();
+        formPersonType = currentPerson.getPersonType();
         return formPersonType;
     }
 
@@ -150,7 +151,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formMuni
      */
     public int getFormMuniCode() {
-        //System.out.println("PersonUpdateBB.getFormMuniID | muniID of active person: " + person.getMuni().getMuniCode());
+        //System.out.println("PersonUpdateBB.getFormMuniID | muniID of active currentPerson: " + currentPerson.getMuni().getMuniCode());
         SessionManager sm = getSessionManager();
         formMuniCode = sm.getVisit().getActivePerson().getMuniCode();
         return formMuniCode;
@@ -160,7 +161,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formFirstName
      */
     public String getFormFirstName() {
-        formFirstName = person.getFirstName();
+        formFirstName = currentPerson.getFirstName();
         return formFirstName;
     }
 
@@ -168,7 +169,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formLastName
      */
     public String getFormLastName() {
-        formLastName = person.getLastName();
+        formLastName = currentPerson.getLastName();
         return formLastName;
     }
 
@@ -176,7 +177,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formJobTitle
      */
     public String getFormJobTitle() {
-        formJobTitle = person.getJobTitle();
+        formJobTitle = currentPerson.getJobTitle();
         return formJobTitle;
     }
 
@@ -184,7 +185,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formPhoneCell
      */
     public String getFormPhoneCell() {
-        formPhoneCell = person.getPhoneCell();
+        formPhoneCell = currentPerson.getPhoneCell();
         return formPhoneCell;
     }
 
@@ -192,7 +193,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formPhoneHome
      */
     public String getFormPhoneHome() {
-        formPhoneHome = person.getPhoneHome();
+        formPhoneHome = currentPerson.getPhoneHome();
         return formPhoneHome;
     }
 
@@ -200,7 +201,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formPhoneWork
      */
     public String getFormPhoneWork() {
-        formPhoneWork = person.getPhoneWork();
+        formPhoneWork = currentPerson.getPhoneWork();
         return formPhoneWork;
     }
 
@@ -208,7 +209,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formEmail
      */
     public String getFormEmail() {
-        formEmail = person.getEmail();
+        formEmail = currentPerson.getEmail();
         return formEmail;
     }
 
@@ -216,7 +217,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formAddress_street
      */
     public String getFormAddress_street() {
-        formAddress_street = person.getAddress_street();
+        formAddress_street = currentPerson.getAddress_street();
         return formAddress_street;
     }
 
@@ -224,7 +225,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formAddress_city
      */
     public String getFormAddress_city() {
-        formAddress_city = person.getAddress_city();
+        formAddress_city = currentPerson.getAddress_city();
         return formAddress_city;
     }
 
@@ -232,7 +233,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formAddress_state
      */
     public String getFormAddress_state() {
-        formAddress_state = person.getAddress_state();
+        formAddress_state = currentPerson.getAddress_state();
         return formAddress_state;
     }
 
@@ -240,7 +241,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formAddress_zip
      */
     public String getFormAddress_zip() {
-        formAddress_zip = person.getAddress_zip();
+        formAddress_zip = currentPerson.getAddress_zip();
         return formAddress_zip;
     }
 
@@ -248,7 +249,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formNotes
      */
     public String getFormNotes() {
-        formNotes = person.getNotes();
+        formNotes = currentPerson.getNotes();
         return formNotes;
     }
 
@@ -256,7 +257,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the lastUpdated
      */
     public LocalDateTime getLastUpdated() {
-        lastUpdated = person.getLastUpdated();
+        lastUpdated = currentPerson.getLastUpdated();
         return lastUpdated;
     }
 
@@ -265,7 +266,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formIsActive
      */
     public boolean isFormIsActive() {
-        formIsActive = person.isIsActive();
+        formIsActive = currentPerson.isIsActive();
         return formIsActive;
     }
 
@@ -273,7 +274,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formIsUnder18
      */
     public boolean isFormIsUnder18() {
-        formIsUnder18 = person.isIsUnder18();
+        formIsUnder18 = currentPerson.isIsUnder18();
         return formIsUnder18;
     }
 
@@ -406,19 +407,19 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the person
+     * @return the currentPerson
      */
-    public Person getPerson() {
+    public Person getCurrentPerson() {
         SessionManager sm = getSessionManager();
-        person = sm.getVisit().getActivePerson();
-        return person;
+        currentPerson = sm.getVisit().getActivePerson();
+        return currentPerson;
     }
 
     /**
-     * @param person the person to set
+     * @param currentPerson the currentPerson to set
      */
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setCurrentPerson(Person currentPerson) {
+        this.currentPerson = currentPerson;
     }
 
     /**
@@ -463,7 +464,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formExpiryDate
      */
     public java.util.Date getFormExpiryDate() {
-         formExpiryDate = Date.from(person.getExpiryDate().atZone(ZoneId.systemDefault()).toInstant());
+         formExpiryDate = Date.from(currentPerson.getExpiryDate().atZone(ZoneId.systemDefault()).toInstant());
         return formExpiryDate;
     }
 

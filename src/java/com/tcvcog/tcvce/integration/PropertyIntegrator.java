@@ -67,8 +67,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             
             p.setLotAndBlock(rs.getString("lotandblock"));
             p.setAddress(rs.getString("address"));
-            p.setPropertyUseTypeName(rs.getString("name"));  //use type name
-            p.setPropertyUseTypeID(rs.getInt("propertyUseType_UseID"));
+            p.setPropertyUseType(rs.getString("propertyusetype"));
             
             p.setUseGroup(rs.getString("usegroup"));
             p.setConstructionType(rs.getString("constructiontype"));
@@ -109,8 +108,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             
             p.setLotAndBlock(rs.getString("lotandblock"));
             p.setAddress(rs.getString("address"));
-            p.setPropertyUseTypeName(rs.getString("name"));  //use type name
-            p.setPropertyUseTypeID(rs.getInt("propertyUseType_UseID"));
+            p.setPropertyUseType(rs.getString("propertyusetype"));  //use type name
             
             p.setUseGroup(rs.getString("usegroup"));
             p.setConstructionType(rs.getString("constructiontype"));
@@ -130,8 +128,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     
     public LinkedList<Property> searchForProperties(String addrPart) throws IntegrationException{
     
-        String query = "select * from property LEFT OUTER JOIN propertyusetype ON propertyusetype.propertyUseTypeID = public.property.propertyUseType_UseID"
-                + " WHERE address ILIKE '%" + addrPart + "%';";
+        String query = "select * from property WHERE address ILIKE '%" + addrPart + "%';";
         
         System.out.println("PropertyIntegrator.searchForPropertiesAddOnly - query: " + query);
         
@@ -162,9 +159,12 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     public LinkedList<Property> searchForProperties(String addrPart, int muniID) throws IntegrationException{
         
         
-        String query = "select * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyUseType_UseID "
-                + " WHERE address ILIKE '%" + addrPart + "%' AND municipality_muniCode=" 
+        
+        String query = "SELECT * from property WHERE address ILIKE '%" + addrPart + "%' AND municipality_muniCode=" 
                 + muniID + ";";
+//        String query = "select * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyUseType_UseID "
+//                + " WHERE address ILIKE '%" + addrPart + "%' AND municipality_muniCode=" 
+//                + muniID + ";";
         System.out.println("PropertyIntegrator.searchForProperties - with muni | sql: " + query);
         
         Connection con = getPostgresCon();
@@ -193,35 +193,37 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         
     }
     
-    public HashMap getPropertyUseTypesMap() throws IntegrationException{
-        
-        String query = "SELECT * FROM public.propertyusetype;";
-        
-        Connection con = getPostgresCon();
-        ResultSet rs = null;
-        Statement stmt = null;
-            
-        HashMap<String, Integer> propertyUseTypeMap = new HashMap();
- 
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-            System.out.println("PropertyIntegrator.getPropertyUseTypesMap | sql: " + query);
-            while(rs.next()){
-                propertyUseTypeMap.put(rs.getString("name"),rs.getInt("propertyUseTypeID"));
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            throw new IntegrationException("Unable to build propertyUseTypesMap", ex);
-        } finally{
-             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
-             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
-        } // close finally
-        
-        return propertyUseTypeMap;
-        
-    }
+    // deprecated method after removing lookup table functionality for propertyusetype
+    
+//    public HashMap getPropertyUseTypesMap() throws IntegrationException{
+//        
+//        String query = "SELECT * FROM public.propertyusetype;";
+//        
+//        Connection con = getPostgresCon();
+//        ResultSet rs = null;
+//        Statement stmt = null;
+//            
+//        HashMap<String, Integer> propertyUseTypeMap = new HashMap();
+// 
+//        try {
+//            stmt = con.createStatement();
+//            rs = stmt.executeQuery(query);
+//            System.out.println("PropertyIntegrator.getPropertyUseTypesMap | sql: " + query);
+//            while(rs.next()){
+//                propertyUseTypeMap.put(rs.getString("name"),rs.getInt("propertyUseTypeID"));
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println(ex.toString());
+//            throw new IntegrationException("Unable to build propertyUseTypesMap", ex);
+//        } finally{
+//             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+//             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+//             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+//        } // close finally
+//        
+//        return propertyUseTypeMap;
+//        
+//    }
     
     public String updateProperty(Property propToUpdate) throws IntegrationException{
         String query = "UPDATE public.property\n" +
@@ -239,7 +241,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
             stmt.setString(2, propToUpdate.getLotAndBlock());
             
             stmt.setString(3, propToUpdate.getAddress());
-            stmt.setInt(4, propToUpdate.getPropertyUseTypeID());
+            stmt.setString(4, propToUpdate.getPropertyUseType());
             
             stmt.setString(7, propToUpdate.getUseGroup());
             stmt.setString(8, propToUpdate.getConstructionType());
@@ -267,8 +269,10 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     
      public Property getProperty(int propertyID) throws IntegrationException{
         Property p = new Property();
-         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
-                + " WHERE propertyid = ?;";
+        // not needed after converting property use type to a simple string without a lookup table
+//         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
+//                + " WHERE propertyid = ?;";
+         String query = "SELECT * from property WHERE propertyid = ?;";
         
         Connection con = getPostgresCon();
         ResultSet rs = null;
@@ -296,8 +300,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
     
     public PropertyWithLists getPropertyWithLists(int propID) throws IntegrationException{
         PropertyWithLists p = new PropertyWithLists();
-         String query = "SELECT * from property LEFT OUTER JOIN propertyusetype ON public.propertyusetype.propertyUseTypeID = public.property.propertyusetype_useid "
-                + " WHERE propertyid = ?;";
+         String query = "SELECT * from property WHERE propertyid = ?;";
         
         Connection con = getPostgresCon();
         ResultSet rs = null;

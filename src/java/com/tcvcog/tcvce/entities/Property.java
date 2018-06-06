@@ -22,18 +22,13 @@ public class Property {
     
     private String lotAndBlock;
     private String address;
-    private String propertyUseTypeName;
-    private int propertyUseTypeID;
+    private String propertyUseType;
 
     private String useGroup;
     private String constructionType;
     private String countyCode;
     
     private String notes;
-    
-  
-    
-    
     
   /**
      * Creates a new instance of Property
@@ -113,17 +108,17 @@ public class Property {
     }
 
     /**
-     * @return the propertyUseTypeName
+     * @return the propertyUseType
      */
-    public String getPropertyUseTypeName() {
-        return propertyUseTypeName;
+    public String getPropertyUseType() {
+        return propertyUseType;
     }
 
     /**
-     * @param propertyUseTypeName the propertyUseTypeName to set
+     * @param propertyUseType the propertyUseType to set
      */
-    public void setPropertyUseTypeName(String propertyUseTypeName) {
-        this.propertyUseTypeName = propertyUseTypeName;
+    public void setPropertyUseType(String propertyUseType) {
+        this.propertyUseType = propertyUseType;
     }
 
     /**
@@ -197,21 +192,5 @@ public class Property {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-    /**
-     * @return the propertyUseTypeID
-     */
-    public int getPropertyUseTypeID() {
-        return propertyUseTypeID;
-    }
-
-    /**
-     * @param propertyUseTypeID the propertyUseTypeID to set
-     */
-    public void setPropertyUseTypeID(int propertyUseTypeID) {
-        this.propertyUseTypeID = propertyUseTypeID;
-    }
-
   
-
 }

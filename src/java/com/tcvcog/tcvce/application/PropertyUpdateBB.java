@@ -39,9 +39,11 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
     
     private String formLotAndBlock;
     private String formAddress;
-    private String currentPropUseTypeName;
-    private int formPropertyUseTypeID;
-    private HashMap propertyUseTypeMap;
+    private String formPropertyUseType;
+    // have not wired up property use type as an accessory table
+//    private int formPropertyUseTypeID; 
+    // also not needed
+//    private HashMap propertyUseTypeMap;
 
     private boolean formRental;
     private boolean formMultiUnit;
@@ -68,7 +70,7 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
         
         p.setLotAndBlock(formLotAndBlock);
         p.setAddress(formAddress);
-        p.setPropertyUseTypeID(formPropertyUseTypeID);
+        p.setPropertyUseType(formPropertyUseType);
         
         p.setUseGroup(formUseGroup);
         p.setConstructionType(formConstructionType);
@@ -129,15 +131,7 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
         return formAddress;
     }
 
-    /**
-     * @return the formPropertyUseTypeID
-     */
-    public int getFormPropertyUseTypeID() {
-        SessionManager sm = getSessionManager();
-        formPropertyUseTypeID = sm.getVisit().getActiveProp().getPropertyUseTypeID();
-        return formPropertyUseTypeID;
-    }
-
+   
     /**
      * @return the formUseGroup
      */
@@ -198,12 +192,7 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
         this.formAddress = formAddress;
     }
 
-    /**
-     * @param formPropertyUseTypeID the formPropertyUseTypeID to set
-     */
-    public void setFormPropertyUseTypeID(int formPropertyUseTypeID) {
-        this.formPropertyUseTypeID = formPropertyUseTypeID;
-    }
+    
 
     /**
      * @param formRental the formRental to set
@@ -263,42 +252,23 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
         this.property = property;
     }
 
-    /**
-     * @return the propertyUseTypeMap
-     */
-    public HashMap getPropertyUseTypeMap() {
-        PropertyIntegrator pi = getPropertyIntegrator();
-        try {
-            propertyUseTypeMap = pi.getPropertyUseTypesMap();
-        } catch (IntegrationException ex) {
-            System.out.println(ex);
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to retrieve property use type map from integrator ", ""));
-   
-        }
-        return propertyUseTypeMap;
-    }
+  
 
-    /**
-     * @param propertyUseTypeMap the propertyUseTypeMap to set
-     */
-    public void setPropertyUseTypeMap(HashMap propertyUseTypeMap) {
-        this.propertyUseTypeMap = propertyUseTypeMap;
-    }
 
     /**
      * @return the currentPropUseTypeName
      */
     public String getCurrentPropUseTypeName() {
-        return currentPropUseTypeName;
+        SessionManager sm = getSessionManager();
+        formPropertyUseType = sm.getVisit().getActiveProp().getPropertyUseType();
+        return formPropertyUseType;
     }
 
     /**
-     * @param currentPropUseTypeName the currentPropUseTypeName to set
+     * @param currentPropUseType
      */
-    public void setCurrentPropUseTypeName(String currentPropUseTypeName) {
-        this.currentPropUseTypeName = currentPropUseTypeName;
+    public void setFormPropUseType(String currentPropUseType) {
+        this.formPropertyUseType = currentPropUseType;
     }
     
     

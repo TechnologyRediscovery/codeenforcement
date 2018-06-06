@@ -27,7 +27,7 @@ import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CasePhase;
 import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
@@ -48,10 +48,10 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     private CasePhase[] casePhaseList;
     private CasePhase selectedCasePhase;
     
-    private Event eventForTriggeringCasePhaseAdvancement;
+    private EventCase eventForTriggeringCasePhaseAdvancement;
     
-    private LinkedList<Event> eventList;
-    private Event selectedEvent;
+    private LinkedList<EventCase> eventList;
+    private EventCase selectedEvent;
     
     private ArrayList<CodeViolation> fullCaseViolationList;
     private ArrayList<CodeViolation> selectedViolations;
@@ -101,7 +101,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         if(!selectedViolations.isEmpty()){
 
             // generate event for compliance with selected violations
-            Event e = ec.generateViolationComplianceEvent(selectedViolations);
+            EventCase e = ec.generateViolationComplianceEvent(selectedViolations);
 
             // when event is submitted, send violation list to c
             sm.getVisit().setActiveEvent(e);
@@ -416,7 +416,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the eventList
      */
-    public LinkedList<Event> getEventList() {
+    public LinkedList<EventCase> getEventList() {
         eventList = currentCase.getEventList();
         return eventList;
     }
@@ -424,7 +424,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the selectedEvent
      */
-    public Event getSelectedEvent() {
+    public EventCase getSelectedEvent() {
         return selectedEvent;
     }
 
@@ -456,14 +456,14 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @param eventList the eventList to set
      */
-    public void setEventList(LinkedList<Event> eventList) {
+    public void setEventList(LinkedList<EventCase> eventList) {
         this.eventList = eventList;
     }
 
     /**
      * @param selectedEvent the selectedEvent to set
      */
-    public void setSelectedEvent(Event selectedEvent) {
+    public void setSelectedEvent(EventCase selectedEvent) {
         this.selectedEvent = selectedEvent;
     }
 
@@ -556,7 +556,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
    
     
     public String takeNextAction(){
-        Event e = getEventForTriggeringCasePhaseAdvancement();
+        EventCase e = getEventForTriggeringCasePhaseAdvancement();
         SessionManager sm = getSessionManager();
         sm.getVisit().setActiveEvent(e);
         
@@ -566,7 +566,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the eventForTriggeringCasePhaseAdvancement
      */
-    public Event getEventForTriggeringCasePhaseAdvancement() {
+    public EventCase getEventForTriggeringCasePhaseAdvancement() {
         EventCoordinator ec = getEventCoordinator();
 
         try {
@@ -589,7 +589,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @param eventForTriggeringCasePhaseAdvancement the eventForTriggeringCasePhaseAdvancement to set
      */
-    public void setEventForTriggeringCasePhaseAdvancement(Event eventForTriggeringCasePhaseAdvancement) {
+    public void setEventForTriggeringCasePhaseAdvancement(EventCase eventForTriggeringCasePhaseAdvancement) {
         this.eventForTriggeringCasePhaseAdvancement = eventForTriggeringCasePhaseAdvancement;
     }
 

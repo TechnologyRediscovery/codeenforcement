@@ -36,10 +36,12 @@ import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
-
+  
 import javax.servlet.annotation.WebListener;
 
 
@@ -56,7 +58,7 @@ public class Initializer implements ServletContextListener{
      */
     public Initializer() {
         System.out.println("Creating Initializer Bean");
-        
+      
     
     }
     
@@ -121,25 +123,28 @@ public class Initializer implements ServletContextListener{
         CodeViolationIntegrator cvi = new CodeViolationIntegrator();
         servletContext.setAttribute("codeViolationIntegrator", cvi);
         
-        ViolationCoordinator vc = new ViolationCoordinator();
-        servletContext.setAttribute("violationCoordinator", vc);
-        
-        PaymentIntegrator pmtInt = new PaymentIntegrator();
-        servletContext.setAttribute("paymentIntegrator", pmtInt);
-
-        CourtEntityIntegrator cei = new CourtEntityIntegrator();
-        servletContext.setAttribute("courtEntityIntegrator", cei);
-        
-        
-         //adding integrator for occupancy inspection
-        OccupancyInspectionIntegrator occupancyInspectionIntegrator = new OccupancyInspectionIntegrator();
-        servletContext.setAttribute("occupancyInspectionIntegrator", occupancyInspectionIntegrator);
-        
         CitationIntegrator citint = new CitationIntegrator();
         servletContext.setAttribute("citationIntegrator", citint);
         
+        ViolationCoordinator vc = new ViolationCoordinator();
+        servletContext.setAttribute("violationCoordinator", vc);
         
+        CourtEntityIntegrator cei = new CourtEntityIntegrator();
+        servletContext.setAttribute("courtEntityIntegrator", cei);
         
+        // occupancy "modules"
+        
+        ChecklistIntegrator chklstInt = new ChecklistIntegrator();
+        servletContext.setAttribute("ChecklistIntegrator", chklstInt);
+        
+        OccupancyInspectionIntegrator occupancyInspectionIntegrator = new OccupancyInspectionIntegrator();
+        servletContext.setAttribute("occupancyInspectionIntegrator", occupancyInspectionIntegrator);
+        
+        OccupancyPermitIntegrator occupancyPermitIntegrator = new OccupancyPermitIntegrator();
+        servletContext.setAttribute("occupancyPermitIntegrator", occupancyPermitIntegrator);
+        
+        PaymentIntegrator pmtInt = new PaymentIntegrator();
+        servletContext.setAttribute("paymentIntegrator", pmtInt);
         
     }
     

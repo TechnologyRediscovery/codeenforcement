@@ -31,7 +31,8 @@ public enum PersonType{
     ElectedOfficial("Elected Official"),
     Public("Public"),
     LawEnforcement("Law Enforcement"),
-    Other("Other");
+    Other("Other"),
+    ownercntylookup("Owner from county databse");
     
     
     

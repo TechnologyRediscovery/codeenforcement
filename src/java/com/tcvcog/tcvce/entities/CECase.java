@@ -23,7 +23,7 @@ public class CECase {
     private User user;
 
     private ArrayList<CodeViolation> violationList;
-    private LinkedList<Event> eventList;
+    private LinkedList<EventCase> eventList;
     
     private String caseName;
     private CasePhase casePhase;
@@ -187,14 +187,14 @@ public class CECase {
     /**
      * @return the eventList
      */
-    public LinkedList<Event> getEventList() {
+    public LinkedList<EventCase> getEventList() {
         return eventList;
     }
 
     /**
      * @param eventList the eventList to set
      */
-    public void setEventList(LinkedList<Event> eventList) {
+    public void setEventList(LinkedList<EventCase> eventList) {
         this.eventList = eventList;
     }
 

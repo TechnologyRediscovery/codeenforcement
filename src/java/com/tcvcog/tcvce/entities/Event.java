@@ -1,57 +1,43 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2018 Turtle Creek Valley
+Council of Governments, PA
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  *
- * corresponding database table DDL
- * 
- * 
-   INSERT INTO public.ceevent(
-            eventid, ceeventcategory_catid, cecase_caseid, dateofrecord, 
-            eventtimestamp, eventdescription, login_userid, disclosetomunicipality, 
-            disclosetopublic, activeevent, requiresviewconfirmation, viewconfirmed, 
-            hidden, notes)
-    VALUES (?, ?, ?, ?, 
-            ?, ?, ?, ?, 
-            ?, ?, ?, ?, 
-            ?, ?);
-
-* 
- * @author cedba
+ * @author sylvia
  */
 public class Event {
     
     private int eventID;
     private EventCategory category;
-    
-    private int caseID;
-    
     private LocalDateTime dateOfRecord;
     private String prettyDateOfRecord;
     private LocalDateTime eventTimeStamp;
     private String eventDescription;
-    
     private User eventOwnerUser;
     private boolean discloseToMunicipality;
     private boolean discloseToPublic;
-    
     private boolean activeEvent;
-    private boolean requiresViewConfirmation;
-    private boolean viewConfirmed;
     private boolean hidden;
-    
     private String notes;
-    
-    private ArrayList<Person> eventPersons;
-    
+
     /**
      * @return the eventID
      */
@@ -60,127 +46,6 @@ public class Event {
     }
 
     /**
-     * @param eventID the eventID to set
-     */
-    public void setEventID(int eventID) {
-        this.eventID = eventID;
-    }
-
- 
-    /**
-     * @return the dateOfRecord
-     */
-    public LocalDateTime getDateOfRecord() {
-        return dateOfRecord;
-    }
-
-    /**
-     * @param dateOfRecord the dateOfRecord to set
-     */
-    public void setDateOfRecord(LocalDateTime dateOfRecord) {
-        this.dateOfRecord = dateOfRecord;
-    }
-
-    /**
-     * @return the eventTimeStamp
-     */
-    public LocalDateTime getEventTimeStamp() {
-        return eventTimeStamp;
-    }
-
-    /**
-     * @param eventTimeStamp the eventTimeStamp to set
-     */
-    public void setEventTimeStamp(LocalDateTime eventTimeStamp) {
-        this.eventTimeStamp = eventTimeStamp;
-    }
-
-    /**
-     * @return the eventDescription
-     */
-    public String getEventDescription() {
-        return eventDescription;
-    }
-
-    /**
-     * @param eventDescription the eventDescription to set
-     */
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
-    }
-
-    /**
-     * @return the eventOwnerUser
-     */
-    public User getEventOwnerUser() {
-        return eventOwnerUser;
-    }
-
-    /**
-     * @param eventOwnerUser the eventOwnerUser to set
-     */
-    public void setEventOwnerUser(User eventOwnerUser) {
-        this.eventOwnerUser = eventOwnerUser;
-    }
-
-    /**
-     * @return the discloseToMunicipality
-     */
-    public boolean isDiscloseToMunicipality() {
-        return discloseToMunicipality;
-    }
-
-    /**
-     * @param discloseToMunicipality the discloseToMunicipality to set
-     */
-    public void setDiscloseToMunicipality(boolean discloseToMunicipality) {
-        this.discloseToMunicipality = discloseToMunicipality;
-    }
-
-    /**
-     * @return the discloseToPublic
-     */
-    public boolean isDiscloseToPublic() {
-        return discloseToPublic;
-    }
-
-    /**
-     * @param discloseToPublic the discloseToPublic to set
-     */
-    public void setDiscloseToPublic(boolean discloseToPublic) {
-        this.discloseToPublic = discloseToPublic;
-    }
-
-    /**
-     * @return the activeEvent
-     */
-    public boolean isActiveEvent() {
-        return activeEvent;
-    }
-
-    /**
-     * @param activeEvent the activeEvent to set
-     */
-    public void setActiveEvent(boolean activeEvent) {
-        this.activeEvent = activeEvent;
-    }
-
-    /**
-     * @return the notes
-     */
-    public String getNotes() {
-        return notes;
-    }
-
-    /**
-     * @param notes the notes to set
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-  
-    /**
      * @return the category
      */
     public EventCategory getCategory() {
@@ -188,24 +53,10 @@ public class Event {
     }
 
     /**
-     * @param category the category to set
+     * @return the dateOfRecord
      */
-    public void setCategory(EventCategory category) {
-        this.category = category;
-    }
-
-    /**
-     * @return the caseID
-     */
-    public int getCaseID() {
-        return caseID;
-    }
-
-    /**
-     * @param caseID the caseID to set
-     */
-    public void setCaseID(int caseID) {
-        this.caseID = caseID;
+    public LocalDateTime getDateOfRecord() {
+        return dateOfRecord;
     }
 
     /**
@@ -216,38 +67,45 @@ public class Event {
     }
 
     /**
-     * @param prettyDateOfRecord the prettyDateOfRecord to set
+     * @return the eventTimeStamp
      */
-    public void setPrettyDateOfRecord(String prettyDateOfRecord) {
-        this.prettyDateOfRecord = prettyDateOfRecord;
+    public LocalDateTime getEventTimeStamp() {
+        return eventTimeStamp;
     }
 
     /**
-     * @return the eventPersons
+     * @return the eventDescription
      */
-    public ArrayList<Person> getEventPersons() {
-        return eventPersons;
+    public String getEventDescription() {
+        return eventDescription;
     }
 
     /**
-     * @param eventPersons the eventPersons to set
+     * @return the eventOwnerUser
      */
-    public void setEventPersons(ArrayList<Person> eventPersons) {
-        this.eventPersons = eventPersons;
+    public User getEventOwnerUser() {
+        return eventOwnerUser;
     }
 
     /**
-     * @return the requiresViewConfirmation
+     * @return the discloseToMunicipality
      */
-    public boolean isRequiresViewConfirmation() {
-        return requiresViewConfirmation;
+    public boolean isDiscloseToMunicipality() {
+        return discloseToMunicipality;
     }
 
     /**
-     * @return the viewConfirmed
+     * @return the discloseToPublic
      */
-    public boolean isViewConfirmed() {
-        return viewConfirmed;
+    public boolean isDiscloseToPublic() {
+        return discloseToPublic;
+    }
+
+    /**
+     * @return the activeEvent
+     */
+    public boolean isActiveEvent() {
+        return activeEvent;
     }
 
     /**
@@ -258,17 +116,80 @@ public class Event {
     }
 
     /**
-     * @param requiresViewConfirmation the requiresViewConfirmation to set
+     * @return the notes
      */
-    public void setRequiresViewConfirmation(boolean requiresViewConfirmation) {
-        this.requiresViewConfirmation = requiresViewConfirmation;
+    public String getNotes() {
+        return notes;
     }
 
     /**
-     * @param viewConfirmed the viewConfirmed to set
+     * @param eventID the eventID to set
      */
-    public void setViewConfirmed(boolean viewConfirmed) {
-        this.viewConfirmed = viewConfirmed;
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(EventCategory category) {
+        this.category = category;
+    }
+
+    /**
+     * @param dateOfRecord the dateOfRecord to set
+     */
+    public void setDateOfRecord(LocalDateTime dateOfRecord) {
+        this.dateOfRecord = dateOfRecord;
+    }
+
+    /**
+     * @param prettyDateOfRecord the prettyDateOfRecord to set
+     */
+    public void setPrettyDateOfRecord(String prettyDateOfRecord) {
+        this.prettyDateOfRecord = prettyDateOfRecord;
+    }
+
+    /**
+     * @param eventTimeStamp the eventTimeStamp to set
+     */
+    public void setEventTimeStamp(LocalDateTime eventTimeStamp) {
+        this.eventTimeStamp = eventTimeStamp;
+    }
+
+    /**
+     * @param eventDescription the eventDescription to set
+     */
+    public void setEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
+    }
+
+    /**
+     * @param eventOwnerUser the eventOwnerUser to set
+     */
+    public void setEventOwnerUser(User eventOwnerUser) {
+        this.eventOwnerUser = eventOwnerUser;
+    }
+
+    /**
+     * @param discloseToMunicipality the discloseToMunicipality to set
+     */
+    public void setDiscloseToMunicipality(boolean discloseToMunicipality) {
+        this.discloseToMunicipality = discloseToMunicipality;
+    }
+
+    /**
+     * @param discloseToPublic the discloseToPublic to set
+     */
+    public void setDiscloseToPublic(boolean discloseToPublic) {
+        this.discloseToPublic = discloseToPublic;
+    }
+
+    /**
+     * @param activeEvent the activeEvent to set
+     */
+    public void setActiveEvent(boolean activeEvent) {
+        this.activeEvent = activeEvent;
     }
 
     /**
@@ -277,7 +198,13 @@ public class Event {
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
-    
-    
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     
 }

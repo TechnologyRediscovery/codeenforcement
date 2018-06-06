@@ -61,44 +61,32 @@ import javax.faces.bean.SessionScoped;
 public class BackingBeanUtils implements Serializable{
     
     //@ManagedProperty(value="#{visit}")
+    private SessionManager sessionManager;
     private Visit visit;
+    
     private UserCoordinator userCoordinator;
+    private UserIntegrator userIntegrator;
+    
+    private MunicipalityIntegrator municipalityIntegrator;
     
     private CaseCoordinator caseCoordinator;
     private CaseIntegrator caseIntegrator;
-    
     
     private EventCoordinator eventCoordinator;
     private EventIntegrator eventIntegrator;
     
     private CodeViolationIntegrator codeViolationIntegrator;
     private ViolationCoordinator violationCoordinator;
-    
-    private MunicipalityIntegrator municipalityIntegrator;
-    
-//    @ManagedProperty("#{sessionManager}")
-    private SessionManager sessionManager;
+    private CitationIntegrator citationIntegrator;
+    private CourtEntityIntegrator courtEntityIntegrator;
     
     private PropertyIntegrator propertyIntegrator;
     private CEActionRequestIntegrator cEActionRequestIntegrator;
     
-    private UserIntegrator userIntegrator;
-    
-    
-    private OccupancyInspectionIntegrator occupancyInspectionIntegrator;
     private ChecklistIntegrator checklistIntegrator;
+    private OccupancyInspectionIntegrator occupancyInspectionIntegrator;
     private OccupancyPermitIntegrator occupancyPermitIntegrator;
     private PaymentIntegrator paymentIntegrator;
-    
-    
-    private CourtEntityIntegrator courtEntityIntegrator;
-    
-    private CitationIntegrator citationIntegrator;
-    
-    
-    
- 
-    // private Connection postgresCon;
     
     /**
      * Creates a new instance of BackingBeanUtils

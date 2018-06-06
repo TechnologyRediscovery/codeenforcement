@@ -7,7 +7,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.entities.CECase;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.Citation;
@@ -31,7 +31,7 @@ public class Visit {
 
     private Property activeProp;
     private CECase activeCase;
-    private Event activeEvent;
+    private EventCase activeEvent;
     private Person activePerson;
     private User activeUser;
     private NoticeOfViolation activeNotice;
@@ -80,14 +80,14 @@ public class Visit {
     /**
      * @return the activeEvent
      */
-    public Event getActiveEvent() {
+    public EventCase getActiveEvent() {
         return activeEvent;
     }
 
     /**
      * @param activeEvent the activeEvent to set
      */
-    public void setActiveEvent(Event activeEvent) {
+    public void setActiveEvent(EventCase activeEvent) {
         this.activeEvent = activeEvent;
     }
 

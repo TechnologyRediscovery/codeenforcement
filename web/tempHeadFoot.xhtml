@@ -121,87 +121,117 @@
                                  footerClass="gridFooter">
                                              
                                 <i class="material-icons">search</i>
-                                <h:commandLink action="propertySearch" value="Property Search" styleClass="sblink"/>
+                                    <p:commandLink action="propertySearch" value="Property Search" styleClass="sblink"/>
 
-                                <i class="material-icons">home</i>
-                                 
-                                <p:commandLink ajax="false" value="Property Profile" action="#{navigationBB.gotoPropertyProfile}"
-                                           styleClass="sblink"/>
-                                     
-                                <i class="material-icons">face</i>
-                            
-                                    <p:commandLink ajax="false" value="Persons" action="personManage" 
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Person search" action="personManage" 
                                                     styleClass="sblink"/>
-                            
-                                <i class="material-icons">developer_board</i>
-                                                        
-                                    <p:commandLink ajax="false" value="Municipality Dashboard" action="workflow"
-                                               styleClass="sblink"/>
+                                
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Owner records" action="personManage" 
+                                                    styleClass="sblink"/>
+                                
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr style="color:black;"/></h:panelGroup>
+                                    
+                                    
+                                <i class="material-icons">home</i>
+                                    <p:commandLink ajax="false" value="Property Profile" action="#{navigationBB.gotoPropertyProfile}"
+                                           styleClass="sblink"/>
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
+                                     
                                 <i class="material-icons">assignment</i>
-                        
-                            <p:commandLink ajax="false" value="Code enforcement action request form" action="codeEnforce" 
-                                           styleClass="sblink"/>
-                            
-                            <i class="material-icons">chrome_reader_mode</i>
-                            
-                            <p:commandLink ajax="false" value="Case Profile" action="#{navigationBB.gotoCaseProfile}"
-                                           styleClass="sblink"/>
-                            
-                            <h:panelGroup>
-                            </h:panelGroup>
+                                    <p:commandLink ajax="false" value="Code enforcement requests" action="workflow"
+                                               styleClass="sblink"/>
+                                    
+                                <i class="material-icons">view_list</i>
+                                    <p:commandLink ajax="false" value="Open code enforcement cases" action="workflow"
+                                               styleClass="sblink"/>
+                           
+                                 <i class="material-icons">folder_open</i>
+                                    <p:commandLink ajax="false" value="Current case profile" action="#{navigationBB.gotoCaseProfile}"
+                                                styleClass="sblink"/>
+
+                                 <!--Spacer-->
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Violations" action="#{navigationBB.gotoCaseViolations}"
+                                                styleClass="sblink"/>
+                                <i class="material-icons">remove</i>
+
+                                    <p:commandLink ajax="false" value="Notices " action="#{navigationBB.gotoCaseNotices}"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Citations" action="#{navigationBB.gotoCaseCitations}"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Add Event" action="#{navigationBB.gotoCaseEvents}"
+                                                styleClass="sblink"/>
                                 
-                            <p:commandLink ajax="false" value="Violations" action="#{navigationBB.gotoCaseViolations}"
-                                           styleClass="sblink"/>
-                            <h:panelGroup>
-                            </h:panelGroup>
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
                                 
-                            <p:commandLink ajax="false" value="Notices " action="#{navigationBB.gotoCaseNotices}"
-                                           styleClass="sblink"/>
-                            <h:panelGroup>
-                            </h:panelGroup>
+                                <i class="material-icons">edit</i>
+                                    <p:commandLink ajax="false" value="Inspection applications" action="muniManage"
+                                                styleClass="sblink"/>
+
+                                 <i class="material-icons">check_circle</i>
+                                     <p:commandLink ajax="false" value="Occupancy inspection profile" action="muniManage"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">tune</i>
+                                     <p:commandLink ajax="false" value="Inspection checklist builder" action="muniManage"
+                                                styleClass="sblink"/>
+                                     
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
                                 
-                            <p:commandLink ajax="false" value="Citations" action="#{navigationBB.gotoCaseCitations}"
-                                           styleClass="sblink"/>
-                            <h:panelGroup>
-                            </h:panelGroup>
-                                
-                            <p:commandLink ajax="false" value="Events" action="#{navigationBB.gotoCaseEvents}"
-                                           styleClass="sblink"/>
-    
-                            <i class="material-icons">event_note</i>
-                            
-                                <p:commandLink ajax="false" value="Event Configuration" action="eventManage"
-                                           styleClass="sblink"/>
-                            
-                                <i class="material-icons">gavel</i>
-                            <p:commandLink ajax="false" value="Court Entity Management" action="litigationManage"
-                                           styleClass="sblink"/>
                                 <i class="material-icons">book</i>
+                                    <p:commandLink ajax="false" value="Municipal code" action="codeSourceManage" 
+                                                styleClass="sblink"/>
+                                    
+                                <i class="material-icons">gavel</i>
+                                     <p:commandLink ajax="false" value="Court entities" action="litigationManage"
+                                                styleClass="sblink"/>
+                
+                                <i class="material-icons">build</i>
+                                     <p:commandLink ajax="false" value="Code enforcement event setup" action="eventManage"
+                                                styleClass="sblink"/>
 
-                        
-                            <p:commandLink ajax="false" value="Code Source and Element Manager" action="codeSourceManage" 
-                                           styleClass="sblink"/>
-                                <i class="material-icons">filter_b_and_w</i>
-
-                            <p:commandLink ajax="false" value="Element Types Manager" action="elementTypeManage" 
-                                           styleClass="sblink"/>
                                 <i class="material-icons">category</i>
+                                    <p:commandLink ajax="false" value="Permit types" action="muniManage"
+                                                styleClass="sblink"/>
 
-                            <p:commandLink ajax="false" value="Code Set Manager" action="codeSetManage"
-                                           styleClass="sblink"/>
-                                <i class="material-icons">directions_run</i>
-                        
-                            <p:commandLink ajax="false" value="User Configuration" action="userManage"
-                                           styleClass="sblink"/>
-                                <i class="material-icons">file_copy</i>
-                            
-                            <p:commandLink ajax="false" value="System Logs" action="logManage"
-                                           styleClass="sblink"/>
-                                <i class="material-icons">account_balance</i>
-                            
-                            <p:commandLink ajax="false" value="Municipality Manager" action="muniManage"
-                                           styleClass="sblink"/>
-                            
+
+                                <i class="material-icons">attach_money</i>
+                                     <p:commandLink ajax="false" value="Fee Configuration" action="muniManage"
+                                                styleClass="sblink"/>
+                                 <i class="material-icons">account_balance</i>
+                                     <p:commandLink ajax="false" value="Municipalities" action="muniManage"
+                                             styleClass="sblink"/>
+                                     
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
+                                    
+                                 <i class="material-icons">person</i>
+                                     <p:commandLink ajax="false" value="System user configuration" action="userManage"
+                                                    styleClass="sblink"/>
+
+                                 <i class="material-icons">file_copy</i>
+                                     <p:commandLink ajax="false" value="System Logs" action="logManage"
+                                                    styleClass="sblink"/>
+
+
+
+                                 <i class="material-icons">supervisor_account</i>
+                                     <p:commandLink ajax="false" value="Public portal home" action="muniManage"
+                                                styleClass="sblink"/>
+                                 
+                                 <i class="material-icons">assignment</i>
+                                     <p:commandLink ajax="false" value="Code enforcement action request form" action="codeEnforce" 
+                                                styleClass="sblink"/>
                             </h:panelGrid>
 
                         </h:form>

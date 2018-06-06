@@ -60,6 +60,12 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
         return "/ce/caseAdd.xhtml";
     }
     
+    public String viewPersonProfile(){
+        SessionManager sm  = getSessionManager();
+        sm.getVisit().setActivePerson(selectedPerson);
+        return "personProfile";
+    }
+    
 
     
     /**

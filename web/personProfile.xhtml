@@ -20,8 +20,9 @@
                     <h1>Person profile</h1>
                     <f:view>
                         <h:form id="personProifleForm">
-                            <h2>Name: <h:outputText value="#{personUpdateBB.person.firstName}"/> <span> </span><h:outputText value="#{personUpdateBB.person.lastName}"/>, ID: <h:outputText value="#{personUpdateBB.person.personID}"/></h2>
-                            <p>This record was last updated on: #{personUpdateBB.person.lastUpdated}</p>
+                            <h2>Name: <h:outputText value="#{personUpdateBB.currentPerson.firstName}"/> <span> </span><h:outputText value="#{personUpdateBB.currentPerson.lastName}"/>, 
+                                        ID #: <h:outputText value="#{personUpdateBB.currentPerson.personID}"/></h2>
+                            <p>This record was last updated on: #{personUpdateBB.currentPerson.lastUpdated}</p>
                             <h:panelGrid columns="4" border="0" 
                                          cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
                                          footerClass="gridFooter">
@@ -172,17 +173,6 @@
                                     <p:inputSwitch id="isActiveFormIS" value="#{personUpdateBB.formIsActive}" onLabel="Yes" offLabel="No" tabindex="14"/>
                                 </h:panelGroup>
                                 
-                                <f:facet name="footer">
-                                    
-                                    <h:panelGroup>
-                                        <h:outputLabel value="Person Notes:" for="formNotesIT"/>
-                                        <p:inputTextarea id="formNotesIT" value="#{personUpdateBB.formNotes}" 
-                                               style="width: 100%;" tabindex="15" required="true" styleClass="inputText"/>
-                                        <h:message for="formNotesIT" showDetail="false" showSummary="true" 
-                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                                    </h:panelGroup>
-                                    
-                                </f:facet>
                                 
                                 
                             </h:panelGrid>

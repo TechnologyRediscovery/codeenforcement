@@ -23,7 +23,6 @@
                         <p>Access all property-level data and jump into cases, inspections, and people attached to this property.</p>
 
                         <h2>Parcel and property information for PropertyID: <h:outputText value="#{propertyProfileBB.currentProperty.propertyID}"/></h2>
-                        <p>(This property-level data has not yet been synchronized with the county.)</p>
                         <h:panelGrid columns="4" border="0" 
                                      cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
                                      footerClass="gridFooter">
@@ -69,26 +68,9 @@
                                 </h:outputLabel>
                             </h:panelGroup>
                             <h:panelGroup>
-                                <h:outputText id="propUseType" styleClass="dataText" value="#{propertyProfileBB.currentProperty.propertyUseTypeName}"/>
+                                <h:outputText id="propUseType" styleClass="dataText" value="#{propertyProfileBB.currentProperty.propertyUseType}"/>
                             </h:panelGroup>
 
-                            <h:panelGroup>
-                                <h:outputLabel for="propRental" >
-                                    <h:outputText styleClass="uiLabel" value="Rental?" />
-                                </h:outputLabel>
-                            </h:panelGroup>
-                            <h:panelGroup>
-                                <h:outputText id="propRental" styleClass="dataText" value="#{propertyProfileBB.currentProperty.rental}" />
-                            </h:panelGroup>
-
-                            <h:panelGroup>
-                                <h:outputLabel for="propMulti" >
-                                    <h:outputText styleClass="uiLabel" value="Multi-Unit?" />
-                                </h:outputLabel>
-                            </h:panelGroup>
-                            <h:panelGroup>
-                                <h:outputText id="propMulti" styleClass="dataText" value="#{propertyProfileBB.currentProperty.multiUnit}"/>
-                            </h:panelGroup>
 
                             <h:panelGroup>
                                 <h:outputLabel for="propUseGroup" >
@@ -184,7 +166,7 @@
                                 to log a communication event or edit the Person's profile.</p>
 
                             <p:dataTable
-                                id="personeTable"
+                                id="personTable"
                                 var="p"
                                 value="#{propertyProfileBB.propertyPersonList}"
                                 selectionMode="single"
@@ -227,13 +209,13 @@
                                     <f:facet name="header">
                                         <h:outputText value="Address" />
                                     </f:facet>
-                                    <h:outputText value="#{p.address_street}"/>
+                                    <h:outputText value="#{p.address_street}, #{p.address_city} #{p.address_state}"/>
                                 </p:column>
                             </p:dataTable>
 
 
-                            <p:commandButton ajax="fakse" value="Create a communication event with this person" action="communicationEvent"/>
-                            <p:commandButton ajax="fakse" value="View Person's profile and edit info" action="personProfile"/>
+                            <p:commandButton ajax="false" value="Create a communication event with this person" action="communicationEvent"/>
+                            <p:commandButton ajax="false" value="View Person's profile and edit info" action="personProfile"/>
 
                             <p:spacer height="10px"/>
                             <hr/>

@@ -20,7 +20,7 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
-import com.tcvcog.tcvce.entities.Event;
+import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
@@ -39,7 +39,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     private CEActionRequest selectedRequest;
     private LinkedList<CECase> caseList;
     private CECase selectedCase;
-    private LinkedList<Event> recentEventList;
+    private LinkedList<EventCase> recentEventList;
     private LinkedList<Person> muniPeopleList;
     
     
@@ -106,7 +106,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the recentEventList
      */
-    public LinkedList<Event> getRecentEventList() {
+    public LinkedList<EventCase> getRecentEventList() {
         return recentEventList;
     }
 
@@ -134,7 +134,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     /**
      * @param recentEventList the recentEventList to set
      */
-    public void setRecentEventList(LinkedList<Event> recentEventList) {
+    public void setRecentEventList(LinkedList<EventCase> recentEventList) {
         this.recentEventList = recentEventList;
     }
 
