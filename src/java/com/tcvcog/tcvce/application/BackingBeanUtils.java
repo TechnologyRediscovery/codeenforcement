@@ -34,13 +34,20 @@ import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+
+// occupancy integrators
 import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
+
+// system integrators
+import com.tcvcog.tcvce.integration.SystemIntegrator;
+import com.tcvcog.tcvce.integration.LogIntegrator;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -87,6 +94,10 @@ public class BackingBeanUtils implements Serializable{
     private OccupancyInspectionIntegrator occupancyInspectionIntegrator;
     private OccupancyPermitIntegrator occupancyPermitIntegrator;
     private PaymentIntegrator paymentIntegrator;
+    
+    // system integrators
+    private SystemIntegrator systemIntegrator;
+    private LogIntegrator logIntegrator;
     
     /**
      * Creates a new instance of BackingBeanUtils
@@ -581,6 +592,30 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setOccupancyPermitIntegrator(OccupancyPermitIntegrator occupancyPermitIntegrator) {
         this.occupancyPermitIntegrator = occupancyPermitIntegrator;
+    }
+
+    /**
+     * @return the systemIntegrator
+     */
+    public SystemIntegrator getSystemIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{systemIntegrator}", SystemIntegrator.class);
+        systemIntegrator = (SystemIntegrator) ve.getValue(context.getELContext());
+        
+        return systemIntegrator;
+    }
+
+    /**
+     * @return the logIntegrator
+     */
+    public LogIntegrator getLogIntegrator() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{logIntegrator}", LogIntegrator.class);
+        logIntegrator = (LogIntegrator) ve.getValue(context.getELContext());
+        
+        return logIntegrator;
     }
 
 }

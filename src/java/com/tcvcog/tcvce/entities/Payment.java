@@ -33,6 +33,7 @@ public class Payment {
     private String paymentReferenceNum;
     private int checkNum;
     private boolean cleared;
+    private String notes;
 
    
 
@@ -186,6 +187,20 @@ public class Payment {
      */
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
+    }
+
+    /**
+     * @return the notes
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
     
     

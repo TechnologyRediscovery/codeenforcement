@@ -10,7 +10,7 @@
         <title>Add Payment</title>
     </h:head>
     <h:body>
-        <ui:composition template="./tempHeadFoot.xhtml">
+        <ui:composition template="./../tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -30,7 +30,8 @@
                                     rowKey="#{p.paymentID}"
                                     value="#{paymentBB.paymentList}"
                                     tableStyleClass="primeDataTable"
-                                    tabindex="1">
+                                    tabindex="1"
+                                    resizableColumns="true">
                                     <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
 
                                     <p:column width="10%">
@@ -182,7 +183,7 @@
                         
                                 </h:panelGroup> 
                                 
-                                <h:outputLabel value="Date Received:" for="newPaymentDateDeposited"/>
+                                <h:outputLabel value="Date Deposited" for="newPaymentDateDeposited"/>
                                 <h:panelGroup>
                                     <p:calendar 
                                         value="#{paymentBB.formPaymentDateDeposited}" 
@@ -243,6 +244,15 @@
                                     </h:panelGroup>
                                 
                                 <f:facet name="footer">
+                                    <h:outputLabel for="paymentNotesEditor" value="Payment Notes:"/>
+                                        <p:editor id="paymentNotesEditor" value="#{paymentBB.formNotes}" 
+                                                    controls="bold italic underline strikethrough font size style color 
+                                                    bullets numbering center undo redo rule link removeformat outdent 
+                                                    indent link unlink copy cut paste rule alignleft center alignright"
+                                                    width="1000"
+                                                    height="200"/>
+                                            <h:message for="paymentNotesEditor" showDetail="false" showSummary="true" 
+                                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </f:facet>   
                                 
                                 <p:spacer height="15"/>

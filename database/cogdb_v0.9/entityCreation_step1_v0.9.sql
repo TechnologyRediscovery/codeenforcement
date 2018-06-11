@@ -5,6 +5,10 @@
 
 --BEGIN;
 
+-- NOTE that starting on 7 Jan 2018, this DDL script is NO LONGER
+-- CURRENT for our design. Rather, changes are made directly in postgres
+-- and the creation script can be exported. Use this as reference
+
 
 
 CREATE TABLE municipality
@@ -978,9 +982,9 @@ ALTER TABLE noticeofviolation ADD CONSTRAINT noticeOfViolationCaseID_fk FOREIGN 
 -- ****************  OCCUPANCY INSPECTIONS  **************************
 
 CREATE SEQUENCE IF NOT EXISTS occupancyinspectionID_seq
-    START WITH 10
+    START WITH 1000
     INCREMENT BY 1
-    MINVALUE 10
+    MINVALUE 1000
     NO MAXVALUE
     CACHE 1;
 
@@ -988,6 +992,7 @@ CREATE TABLE occupancyinspection
 (
     inspectionID                    INTEGER DEFAULT nextval('occupancyinspectionID_seq') NOT NULL,
     propertyUnitID                  INTEGER NOT NULL, --fk 
+    status                          INTEGER NOT NULL CONSTRAINT occInspec_status_statusid_fk REFERENCES occupancyinspectionstatus (statusid),
     login_userID                    INTEGER NOT NULL, --fk
     inspectionCreationTimestamp     TIMESTAMP WITH TIME ZONE,
     firstInspectionDate             TIMESTAMP WITH TIME ZONE,
@@ -997,7 +1002,13 @@ CREATE TABLE occupancyinspection
     resolved                        boolean DEFAULT FALSE, -- deprecated from old db
     assignedFee                     INTEGER NOT NULL,
     totalFeePaid                    boolean DEFAULT FALSE,
-    notes                           text
+    notes                           text,
+    publicaccesscc                  INTEGER,
+    enablecc                        boolean DEFAULT TRUE,
+    muniauthgrantedby               INTEGER CONSTRAINT occInspec_muniauthgrantedby_fk REFERENCES login (userID),
+    muniauthtimestamp               TIMESTAMP WITH TIME ZONE,
+    muniauthnotes                   text
+
 
 ) ;
 
@@ -1009,6 +1020,22 @@ ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_propUnit_fk FOREIGN KEY
 
 ALTER TABLE occupancyinspection ADD CONSTRAINT occInspec_assignedFee_fk FOREIGN KEY (assignedFee) REFERENCES occinspectionfee (feeID);
 
+
+
+CREATE SEQUENCE IF NOT EXISTS occupancyinspectionstatusID_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE occupancyinspectionstatus
+(
+    statusid                        INTEGER DEFAULT nextval('occupancyinspectionstatusID_seq') PRIMARY KEY,
+    title                           text,
+    description                     text
+
+) ;
 
 
 CREATE SEQUENCE IF NOT EXISTS spacetype_spacetypeid_seq 
@@ -1259,8 +1286,65 @@ CREATE TABLE payment
     referenceNum           text,
     checkno                INTEGER,
     cleared                boolean DEFAULT FALSE,
-    notes                  text
+    notes                  text,
+    recordedby             integer CONSTRAINT payment_recordedby_login_fk FOREIGN KEY (recordedby) REFERENCES public.login (userid) MATCH SIMPLE
+                                    ON UPDATE NO ACTION ON DELETE NO ACTION,
+    entrytimestamp         timestamp with time zone NOT NULL DEFAULT now(),
   ) ;
+
+
+CREATE TABLE improvementtype
+(
+    typeid                  INTEGER PRIMARY KEY,
+    typeTitle               text,
+    typeDescription         text
+
+) ;
+
+CREATE TABLE improvementStatus
+(
+    statusID                INTEGER PRIMARY KEY,
+    statusTitle             text,
+    statusDescription       text
+
+) ;
+
+
+CREATE SEQUENCE IF NOT EXISTS improvementID_seq
+    START WITH 1000
+    INCREMENT BY 1
+    MINVALUE 1000
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE improvementsuggestions
+(
+    improvementID               INTEGER DEFAULT nextval('improvementID_seq') PRIMARY KEY,
+    improvementTypeID           INTEGER NOT NULL CONSTRAINT imptype_fk REFERENCES improvementType (typeid),
+    improvementSuggestionText   text NOT NULL,
+    improvementReply            text,
+    statusID                    INTEGER NOT NULL CONSTRAINT imptstatus_fk REFERENCES improvementStatus (statusID),
+    submitterID                 INTEGER NOT NULL CONSTRAINT submitter_fk REFERENCES login (userid),
+    submissionTimestamp         TIMESTAMP WITH TIME ZONE
+);
+
+
+CREATE SEQUENCE IF NOT EXISTS listitemchange_seq
+    START WITH 1000
+    INCREMENT BY 1
+    MINVALUE 1000
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE listchangerequest
+(
+    changeID                    INTEGER DEFAULT nextval('listitemchange_seq') PRIMARY KEY,
+    changeText                  text
+
+) ;
+
 
 -- COMMIT;
 

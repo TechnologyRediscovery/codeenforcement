@@ -33,7 +33,7 @@ public class OccupancyInspection {
     private boolean SecondInspectionPass;
     private boolean resolved;
     private boolean totalFeePaid;
-    private String occupancyInspectionNotes;
+    private String occupancyInspectionNotes; 
 
     /**
      * @return the inspectionID

@@ -25,34 +25,58 @@ def main():
     # global INPUT_FILE
     # INPUT_FILE = 'workspace/pitcairnparids.csv'
 
+    # parcels whose base property data is not written are written here before moving on
     global LOG_FILE
-    LOG_FILE = 'output/wilmerdingerrorparcels.csv'
+    LOG_FILE = 'output/swissvaleerror.csv'
 
+    # this log file is used for storing parcels whose person and propertyperson inserts fail
+    global LOG_FILE_AUX
+    LOG_FILE_AUX = 'output/swissvaleerror_aux.csv'
+
+    # ID number of the system user connected to these original inserts
+    # user 99 is sylvia, our COG robot
     global UPDATING_USER_ID
     UPDATING_USER_ID = 99
 
     global PARID_FILE
-    PARID_FILE = 'parcelidlists/wilmerdingparids.csv'
+    # PARID_FILE = 'parcelidlists/wilmerdingparids.csv'
     # PARID_FILE = 'parcelidlists/parcelidstest.csv'
+    # PARID_FILE = 'parcelidlists/pitcairnparids_correct.csv'
+    # PARID_FILE = 'parcelidlists/eastmckeesportparids.csv'
+    # PARID_FILE = 'parcelidlists/wilkinsparcelids.csv'
+    # PARID_FILE = 'parcelidlists/chalfantparcelids.csv'
+    PARID_FILE = 'parcelidlists/swissvaleparcelids.csv'
+    
+    # used as the access key for muni codes and ID bases in the dictionaries below
+    global current_muni
+    current_muni = 'swissvale'
 
+    # use as floor value for all new propertyIDs
     global PROP_ID_BASE
     PROP_ID_BASE = 100000
 
+    # floor value for new personIDs
     global PERSON_ID_BASE
     PERSON_ID_BASE = 10000
 
+    # used for sliding starting ID up to accommodate a parcelid list adjustment due to errors on pesky parcels
+    # must be manually set if there's an error: start one above the most recently issued ID
+    # this gets added to the base ID in the ID range generation methods
+    global BUMP_UP
+    BUMP_UP = 0
+
     global municodemap
-    municodemap = {'chalfant':814,'churchhill':816, 'eastmckeesport':821, 'pitcairn':847, 'wilmerding':867, 'wilkins':953, 'cogland':999}
+    municodemap = {'chalfant':814,'churchhill':816, 'eastmckeesport':821, 'pitcairn':847, 'wilmerding':867, 'wilkins':953, 'cogland':999, 'swissvale':111}
 
+    # add these base amounts to the universal base to get starting IDs
     global muni_idbase_map
-    muni_idbase_map = {'chalfant':10000,'churchhill':20000, 'eastmckeesport':30000, 'pitcairn':40000, 'wilmerding':0, 'wilkins':50000, 'cogland':60000}
+    muni_idbase_map = {'chalfant':10000,'churchhill':20000, 'eastmckeesport':30000, 'pitcairn':40000, 'wilmerding':0, 'wilkins':50000, 'cogland':60000, 'swissvale':70000}
 
+    # add these base amounts to the universal base to get starting IDs
     global person_idbase_map
-    person_idbase_map = {'chalfant':10000,'churchhill':20000, 'eastmckeesport':30000, 'pitcairn':40000, 'wilmerding':0, 'wilkins':50000, 'cogland':60000}
+    person_idbase_map = {'chalfant':10000,'churchhill':20000, 'eastmckeesport':30000, 'pitcairn':40000, 'wilmerding':0, 'wilkins':50000, 'cogland':60000, 'swissvale':70000}
 
-    global current_muni
-    current_muni = 'wilmerding'
-
+    # jump into the actual work here
     insert_property_basetableinfo()
     
     # Add owner data to properties
@@ -65,11 +89,11 @@ def get_nextpropertyid(munioffset):
     # consider a range multiplier by municipality to generate starting 
     # at, say 110000 and the next at 120000 which allows for non-overlapping
     #ids for munis with a property count of up to 10000
-    for i in list(range(PROP_ID_BASE + munioffset, PROP_ID_BASE + munioffset + 9999)):
+    for i in list(range(PROP_ID_BASE + munioffset + BUMP_UP, PROP_ID_BASE + munioffset + 9999)):
         yield i;
 
 def get_nextpersonid(munioffset):
-    for i in list(range(PERSON_ID_BASE + munioffset, PERSON_ID_BASE + munioffset + 9999)):
+    for i in list(range(PERSON_ID_BASE + munioffset + BUMP_UP, PERSON_ID_BASE + munioffset + 9999)):
         yield i;
 
 
@@ -79,7 +103,8 @@ def get_nextparcelid(input_file):
     with open(input_file, 'r', encoding=CSV_FILE_ENCODING) as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
-            yield row['parcelid']
+            parid = str(row['parcelid']).strip()
+            yield parid
 
 
 
@@ -130,19 +155,19 @@ def insert_property_basetableinfo():
         insertmap['state'] = addrmap['state']
         insertmap['zipcode'] = addrmap['zipc']   
         insertmap['lotandblock'] = extract_lotandblock_fromparid(parid)
-        print('lob:' + insertmap['lotandblock'])
+        # print('lob:' + insertmap['lotandblock'])
 
         insertmap['propclass'] = str(extract_class(rawhtml))
-        print('class:' + insertmap['propclass'])
+        # print('class:' + insertmap['propclass'])
 
         insertmap['propertyusetype'] = extract_propertyusetype(rawhtml)
-        print('use:' + insertmap['propertyusetype'])
+        # print('use:' + insertmap['propertyusetype'])
 
         insertmap['ownercode'] = extract_ownercode(rawhtml)
-        print('owner code:' + insertmap['ownercode'])
+        # print('owner code:' + insertmap['ownercode'])
 
         insertmap['updatinguser'] = str(99)
-        print('updater id:' + insertmap['updatinguser'])
+        # print('updater id:' + insertmap['updatinguser'])
 
         print('Inserting parcelid data: %s' % (parid))
         
@@ -155,7 +180,8 @@ def insert_property_basetableinfo():
             print('----- committed property core table -----')
         except:
             print('ERROR: unable to insert base property data...skipping')
-            logerror(parid)
+            print('********* MOVING ON ********************')
+            logerror_aux(parid)
             continue
         try:
             # this try catches soup related errors
@@ -166,7 +192,7 @@ def insert_property_basetableinfo():
             personcount = personcount + 1
         except:
             print('ERROR: unable to extract, commit, or connect person owner')
-            logerror(parid)
+            logerror_aux(parid)
             continue
         try:
             # create standard unit number 0 for each property in system
@@ -175,6 +201,9 @@ def insert_property_basetableinfo():
             print('ERROR: unable to create unit zero for property no.'+ str(propid))
             logerror(parid)
             continue
+        print('--------- running totals --------')
+        print('Props inserted: ' + str(propertycount))
+        print('Persons inserted: ' + str(personcount))
         print('********** DONE! *************')
 
         # run insert with sql statement all loaded up
@@ -327,7 +356,7 @@ def get_county_page_for(parcel_id):
         'ParcelID': parcel_id,
         'SearchType': 3,
         'SearchParcel': parcel_id}
-    waittime = random.uniform(0.0,3.0)
+    waittime = random.uniform(0.0,1.0)
     print("waiting:" + str(waittime))
     time.sleep(waittime)
     try:
@@ -354,8 +383,12 @@ def extract_lotandblock_fromparid(parid):
     trimmedparid = parid[0:11]
     exp = re.compile(r'([1-9]+)(\w)[0]*([1-9]+)')
     gl = re.search(exp, trimmedparid)
-    lob = gl.group(1) + '-' + gl.group(2) + '-' + gl.group(3)
-    return lob
+    if(gl):
+        lob = gl.group(1) + '-' + gl.group(2) + '-' + gl.group(3)
+        return lob
+    else:
+        print('ERROR: LOB parsing')
+        return ''
 
 def extract_owner_name(property_html):
     OWNER_NAME_SPAN_ID = 'BasicInfo1_lblOwner'
@@ -527,6 +560,11 @@ def extract_ownercode(property_html):
 
 def logerror(parcelid):
     with open(LOG_FILE, 'a', encoding=CSV_FILE_ENCODING) as outfile:
+        writer = csv.writer(outfile)
+        writer.writerow([parcelid])
+
+def logerror_aux(parcelid):
+    with open(LOG_FILE_AUX, 'a', encoding=CSV_FILE_ENCODING) as outfile:
         writer = csv.writer(outfile)
         writer.writerow([parcelid])
 

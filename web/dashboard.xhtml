@@ -13,8 +13,12 @@
         <ui:composition template="./tempHeadFoot.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
-                    <h1>Code Enforcement System Dashboard</h1>
+
                     <f:view id="dashboard">
+                        <h:messages globalOnly="true" showDetail="false" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
+                        <h1>Code Enforcement System Dashboard</h1>
                         
                         <h2>Essential Entities Toolbox: Properties &amp; People</h2>
                         <p:spacer height="8px"/>

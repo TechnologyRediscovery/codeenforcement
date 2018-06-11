@@ -22,7 +22,6 @@ import com.tcvcog.tcvce.entities.Payment;
 import com.tcvcog.tcvce.entities.PaymentType;
 import java.io.Serializable;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -39,7 +38,7 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
         String query = "UPDATE public.payment\n" +
                     "   SET occinspec_inspectionid=?, paymenttype_typeid=?, \n" +
                     "       datereceived=?, datedeposited=?, amount=?, payerid=?, referencenum=?, \n" +
-                    "       checkno=?, cleared=?\n" +
+                    "       checkno=?, cleared=?, notes=?\n" +
                     " WHERE paymentid=?;";
         
         Connection con = getPostgresCon();
@@ -68,8 +67,9 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
             stmt.setString(7, payment.getPaymentReferenceNum());
             stmt.setInt(8, payment.getCheckNum());
             stmt.setBoolean(9, payment.isCleared());
-            stmt.setInt(10, payment.getPaymentID());
-            System.out.println("TRYING TO EXECUTE UPDATE METHOD");
+            stmt.setString(10, payment.getNotes());
+            stmt.setInt(11, payment.getPaymentID());
+            System.out.println("PaymentBB.editPayment | sql: " + stmt.toString());
             stmt.executeUpdate();
         } catch (SQLException ex){
             System.out.println(ex.toString());
@@ -83,7 +83,7 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
     
     public LinkedList<Payment> getPaymentList() throws IntegrationException {
         String query = "SELECT paymentid, occinspec_inspectionid, paymenttype_typeid, datereceived, \n" +
-                    "       datedeposited, amount, payerid, referencenum, checkno, cleared\n" +
+                    "       datedeposited, amount, payerid, referencenum, checkno, cleared, notes\n" +
                     "  FROM public.payment;";
             Connection con = getPostgresCon();
             ResultSet rs = null;
@@ -92,8 +92,6 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
         
         try {
             stmt = con.prepareStatement(query);
-            System.out.println("");
-            System.out.println("TRYING TO GET PAYMENT LIST");
             rs = stmt.executeQuery();
             System.out.println("PaymentIntegrator.getPaymentList | SQL: " + stmt.toString());
             while(rs.next()){
@@ -114,9 +112,9 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
     public void insertPayment(Payment payment) throws IntegrationException {
         String query = "INSERT INTO public.payment(\n" +
                         "            paymentid, occinspec_inspectionid, paymenttype_typeid, datereceived, \n" +
-                        "            datedeposited, amount, payerid, referencenum, checkno, cleared)\n" +
+                        "            datedeposited, amount, payerid, referencenum, checkno, cleared, notes)\n" +
                         "    VALUES (DEFAULT, ?, ?, ?, \n" +
-                        "            ?, ?, ?, ?, ?, DEFAULT);";
+                        "            ?, ?, ?, ?, ?, DEFAULT, ?);";
         Connection con = getPostgresCon();
         PreparedStatement stmt = null;
         
@@ -139,8 +137,8 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
             stmt.setInt(6, payment.getPaymentPayerID());
             stmt.setString(7, payment.getPaymentReferenceNum());
             stmt.setInt(8, payment.getCheckNum());
+            stmt.setString(9, payment.getNotes());
             System.out.println("PaymentIntegrator.paymentIntegrator | sql: " + stmt.toString());
-            System.out.println("TRYING TO EXECUTE INSERT METHOD");
             stmt.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -201,6 +199,8 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
             newPayment.setPaymentReferenceNum(rs.getString("referencenum"));
             newPayment.setCheckNum(rs.getInt("checkno"));
             newPayment.setCleared(rs.getBoolean("cleared"));
+            newPayment.setNotes(rs.getString("notes"));
+            
             
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -209,8 +209,6 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
         return newPayment;
     }
 
-     private HashMap paymentTypeMap;
-    
 
     public PaymentType getPaymentTypeFromPaymentTypeID(int paymentTypeID) throws IntegrationException {
         PaymentType paymentType = new PaymentType();

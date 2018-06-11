@@ -49,6 +49,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
     private String formPaymentReferenceNum;
     private int formCheckNum;
     private boolean formCleared;
+    private String formNotes;
 
     
     /**
@@ -90,6 +91,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
         payment.setPaymentReferenceNum(formPaymentReferenceNum);
         payment.setCheckNum(formCheckNum);
         payment.setCleared(formCleared);
+        payment.setNotes(formNotes);
         //oif.setOccupancyInspectionFeeNotes(formOccupancyInspectionFeeNotes);
         try{
             paymentIntegrator.updatePayment(payment);
@@ -97,6 +99,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
                 new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "Payment record updated!", ""));
         } catch (IntegrationException ex){
+            System.out.println(ex);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Unable to update payment record in database.",
@@ -114,13 +117,11 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
             setFormPaymentReferenceNum(selectedPayment.getPaymentReferenceNum());
             setFormCheckNum(selectedPayment.getCheckNum());
             setFormCleared(selectedPayment.isCleared());
-            //setFormOccupancyInspectionFeeNotes(selectedOccupancyInspectionFee.getOccupancyInspectionFeeNotes());
-            /*
-            Have to figure out what to do w/ setting dates...
-            setFormOccupancyInspectionFeeEffDate(formOccupancyInspectionFeeEffDate.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime());
-            */
+            setFormPaymentDateReceived(java.util.Date.from(selectedPayment.getPaymentDateDeposited()
+                    .atZone(ZoneId.systemDefault()).toInstant()));
+            setFormPaymentDateDeposited(java.util.Date.from(selectedPayment.getPaymentDateDeposited()
+                    .atZone(ZoneId.systemDefault()).toInstant()));
+            setFormNotes(selectedPayment.getNotes());
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -145,6 +146,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
         payment.setPaymentReferenceNum(formPaymentReferenceNum);
         payment.setCheckNum(formCheckNum);
         payment.setCleared(formCleared);
+        payment.setNotes(formNotes);
         
         try {
             paymentIntegrator.insertPayment(payment);
@@ -152,6 +154,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
                 new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "Successfully added payment record to database!", ""));
         } catch(IntegrationException ex) {
+            System.out.println(ex);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Unable to add payment record to database, sorry!", "Check server print out..."));
@@ -172,6 +175,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Payment record deleted forever!", ""));
             } catch (IntegrationException ex) {
+                System.out.println(ex);
                 getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             "Unable to delete payment record--probably because it is used "
@@ -345,6 +349,20 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
      */
     public void setFormCleared(boolean formCleared) {
         this.formCleared = formCleared;
+    }
+
+    /**
+     * @return the formNotes
+     */
+    public String getFormNotes() {
+        return formNotes;
+    }
+
+    /**
+     * @param formNotes the formNotes to set
+     */
+    public void setFormNotes(String formNotes) {
+        this.formNotes = formNotes;
     }
 
 

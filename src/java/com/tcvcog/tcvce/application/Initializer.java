@@ -29,15 +29,21 @@ import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
-import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.util.Constants;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import com.tcvcog.tcvce.integration.UserIntegrator;
+
 import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
+import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
+
+import com.tcvcog.tcvce.integration.LogIntegrator;
+import com.tcvcog.tcvce.integration.SystemIntegrator;
+
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
@@ -145,6 +151,14 @@ public class Initializer implements ServletContextListener{
         
         PaymentIntegrator pmtInt = new PaymentIntegrator();
         servletContext.setAttribute("paymentIntegrator", pmtInt);
+        
+        SystemIntegrator sysInt = new SystemIntegrator();
+        servletContext.setAttribute("systemIntegrator", sysInt);
+        
+        LogIntegrator logInt = new LogIntegrator();
+        servletContext.setAttribute("logIntegrator", logInt);
+        
+        
         
     }
     
