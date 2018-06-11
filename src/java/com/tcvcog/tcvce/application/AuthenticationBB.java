@@ -61,7 +61,7 @@ public class AuthenticationBB extends BackingBeanUtils implements Serializable{
         
         try {
             newUser = uc.getUser(loginName, loginPassword);
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
                     "Good morning, " + newUser.getFName() + "!", ""));
             
         } catch(ObjectNotFoundException e){
