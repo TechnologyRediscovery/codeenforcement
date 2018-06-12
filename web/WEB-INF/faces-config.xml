@@ -943,4 +943,9 @@
         <managed-bean-class>com.tcvcog.tcvce.integration.SystemIntegrator</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>sessionInfoBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.SessionInfoBB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

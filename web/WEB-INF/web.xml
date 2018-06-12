@@ -4,7 +4,7 @@
         <auth-method>FORM</auth-method>
         <realm-name>file</realm-name>
         <form-login-config>
-            <form-login-page>/login.xhtml</form-login-page>
+            <form-login-page>/loginGF.xhtml</form-login-page>
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
@@ -45,6 +45,23 @@
     <error-page>
         <location>/error.xhtml</location>
     </error-page>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>cogstaffonly</web-resource-name>
+            <url-pattern>/ce/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>GET</http-method>
+            <http-method>DELETE</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>cogstaff</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-role>
+        <role-name>cogstaff</role-name>
+    </security-role>
     
     
 </web-app>
