@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Human Resources Department</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+            <ui:define name="content">
+                <div class="mainContainer">
+                    <h:messages globalOnly="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                            
+                    <h1>Human Resources Department</h1>
+                    <p>Add, adjust, and coordinate person-level information for use by modules across the system.</p>
+                    <f:view>
+                        <h2>Add a new person:</h2>
+                        <h:form id="personNavForm">
+                            <p:commandButton id="addNewPersonCB" action="personAdd" value="Add new person" ajax="false"/>
+                            
+                        </h:form>
+                        <h:form id="personManageForm">
+                            <h2>Search for persons:</h2>
+                            <p>Search Hints: 1) Capitalization doesn't matter. 2) System searches for a match in any part of the Person's name in the database:
+                            You can find a person named "Rodney Readman" by searching for "rod" and "read" OR searching for "ney" and "man" OR etc.</p>
+ 
+                            <h:panelGrid columns="3" cellpadding="5" border="0" frame="true">
+                                
+                                    <h:panelGroup id="fname">
+
+                                        <p:outputLabel for="formFirstName">
+                                            <h:outputText value="First Name"/>
+                                        </p:outputLabel>
+                                        <p:inputText id="formFirstName" value="#{personBB.formFName}" 
+                                              style="width: 200px;" tabindex="3" required="false" styleClass="inputText"/>
+                                        <h:message for="formFirstName" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup id="lname">
+
+                                        <p:outputLabel for="formLastName">
+                                            <h:outputText value="Last Name"/>
+                                        </p:outputLabel>
+                                        <p:inputText id="formLastName" value="#{personBB.formLName}" 
+                                              style="width: 200px;" tabindex="3" required="false" styleClass="inputText"/>
+                                        <h:message for="formLastName" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                    </h:panelGroup>
+
+                                    <h:panelGroup id="nameSearch"> 
+                                        <p:commandButton ajax="false" value="Search by Name" 
+                                                         actionListener="#{personBB.searchForPersonByName}"/>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup id="personID">
+
+                                        <p:outputLabel for="formPersonID">
+                                            <h:outputText value="Person ID number"/>
+                                        </p:outputLabel>
+                                        <p:inputText id="formPersonID" value="#{personBB.formPersonID}" 
+                                              style="width: 25%;" tabindex="3" required="true" styleClass="inputText"/>
+                                        <h:message for="formPersonID" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+
+                                    </h:panelGroup>
+                                    <h:panelGroup id="spacer">
+                                        <!--spacer-->
+                                    </h:panelGroup>
+
+                                    <h:panelGroup id="searchByID">
+
+                                        <p:commandButton ajax="false" value="Search by ID Number" 
+                                                         actionListener="#{personBB.searchForPersonByID}"/>
+
+                                </h:panelGroup>
+                            </h:panelGrid>
+
+
+                            <p:spacer height="15"/>
+                            <hr/>
+                            <p:spacer height="15"/>
+
+                            <h2>Search Results</h2>
+                            
+                            <p:dataTable
+                            id="personTable"
+                            var="p"
+                            value="#{personBB.personList}"
+                            selectionMode="single"
+                            selection="#{personBB.selectedPerson}"
+                            rowKey="#{p.personID}"
+                            tableStyleClass="primeDataTable">
+                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+                                
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="ID" />
+                                </f:facet>
+                                <h:outputText value="#{p.personID}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Person Type" />
+                                </f:facet>
+                                <h:outputText value="#{p.personType.label}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Municipality" />
+                                </f:facet>
+                                <h:outputText value="#{p.muni.muniName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="First" />
+                                </f:facet>
+                                <h:outputText value="#{p.firstName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Last" />
+                                </f:facet>
+                                <h:outputText value="#{p.lastName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cell Num" />
+                                </f:facet>
+                                <h:outputText value="#{p.phoneCell}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Address" />
+                                </f:facet>
+                                <h:outputText value="#{p.address_street}"/>
+                            </p:column>
+                            </p:dataTable>
+                            
+                            <p:spacer height="10px"/>
+                            
+                            <p:commandButton ajax="false" value="View profile of selected person" 
+                                             action="#{personBB.viewPersonProfile}"/>
+                            
+                            <!--<p:commandButton type="button" onclick="PF('cd').show();" value="Nuke Person from System"/>--> 
+<!--                                             
+                            <p:confirmDialog message="You are about to nuke (forever remove) this person from the system. Remember, there's no back, undo, or recyle bin in this case!"
+                                header="Delete Confirmation" severity="alert" widgetVar="cd">
+                            </p:confirmDialog>
+                                -->
+                            <p:commandButton value="NUKE!" action="#{personBB.deletePerson}"
+                                                 ajax="false" />
+                                
+
+                            
+                            
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

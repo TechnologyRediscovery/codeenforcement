@@ -21,7 +21,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeSource;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     private LinkedList<CodeElement> codeElementList;
     private CodeElement selectedElement;
     
-    // form fields mapped to EnforcableCodeElement fields
+    // form fields mapped to CodeElementEnforcable fields
     private int formCodeSetElementID;
     //private CodeElement formCodeElement; // populated with selectedElement field
     private double formMaxPenalty;
@@ -93,7 +93,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     }
     
     public void addElementToSet(ActionEvent event){
-        EnforcableCodeElement ece = new EnforcableCodeElement();
+        CodeElementEnforcable ece = new CodeElementEnforcable();
         ece.setCodeElement(selectedElement);
         ece.setMaxPenalty(formMaxPenalty);
         ece.setMinPenalty(formMinPenalty);

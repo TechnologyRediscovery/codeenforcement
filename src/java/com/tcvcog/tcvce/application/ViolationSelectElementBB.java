@@ -21,7 +21,7 @@ import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -33,8 +33,8 @@ import javax.faces.application.FacesMessage;
  */
 public class ViolationSelectElementBB extends BackingBeanUtils implements Serializable {
 
-    private EnforcableCodeElement selectedViolatedEnfElement;
-    private LinkedList<EnforcableCodeElement> enfElementList;
+    private CodeElementEnforcable selectedViolatedEnfElement;
+    private LinkedList<CodeElementEnforcable> enfElementList;
     private CodeSet currentCodeSet;
 
     /**
@@ -67,14 +67,14 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     /**
      * @return the selectedViolatedEnfElement
      */
-    public EnforcableCodeElement getSelectedViolatedEnfElement() {
+    public CodeElementEnforcable getSelectedViolatedEnfElement() {
         return selectedViolatedEnfElement;
     }
 
     /**
      * @return the enfElementList
      */
-    public LinkedList<EnforcableCodeElement> getEnfElementList() {
+    public LinkedList<CodeElementEnforcable> getEnfElementList() {
         SessionManager sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
@@ -102,14 +102,14 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     /**
      * @param selectedViolatedEnfElement the selectedViolatedEnfElement to set
      */
-    public void setSelectedViolatedEnfElement(EnforcableCodeElement selectedViolatedEnfElement) {
+    public void setSelectedViolatedEnfElement(CodeElementEnforcable selectedViolatedEnfElement) {
         this.selectedViolatedEnfElement = selectedViolatedEnfElement;
     }
 
     /**
      * @param enfElementList the enfElementList to set
      */
-    public void setEnfElementList(LinkedList<EnforcableCodeElement> enfElementList) {
+    public void setEnfElementList(LinkedList<CodeElementEnforcable> enfElementList) {
         this.enfElementList = enfElementList;
     }
 

@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -40,29 +40,29 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     
    
     
-    private EnforcableCodeElement selectedEce;
-    private LinkedList<EnforcableCodeElement> eceList;
+    private CodeElementEnforcable selectedEce;
+    private LinkedList<CodeElementEnforcable> eceList;
 
    
 
     /**
      * @return the selectedEce
      */
-    public EnforcableCodeElement getSelectedEce() {
+    public CodeElementEnforcable getSelectedEce() {
         return selectedEce;
     }
 
     /**
      * @param selectedEce the selectedEce to set
      */
-    public void setSelectedEce(EnforcableCodeElement selectedEce) {
+    public void setSelectedEce(CodeElementEnforcable selectedEce) {
         this.selectedEce = selectedEce;
     }
 
     /**
      * @return the eceList
      */
-    public LinkedList<EnforcableCodeElement> getEceList() {
+    public LinkedList<CodeElementEnforcable> getEceList() {
         SessionManager sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
@@ -88,7 +88,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     /**
      * @param eceList the eceList to set
      */
-    public void setEceList(LinkedList<EnforcableCodeElement> eceList) {
+    public void setEceList(LinkedList<CodeElementEnforcable> eceList) {
         this.eceList = eceList;
     }
     

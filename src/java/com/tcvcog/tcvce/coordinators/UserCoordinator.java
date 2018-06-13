@@ -85,33 +85,4 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
         
     } // close getUser()
     
-    public String accessCaseProfile(){
-        SessionManager sm = getSessionManager();
-        CECase cecase = sm.getVisit().getActiveCase();
-        if(cecase != null){
-            return "case";
-        } else {
-            getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                                "Please select a case: Click Muni Workflow >> select a case >> view case profile", 
-                                ""));
-            return "";
-        }
-    }
-    
-    public String accessPropertyProfile(){
-        SessionManager sm = getSessionManager();
-        Property p = sm.getVisit().getActiveProp();
-        if(p != null){
-            return "propertyProfile";
-        } else {
-            getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                                "Please select a property: Click Muni Workflow >> select case", 
-                                ""));
-            return "";
-        }
-    }
-    
-    
 } // close class

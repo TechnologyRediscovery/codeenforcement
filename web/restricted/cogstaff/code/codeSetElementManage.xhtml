@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Mangae code source elements</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+            <ui:define name="content">
+                <div class="mainContainer">
+                    
+                <f:view id="enforcableCodeElementsInsSetManage">
+                   <h:outputLink value="codeSetManage.xhtml">&lt;--Return to set manager</h:outputLink>
+                    <h2>Enforceable code elements in set</h2>
+                   <h:messages globalOnly="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                    <p>The following table displays Enforcable Code Elements, meaning code elements added to a municipality-specific code set with enforcement data (e.g. max penalty).</p>
+                        <h:form id="enforcableCodeElementsForm">
+                            <p:dataTable
+                            id="enforcableCodeElementTable"
+                            var="cs"
+                            value="#{codeSetElementBB.eceList}"
+                            selectionMode="single"
+                            selection="#{codeSetElementBB.selectedEce}"
+                            rowKey="#{cs.codeSetElementID}"
+                            tableStyleClass="primeDataTable">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Chapter" />
+                                </f:facet>
+                                <h:outputText value="#{cs.codeElement.ordchapterTitle}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Section" />
+                                </f:facet>
+                                <h:outputText value="#{cs.codeElement.ordsecTitle}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="SubSection" />
+                                </f:facet>
+                                <h:outputText value="#{cs.codeElement.ordSubSecTitle}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Normal Penalty" />
+                                </f:facet>
+                                <h:outputText value="#{cs.normPenalty}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Days To Comply" />
+                                </f:facet>
+                                <h:outputText value="#{cs.normDaysToComply}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Penalty Notes" />
+                                </f:facet>
+                                <h:outputText value="#{cs.penaltyNotes}"/>
+                            </p:column>
+                        </p:dataTable>
+                            
+                        </h:form>
+                   
+                   
+                 
+                </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeElementType;
 import com.tcvcog.tcvce.entities.CodeSet;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.entities.Municipality;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -305,7 +305,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         set.setCodeSetID(rs.getInt("codesetid"));
         set.setCodeSetName(rs.getString("name"));
         set.setCodeSetDescription(rs.getString("description"));
-        set.setCodeElementList(getEnforcableCodeElementList(rs.getInt("codesetid")));
+        set.setEnfCodeElementList(getEnforcableCodeElementList(rs.getInt("codesetid")));
         int muniCodeTest = rs.getInt("municipality_municode");
         set.setMuni(muniInt.getMuniFromMuniCode(muniCodeTest));
         if (set.getMuni() == null){
@@ -349,19 +349,19 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
     /**
-     * Creates what we call an EnforcableCodeElement, which means
-     * we find an existing code element and add muni-specific 
-     * enforcement data to that element and store it in the DB
-     * 
-     * This operation adds an entry to table codesetelement
-     * and uses the ID of the codeSet and CodeElement to make
-     * the many-to-many links in the database.
+     * Creates what we call an CodeElementEnforcable, which means
+ we find an existing code element and add muni-specific 
+ enforcement data to that element and store it in the DB
+ 
+ This operation adds an entry to table codesetelement
+ and uses the ID of the codeSet and CodeElement to make
+ the many-to-many links in the database.
      * 
      * @param enforcableCodeElement
      * @param codeSetID 
      * @throws com.tcvcog.tcvce.domain.IntegrationException 
      */
-    public void addEnforcableCodeElementToCodeSet(EnforcableCodeElement enforcableCodeElement, int codeSetID) throws IntegrationException{
+    public void addEnforcableCodeElementToCodeSet(CodeElementEnforcable enforcableCodeElement, int codeSetID) throws IntegrationException{
         PreparedStatement stmt = null;
         Connection con = null;
         String query = "INSERT INTO public.codesetelement(\n" +
@@ -432,14 +432,14 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
     /**
-     * Creates and populates single EnforcableCodeElement object based on giving ID number. 
+     * Creates and populates single CodeElementEnforcable object based on giving ID number. 
      * 
      * @param codeSetElementID
-     * @return the fully-baked EnforcableCodeElement
+     * @return the fully-baked CodeElementEnforcable
      * @throws IntegrationException 
      */
-    public EnforcableCodeElement getEnforcableCodeElement(int codeSetElementID) throws IntegrationException{
-        EnforcableCodeElement newEce = new EnforcableCodeElement();
+    public CodeElementEnforcable getEnforcableCodeElement(int codeSetElementID) throws IntegrationException{
+        CodeElementEnforcable newEce = new CodeElementEnforcable();
         PreparedStatement stmt = null;
         Connection con = null;
         String query = "SELECT codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, \n" +
@@ -477,8 +477,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
   /**
-   * Returns a LinkedList of fully-baked EnforcableCodeElement objects based on a search with
-   * setID. Handy for then populating data tables of codes, such as in creating
+   * Returns a LinkedList of fully-baked CodeElementEnforcable objects based on a search with
+ setID. Handy for then populating data tables of codes, such as in creating
    * a codeviolation. This involves a rather complicated object composition process
    * that draws on several other methods in this class for retrieving from the database
    * 
@@ -494,7 +494,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 " daystocomplynotes\n" +
                 " FROM public.codesetelement where codeset_codesetid=?;";
         ResultSet rs = null;
-        LinkedList<EnforcableCodeElement> eceList = new LinkedList();
+        LinkedList<CodeElementEnforcable> eceList = new LinkedList();
  
         try {
             con = getPostgresCon();
@@ -503,7 +503,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                EnforcableCodeElement newEce = new EnforcableCodeElement();
+                CodeElementEnforcable newEce = new CodeElementEnforcable();
                 newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
                 newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
                 newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
@@ -617,10 +617,10 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     /**
      * Key method for returning a fully-assembled link of code elements by source ID.
      * Each code element returned by a single call to this method contains its own 
-     * instance of a CodeSource object whose field values are identical.
-     * 
-     * NOTE these are CodeElement that can become EnforcableCodeElement when they are
-     * added to a codset (which is, in turn, associated with a single muni)
+ instance of a CodeSource object whose field values are identical.
+ 
+ NOTE these are CodeElement that can become CodeElementEnforcable when they are
+ added to a codset (which is, in turn, associated with a single muni)
      * 
      * @param sourceID the CodeSource id used in the WHERE clause of the embedded SQL statment
      * @return Fully-baked CodeElement objects in a LinkedList

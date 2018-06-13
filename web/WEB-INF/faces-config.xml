@@ -4,7 +4,6 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application>
-
        
         <resource-bundle>
             <base-name>messages</base-name>
@@ -16,9 +15,15 @@
             <var>eventCategories</var>
         </resource-bundle>
         
-      
-        
     </application>
+    
+    <!--application-scoped beans-->
+    
+    <managed-bean>
+        <managed-bean-name>systemIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.SystemIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
     
     <managed-bean>
         <description>Establishes the connection to the Code Enforcement Database for use throughout a session</description>
@@ -26,20 +31,7 @@
         <managed-bean-class>com.tcvcog.tcvce.integration.PostgresConnectionFactory</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>login</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.Login</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <description>Handles user credential verification and initiates session building process upon successful authentication.</description>
-        <managed-bean-name>authenticationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.AuthenticationBB</managed-bean-class>
-    
-        <managed-bean-scope>session</managed-bean-scope></managed-bean>
-    
+
     <managed-bean>
         <description>Stores constants for use in Java classes</description>
         <managed-bean-name>constants</managed-bean-name>
@@ -54,61 +46,185 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
     
-    
-    <managed-bean>
-        <description>Handles Property Entity related operations on behalf of backing beans</description>
-        <managed-bean-name>propertyCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.PropertyCoordinator</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <description>Represents the user in a particular session of the application. Stores basic user id info and access related keys</description>
-        <managed-bean-name>user</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.entities.User</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-   
-    
-    
-    
     <managed-bean>
         <description>Responsible for pulling and pushing property data from database to object model</description>
         <managed-bean-name>propertyIntegrator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.integration.PropertyIntegrator</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
-        <description>Creates a result set of possible municipalities</description>
-        <managed-bean-name>muniMap</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.resultsets.MuniMap</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-   
-    
-     
-    
-    <managed-bean>
-        <description>Models a request for code enforcement action</description>
-        <managed-bean-name>actionRequestBean</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestBean</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    
-    <managed-bean>
-        <description>Utility class for producting a hash map of action requestor types</description>
-        <managed-bean-name>publicViolationSet</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.resultsets.PublicViolationSet</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean><managed-bean>
         <description>Responsible for reading code enforcement action requests into and out of the PostgreSQL Database</description>
         <managed-bean-name>cEActionRequestIntegrator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.integration.CEActionRequestIntegrator</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+    
+    <managed-bean>
+        <description>Connects application to the database for tasks related to retrieving and storing information about a single person (modeled as a Person object)</description>
+        <managed-bean-name>personIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.PersonIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>caseIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.CaseIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>eventIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.EventIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>codeIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.CodeIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>violationIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.CodeViolationIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>userIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.UserIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>logIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.LogIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>municipalityIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.MunicipalityIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>occupancyPermitApplicationIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.OccupancyPermitApplicationIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>inspectedSpaceTypeICEIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.InspectedSpaceTypeICEIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>inspectionChecklistIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>occupancyPermitIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
+    <!--session-scoped beans-->
+
+    <managed-bean>
+        <managed-bean-name>loggingCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.LogCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Interfaces between code violation related objects and integration layer objects</description>
+        <managed-bean-name>violationCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.ViolationCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>codeCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.CodeCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>eventCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.EventCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>personCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.PersonCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>propertyUnitCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.PropertyUnitCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Interfaces between business objects, the integration layer, and jsf beans </description>
+        <managed-bean-name>caseCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.coordinators.CaseCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>login</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.Login</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>occupancyCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.coordinators.OccupancyCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>paymentCoordinator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.coordinators.PaymentCoordinator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <!--view-scoped beans-->
+        
+    <managed-bean>
+        <description>Handles user credential verification and initiates session building process upon successful authentication.</description>
+        <managed-bean-name>authenticationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.AuthenticationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Utility class for producting a hash map of action requestor types</description>
+        <managed-bean-name>publicViolationSet</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.resultsets.PublicViolationSet</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>codeSetBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>codeSetElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
     <managed-bean>
         <description>Backing bean for request management</description>
         <managed-bean-name>manageARequestBean</managed-bean-name>
@@ -123,243 +239,57 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
-    <navigation-rule>
-        <from-view-id>/public/submitCERequest.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/public/actionReqSubConf.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
     <managed-bean>
-        <description>Action Request object pushing into BeanLand</description>
-        <managed-bean-name>actionRequest</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.entities.CEActionRequest</managed-bean-class>
+        <description>Models a request for code enforcement action</description>
+        <managed-bean-name>actionRequestBean</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
     
-        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <description>Provides backing bean utilities for the action requestmanagement.xhtml page</description>
         <managed-bean-name>requestManagementBean</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.RequestManagementBean</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>home</from-outcome>
-            <to-view-id>/public/index.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/ce/requestManagement.xhtml</from-view-id>
-        <navigation-case>
-            <from-action>#{requestManagementBean.manage}</from-action>
-            <from-outcome>manageRequest</from-outcome>
-            <to-view-id>/ce/mangeActionRequest.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
+    
     <managed-bean>
         <description>Backing bean for the action request checking form and results page.</description>
         <managed-bean-name>checkRequestStatusBean</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CheckRequestStatusBean</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-     <navigation-rule>
-        <from-view-id>/public/checkRequestStatus.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/public/requestStatus.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/public/checkRequestStatus.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <managed-bean>
-        <description>Connects application to the database for tasks related to retrieving and storing information about a single person (modeled as a Person object)</description>
-        <managed-bean-name>personIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.PersonIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <description>Interfaces between business objects, the integration layer, and jsf beans </description>
-        <managed-bean-name>caseCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.CaseCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <description>Interfaces between code violation related objects and integration layer objects</description>
-        <managed-bean-name>violationCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.ViolationCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>codeCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.CodeCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>eventCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.EventCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>personCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.PersonCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>propertyUnitCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.PropertyUnitCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>caseIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.CaseIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>eventIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.EventIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>codeIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.CodeIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>violationIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.CodeViolationIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>userIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.UserIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>loggingCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.coordinators.LogCoordinator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope></managed-bean>
-    <managed-bean>
-        <managed-bean-name>logIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.LogIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>municipalityIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.MunicipalityIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
+
     <managed-bean>
         <managed-bean-name>codeSourceBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeSourceBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    <navigation-rule>
-        <from-view-id>/ce/codeSourceAdd.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
+
     <managed-bean>
         <managed-bean-name>codeElementTypeBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementTypeBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    <managed-bean>
-        <managed-bean-name>codeSetBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetBB</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>codeSetElementBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CodeSetElementBB</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>dashboard</from-outcome>
-            <to-view-id>/dashboard.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>propertySearch</from-outcome>
-            <to-view-id>/propertySearch.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>workflow</from-outcome>
-            <to-view-id>/workflow.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>case</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <navigation-case>
-            <from-action>#{authenticationBB.logout}</from-action>
-            <from-outcome>logoutSequenceComplete</from-outcome>
-            <to-view-id>/exitLanding.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-     <navigation-rule>
-        <from-view-id>/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-action>#{authenticationBB.login}</from-action>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/dashboard.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-action>#{authenticationBB.login}</from-action>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/login.xhtml</to-view-id>
-        </navigation-case>
-        
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-action>gotoLogin</from-action>
-            <to-view-id>/login.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
+
     <managed-bean>
         <managed-bean-name>codeElementBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>codeElementListBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementListBB</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>codeSetBuilderBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeSetBuilderBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>dashboardBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.DashboardBB</managed-bean-class>
@@ -371,50 +301,260 @@
         <managed-bean-class>com.tcvcog.tcvce.application.PersonBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>personProfile</from-outcome>
-            <to-view-id>/personProfile.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    
+
     <managed-bean>
         <managed-bean-name>personUpdateBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.PersonUpdateBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
+    <managed-bean>
+        <managed-bean-name>muniBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.MuniBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>personAddBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PersonAddBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>propertyProfileBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropertyProfileBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>propertySearchBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropertySearchBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>propertyUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PropertyUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>actionRequestConfirmation</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestConfirmation</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>workflowBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.WorkflowBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>caseManageBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CaseManageBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>userUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.UserUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>actionRequestManageBB</managed-bean-name>
+        <managed-bean-class>ActionRequestManageBB.ActionRequestManageBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>eventConfigurationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.EventConfigurationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>violationAddBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ViolationAddBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>violationSelectElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ViolationSelectElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>inspectableCodeElementBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.occupancy.application.InspectableCodeElementBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>caseAddBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CaseAddBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>    
+    
+    <managed-bean>
+        <managed-bean-name>userBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.UserBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>eventAddBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.EventAddBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>eventEditBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.EventEditBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>personConnectBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.PersonConnectBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>citationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CitationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>courtEntityIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.CourtEntityIntegrator</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>navigationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.NavigationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>caseUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CaseUpdateBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>systemServicesBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.SystemServicesBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>noticeOfViolationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.NoticeOfViolationBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>violationEditBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ViolationEditBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+ 
+    <!--request-scoped beans-->
+    
+    <managed-bean>
+        <managed-bean-name>sessionInfoBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.SessionInfoBB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <!--none-scoped beans-->
+
+    <managed-bean>
+        <description>Creates a result set of possible municipalities</description>
+        <managed-bean-name>muniMap</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.resultsets.MuniMap</managed-bean-class>
+        <managed-bean-scope>none</managed-bean-scope>
+    </managed-bean>
+    
+    <!--navigation configurations-->
     
     <navigation-rule>
-        
-        <from-view-id>/personManage.xhtml</from-view-id>
-        
+        <from-view-id>*</from-view-id>
+
         <navigation-case>
-            <from-outcome>personAdd</from-outcome>
-            <to-view-id>/personAdd.xhtml</to-view-id>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>propertySearch</from-outcome>
+            <to-view-id>/propertySearch.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>workflow</from-outcome>
+            <to-view-id>/workflow.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>case</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/public/index.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-action>gotoLogin</from-action>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    
+        <navigation-case>
+            <from-outcome>publicDashHome</from-outcome>
+            <to-view-id>/public/publicDashboard.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
         
-    </navigation-rule>
+        <navigation-case>
+            <from-outcome>improvementSuggestion</from-outcome>
+            <to-view-id>/improvementSuggestion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>selectItemListChange</from-outcome>
+            <to-view-id>/selectBoxListChangeRequest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     
-    <navigation-rule>
-        
-        <from-view-id>*</from-view-id>
-        
+        <navigation-case>
+            <from-outcome>personProfile</from-outcome>
+            <to-view-id>/personProfile.xhtml</to-view-id>
+        </navigation-case>
+    
         <navigation-case>
             <from-outcome>personManage</from-outcome>
             <to-view-id>/personManage.xhtml</to-view-id>
         </navigation-case>
-        
-    </navigation-rule>
-    
-    
-    
-
-    <navigation-rule>
-        
-        <from-view-id>*</from-view-id>
         
         <navigation-case>
             <from-outcome>propertySearch</from-outcome>
@@ -451,6 +591,7 @@
             <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
+    
         <navigation-case>
             <from-outcome>elementTypeManage</from-outcome>
             <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
@@ -512,26 +653,90 @@
             <from-outcome>caseEvents</from-outcome>
             <to-view-id>/ce/caseEvents.xhtml</to-view-id>
         </navigation-case>
+
+        <nanavigation-case>
+            <from-outcome>noticeOfViolationBuilder</from-outcome>
+            <to-view-id>/ce/noticeOfViolationBuilder.xhtml</to-view-id>
+        </nanavigation-case>
+ 
+        <nanavigation-case>
+            <from-outcome>noticeOfViolationEditor</from-outcome>
+            <to-view-id>/ce/noticeOfViolationEditor.xhtml</to-view-id>
+        </nanavigation-case>
     
     </navigation-rule>
     
-    <managed-bean>
-        <managed-bean-name>muniBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.MuniBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+    <!--non-wildcard nav cases-->
     
-    <managed-bean>
-        <managed-bean-name>personAddBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.PersonAddBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+    <navigation-rule>
+        <from-view-id>/public/submitCERequest.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/public/actionReqSubConf.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/ce/requestManagement.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{requestManagementBean.manage}</from-action>
+            <from-outcome>manageRequest</from-outcome>
+            <to-view-id>/ce/mangeActionRequest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/public/checkRequestStatus.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/public/requestStatus.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/public/checkRequestStatus.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/ce/codeSourceAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <navigation-case>
+            <from-action>#{authenticationBB.logout}</from-action>
+            <from-outcome>logoutSequenceComplete</from-outcome>
+            <to-view-id>/exitLanding.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
-    <managed-bean>
-        <managed-bean-name>propertyProfileBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.PropertyProfileBB</managed-bean-class>
+     <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{authenticationBB.login}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{authenticationBB.login}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     
-        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    <navigation-rule>
+        <from-view-id>/personManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>personAdd</from-outcome>
+            <to-view-id>/personAdd.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
     
     <navigation-rule>
         <from-view-id>/propertyProfile.xhtml</from-view-id>
@@ -540,12 +745,6 @@
             <to-view-id>/propertyUpdate.xhtml</to-view-id>
         </nanavigation-case>
     </navigation-rule>
-    
-    <managed-bean>
-        <managed-bean-name>propertySearchBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.PropertySearchBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
     
     <navigation-rule>
         <from-view-id>/propertySearch.xhtml</from-view-id>
@@ -560,12 +759,6 @@
         </nanavigation-case>
     </navigation-rule>
     
-    <managed-bean>
-        <managed-bean-name>propertyUpdateBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.PropertyUpdateBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
     <navigation-rule>
         <from-view-id>/propertyUpdate.xhtml</from-view-id>
         <nanavigation-case>
@@ -574,19 +767,7 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
-    
-    <managed-bean>
-        <managed-bean-name>actionRequestConfirmation</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ActionRequestConfirmation</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>workflowBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.WorkflowBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
+
     <navigation-rule>
         <from-view-id>/workflow.xhtml</from-view-id>
         <navigation-case>
@@ -594,20 +775,13 @@
             <from-outcome>actionRequestManage</from-outcome>
             <to-view-id>/ce/actionRequestManage.xhtml</to-view-id>
         </navigation-case>
-        
         <navigation-case>
             <from-action>#{workflowBB.viewCase}</from-action>
             <from-outcome>caseManage</from-outcome>
             <to-view-id>/ce/caseManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
-    <managed-bean>
-        <managed-bean-name>caseManageBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CaseManageBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
+
     <navigation-rule>
         <from-view-id>/ce/caseManage.xhtml</from-view-id>
         <nanavigation-case>
@@ -663,34 +837,6 @@
         </navigation-case>
     </navigation-rule>
     
-    <navigation-rule>
-        <from-view-id>*</from-view-id>  
-        <navigation-case>
-            <from-outcome>publicDashHome</from-outcome>
-            <to-view-id>/public/publicDashboard.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>improvementSuggestion</from-outcome>
-            <to-view-id>/improvementSuggestion.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>selectItemListChange</from-outcome>
-            <to-view-id>/selectBoxListChangeRequest.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-    </navigation-rule>
-    
-    
-    <managed-bean>
-        <managed-bean-name>caseAddBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CaseAddBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
     
     <navigation-rule>
         <from-view-id>/ce/caseAdd.xhtml</from-view-id>
@@ -701,13 +847,6 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
-    
-    
-    <managed-bean>
-        <managed-bean-name>userBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.UserBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
     
     <navigation-rule>
         <from-view-id>/userManage.xhtml</from-view-id>
@@ -740,36 +879,6 @@
         </nanavigation-case>
     </navigation-rule>
     
-    <managed-bean>
-        <managed-bean-name>userUpdateBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.UserUpdateBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>actionRequestManageBB</managed-bean-name>
-        <managed-bean-class>ActionRequestManageBB.ActionRequestManageBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>eventConfigurationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.EventConfigurationBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>violationAddBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ViolationAddBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>violationSelectElementBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ViolationSelectElementBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
     <navigation-rule>
         <from-view-id>/ce/violationSelectElement.xhtml</from-view-id>
         <nanavigation-case>
@@ -778,18 +887,6 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
-    
-    <managed-bean>
-        <managed-bean-name>weatherBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.WeatherBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>inspectableCodeElementBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.application.InspectableCodeElementBB</managed-bean-class>
-    
-        <managed-bean-scope>view</managed-bean-scope></managed-bean>
     
     <navigation-rule>
         <from-view-id>inspectableCodeElement.xhtml</from-view-id>
@@ -809,13 +906,7 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
-    
-    <managed-bean>
-        <managed-bean-name>violationEditBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ViolationEditBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
+
     <navigation-rule>
         <from-view-id>/ce/caseManage.xhtml</from-view-id>
         <nanavigation-case>
@@ -826,39 +917,7 @@
         </nanavigation-case>
     </navigation-rule>
     
-    <managed-bean>
-        <managed-bean-name>noticeOfViolationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.NoticeOfViolationBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    
-    
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <nanavigation-case>
-            <from-outcome>noticeOfViolationBuilder</from-outcome>
-            <to-view-id>/ce/noticeOfViolationBuilder.xhtml</to-view-id>
-        </nanavigation-case>
-        <nanavigation-case>
-            <from-outcome>noticeOfViolationEditor</from-outcome>
-            <to-view-id>/ce/noticeOfViolationEditor.xhtml</to-view-id>
-        </nanavigation-case>
-    </navigation-rule>
-    
-    
-    <managed-bean>
-        <managed-bean-name>eventAddBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.EventAddBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>eventEditBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.EventEditBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
+   
     <navigation-rule>
         <from-view-id>/ce/caseManage.xhtml</from-view-id>
         <nanavigation-case>
@@ -874,78 +933,9 @@
             <redirect />
         </nanavigation-case>
     </navigation-rule>
-    
     <managed-bean>
-        <managed-bean-name>personConnectBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.PersonConnectBB</managed-bean-class>
+        <managed-bean-name>initiateSessionBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.InitiateSessionBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>citationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CitationBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>courtEntityIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.CourtEntityIntegrator</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>navigationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.NavigationBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>caseUpdateBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CaseUpdateBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>occupancyCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.coordinators.OccupancyCoordinator</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>paymentCoordinator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.coordinators.PaymentCoordinator</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>occupancyPermitApplicationIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.OccupancyPermitApplicationIntegrator</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>inspectedSpaceTypeICEIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.InspectedSpaceTypeICEIntegrator</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>inspectionChecklistIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator</managed-bean-class>
-    
-        <managed-bean-scope>session</managed-bean-scope></managed-bean>
-    <managed-bean>
-        <managed-bean-name>occupancyPermitIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>systemServicesBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.SystemServicesBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>systemIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.SystemIntegrator</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>sessionInfoBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.SessionInfoBB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 </faces-config>

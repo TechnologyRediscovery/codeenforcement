@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -41,7 +41,7 @@ public class ViolationCoordinator extends BackingBeanUtils implements Serializab
     public ViolationCoordinator() {
     }
     
-    public CodeViolation generateNewCodeViolation(CECase c, EnforcableCodeElement ece){
+    public CodeViolation generateNewCodeViolation(CECase c, CodeElementEnforcable ece){
         CodeViolation v = new CodeViolation();
         
         System.out.println("ViolationCoordinator.generateNewCodeViolation | enfCodeElID:" + ece.getCodeSetElementID());

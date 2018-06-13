@@ -69,7 +69,6 @@ public class BackingBeanUtils implements Serializable{
     
     //@ManagedProperty(value="#{visit}")
     private SessionManager sessionManager;
-    private Visit visit;
     
     private UserCoordinator userCoordinator;
     private UserIntegrator userIntegrator;
@@ -136,13 +135,6 @@ public class BackingBeanUtils implements Serializable{
         return bundle;
     }
     
-    public Visit getVisit(){
-        return visit;
-    }
-    
-    public void setVisit(Visit visit){
-        this.visit = visit;
-    }
     
     
     public void setUserCoordinator(UserCoordinator userCoordinator){

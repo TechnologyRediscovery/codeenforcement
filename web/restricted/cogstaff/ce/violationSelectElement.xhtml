@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Select Violated Code Element</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+            <ui:define name="content">
+                <div class="mainContainer">
+                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
+                            
+                    <h1>Select Violated Code Element</h1>
+                    
+                    <p>You are viewing enforcable code elements in your active code set: 
+                        <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/></p>
+                    
+                    <f:view>
+                        <h:form id="selectViolatedElementForm">
+                            
+                            <p:dataTable
+                                id="enforcableCodeElementSelectTable"
+                                var="cse"
+                                value="#{violationSelectElementBB.enfElementList}"
+                                selectionMode="single"
+                                selection="#{violationSelectElementBB.selectedViolatedEnfElement}"
+                                rowKey="#{cse.codeSetElementID}"
+                                tableStyleClass="primeDataTable">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Chapter" />
+                                    </f:facet>
+                                    <h:outputText value="#{cse.codeElement.ordchapterTitle}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Section" />
+                                    </f:facet>
+                                    <h:outputText value="#{cse.codeElement.ordSubSecTitle}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="SubSection" />
+                                    </f:facet>
+                                    <h:outputText value="#{cse.codeElement.ordSubSecTitle}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Normal Penalty" />
+                                    </f:facet>
+                                    <h:outputText value="#{cse.normPenalty}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Days To Comply" />
+                                    </f:facet>
+                                    <h:outputText value="#{cse.normDaysToComply}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Penalty Notes" />
+                                    </f:facet>
+                                    <h:outputText value="#{cse.penaltyNotes}"/>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <p:commandButton ajax="false" 
+                                             action="#{violationSelectElementBB.useSelectedElement}"
+                                             value="Add selected violation to current case"/>
+                            
+
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

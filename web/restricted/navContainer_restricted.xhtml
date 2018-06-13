@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+          <h:outputStylesheet name="style.css" library="css"/>
+          
+        <title>Code Enforcement</title>
+        <script>
+            function setSideBarHeight(){
+                var height = $('.contentContainer').height();
+                $('.sideBar').height(height);
+            }
+            window.onload = setSideBarHeight;
+        </script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+    </h:head>
+
+    <h:body>
+        
+        <div class="flex-box-container">
+            
+            
+        
+            <ui:insert name="top">
+                    
+                
+                <div class="flexing-box-topbar">
+                    <f:view id="navview">
+                            
+                            <div class="userToolBar">
+                                
+                            <h:form id="navForm">
+                            
+                              <h:panelGrid columns="3" border="0" 
+                                         cellpadding="2" columnClasses="userBarTd,  userBarTd, userBarTd"
+                                 footerClass="gridFooter" >
+                            
+
+
+
+
+                                      
+                                  <h:panelGroup>
+                                      <div class="icon-container">
+                                        <div class="icon-box-centered">
+                                              <i class="material-icons userToolBar-icon">calendar_today</i>
+                                        </div>
+                                      </div>
+                                           
+                                  </h:panelGroup>
+                                  <h:panelGroup>
+                                      <div class="icon-container">
+                                        <div class="icon-box-centered">
+                                            <i class="material-icons">settings</i>
+                                        </div>
+                                      </div>
+                                  </h:panelGroup>
+                                    
+                                  <h:panelGroup>
+                                      <div class="icon-container">
+                                        <div class="icon-box-centered">
+                                            <i class="material-icons">not_interested</i>
+                                        </div>
+                                      </div>
+                                  </h:panelGroup>
+                                  <h:panelGroup>
+                                        <div class="under-icon-link-container">
+                                            <h:commandLink action="#{authenticationBB.logout}" value="Schedule" styleClass="headerLink"/>
+                                          
+                                        </div>
+                                  </h:panelGroup>
+                                
+                                
+                                  <h:panelGroup>
+                                        <div class="under-icon-link-container">
+                                            <h:commandLink action="#{authenticationBB.logout}" value="Settings" styleClass="headerLink"/>
+                                        </div>
+                                  </h:panelGroup>
+
+                                
+                                  <h:panelGroup>
+                                        <div class="under-icon-link-container">
+                                            <h:commandLink  action="#{authenticationBB.logout}" value="Logout" styleClass="headerLink"/>
+                                        </div>
+                                  </h:panelGroup>
+                                
+                              </h:panelGrid>
+
+                            </h:form>
+                        </div>
+
+
+                        <div class="logoBox">
+                            <h2 id="logoHeader">TCVCOG<br/>Code Enforcement<br />Data Hub</h2>
+                        </div>
+                    </f:view>
+                </div>
+            </ui:insert>
+                
+            
+        </div>
+         
+        
+        <div class="flex-box-container">
+                <div class="flexing-box-sidebar">
+                    
+                    <f:view id="sideBarView">
+                        
+                      
+                        <h:form id="sideBarLinkForm">
+                            
+                             <h:panelGrid columns="2" border="0" 
+                                         cellpadding="2" columnClasses="gridTd,  gridTd"
+                                 footerClass="gridFooter">
+                                             
+                                <i class="material-icons">search</i>
+                                    <p:commandLink action="propertySearch" value="Property Search" styleClass="sblink"/>
+
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Person search" action="personManage" 
+                                                    styleClass="sblink"/>
+                                
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Owner records" action="personManage" 
+                                                    styleClass="sblink"/>
+                                
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr style="color:black;"/></h:panelGroup>
+                                    
+                                    
+                                <i class="material-icons">home</i>
+                                    <p:commandLink ajax="false" value="Property Profile" action="#{navigationBB.gotoPropertyProfile}"
+                                           styleClass="sblink"/>
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
+                                     
+                                <i class="material-icons">assignment</i>
+                                    <p:commandLink ajax="false" value="Code enforcement requests" action="workflow"
+                                               styleClass="sblink"/>
+                                    
+                                <i class="material-icons">view_list</i>
+                                    <p:commandLink ajax="false" value="Open code enforcement cases" action="workflow"
+                                               styleClass="sblink"/>
+                           
+                                 <i class="material-icons">folder_open</i>
+                                    <p:commandLink ajax="false" value="Current case profile" action="#{navigationBB.gotoCaseProfile}"
+                                                styleClass="sblink"/>
+
+                                 <!--Spacer-->
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Violations" action="#{navigationBB.gotoCaseViolations}"
+                                                styleClass="sblink"/>
+                                <i class="material-icons">remove</i>
+
+                                    <p:commandLink ajax="false" value="Notices " action="#{navigationBB.gotoCaseNotices}"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Citations" action="#{navigationBB.gotoCaseCitations}"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">remove</i>
+                                    <p:commandLink ajax="false" value="Add Event" action="#{navigationBB.gotoCaseEvents}"
+                                                styleClass="sblink"/>
+                                
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
+                                
+                                <i class="material-icons">edit</i>
+                                    <p:commandLink ajax="false" value="Inspection applications" action="muniManage"
+                                                styleClass="sblink"/>
+
+                                 <i class="material-icons">check_circle</i>
+                                     <p:commandLink ajax="false" value="Occupancy inspection profile" action="muniManage"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">tune</i>
+                                     <p:commandLink ajax="false" value="Inspection checklist builder" action="muniManage"
+                                                styleClass="sblink"/>
+                                     
+                                <h:panelGroup></h:panelGroup>
+                                    <h:panelGroup><hr/></h:panelGroup>
+                                
+                                <i class="material-icons">book</i>
+                                    <p:commandLink ajax="false" value="Municipal code" action="codeSourceManage" 
+                                                styleClass="sblink"/>
+                                    
+                                <i class="material-icons">gavel</i>
+                                     <p:commandLink ajax="false" value="Court entities" action="litigationManage"
+                                                styleClass="sblink"/>
+                
+                                <i class="material-icons">build</i>
+                                     <p:commandLink ajax="false" value="Code enforcement event setup" action="eventManage"
+                                                styleClass="sblink"/>
+
+                                <i class="material-icons">category</i>
+                                    <p:commandLink ajax="false" value="Permit types" action="muniManage"
+                                                styleClass="sblink"/>
+
+
+                                <i class="material-icons">attach_money</i>
+                                     <p:commandLink ajax="false" value="Fee Configuration" action="muniManage"
+                                                styleClass="sblink"/>
+                                 <i class="material-icons">account_balance</i>
+                                     <p:commandLink ajax="false" value="Municipalities" action="muniManage"
+                                             styleClass="sblink"/>
+                                     
+                                <h:panelGroup></h:panelGroup>
+                                
+                                <h:panelGroup><hr/></h:panelGroup>
+                                    
+                                 <i class="material-icons">person</i>
+                                     <p:commandLink ajax="false" value="System user configuration" action="userManage"
+                                                    styleClass="sblink"/>
+
+                                <i class="material-icons">list</i>
+                                     <p:commandLink ajax="false" value="Change item lists" action="selectItemListChange"
+                                                    styleClass="sblink"/>
+
+                                     <i class="material-icons">bug_report</i>
+                                     <p:commandLink ajax="false" value="Bug reporter" action="improvementSuggestion"
+                                                    styleClass="sblink"/>
+
+                                 <i class="material-icons">file_copy</i>
+                                     <p:commandLink ajax="false" value="System Logs" action="logManage"
+                                                    styleClass="sblink"/>
+
+
+
+                                 <i class="material-icons">supervisor_account</i>
+                                     <p:commandLink ajax="false" value="Public portal home" action="muniManage"
+                                                styleClass="sblink"/>
+                                 
+                                 <i class="material-icons">assignment</i>
+                                     <p:commandLink ajax="false" value="Code enforcement action request form" action="codeEnforce" 
+                                                styleClass="sblink"/>
+                            </h:panelGrid>
+
+                        </h:form>
+                    </f:view>
+                </div>
+                    
+                
+            
+            <div class="flexing-box-interior">
+                
+                <div class="flex-box-container-interior">
+                    <f:view id="sessionInfoView">
+                        
+
+                        <div class="flexing-box-sessioninfo">
+                            <h:form id="sessionInfoForm">
+                                <h:outputText value="User: "/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.FName} "/>   
+                                <h:outputText value="#{sessionManager.visit.activeUser.LName}  | "/>
+                                <h:outputText value="Permissions: "/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}  | "/>   
+                                <h:outputText value="Default Municipality: "/>
+                                <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName} "/><br/> 
+                                <h:outputText value="Active Property: "/>
+                                <h:outputText value="#{sessionManager.visit.activeProp.address} "/> 
+                                <h:outputText value="(#{sessionManager.visit.activeProp.muni.muniName}  ) | "/>
+                                <h:outputText value="Active Case:"/>
+                                <h:outputText value="#{sessionManager.visit.activeCase.caseName}  | "/> 
+                                <h:outputText value="Code Set: "/>
+                                <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}  | " /> 
+                                
+                                
+
+                            </h:form>
+                        </div>
+
+                        <div class="flexing-box-pagecontent">
+                            <ui:insert name="content">
+                                <p>I am content in the template content</p>
+
+                            </ui:insert>
+
+                        </div>
+                    </f:view>
+                </div>
+            </div>
+        </div>
+        <div class="flex-box-container">
+
+        <div class="flexing-box-footer">
+            <ui:insert name="bottom">
+                <div class="footer">
+                    <f:view id="footerView">
+                        <p>This database application is maintained and updated by the Turtle Creek Valley Council of Governments.</p>
+                    </f:view>
+                </div>
+                
+            </ui:insert>
+        </div>
+            
+    </div>
+        
+        <!--<div class="clearFix"></div>-->
+
+
+    </h:body>
+
+</html>

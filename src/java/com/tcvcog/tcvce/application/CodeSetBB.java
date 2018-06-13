@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
-import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
@@ -50,7 +50,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     private LinkedList<CodeSet> codeSetList;
     // used by codeSetElementManage
     private CodeSet selectedCodeSet;
-    private EnforcableCodeElement selectedEnforcableCodeElement;
+    private CodeElementEnforcable selectedEnforcableCodeElement;
     
     
     private int currentCodeSetID;
@@ -466,14 +466,14 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the selectedEnforcableCodeElement
      */
-    public EnforcableCodeElement getSelectedEnforcableCodeElement() {
+    public CodeElementEnforcable getSelectedEnforcableCodeElement() {
         return selectedEnforcableCodeElement;
     }
 
     /**
      * @param selectedEnforcableCodeElement the selectedEnforcableCodeElement to set
      */
-    public void setSelectedEnforcableCodeElement(EnforcableCodeElement selectedEnforcableCodeElement) {
+    public void setSelectedEnforcableCodeElement(CodeElementEnforcable selectedEnforcableCodeElement) {
         this.selectedEnforcableCodeElement = selectedEnforcableCodeElement;
     }
     
