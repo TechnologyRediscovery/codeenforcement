@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.entities.EventCategory;
 import com.tcvcog.tcvce.entities.EventType;
 import com.tcvcog.tcvce.integration.EventIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -36,7 +36,7 @@ import javax.faces.event.ActionEvent;
 public class EventConfigurationBB extends BackingBeanUtils implements Serializable{
 
     private EventCategory selectedEventCategory;
-    private LinkedList<EventCategory> eventCategoryList;
+    private ArrayList<EventCategory> eventCategoryList;
      
     private EventType[] eventTypeList;
     
@@ -187,7 +187,7 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
     /**
      * @return the eventCategoryList
      */
-    public LinkedList<EventCategory> getEventCategoryList() {
+    public ArrayList<EventCategory> getEventCategoryList() {
         try {
             EventIntegrator ei = getEventIntegrator();
             eventCategoryList = ei.getEventCategoryList();
@@ -202,7 +202,7 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
             return eventCategoryList;
             
         } else {
-            eventCategoryList = new LinkedList();
+            eventCategoryList = new ArrayList();
             return eventCategoryList;
         }
         
@@ -248,7 +248,7 @@ public class EventConfigurationBB extends BackingBeanUtils implements Serializab
     /**
      * @param eventCategoryList the eventCategoryList to set
      */
-    public void setEventCategoryList(LinkedList<EventCategory> eventCategoryList) {
+    public void setEventCategoryList(ArrayList<EventCategory> eventCategoryList) {
         
         
         this.eventCategoryList = eventCategoryList;

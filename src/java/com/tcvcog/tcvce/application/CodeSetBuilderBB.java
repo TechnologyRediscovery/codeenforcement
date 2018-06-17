@@ -26,7 +26,7 @@ import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -45,10 +45,10 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     }
     
     private CodeSet codeSet;
-    private LinkedList<CodeSource> codeSourceList;
+    private ArrayList<CodeSource> codeSourceList;
     private int selectedCodeSourceID;
     private HashMap<String, CodeSource> codeSourceMap;
-    private LinkedList<CodeElement> codeElementList;
+    private ArrayList<CodeElement> codeElementList;
     private CodeElement selectedElement;
     
     // form fields mapped to CodeElementEnforcable fields
@@ -138,28 +138,28 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the codeSourceList
      */
-    public LinkedList<CodeSource> getCodeSourceList() {
+    public ArrayList<CodeSource> getCodeSourceList() {
         return codeSourceList;
     }
 
     /**
      * @param codeSourceList the codeSourceList to set
      */
-    public void setCodeSourceList(LinkedList<CodeSource> codeSourceList) {
+    public void setCodeSourceList(ArrayList<CodeSource> codeSourceList) {
         this.codeSourceList = codeSourceList;
     }
 
     /**
      * @return the codeElementList
      */
-    public LinkedList<CodeElement> getCodeElementList() {
+    public ArrayList<CodeElement> getCodeElementList() {
         return codeElementList;
     }
 
     /**
      * @param codeElementList the codeElementList to set
      */
-    public void setCodeElementList(LinkedList<CodeElement> codeElementList) {
+    public void setCodeElementList(ArrayList<CodeElement> codeElementList) {
         this.codeElementList = codeElementList;
     }
 

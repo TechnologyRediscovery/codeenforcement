@@ -258,10 +258,10 @@
                         <div class="flexing-box-sessioninfo">
                             <h:form id="sessionInfoForm">
                                 <h:outputText value="User: "/>
-                                <h:outputText value="#{sessionManager.visit.activeUser.FName} "/>   
-                                <h:outputText value="#{sessionManager.visit.activeUser.LName}  | "/>
+                                <h:outputText value="#{facesUser.FName} "/>   
+                                <h:outputText value="#{facesUser.LName}  | "/>
                                 <h:outputText value="Permissions: "/>
-                                <h:outputText value="#{sessionManager.visit.activeUser.roleType.label}  | "/>   
+                                <h:outputText value="#{facesUser.roleType.label}  | "/>   
                                 <h:outputText value="Default Municipality: "/>
                                 <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName} "/><br/> 
                                 <h:outputText value="Active Property: "/>

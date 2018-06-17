@@ -18,7 +18,7 @@ import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.entities.Person;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.annotation.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -43,7 +43,7 @@ public class Visit {
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
     private CodeElementGuideEntry currentCodeElementGuide;
-    //private LinkedList<EnforcableCodeElement> eceList;
+    //private ArrayList<EnforcableCodeElement> eceList;
 
     /**
      * Creates a new instance of Visit
@@ -138,14 +138,14 @@ public class Visit {
 //    /**
 //     * @return the eceList
 //     */
-//    public LinkedList<EnforcableCodeElement> getEceList() {
+//    public ArrayList<EnforcableCodeElement> getEceList() {
 //        return eceList;
 //    }
 //
 //    /**
 //     * @param eceList the eceList to set
 //     */
-//    public void setEceList(LinkedList<EnforcableCodeElement> eceList) {
+//    public void setEceList(ArrayList<EnforcableCodeElement> eceList) {
 //        this.eceList = eceList;
 //    }
 

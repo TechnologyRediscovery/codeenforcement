@@ -26,7 +26,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,14 +40,14 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
     public ChecklistIntegrator() {
     }
     
-      public LinkedList<SpaceType> getSpaceTypeList() throws IntegrationException{
+      public ArrayList<SpaceType> getSpaceTypeList() throws IntegrationException{
 
     String query = "SELECT spacetypeid, spacetitle, description" +
             "  FROM public.spacetype;";
     Connection con = getPostgresCon();
     ResultSet rs = null;
     PreparedStatement stmt = null;
-    LinkedList<SpaceType> spaceTypeList = new LinkedList();
+    ArrayList<SpaceType> spaceTypeList = new ArrayList();
 
     try {
 
@@ -191,15 +191,22 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
         
     }
     
-    
-    public LinkedList<InspectableCodeElement> getInspectableCodeElementList() throws IntegrationException{
+    /**
+     * Created during earlier version of the DB before the inspectable components
+     * were moved to the code guide
+     * 
+     * @deprecated 
+     * @return
+     * @throws IntegrationException 
+     */
+    public ArrayList<InspectableCodeElement> getInspectableCodeElementList() throws IntegrationException{
 
     String query = "SELECT inspectablecodelelementid, codeelementid, inspectionpriority, inspectiontips"
             + "  FROM public.inspectablecodelement";
     Connection con = getPostgresCon();
     ResultSet rs = null;
     PreparedStatement stmt = null;
-    LinkedList<InspectableCodeElement> inspectableCodeElementList = new LinkedList();
+    ArrayList<InspectableCodeElement> inspectableCodeElementList = new ArrayList();
 
     try {
 
@@ -232,7 +239,12 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
 }
 
     
-    
+    /**
+     * Deprecated method that was created during an intermediate DB design phase
+     * @deprecated 
+     * @param inspectableCodeElement
+     * @throws IntegrationException 
+     */
     public void insertInspectableCodeElement(InspectableCodeElement inspectableCodeElement) throws IntegrationException{
         String query = "INSERT INTO public.inspectablecodelement(\n" +
                 "         inspectablecodelelementid, codeelementid, inspectionpriority, inspectiontips) \n" +
@@ -274,6 +286,13 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
         
     }
     
+    /**
+     * Created during an intermediate db design phase: the inspectability components
+     * are now integrated into the guide guide connected elements
+     * @deprecated 
+     * @param ice
+     * @throws IntegrationException 
+     */
     public void updateInspectableCodeElement (InspectableCodeElement ice) throws IntegrationException {
         String query = "UPDATE public.inspectablecodelement\n" +
                         "   SET codeelementid=?, inspectionpriority=?, \n" +
@@ -301,6 +320,12 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
         
     }
     
+    /**
+     * @deprecated 
+     * @param ice
+     * @throws IntegrationException 
+     */
+    
     public void deleteInspectableCodeElement(InspectableCodeElement ice) throws IntegrationException {
          String query = "DELETE FROM public.inspectablecodelement\n" +
                         " WHERE inspectablecodelelementid=?;";
@@ -323,6 +348,15 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
         } // close finally
     }
     
+    
+    /**
+     * Created during an earlier db version
+     * 
+     * @deprecated 
+     * @param rs
+     * @return
+     * @throws IntegrationException 
+     */
     private InspectableCodeElement generateInspectablecodeElement(ResultSet rs) throws IntegrationException{
         InspectableCodeElement newIce = new InspectableCodeElement();
         

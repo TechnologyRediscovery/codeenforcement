@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -126,7 +126,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         return p;
     }
     
-    public LinkedList<Property> searchForProperties(String addrPart) throws IntegrationException{
+    public ArrayList<Property> searchForProperties(String addrPart) throws IntegrationException{
     
         String query = "select * from property WHERE address ILIKE '%" + addrPart + "%';";
         
@@ -136,7 +136,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         ResultSet rs = null;
         Statement stmt = null;
             
-        LinkedList<Property> propList = new LinkedList<>();
+        ArrayList<Property> propList = new ArrayList<>();
  
         try {
             stmt = con.createStatement();
@@ -156,7 +156,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         
     }
     
-    public LinkedList<Property> searchForProperties(String addrPart, int muniID) throws IntegrationException{
+    public ArrayList<Property> searchForProperties(String addrPart, int muniID) throws IntegrationException{
         
         
         
@@ -171,7 +171,7 @@ public class PropertyIntegrator extends BackingBeanUtils implements Serializable
         ResultSet rs = null;
         Statement stmt = null;
             
-        LinkedList<Property> propList = new LinkedList<>();
+        ArrayList<Property> propList = new ArrayList<>();
  
         try {
             stmt = con.createStatement();

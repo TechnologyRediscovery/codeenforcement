@@ -37,7 +37,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,12 +51,12 @@ import javax.faces.event.ActionEvent;
 public class EventAddBB extends BackingBeanUtils implements Serializable {
     
     // add currentEvent form fields
-    private LinkedList<EventCategory> eventCategoryList;
+    private ArrayList<EventCategory> eventCategoryList;
     
-    private LinkedList catComList;
-    private LinkedList catActionList;
-    private LinkedList catMeetingList;
-    private LinkedList catCustomList;
+    private ArrayList catComList;
+    private ArrayList catActionList;
+    private ArrayList catMeetingList;
+    private ArrayList catCustomList;
     
     private EventCategory selectedEventCategory;
     private String selectedEventCateogryDescription;
@@ -363,7 +363,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the eventCategoryList
      */
-    public LinkedList getEventCategoryList() {
+    public ArrayList getEventCategoryList() {
         EventIntegrator ei = getEventIntegrator();
         
         if(selectedEventType != null){
@@ -380,7 +380,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @param eventCategoryList the eventCategoryList to set
      */
-    public void setEventCategoryList(LinkedList eventCategoryList) {
+    public void setEventCategoryList(ArrayList eventCategoryList) {
         this.eventCategoryList = eventCategoryList;
     }
 
@@ -389,7 +389,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the catComList
      */
-    public LinkedList getCatComList() {
+    public ArrayList getCatComList() {
         EventIntegrator ei = getEventIntegrator();
         try {
             catComList = ei.getEventCategoryList(EventType.Communication);
@@ -403,7 +403,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the catActionList
      */
-    public LinkedList getCatActionList() {
+    public ArrayList getCatActionList() {
           EventIntegrator ei = getEventIntegrator();
         try {
             catActionList = ei.getEventCategoryList(EventType.Action);
@@ -417,7 +417,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the catMeetingList
      */
-    public LinkedList getCatMeetingList() {
+    public ArrayList getCatMeetingList() {
                   EventIntegrator ei = getEventIntegrator();
         try {
             catMeetingList = ei.getEventCategoryList(EventType.Meeting);
@@ -430,14 +430,14 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @param catComList the catComList to set
      */
-    public void setCatComList(LinkedList catComList) {
+    public void setCatComList(ArrayList catComList) {
         this.catComList = catComList;
     }
 
     /**
      * @param catActionList the catActionList to set
      */
-    public void setCatActionList(LinkedList catActionList) {
+    public void setCatActionList(ArrayList catActionList) {
         this.catActionList = catActionList;
     }
 
@@ -445,7 +445,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @param catMeetingList the catMeetingList to set
      */
-    public void setCatMeetingList(LinkedList catMeetingList) {
+    public void setCatMeetingList(ArrayList catMeetingList) {
         this.catMeetingList = catMeetingList;
     }
 
@@ -466,14 +466,14 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the catCustomList
      */
-    public LinkedList getCatCustomList() {
+    public ArrayList getCatCustomList() {
         return catCustomList;
     }
 
     /**
      * @param catCustomList the catCustomList to set
      */
-    public void setCatCustomList(LinkedList catCustomList) {
+    public void setCatCustomList(ArrayList catCustomList) {
         this.catCustomList = catCustomList;
     }
 

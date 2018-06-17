@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -33,7 +33,7 @@ import javax.faces.application.FacesMessage;
  */
 public class MuniBB extends BackingBeanUtils implements Serializable {
 
-    private LinkedList<Municipality> muniList;
+    private ArrayList<Municipality> muniList;
     private HashMap<String, Integer> muniMap;
     
     
@@ -47,7 +47,7 @@ public class MuniBB extends BackingBeanUtils implements Serializable {
      * @return the muniList
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public LinkedList<Municipality> getMuniList() throws IntegrationException {
+    public ArrayList<Municipality> getMuniList() throws IntegrationException {
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
         muniList = mi.getAllMuniList();
         
@@ -74,7 +74,7 @@ public class MuniBB extends BackingBeanUtils implements Serializable {
     /**
      * @param muniList the muniList to set
      */
-    public void setMuniList(LinkedList<Municipality> muniList) {
+    public void setMuniList(ArrayList<Municipality> muniList) {
         this.muniList = muniList;
     }
 

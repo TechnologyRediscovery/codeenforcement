@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -52,9 +52,9 @@ public class CodeCoordinator extends BackingBeanUtils implements Serializable {
         return s;
     }
     
-    public LinkedList<CodeSource> retrieveAllCodeSources() throws IntegrationException{
+    public ArrayList<CodeSource> retrieveAllCodeSources() throws IntegrationException{
         CodeIntegrator integrator = getCodeIntegrator();
-        LinkedList<CodeSource> sources = integrator.getCompleteCodeSourceList();
+        ArrayList<CodeSource> sources = integrator.getCompleteCodeSourceList();
         return sources;
     }
     

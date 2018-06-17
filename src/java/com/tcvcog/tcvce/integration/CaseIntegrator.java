@@ -29,7 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -81,9 +81,9 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
         return caseList;
     }
     
-    public LinkedList getCECasesByMuni(int muniCode) throws IntegrationException{
+    public ArrayList getCECasesByMuni(int muniCode) throws IntegrationException{
         
-        LinkedList<CECase> caseList = new LinkedList();
+        ArrayList<CECase> caseList = new ArrayList();
         String query = "SELECT \n" +
             "  caseid, \n" +
             "  municipality.municode\n" +

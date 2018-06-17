@@ -28,7 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -341,10 +341,10 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
         return newUser;
     }
     
-    public LinkedList getCompleteUserList() throws IntegrationException{
+    public ArrayList getCompleteUserList() throws IntegrationException{
         Connection con = getPostgresCon();
         ResultSet rs = null;
-        LinkedList<User> userList = new LinkedList();
+        ArrayList<User> userList = new ArrayList();
         
         String query = "SELECT * from login;";
         

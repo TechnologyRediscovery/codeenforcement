@@ -24,7 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,7 +76,7 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
         
     }
     
-    public LinkedList<CourtEntity> getCourtEntityList() throws IntegrationException {
+    public ArrayList<CourtEntity> getCourtEntityList() throws IntegrationException {
             String query = "SELECT entityid, entityofficialnum, jurisdictionlevel, muni_municode, \n" +
                             "       name, address_street, address_city, address_zip, address_state, \n" +
                             "       county, phone, url, notes\n" +
@@ -84,7 +84,7 @@ public class CourtEntityIntegrator extends BackingBeanUtils implements Serializa
             Connection con = getPostgresCon();
             ResultSet rs = null;
             PreparedStatement stmt = null;
-            LinkedList<CourtEntity> ceList = new LinkedList();
+            ArrayList<CourtEntity> ceList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);

@@ -27,7 +27,7 @@ import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
@@ -43,7 +43,7 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class OccupancyInspectionBB extends BackingBeanUtils implements Serializable {
     
-    private LinkedList<OccupancyInspection> occupancyInspectionList;
+    private ArrayList<OccupancyInspection> occupancyInspectionList;
     private OccupancyInspection selectedOccupancyInspection;
     private int formInspectionID;
     private int formPropertyUnitID;
@@ -177,7 +177,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     /**
      * @return the occupancyInspectionList
      */
-    public LinkedList<OccupancyInspection> getOccupancyInspectionList() {
+    public ArrayList<OccupancyInspection> getOccupancyInspectionList() {
         try {
             OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
             ArrayList<OccupancyInspection> oil = oii.getOccupancyInspectionList(new PropertyUnit());
@@ -190,7 +190,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
         if(occupancyInspectionList != null){
         return occupancyInspectionList;
         }else{
-         occupancyInspectionList = new LinkedList();
+         occupancyInspectionList = new ArrayList();
          return occupancyInspectionList;
         }
     }
@@ -198,7 +198,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     /**
      * @param occupancyInspectionList the occupancyInspectionList to set
      */
-    public void setOccupancyInspectionList(LinkedList<OccupancyInspection> occupancyInspectionList) {
+    public void setOccupancyInspectionList(ArrayList<OccupancyInspection> occupancyInspectionList) {
         this.occupancyInspectionList = occupancyInspectionList;
     }
 

@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.integration;
 
 import com.tcvcog.tcvce.entities.LogEntry;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -38,8 +38,8 @@ public class LogIntegrator {
         
     }
     
-    public LinkedList getLogEventsInWindow(LocalDateTime start, LocalDateTime end){
-        LinkedList logList = null;
+    public ArrayList getLogEventsInWindow(LocalDateTime start, LocalDateTime end){
+        ArrayList logList = null;
         
         return logList;
     }

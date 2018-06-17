@@ -38,6 +38,8 @@ public class Municipality {
     private String managerPhone;
     private int population;
     private boolean activeInProgram;
+    private int defaultCodeSetID;
+    private String defaultCodeSetName;
 
     /**
      * @return the muniCode
@@ -292,6 +294,34 @@ public class Municipality {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the defaultCodeSetID
+     */
+    public int getDefaultCodeSetID() {
+        return defaultCodeSetID;
+    }
+
+    /**
+     * @return the defaultCodeSetName
+     */
+    public String getDefaultCodeSetName() {
+        return defaultCodeSetName;
+    }
+
+    /**
+     * @param defaultCodeSetID the defaultCodeSetID to set
+     */
+    public void setDefaultCodeSetID(int defaultCodeSetID) {
+        this.defaultCodeSetID = defaultCodeSetID;
+    }
+
+    /**
+     * @param defaultCodeSetName the defaultCodeSetName to set
+     */
+    public void setDefaultCodeSetName(String defaultCodeSetName) {
+        this.defaultCodeSetName = defaultCodeSetName;
     }
     
 }

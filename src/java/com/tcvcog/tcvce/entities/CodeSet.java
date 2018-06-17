@@ -17,7 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.entities;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -30,7 +30,7 @@ public class CodeSet {
     private Municipality muni;
     private String codeSetName;
     private String codeSetDescription;
-    private LinkedList<CodeElementEnforcable> enfCodeElementList;
+    private ArrayList<CodeElementEnforcable> enfCodeElementList;
 
     /**
      * @return the codeSetID
@@ -106,14 +106,14 @@ public class CodeSet {
     /**
      * @return the enfCodeElementList
      */
-    public LinkedList<CodeElementEnforcable> getEnfCodeElementList() {
+    public ArrayList<CodeElementEnforcable> getEnfCodeElementList() {
         return enfCodeElementList;
     }
 
     /**
      * @param enfCodeElementList the enfCodeElementList to set
      */
-    public void setEnfCodeElementList(LinkedList<CodeElementEnforcable> enfCodeElementList) {
+    public void setEnfCodeElementList(ArrayList<CodeElementEnforcable> enfCodeElementList) {
         this.enfCodeElementList = enfCodeElementList;
     }
     

@@ -32,7 +32,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -55,11 +55,11 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     
     private String citationIdLabel;
     
-    private LinkedList<CitationStatus> citationStatusList;
+    private ArrayList<CitationStatus> citationStatusList;
     private CitationStatus formCitationStatus;
     private String formCitationNumber;
     private CourtEntity formCourtEntity;
-    private LinkedList<CourtEntity> courtEntityList;
+    private ArrayList<CourtEntity> courtEntityList;
     
     private java.util.Date formDateOfRecord;
     private boolean formIsActive;
@@ -270,7 +270,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the CitationStatusList
      */
-    public LinkedList<CitationStatus> getCitationStatusList() {
+    public ArrayList<CitationStatus> getCitationStatusList() {
         CitationIntegrator citInt = getCitationIntegrator();
         try {
             citationStatusList = citInt.getFullCitationStatusList();
@@ -284,7 +284,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     /**
      * @param CitationStatusList the CitationStatusList to set
      */
-    public void setCitationStatusList(LinkedList<CitationStatus> citationStatusList) {
+    public void setCitationStatusList(ArrayList<CitationStatus> citationStatusList) {
         this.citationStatusList = citationStatusList;
     }
 
@@ -312,7 +312,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the courtEntityList
      */
-    public LinkedList<CourtEntity> getCourtEntityList() {
+    public ArrayList<CourtEntity> getCourtEntityList() {
         CourtEntityIntegrator cei = getCourtEntityIntegrator();
         try {
             courtEntityList = cei.getCourtEntityList();
@@ -326,7 +326,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     /**
      * @param courtEntityList the courtEntityList to set
      */
-    public void setCourtEntityList(LinkedList<CourtEntity> courtEntityList) {
+    public void setCourtEntityList(ArrayList<CourtEntity> courtEntityList) {
         this.courtEntityList = courtEntityList;
     }
 

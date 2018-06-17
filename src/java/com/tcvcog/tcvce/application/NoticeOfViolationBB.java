@@ -39,7 +39,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -52,7 +52,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     private Date formDateOfRecord;
     private NoticeOfViolation currentNotice;
     private ArrayList<CodeViolation> activeVList;
-    private LinkedList<TextBlock> blockListByMuni;
+    private ArrayList<TextBlock> blockListByMuni;
     
     private Person selectedRecipient;
     private ArrayList<Person> personCandidateAL;
@@ -350,7 +350,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     /**
      * @return the textBlockListByMuni
      */
-    public LinkedList<TextBlock> getTextBlockListByMuni() {
+    public ArrayList<TextBlock> getTextBlockListByMuni() {
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
         SessionCoordinator sm = getSessionManager();
         Municipality m = sm.getVisit().getActiveCodeSet().getMuni();
@@ -365,7 +365,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     /**
      * @param textBlockListByMuni the textBlockListByMuni to set
      */
-    public void setTextBlockListByMuni(LinkedList<TextBlock> textBlockListByMuni) {
+    public void setTextBlockListByMuni(ArrayList<TextBlock> textBlockListByMuni) {
         this.blockListByMuni = textBlockListByMuni;
     }
 

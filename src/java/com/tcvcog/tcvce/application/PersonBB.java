@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -32,7 +32,7 @@ import javax.faces.event.ActionEvent;
  */
 public class PersonBB extends BackingBeanUtils implements Serializable{
 
-    private LinkedList<Person> personList;
+    private ArrayList<Person> personList;
     private Person selectedPerson;
     
     private String formFName;
@@ -119,7 +119,7 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the personList
      */
-    public LinkedList<Person> getPersonList() {
+    public ArrayList<Person> getPersonList() {
         return personList;
     }
 
@@ -147,7 +147,7 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
     /**
      * @param personList the personList to set
      */
-    public void setPersonList(LinkedList<Person> personList) {
+    public void setPersonList(ArrayList<Person> personList) {
         this.personList = personList;
     }
 

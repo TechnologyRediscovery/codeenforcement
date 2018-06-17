@@ -35,7 +35,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -47,7 +47,7 @@ import javax.faces.application.FacesMessage;
 public class EventEditBB extends BackingBeanUtils implements Serializable {
     
     // add event form fields
-    private LinkedList<EventCategory> eventCategoryList;
+    private ArrayList<EventCategory> eventCategoryList;
     
   
     private EventCase event;

@@ -23,7 +23,7 @@ import com.tcvcog.tcvce.entities.CitationStatus;
 import com.tcvcog.tcvce.entities.Property;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -94,8 +94,8 @@ public class CitationIntegratorIT {
         System.out.println("getCitationsByProperty");
         Property prop = null;
         CitationIntegrator instance = new CitationIntegrator();
-        LinkedList<Citation> expResult = null;
-        LinkedList<Citation> result = instance.getCitationsByProperty(prop);
+        ArrayList<Citation> expResult = null;
+        ArrayList<Citation> result = instance.getCitationsByProperty(prop);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -109,7 +109,7 @@ public class CitationIntegratorIT {
         System.out.println("getCitationsByCase");
         CECase ceCase = null;
         CitationIntegrator instance = new CitationIntegrator();
-        LinkedList<Citation> expResult = null;
+        ArrayList<Citation> expResult = null;
         ArrayList<Citation> result = instance.getCitationsByCase(ceCase);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -164,8 +164,8 @@ public class CitationIntegratorIT {
     public void testGetFullCitationStatusList() throws Exception {
         System.out.println("getFullCitationStatusList");
         CitationIntegrator instance = new CitationIntegrator();
-        LinkedList<CitationStatus> expResult = null;
-        LinkedList<CitationStatus> result = instance.getFullCitationStatusList();
+        ArrayList<CitationStatus> expResult = null;
+        ArrayList<CitationStatus> result = instance.getFullCitationStatusList();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

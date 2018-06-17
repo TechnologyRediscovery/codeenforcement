@@ -18,7 +18,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.component.html.HtmlDataTable;
 //import org.primefaces.component.datatable.DataTable;
 import com.tcvcog.tcvce.entities.*;
@@ -34,7 +34,7 @@ import javax.faces.event.ActionEvent;
  */
 public class RequestManagementBean extends BackingBeanUtils implements Serializable{
     
-    private LinkedList<CEActionRequest> requestList;
+    private ArrayList<CEActionRequest> requestList;
     
     private HtmlDataTable requestTable;
     
@@ -69,7 +69,7 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
     /**
      * @return the requestList
      */
-    public LinkedList getRequestList() {
+    public ArrayList getRequestList() {
         
 //        try {
 //            return integrator.getCEActionRequestList();
@@ -77,13 +77,13 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
 //            Logger.getLogger(RequestManagementBean.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         
-        return new LinkedList();
+        return new ArrayList();
     }
 
     /**
      * @param requestList the requestList to set
      */
-    public void setRequestList(LinkedList requestList) {
+    public void setRequestList(ArrayList requestList) {
         this.requestList = requestList;
     }
 

@@ -10,7 +10,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.List;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import com.tcvcog.tcvce.entities.Property;
 import javax.faces.event.ActionEvent;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
@@ -30,7 +30,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     Connection con = null;
     
     private Property selectedProperty;
-    private LinkedList<Property> propList;
+    private ArrayList<Property> propList;
     private UIInput addressInput;
     
     private int selectedMuniCode;
@@ -170,7 +170,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     /**
      * @param propList the propList to set
      */
-    public void setPropList(LinkedList<Property> propList) {
+    public void setPropList(ArrayList<Property> propList) {
         this.propList = propList;
     }
 

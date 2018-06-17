@@ -31,7 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -519,14 +519,14 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
          return tb;
      }
      
-     public LinkedList<TextBlock> getTextBlocks(Municipality m) throws IntegrationException{
+     public ArrayList<TextBlock> getTextBlocks(Municipality m) throws IntegrationException{
         String query =    "  SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, cateogrytitle\n" +
                             "  FROM public.textblock INNER JOIN public.textblockcategory ON textblockcategory.categoryid=textblock.blockcategory_catid\n" +
                             "  WHERE muni_municode=?;";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Connection con = null;
-        LinkedList<TextBlock> ll = new LinkedList();
+        ArrayList<TextBlock> ll = new ArrayList();
         TextBlock tb = null;
         
         try {
@@ -556,14 +556,14 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
          
      }
      
-     public LinkedList<TextBlock> getAllTextBlocks() throws IntegrationException{
+     public ArrayList<TextBlock> getAllTextBlocks() throws IntegrationException{
         String query =    "  SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, cateogrytitle\n" +
                           "  FROM public.textblock INNER JOIN public.textblockcategory "
                         + "  ON textblockcategory.categoryid=textblock.blockcategory_catid;";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Connection con = null;
-        LinkedList<TextBlock> ll = new LinkedList<>();
+        ArrayList<TextBlock> ll = new ArrayList<>();
         
         try {
             con = getPostgresCon();

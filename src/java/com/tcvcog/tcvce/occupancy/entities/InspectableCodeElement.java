@@ -20,7 +20,9 @@ package com.tcvcog.tcvce.occupancy.entities;
 import java.time.LocalDateTime;
 
 /**
- *
+ * Created before the inspectability components got integrated into the code guide
+ * 
+ * @deprecated 
  * @author Adam Gutonski
  */
 public class InspectableCodeElement {

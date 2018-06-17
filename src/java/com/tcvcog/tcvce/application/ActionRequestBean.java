@@ -32,7 +32,7 @@ import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 /**
@@ -52,7 +52,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     private TabView tabView;
     private int currentTabIndex;
 
-    private LinkedList propList;
+    private ArrayList propList;
     private String addrPart;
     
     private int violationTypeID;
@@ -704,7 +704,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     /**
      * @return the propList
      */
-    public LinkedList getPropList() {
+    public ArrayList getPropList() {
         return propList;
     }
 
@@ -718,7 +718,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     /**
      * @param propList the propList to set
      */
-    public void setPropList(LinkedList propList) {
+    public void setPropList(ArrayList propList) {
         this.propList = propList;
     }
 

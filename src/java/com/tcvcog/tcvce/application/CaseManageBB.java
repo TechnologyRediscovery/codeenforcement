@@ -34,7 +34,7 @@ import com.tcvcog.tcvce.integration.CitationIntegrator;
 import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -51,7 +51,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     private EventCase eventForTriggeringCasePhaseAdvancement;
     
-    private LinkedList<EventCase> eventList;
+    private ArrayList<EventCase> eventList;
     private EventCase selectedEvent;
     
     private ArrayList<CodeViolation> fullCaseViolationList;
@@ -117,7 +117,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
     
     public String editViolation(){
-        LinkedList<CodeViolation> ll = new LinkedList();
+        ArrayList<CodeViolation> ll = new ArrayList();
         
         if(!selectedViolations.isEmpty()){
             SessionCoordinator sm = getSessionManager();
@@ -417,7 +417,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the eventList
      */
-    public LinkedList<EventCase> getEventList() {
+    public ArrayList<EventCase> getEventList() {
         eventList = currentCase.getEventList();
         return eventList;
     }
@@ -457,7 +457,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * @param eventList the eventList to set
      */
-    public void setEventList(LinkedList<EventCase> eventList) {
+    public void setEventList(ArrayList<EventCase> eventList) {
         this.eventList = eventList;
     }
 

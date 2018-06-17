@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.entities.Payment;
 import com.tcvcog.tcvce.entities.PaymentType;
 import java.io.Serializable;
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -81,14 +81,14 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
         
     }
     
-    public LinkedList<Payment> getPaymentList() throws IntegrationException {
+    public ArrayList<Payment> getPaymentList() throws IntegrationException {
         String query = "SELECT paymentid, occinspec_inspectionid, paymenttype_typeid, datereceived, \n" +
                     "       datedeposited, amount, payerid, referencenum, checkno, cleared, notes\n" +
                     "  FROM public.payment;";
             Connection con = getPostgresCon();
             ResultSet rs = null;
             PreparedStatement stmt = null;
-            LinkedList<Payment> paymentList = new LinkedList();
+            ArrayList<Payment> paymentList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);
@@ -269,13 +269,13 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
         
     }
     
-    public LinkedList<PaymentType> getPaymentTypeList() throws IntegrationException {
+    public ArrayList<PaymentType> getPaymentTypeList() throws IntegrationException {
             String query = "SELECT typeid, pmttypetitle\n" +
                             "  FROM public.paymenttype;";
             Connection con = getPostgresCon();
             ResultSet rs = null;
             PreparedStatement stmt = null;
-            LinkedList<PaymentType> paymentTypeList = new LinkedList();
+            ArrayList<PaymentType> paymentTypeList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);
@@ -358,8 +358,8 @@ public class PaymentIntegrator extends BackingBeanUtils implements Serializable 
         return newPtype;
     }
     
-    public LinkedList<PaymentType> getPaymentTypeTitleList() throws IntegrationException{
-        LinkedList<PaymentType> payTypeList = new LinkedList<>();
+    public ArrayList<PaymentType> getPaymentTypeTitleList() throws IntegrationException{
+        ArrayList<PaymentType> payTypeList = new ArrayList<>();
         
         Connection con = getPostgresCon();
         String query = "SELECT typeid FROM paymenttype;";

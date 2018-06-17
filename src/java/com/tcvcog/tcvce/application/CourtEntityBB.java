@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.integration.CourtEntityIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -38,9 +38,9 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     
-    private LinkedList<CourtEntity> courtEntityList;
+    private ArrayList<CourtEntity> courtEntityList;
     private CourtEntity selectedCourtEntity;
-    private LinkedList<Municipality> muniList;
+    private ArrayList<Municipality> muniList;
     
     
     private int formCourtEntityID;
@@ -180,7 +180,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the courtEntityList
      */
-    public LinkedList<CourtEntity> getCourtEntityList() {
+    public ArrayList<CourtEntity> getCourtEntityList() {
         try {
             CourtEntityIntegrator courtEntityIntegrator = getCourtEntityIntegrator();
             courtEntityList = courtEntityIntegrator.getCourtEntityList();
@@ -193,7 +193,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
         if(courtEntityList != null){
         return courtEntityList;
         }else{
-         courtEntityList = new LinkedList();
+         courtEntityList = new ArrayList();
          return courtEntityList;
         }
     }
@@ -201,7 +201,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     /**
      * @param courtEntityList the courtEntityList to set
      */
-    public void setCourtEntityList(LinkedList<CourtEntity> courtEntityList) {
+    public void setCourtEntityList(ArrayList<CourtEntity> courtEntityList) {
         this.courtEntityList = courtEntityList;
     }
 
@@ -405,7 +405,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the muniList
      */
-    public LinkedList<Municipality> getMuniList() {
+    public ArrayList<Municipality> getMuniList() {
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
         try {
             muniList = mi.getAllMuniList();
@@ -418,7 +418,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     /**
      * @param muniList the muniList to set
      */
-    public void setMuniList(LinkedList<Municipality> muniList) {
+    public void setMuniList(ArrayList<Municipality> muniList) {
         this.muniList = muniList;
     }
 }

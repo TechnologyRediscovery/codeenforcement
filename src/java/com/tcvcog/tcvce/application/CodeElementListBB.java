@@ -23,7 +23,7 @@ import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -41,7 +41,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     }
     
     private CodeElement selectedElement;
-    private LinkedList<CodeElement> codeElementList;
+    private ArrayList<CodeElement> codeElementList;
     
     private CodeSource activeCodeSource;
     private int formType;
@@ -155,7 +155,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     /**
      * @return the codeElementList
      */
-    public LinkedList<CodeElement> getCodeElementList() {
+    public ArrayList<CodeElement> getCodeElementList() {
         SessionCoordinator sm = getSessionManager();
         CodeSource source = sm.getActiveCodeSource();
         CodeIntegrator codeIntegrator = getCodeIntegrator();
@@ -175,7 +175,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     /**
      * @param codeElementList the codeElementList to set
      */
-    public void setCodeElementList(LinkedList<CodeElement> codeElementList) {
+    public void setCodeElementList(ArrayList<CodeElement> codeElementList) {
         this.codeElementList = codeElementList;
     }
 

@@ -25,7 +25,7 @@ import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -35,7 +35,7 @@ import javax.faces.application.FacesMessage;
 public class ViolationSelectElementBB extends BackingBeanUtils implements Serializable {
 
     private CodeElementEnforcable selectedViolatedEnfElement;
-    private LinkedList<CodeElementEnforcable> enfElementList;
+    private ArrayList<CodeElementEnforcable> enfElementList;
     private CodeSet currentCodeSet;
 
     /**
@@ -75,7 +75,7 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     /**
      * @return the enfElementList
      */
-    public LinkedList<CodeElementEnforcable> getEnfElementList() {
+    public ArrayList<CodeElementEnforcable> getEnfElementList() {
         SessionCoordinator sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
@@ -110,7 +110,7 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     /**
      * @param enfElementList the enfElementList to set
      */
-    public void setEnfElementList(LinkedList<CodeElementEnforcable> enfElementList) {
+    public void setEnfElementList(ArrayList<CodeElementEnforcable> enfElementList) {
         this.enfElementList = enfElementList;
     }
 

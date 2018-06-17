@@ -23,7 +23,7 @@ import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 
 /** 
@@ -42,7 +42,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
    
     
     private CodeElementEnforcable selectedEce;
-    private LinkedList<CodeElementEnforcable> eceList;
+    private ArrayList<CodeElementEnforcable> eceList;
 
    
 
@@ -63,7 +63,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the eceList
      */
-    public LinkedList<CodeElementEnforcable> getEceList() {
+    public ArrayList<CodeElementEnforcable> getEceList() {
         SessionCoordinator sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
@@ -89,7 +89,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     /**
      * @param eceList the eceList to set
      */
-    public void setEceList(LinkedList<CodeElementEnforcable> eceList) {
+    public void setEceList(ArrayList<CodeElementEnforcable> eceList) {
         this.eceList = eceList;
     }
     

@@ -25,7 +25,7 @@ import com.tcvcog.tcvce.integration.UserIntegrator;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -34,7 +34,7 @@ import javax.faces.application.FacesMessage;
  */
 public class UserBB extends BackingBeanUtils implements Serializable {
 
-    private LinkedList<User> userList;
+    private ArrayList<User> userList;
     private User selectedUser;
 
     private RoleType formRoleType;
@@ -126,7 +126,7 @@ public class UserBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the userList
      */
-    public LinkedList<User> getUserList() {
+    public ArrayList<User> getUserList() {
         UserIntegrator ui = getUserIntegrator();
         try {
             userList = ui.getCompleteUserList();
@@ -283,7 +283,7 @@ public class UserBB extends BackingBeanUtils implements Serializable {
     /**
      * @param userList the userList to set
      */
-    public void setUserList(LinkedList<User> userList) {
+    public void setUserList(ArrayList<User> userList) {
         this.userList = userList;
     }
 

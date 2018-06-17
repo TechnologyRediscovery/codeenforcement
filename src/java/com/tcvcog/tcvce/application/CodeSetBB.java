@@ -26,7 +26,7 @@ import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -48,7 +48,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     private HashMap muniMap;
     private Municipality selectedMuni;
-    private LinkedList<CodeSet> codeSetList;
+    private ArrayList<CodeSet> codeSetList;
     // used by codeSetElementManage
     private CodeSet selectedCodeSet;
     private CodeElementEnforcable selectedEnforcableCodeElement;
@@ -90,7 +90,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     public void retrieveCodeSetsByMuni(ActionEvent event){
         CodeIntegrator codeInt = getCodeIntegrator();
-        LinkedList<CodeSet> retrievedCodeSetList;
+        ArrayList<CodeSet> retrievedCodeSetList;
         try {
             System.out.println("CodeSetBB.retrieveCodeSetsByMuniID | selected Muni Code:  "+ selectedMuniCode);
             
@@ -340,7 +340,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the codeSetList
      */
-    public LinkedList<CodeSet> getCodeSetList() {
+    public ArrayList<CodeSet> getCodeSetList() {
         
         CodeIntegrator codeInt = getCodeIntegrator();
         try {
@@ -359,7 +359,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     /**
      * @param codeSetList the codeSetList to set
      */
-    public void setCodeSetList(LinkedList<CodeSet> codeSetList) {
+    public void setCodeSetList(ArrayList<CodeSet> codeSetList) {
         this.codeSetList = codeSetList;
     }
 

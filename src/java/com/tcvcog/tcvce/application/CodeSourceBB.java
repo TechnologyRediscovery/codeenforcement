@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.coordinators.CodeCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSource;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ValueExpression;
@@ -38,7 +38,7 @@ import javax.faces.event.ActionEvent;
 public class CodeSourceBB extends BackingBeanUtils implements Serializable{
     
     
-    private LinkedList<CodeSource> codeSources;
+    private ArrayList<CodeSource> codeSources;
     private int sourceID;
     private CodeSource codeSource;
     private CodeSource selectedCodeSource;
@@ -205,14 +205,14 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the codeSources
      */
-    public LinkedList<CodeSource> getCodeSources() {
+    public ArrayList<CodeSource> getCodeSources() {
         return codeSources;
     }
 
     /**
      * @param codeSources the codeSources to set
      */
-    public void setCodeSources(LinkedList<CodeSource> codeSources) {
+    public void setCodeSources(ArrayList<CodeSource> codeSources) {
         this.codeSources = codeSources;
     }
 

@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -99,12 +99,12 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public LinkedList<EventCategory> getEventCategoryList() throws IntegrationException{
+    public ArrayList<EventCategory> getEventCategoryList() throws IntegrationException{
         String query = "SELECT * FROM public.ceeventcategory;";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        LinkedList<EventCategory> categoryList = new LinkedList();
+        ArrayList<EventCategory> categoryList = new ArrayList();
         
         try {
             
@@ -129,12 +129,12 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         return categoryList;
     }
     
-    public LinkedList<EventCategory> getEventCategoryList(EventType et) throws IntegrationException{
+    public ArrayList<EventCategory> getEventCategoryList(EventType et) throws IntegrationException{
          String query = "SELECT * FROM public.ceeventcategory WHERE categorytype = cast (? as ceeventtype);";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        LinkedList<EventCategory> categoryList = new LinkedList();
+        ArrayList<EventCategory> categoryList = new ArrayList();
         
         try {
             
@@ -474,8 +474,8 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         return ev;
     }
     
-    public LinkedList<EventCase> getEventsByCaseID(int caseID) throws IntegrationException{
-        LinkedList<EventCase> eventList = new LinkedList();
+    public ArrayList<EventCase> getEventsByCaseID(int caseID) throws IntegrationException{
+        ArrayList<EventCase> eventList = new ArrayList();
         
         String query = "SELECT * FROM public.ceevent WHERE cecase_caseid = ?;";
         Connection con = getPostgresCon();

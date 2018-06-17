@@ -20,7 +20,7 @@ import com.tcvcog.tcvce.entities.Property;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 import java.sql.Connection;
 

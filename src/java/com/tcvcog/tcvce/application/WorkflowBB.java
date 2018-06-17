@@ -26,7 +26,7 @@ import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -36,12 +36,12 @@ import javax.faces.application.FacesMessage;
 public class WorkflowBB extends BackingBeanUtils implements Serializable{
 
     
-    private LinkedList<CEActionRequest> requestList;
+    private ArrayList<CEActionRequest> requestList;
     private CEActionRequest selectedRequest;
-    private LinkedList<CECase> caseList;
+    private ArrayList<CECase> caseList;
     private CECase selectedCase;
-    private LinkedList<EventCase> recentEventList;
-    private LinkedList<Person> muniPeopleList;
+    private ArrayList<EventCase> recentEventList;
+    private ArrayList<Person> muniPeopleList;
     
     
     
@@ -73,7 +73,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the requestList
      */
-    public LinkedList<CEActionRequest> getRequestList() {
+    public ArrayList<CEActionRequest> getRequestList() {
         CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
         SessionCoordinator sm = getSessionManager();
         try {
@@ -89,7 +89,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the CaseList
      */
-    public LinkedList<CECase> getCaseList() {
+    public ArrayList<CECase> getCaseList() {
         CaseIntegrator ci = getCaseIntegrator();
         SessionCoordinator sm = getSessionManager();
         int muniCodeForFetching = sm.getVisit().getActiveUser().getMuniCode();
@@ -107,42 +107,42 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the recentEventList
      */
-    public LinkedList<EventCase> getRecentEventList() {
+    public ArrayList<EventCase> getRecentEventList() {
         return recentEventList;
     }
 
     /**
      * @return the muniPeopleList
      */
-    public LinkedList<Person> getMuniPeopleList() {
+    public ArrayList<Person> getMuniPeopleList() {
         return muniPeopleList;
     }
 
     /**
      * @param requestList the requestList to set
      */
-    public void setRequestList(LinkedList<CEActionRequest> requestList) {
+    public void setRequestList(ArrayList<CEActionRequest> requestList) {
         this.requestList = requestList;
     }
 
     /**
      * @param CaseList the CaseList to set
      */
-    public void setCaseList(LinkedList<CECase> CaseList) {
+    public void setCaseList(ArrayList<CECase> CaseList) {
         this.caseList = CaseList;
     }
 
     /**
      * @param recentEventList the recentEventList to set
      */
-    public void setRecentEventList(LinkedList<EventCase> recentEventList) {
+    public void setRecentEventList(ArrayList<EventCase> recentEventList) {
         this.recentEventList = recentEventList;
     }
 
     /**
      * @param muniPeopleList the muniPeopleList to set
      */
-    public void setMuniPeopleList(LinkedList<Person> muniPeopleList) {
+    public void setMuniPeopleList(ArrayList<Person> muniPeopleList) {
         this.muniPeopleList = muniPeopleList;
     }
 

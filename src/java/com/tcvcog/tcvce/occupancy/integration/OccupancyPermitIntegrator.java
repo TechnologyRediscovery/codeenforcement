@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -182,13 +182,13 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     }
     
     
-    public LinkedList<OccupancyPermitType> getOccupancyPermitTypeList() throws IntegrationException{
+    public ArrayList<OccupancyPermitType> getOccupancyPermitTypeList() throws IntegrationException{
         String query = "SELECT typeid, muni_municode, typename, typedescription\n" +
                        "  FROM public.occpermittype";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        LinkedList<OccupancyPermitType> occupancyPermitTypeList = new LinkedList();
+        ArrayList<OccupancyPermitType> occupancyPermitTypeList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);

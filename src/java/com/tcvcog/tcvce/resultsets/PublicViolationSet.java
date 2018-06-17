@@ -18,7 +18,7 @@ package com.tcvcog.tcvce.resultsets;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.component.UISelectItem;
 import java.util.HashMap;
 import com.tcvcog.tcvce.util.Constants;

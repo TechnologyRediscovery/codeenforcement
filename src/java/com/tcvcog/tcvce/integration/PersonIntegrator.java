@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -165,9 +165,9 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @return the new Person() object generated from the query
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public LinkedList searchForPerson(String fname, String lname) throws IntegrationException {
+    public ArrayList searchForPerson(String fname, String lname) throws IntegrationException {
         Connection con = getPostgresCon();
-        LinkedList ll = new LinkedList();
+        ArrayList ll = new ArrayList();
         ResultSet rs = null;
         PreparedStatement stmt = null;
 
@@ -376,12 +376,12 @@ public class PersonIntegrator extends BackingBeanUtils implements Serializable {
      * @return a linked list of person objects that can be used for display and
      * selection
      * @param people an integer array containing Person id numbers to be
-     * converted into a linkedList of Person objects for display in the view
+     * converted into a ArrayList of Person objects for display in the view
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
     
-   public LinkedList<Person> getPersonList(int[] people) throws IntegrationException {
-        LinkedList<Person> list = new LinkedList<>();
+   public ArrayList<Person> getPersonList(int[] people) throws IntegrationException {
+        ArrayList<Person> list = new ArrayList<>();
 
         // loop through the array of integers provided and ask
         // our getPersonByID() method for a person object associated with

@@ -11,7 +11,7 @@ import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,8 +43,8 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     private Person selectedPerson;
     
     
-    private LinkedList<CECase> ceCaseList;
-    private LinkedList<CEActionRequest> ceActionRequestList;
+    private ArrayList<CECase> ceCaseList;
+    private ArrayList<CEActionRequest> ceActionRequestList;
 
     /**
      * Creates a new instance of PropertyProfileBB
@@ -106,14 +106,14 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     /**
      * @return the ceCaseList
      */
-    public LinkedList<CECase> getCeCaseList() {
+    public ArrayList<CECase> getCeCaseList() {
         return ceCaseList;
     }
 
     /**
      * @return the ceActionRequestList
      */
-    public LinkedList<CEActionRequest> getCeActionRequestList() {
+    public ArrayList<CEActionRequest> getCeActionRequestList() {
         return ceActionRequestList;
     }
 
@@ -127,14 +127,14 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     /**
      * @param ceCaseList the ceCaseList to set
      */
-    public void setCeCaseList(LinkedList<CECase> ceCaseList) {
+    public void setCeCaseList(ArrayList<CECase> ceCaseList) {
         this.ceCaseList = ceCaseList;
     }
 
     /**
      * @param ceActionRequestList the ceActionRequestList to set
      */
-    public void setCeActionRequestList(LinkedList<CEActionRequest> ceActionRequestList) {
+    public void setCeActionRequestList(ArrayList<CEActionRequest> ceActionRequestList) {
         this.ceActionRequestList = ceActionRequestList;
     }
 

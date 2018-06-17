@@ -17,14 +17,14 @@
 package com.tcvcog.tcvce.occupancy.entities;
 import java.time.LocalDateTime;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
  * @author Emily
  */
 public class Inspection {
-    private LinkedList<RoomTypeInspectableCodeElement> iceFails;
+    private ArrayList<RoomTypeInspectableCodeElement> iceFails;
     private int inspectionId;
     private LocalDateTime inspecationDate;
     private String inspectionContact;
@@ -33,14 +33,14 @@ public class Inspection {
     /**
      * @return the iceFails
      */
-    public LinkedList<RoomTypeInspectableCodeElement> getIceFails() {
+    public ArrayList<RoomTypeInspectableCodeElement> getIceFails() {
         return iceFails;
     }
 
     /**
      * @param iceFails the iceFails to set
      */
-    public void setIceFails(LinkedList<RoomTypeInspectableCodeElement> iceFails) {
+    public void setIceFails(ArrayList<RoomTypeInspectableCodeElement> iceFails) {
         this.iceFails = iceFails;
     }
 

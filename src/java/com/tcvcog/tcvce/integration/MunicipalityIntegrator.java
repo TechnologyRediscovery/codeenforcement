@@ -27,7 +27,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import javax.faces.bean.ManagedProperty;
 
 /**
  *
@@ -35,6 +36,9 @@ import java.util.LinkedList;
  */
 public class MunicipalityIntegrator extends BackingBeanUtils implements Serializable {
 
+    @ManagedProperty(value="#{codeIntegrator}")
+    private CodeIntegrator ci;
+    
     private HashMap municipalityMap;
     /**
      * Creates a new instance of MunicipalityIntegrator
@@ -52,7 +56,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         String query = "SELECT municode, muniname, address_street, address_city, "
                 + "address_state, address_zip, phone, "
                 + "fax, email, managername, "
-                + "managerphone, population, activeinprogram\n" +
+                + "managerphone, population, activeinprogram, defaultcodeset\n" +
                 "FROM public.municipality WHERE municode = ?;";
         ResultSet rs = null;
  
@@ -62,25 +66,11 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
             stmt.setInt(1, muniCode);
             //System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | query: " + stmt.toString());
             rs = stmt.executeQuery();
-            
             while(rs.next()){
-                muni.setMuniCode(rs.getInt("municode"));
-                muni.setMuniName(rs.getString("muniname"));
-                muni.setAddress_street(rs.getString("address_street"));
-                muni.setAddress_city(rs.getString("address_city"));
-                
-                muni.setAddress_state(rs.getString("address_state"));
-                muni.setAddress_zip(rs.getString("address_zip"));
-                muni.setPhone(rs.getString("phone"));
-                
-                muni.setFax(rs.getString("fax"));
-                muni.setEmail(rs.getString("email"));
-                muni.setManagerName(rs.getString("managername"));
-                
-                muni.setManagerPhone(rs.getString("managerphone"));
-                muni.setPopulation(rs.getInt("population"));
-                muni.setActiveInProgram(rs.getBoolean("activeinprogram"));             
+                generateMuni(rs);
             }
+            
+            
         } catch (SQLException ex) {
             System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | " + ex.toString());
             throw new IntegrationException("Exception in MunicipalityIntegrator.getMuniFromMuniCode", ex);
@@ -91,6 +81,29 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         } // close finally
         
         return muni;
+        
+    }
+    
+    public void generateMuni(ResultSet rs) throws SQLException{
+                
+        Municipality muni = new Municipality();
+        muni.setMuniCode(rs.getInt("municode"));
+        muni.setMuniName(rs.getString("muniname"));
+        muni.setAddress_street(rs.getString("address_street"));
+        muni.setAddress_city(rs.getString("address_city"));
+
+        muni.setAddress_state(rs.getString("address_state"));
+        muni.setAddress_zip(rs.getString("address_zip"));
+        muni.setPhone(rs.getString("phone"));
+
+        muni.setFax(rs.getString("fax"));
+        muni.setEmail(rs.getString("email"));
+        muni.setManagerName(rs.getString("managername"));
+
+        muni.setManagerPhone(rs.getString("managerphone"));
+        muni.setPopulation(rs.getInt("population"));
+        muni.setActiveInProgram(rs.getBoolean("activeinprogram"));             
+        
         
     }
     
@@ -143,8 +156,8 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         this.municipalityMap = municipalityMap;
     }
     
-    public LinkedList<Municipality> getAllMuniList() throws IntegrationException{
-        LinkedList<Municipality> ll = new LinkedList<>();
+    public ArrayList<Municipality> getAllMuniList() throws IntegrationException{
+        ArrayList<Municipality> ll = new ArrayList<>();
                 
         Connection con = getPostgresCon();
         String query = "SELECT muniCode, muniName FROM municipality;";
@@ -169,6 +182,20 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         } // close finally
         
         return ll;
+    }
+
+    /**
+     * @return the ci
+     */
+    public CodeIntegrator getCi() {
+        return ci;
+    }
+
+    /**
+     * @param ci the ci to set
+     */
+    public void setCi(CodeIntegrator ci) {
+        this.ci = ci;
     }
     
 }

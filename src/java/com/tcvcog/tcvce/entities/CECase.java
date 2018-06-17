@@ -7,7 +7,7 @@ package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,7 +23,7 @@ public class CECase {
     private User user;
 
     private ArrayList<CodeViolation> violationList;
-    private LinkedList<EventCase> eventList;
+    private ArrayList<EventCase> eventList;
     
     private String caseName;
     private CasePhase casePhase;
@@ -187,14 +187,14 @@ public class CECase {
     /**
      * @return the eventList
      */
-    public LinkedList<EventCase> getEventList() {
+    public ArrayList<EventCase> getEventList() {
         return eventList;
     }
 
     /**
      * @param eventList the eventList to set
      */
-    public void setEventList(LinkedList<EventCase> eventList) {
+    public void setEventList(ArrayList<EventCase> eventList) {
         this.eventList = eventList;
     }
 

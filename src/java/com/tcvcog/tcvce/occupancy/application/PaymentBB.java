@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.entities.PaymentType;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.*;
 import javax.faces.event.ActionEvent;
@@ -37,7 +37,7 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class PaymentBB extends BackingBeanUtils implements Serializable {
     
-    private LinkedList<Payment> paymentList;
+    private ArrayList<Payment> paymentList;
     private Payment selectedPayment;
     private int formPaymentID;
     private int formPaymentOccupancyInspectionID;
@@ -55,7 +55,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the paymentList
      */
-    public LinkedList<Payment> getPaymentList() {
+    public ArrayList<Payment> getPaymentList() {
         try {
             PaymentIntegrator paymentIntegrator = getPaymentIntegrator();
             paymentList = paymentIntegrator.getPaymentList();
@@ -68,7 +68,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
         if(paymentList != null){
         return paymentList;
         }else{
-         paymentList = new LinkedList();
+         paymentList = new ArrayList();
          return paymentList;
         }
     }
@@ -193,7 +193,7 @@ public class PaymentBB extends BackingBeanUtils implements Serializable {
     /**
      * @param paymentList the paymentList to set
      */
-    public void setPaymentList(LinkedList<Payment> paymentList) {
+    public void setPaymentList(ArrayList<Payment> paymentList) {
         this.paymentList = paymentList;
     }
 

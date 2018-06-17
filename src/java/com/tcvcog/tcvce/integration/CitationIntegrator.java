@@ -30,7 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.faces.application.FacesMessage;
 
@@ -136,7 +136,7 @@ public class CitationIntegrator extends BackingBeanUtils implements Serializable
         return c;
     }
     
-    public LinkedList<Citation> getCitationsByProperty(Property prop) throws IntegrationException{
+    public ArrayList<Citation> getCitationsByProperty(Property prop) throws IntegrationException{
         //this doesn't work anymore since citations don't know about cases, we have to go through citationViolation
         // codeviolations know about cases
         
@@ -148,7 +148,7 @@ public class CitationIntegrator extends BackingBeanUtils implements Serializable
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        LinkedList<Citation> citationList = new LinkedList();
+        ArrayList<Citation> citationList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);
@@ -365,12 +365,12 @@ public class CitationIntegrator extends BackingBeanUtils implements Serializable
         
     }
     
-    public LinkedList<CitationStatus> getFullCitationStatusList() throws IntegrationException{
+    public ArrayList<CitationStatus> getFullCitationStatusList() throws IntegrationException{
         String query =  "SELECT statusid, statusname, description from citationStatus;";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        LinkedList<CitationStatus> csList = new LinkedList<>();
+        ArrayList<CitationStatus> csList = new ArrayList<>();
         
         try {
             stmt = con.prepareStatement(query);

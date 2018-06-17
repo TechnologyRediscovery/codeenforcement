@@ -21,7 +21,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.entities.PaymentType;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
@@ -37,8 +37,8 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     
-    private LinkedList<PaymentType> paymentTypeList;
-    private LinkedList<PaymentType> paymentTypeTitleList;
+    private ArrayList<PaymentType> paymentTypeList;
+    private ArrayList<PaymentType> paymentTypeTitleList;
     private PaymentType selectedPaymentType;
     private int formPaymentTypeID;
     private String formPaymentTypeTitle;
@@ -109,7 +109,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the paymentTypeList
      */
-    public LinkedList<PaymentType> getPaymentTypeList() {
+    public ArrayList<PaymentType> getPaymentTypeList() {
          try {
             PaymentIntegrator pti = getPaymentIntegrator();
             paymentTypeList = pti.getPaymentTypeList();
@@ -122,7 +122,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
         if(paymentTypeList != null){
         return paymentTypeList;
         }else{
-         paymentTypeList = new LinkedList();
+         paymentTypeList = new ArrayList();
          return paymentTypeList;
         }
     }
@@ -153,7 +153,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     /**
      * @param paymentTypeList the paymentTypeList to set
      */
-    public void setPaymentTypeList(LinkedList<PaymentType> paymentTypeList) {
+    public void setPaymentTypeList(ArrayList<PaymentType> paymentTypeList) {
         this.paymentTypeList = paymentTypeList;
     }
 
@@ -244,7 +244,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the paymentTypeTitleList
      */
-    public LinkedList<PaymentType> getPaymentTypeTitleList() throws IntegrationException {
+    public ArrayList<PaymentType> getPaymentTypeTitleList() throws IntegrationException {
         PaymentIntegrator pi = getPaymentIntegrator();
         paymentTypeTitleList = pi.getPaymentTypeList();
         return paymentTypeTitleList;
@@ -253,7 +253,7 @@ public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     /**
      * @param paymentTypeTitleList the paymentTypeTitleList to set
      */
-    public void setPaymentTypeTitleList(LinkedList<PaymentType> paymentTypeTitleList) {
+    public void setPaymentTypeTitleList(ArrayList<PaymentType> paymentTypeTitleList) {
         this.paymentTypeTitleList = paymentTypeTitleList;
     }
     

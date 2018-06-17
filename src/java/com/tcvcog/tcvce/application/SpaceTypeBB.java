@@ -37,7 +37,7 @@ import javax.faces.application.FacesMessage;
 @ViewScoped
 public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
 
-    private LinkedList<SpaceType> spaceTypeList;
+    private ArrayList<SpaceType> spaceTypeList;
     private SpaceType selectedSpaceType;
     private int formSpaceTypeID;
     private String formSpaceTypeTitle;
@@ -54,7 +54,7 @@ public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the spaceTypeList
      */
-    public LinkedList<SpaceType> getSpaceTypeList() {
+    public ArrayList<SpaceType> getSpaceTypeList() {
         
         try {
             ChecklistIntegrator si = getChecklistIntegrator();
@@ -69,7 +69,7 @@ public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
             return spaceTypeList;
             
         } else {
-            spaceTypeList = new LinkedList();
+            spaceTypeList = new ArrayList();
             return spaceTypeList;
         }
     }
@@ -77,7 +77,7 @@ public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
     /**
      * @param spaceTypeList the spaceTypeList to set
      */
-    public void setSpaceTypeList(LinkedList<SpaceType> spaceTypeList) {
+    public void setSpaceTypeList(ArrayList<SpaceType> spaceTypeList) {
         this.spaceTypeList = spaceTypeList;
     }
 

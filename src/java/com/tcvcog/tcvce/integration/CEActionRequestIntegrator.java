@@ -21,7 +21,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import java.sql.*;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 /**
  *
  * @author sylvia
@@ -248,8 +248,8 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
     } // close getActionRequest
     
     
-    public LinkedList getCEActionRequestList(int muniCode) throws IntegrationException{
-        LinkedList<CEActionRequest> requestList = new LinkedList();
+    public ArrayList getCEActionRequestList(int muniCode) throws IntegrationException{
+        ArrayList<CEActionRequest> requestList = new ArrayList();
         String query = "SELECT requestid, requestpubliccc FROM public.ceactionrequest "
                 + "WHERE muni_municode = ?;"; 
         ResultSet rs = null;

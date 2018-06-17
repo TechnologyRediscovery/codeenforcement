@@ -38,7 +38,7 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serializable {
     
-    private LinkedList<OccupancyInspectionFee> occupancyInspectionFeeList;
+    private ArrayList<OccupancyInspectionFee> occupancyInspectionFeeList;
     private OccupancyInspectionFee selectedOccupancyInspectionFee;
     private int formOccupancyInspectionFeeID;
     private Municipality formMuni;
@@ -198,7 +198,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
     /**
      * @return the occupancyInspectionFeeList
      */
-    public LinkedList<OccupancyInspectionFee> getOccupancyInspectionFeeList() {
+    public ArrayList<OccupancyInspectionFee> getOccupancyInspectionFeeList() {
         try {
             OccupancyInspectionIntegrator oi = getOccupancyInspectionIntegrator();
             ArrayList<OccupancyInspectionFee> oil = oi.getOccupancyInspectionFeeList();
@@ -211,7 +211,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
         if(occupancyInspectionFeeList != null){
         return occupancyInspectionFeeList;
         }else{
-         occupancyInspectionFeeList = new LinkedList();
+         occupancyInspectionFeeList = new ArrayList();
          return occupancyInspectionFeeList;
         }
     }
@@ -219,7 +219,7 @@ public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serial
     /**
      * @param occupancyInspectionFeeList the occupancyInspectionFeeList to set
      */
-    public void setOccupancyInspectionFeeList(LinkedList<OccupancyInspectionFee> occupancyInspectionFeeList) {
+    public void setOccupancyInspectionFeeList(ArrayList<OccupancyInspectionFee> occupancyInspectionFeeList) {
         this.occupancyInspectionFeeList = occupancyInspectionFeeList;
     }
 

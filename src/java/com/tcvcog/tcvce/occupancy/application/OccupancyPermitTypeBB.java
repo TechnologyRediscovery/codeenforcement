@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.OccupancyPermitType;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
@@ -38,7 +38,7 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializable {
     
-    private LinkedList<OccupancyPermitType> occupancyPermitTypeList;
+    private ArrayList<OccupancyPermitType> occupancyPermitTypeList;
     private OccupancyPermitType selectedOccupancyPermitType;
     private int formOccupancyPermitTypeID;
     private int formOccupancyPermitTypeMuniCodeID;
@@ -172,7 +172,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     /**
      * @return the occupancyPermitTypeList
      */
-    public LinkedList<OccupancyPermitType> getOccupancyPermitTypeList() {
+    public ArrayList<OccupancyPermitType> getOccupancyPermitTypeList() {
         try {
             OccupancyPermitIntegrator oi = getOccupancyPermitIntegrator();
             occupancyPermitTypeList = oi.getOccupancyPermitTypeList();
@@ -185,7 +185,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
         if(occupancyPermitTypeList != null){
         return occupancyPermitTypeList;
         }else{
-         occupancyPermitTypeList = new LinkedList();
+         occupancyPermitTypeList = new ArrayList();
          return occupancyPermitTypeList;
         }
     }    
@@ -194,7 +194,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     /**
      * @param occupancyPermitTypeList the occupancyPermitTypeList to set
      */
-    public void setOccupancyPermitTypeList(LinkedList<OccupancyPermitType> occupancyPermitTypeList) {
+    public void setOccupancyPermitTypeList(ArrayList<OccupancyPermitType> occupancyPermitTypeList) {
         this.occupancyPermitTypeList = occupancyPermitTypeList;
     }
 

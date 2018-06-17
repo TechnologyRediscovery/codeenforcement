@@ -34,7 +34,7 @@ import java.io.Serializable;
 import com.tcvcog.tcvce.util.Constants;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.faces.application.FacesMessage;
 
@@ -198,9 +198,9 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     }
     
     
-    public LinkedList getEventList(CECase currentCase) throws IntegrationException{
+    public ArrayList getEventList(CECase currentCase) throws IntegrationException{
         EventIntegrator ei = getEventIntegrator();
-        LinkedList<EventCase> ll = ei.getEventsByCaseID(currentCase.getCaseID());
+        ArrayList<EventCase> ll = ei.getEventsByCaseID(currentCase.getCaseID());
         return ll;
     }
     
