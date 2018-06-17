@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
@@ -72,7 +73,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
 
     public String editEvent(){
         EventCoordinator ec = getEventCoordinator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         EventCase e = sm.getVisit().getActiveEvent();
         
         // category is already set from initialization sequence
@@ -163,7 +164,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
      */
     public ArrayList<Person> getPropertyPersonList() {
         PersonIntegrator pi = getPersonIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         try {
             propertyPersonList = pi.getPersonList(sm.getVisit().getActiveProp());
@@ -243,7 +244,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
      * @return the event
      */
     public EventCase getEvent() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         EventCase currentEvent = sm.getVisit().getActiveEvent();
         event = currentEvent;
         return event;

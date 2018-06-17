@@ -34,7 +34,7 @@ import javax.faces.event.ActionEvent;
  *
  * @author Adam Gutonski
  */
-@ManagedBean
+
 @ViewScoped
 public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     

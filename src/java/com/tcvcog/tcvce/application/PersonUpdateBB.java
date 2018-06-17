@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.Person;
@@ -115,7 +116,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
         
         try {
             pi.updatePerson(p);
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActivePerson(p);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
@@ -152,7 +153,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      */
     public int getFormMuniCode() {
         //System.out.println("PersonUpdateBB.getFormMuniID | muniID of active currentPerson: " + currentPerson.getMuni().getMuniCode());
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         formMuniCode = sm.getVisit().getActivePerson().getMuniCode();
         return formMuniCode;
     }
@@ -410,7 +411,7 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the currentPerson
      */
     public Person getCurrentPerson() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentPerson = sm.getVisit().getActivePerson();
         return currentPerson;
     }

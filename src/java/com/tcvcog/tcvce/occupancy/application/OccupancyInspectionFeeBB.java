@@ -34,7 +34,7 @@ import javax.faces.event.ActionEvent;
  *
  * @author Adam Gutonski
  */
-@ManagedBean
+
 @ViewScoped
 public class OccupancyInspectionFeeBB extends BackingBeanUtils implements Serializable {
     

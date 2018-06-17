@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
@@ -95,7 +96,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     public String recordCompliance() throws IntegrationException{
         CaseCoordinator cc = getCaseCoordinator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         EventCoordinator ec = getEventCoordinator();
         System.out.println("CaseManageBB.recordCompliance | selectedViolations size: " + selectedViolations.size());
         if(!selectedViolations.isEmpty()){
@@ -119,7 +120,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         LinkedList<CodeViolation> ll = new LinkedList();
         
         if(!selectedViolations.isEmpty()){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActiveCodeViolation(selectedViolations.get(0));
             return "violationEdit";
         } else {
@@ -131,7 +132,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
     
     public String createNewNoticeForAllViolations(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentCase = sm.getVisit().getActiveCase();
 
         System.out.println("CaseManageBB.createNewNoticeOfViolation | current case: " + currentCase);
@@ -147,7 +148,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
     
     public String createNewNoticeForSelectedViolations(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentCase = sm.getVisit().getActiveCase();
         
         System.out.println("CaseManageBB.createNewNoticeOfViolationForSelected | current case: " + currentCase);
@@ -170,7 +171,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
                 + currentCase);
 //        if(!currentCase.getViolationList().isEmpty()){
         if(currentCase != null){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             CaseCoordinator cc = getCaseCoordinator();
             sm.getVisit().setActiveCitation(cc.generateNewCitation(fullCaseViolationList));
             return "citationEdit";
@@ -184,7 +185,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public String createCitationFromSelected(){
         System.out.println("CaseManageBB.createCitationFromSelected");
         if(!selectedViolations.isEmpty()){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             CaseCoordinator cc = getCaseCoordinator();
 
             sm.getVisit().setActiveCitation(cc.generateNewCitation(selectedViolations));
@@ -200,7 +201,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     public String updateCitation(){
         if(selectedCitation != null){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActiveCitation(selectedCitation);
             return "citationEdit";
         }
@@ -264,7 +265,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     public String editSelectedEvent(){
 
         if(selectedEvent != null){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActiveEvent(selectedEvent);
             return "eventEdit";
         } else {
@@ -277,7 +278,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     }
     
     public String editNoticeOfViolation(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActiveNotice(selectedNotice);
         
         return "noticeOfViolationEditor";
@@ -286,7 +287,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     public void deleteNoticeOfViolation(ActionEvent event){
         CaseCoordinator caseCoord = getCaseCoordinator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActiveNotice(selectedNotice);
         try {
             
@@ -396,7 +397,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      * @return the currentCase
      */
     public CECase getCurrentCase() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentCase = sm.getVisit().getActiveCase();
         if(currentCase != null){
             System.out.println("CaseManageBB.getCurrentCase | currentCase Info: " + currentCase.getCaseName());
@@ -500,7 +501,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      */
     public ArrayList<NoticeOfViolation> getNoticeList() {
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         try {
             noticeList = cvi.getNoticeOfViolationList(sm.getVisit().getActiveCase());
         } catch (IntegrationException ex) {
@@ -521,7 +522,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
      */
     public ArrayList<Citation> getCitationList() {
         CitationIntegrator ci = getCitationIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         try {
             citationList = ci.getCitationsByCase(sm.getVisit().getActiveCase());
@@ -557,7 +558,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     
     public String takeNextAction(){
         EventCase e = getEventForTriggeringCasePhaseAdvancement();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActiveEvent(e);
         
         return "eventAdd";

@@ -10,7 +10,7 @@
         <title></title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                      <h:outputLink value="codeSourceManage.xhtml">&lt;-- Back to code source manager</h:outputLink>
@@ -44,7 +44,7 @@
                                         <p:selectOneMenu value="#{codeElementBB.formType}"
                                                     id="elementTypes" 
                                                     tabindex="1">
-                                        <f:selectItems value="#{codeElementTypeBB.codeElementTypesMap}"/>
+                                        <f:selectItems value="#{codeElementGuideBB.codeElementTypesMap}"/>
                                         </p:selectOneMenu>
                                     </h:panelGroup>    
                                 

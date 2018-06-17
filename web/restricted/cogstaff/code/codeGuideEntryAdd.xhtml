@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Code Element Guide Builder</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="navContainer_restricted.xhtml">
+           
+            <ui:define name="content">
+                <f:view id="guideEntryBuilder">
+                    <div class="mainContainer">
+                        
+                    <h1>Code guide entry creator &amp; editor</h1>
+                        <p>Assemble guidelines for inspecting and enforcing municipal 
+                        code elements. A single guide entry is generally attached to 
+                        a single code element (i.e. a chapter, section, and 
+                        subsection of code from a single source)</p>
+                    
+                    <p>After creating a guide entry, connect a code element through the Code Navigator >> Edit code element</p>
+                    
+                    <h2>Categorization</h2>
+                    
+                        <h:form id="guideBuilderForm">
+                        
+
+                            <h:panelGrid columns="2" border="0" 
+                                            cellpadding="5" columnClasses="gridTd, gridTd"
+                                            footerClass="gridFooter">
+
+
+                                   <h:outputLabel value="Guide entry category" for="catIT"/>
+                                   <h:panelGroup>
+                                       <p:inputText id="catIT" value="#{codeElementGuideBB.formCategory}" 
+                                              style="width: 250px;" tabindex="1" required="true" styleClass="inputText"/>
+                                       <h:message for="catIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                   </h:panelGroup>
+
+                                   <h:outputLabel value="Subcategory" for="catsubIT"/>
+                                   <h:panelGroup>
+                                       <p:inputText id="catsubIT" value="#{codeElementGuideBB.formSubCategory}" 
+                                              style="width: 250px;" tabindex="2" required="true" styleClass="inputText"/>
+                                       <h:message for="catsubIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                   </h:panelGroup>
+
+                                   <h:outputLabel value="Brief Description" for="desIT"/>
+                                   <h:panelGroup>
+                                       <p:inputText id="desIT" value="#{codeElementGuideBB.formDescription}" 
+                                              style="width: 800px;" tabindex="3" required="true" styleClass="inputText"/>
+                                       <h:message for="desIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                   </h:panelGroup>
+
+                            </h:panelGrid>
+
+                       <h2>Inspection Guidelines</h2>
+                           <p>Tips, tools, and rules for inspecting code elements connected to this guide entry</p>
+
+                           <p:editor  id="inspecGuidelinesEd"  value="#{codeElementGuideBB.formInspectionGuidelines}" 
+                                       controls="bold italic underline strikethrough font size style color 
+                                       bullets numbering center undo redo rule link removeformat outdent 
+                                       indent link unlink copy cut paste rule alignleft center alignright"
+                                       width="1000" required="true"
+                                       height="200"/>
+
+                               <h:message for="inspecGuidelinesEd" showDetail="false" showSummary="true" 
+                                          warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                       <h2>Enforcement Guidelines</h2>
+                           <p>Guidelines for conducting enforcement efforts related to code elements connected to this guide entry</p>
+
+
+                           <p:editor  id="enforcementGuideEd"  value="#{codeElementGuideBB.formEnforcementGuidelines}" 
+                                       controls="bold italic underline strikethrough font size style color 
+                                       bullets numbering center undo redo rule link removeformat outdent 
+                                       indent link unlink copy cut paste rule alignleft center alignright"
+                                       width="1000" required="true"
+                                       height="200"/>
+
+                           <h:message for="enforcementGuideEd" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                           <p:spacer height="15px"/>
+                           
+                           <p:commandButton ajax="false" disabled="" value="Update existing entry" action="#{codeElementGuideBB.updateCodeElementType(event)}"/>
+                           <p:commandButton ajax="false" disabled="" value="Add new entry" action="#{codeElementGuideBB.addCodeElementType}"/>
+
+                        </h:form>
+                    </div>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

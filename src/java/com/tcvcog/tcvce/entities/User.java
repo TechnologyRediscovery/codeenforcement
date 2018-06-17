@@ -16,13 +16,14 @@
  */
 package com.tcvcog.tcvce.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author cedba
  */
-public class User {
+public class User implements Serializable{
 
     private int userID;
     private RoleType roleType;

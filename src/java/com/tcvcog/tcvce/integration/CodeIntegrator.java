@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import java.io.Serializable;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.CodeElement;
-import com.tcvcog.tcvce.entities.CodeElementType;
+import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
 import com.tcvcog.tcvce.entities.Municipality;
@@ -30,6 +30,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -543,7 +544,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
                 e.setElementID(rs.getInt("elementid"));
                 
-                e.setType(getCodeElementType(rs.getInt("codeelementtype_cdeltypeid")));
+                e.setType(getCodeElementGuideEntry(rs.getInt("codeelementtype_cdeltypeid")));
                 e.setSource(getCodeSource(rs.getInt("codesource_sourceid")));
                 
                 e.setOrdchapterNo(rs.getInt("ordchapterno"));
@@ -772,10 +773,12 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     
    
     
-    public void insertNewCodeElementType(CodeElementType cdelType) throws IntegrationException{
-        String query = "INSERT INTO public.codeelementtype(\n" +
-"            cdeltypeid, name, description)\n" +
-"            VALUES (DEFAULT, ?, ?);\n";
+    public void insertCodeElementGuideEntry(CodeElementGuideEntry cege) throws IntegrationException{
+        String query =  "INSERT INTO public.codeelementguide(\n" +
+                        "            guideentryid, category, subcategory, description, enforcementguidelines, \n" +
+                        "            inspectionguidelines, priority)\n" +
+                        "    VALUES (DEFAULT, ?, ?, ?, ?, \n" +
+                        "            ?, ?);";
         
         Connection con = null;
         PreparedStatement stmt = null;
@@ -783,58 +786,47 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setString(1, cdelType.getName());
-            stmt.setString(2, cdelType.getDescription());
-            stmt.executeUpdate();
+            stmt.setString(1, cege.getCategory());
+            stmt.setString(2, cege.getSubCategory());
+            stmt.setString(3, cege.getDescription());
+            stmt.setString(4, cege.getEnforcementGuidelines());
+            stmt.setString(5, cege.getInspectionGuidelines());
+            stmt.setBoolean(6, cege.isPriority());
+            
+            System.out.println("CodeElementGuideBB.insertCodeElementGuideEntry | stmt: " + stmt.toString());
+            
+            stmt.execute();
              
         } catch (SQLException ex) { 
              System.out.println(ex.toString());
              throw new IntegrationException("Error inserting code element type", ex);
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-                
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) { /* ignored */}
-             }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+            
         } // close finally
     }
     
-    public void updateCodeElementType(CodeElementType cdelType) throws IntegrationException{
-        String query = "UPDATE public.codeelementtype\n" +
-                    "   SET name=?, description=?\n" +
-                    " WHERE cdeltypeid = ?;";
+    public void updateCodeElementGuideEntry(CodeElementGuideEntry cdelType) throws IntegrationException{
+        String query =  "UPDATE public.codeelementguide\n" +
+                        "   SET category=?, subcategory=?, description=?, enforcementguidelines=?, \n" +
+                        "       inspectionguidelines=?, priority=?\n" +
+                        " WHERE guideentryid=?;";
         Connection con = null;
         PreparedStatement stmt = null;
 
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setString(1, cdelType.getName());
-            stmt.setString(2, cdelType.getDescription());
-            stmt.setInt(3, cdelType.getCdelTypeID());
+            
             stmt.execute();
              
         } catch (SQLException ex) { 
              System.out.println(ex.toString());
-             throw new IntegrationException("Error inserting code element", ex);
+             throw new IntegrationException("Error updating code element guide entry", ex);
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-                
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) { /* ignored */}
-             }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
         
     }
@@ -859,138 +851,103 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
              System.out.println(ex.toString());
              throw new IntegrationException("Error updating code set", ex);
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-                
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) { /* ignored */}
-             }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
         
         
     }
     
-    public void deleteCodeElementType(CodeElementType cdelType) throws IntegrationException{
-        String query = "DELETE FROM public.codeelementtype\n" +
-                    " WHERE cdeltypeid = ?;";
+    public void deleteCodeElementGuideEntry(CodeElementGuideEntry ge) throws IntegrationException{
+        String query =  "DELETE FROM public.codeelementguide\n" +
+                        " WHERE guidenetryid=?;";
         Connection con = null;
         PreparedStatement stmt = null;
 
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, cdelType.getCdelTypeID());
-            stmt.executeUpdate();
+            stmt.setInt(1, ge.getGuideEntryID());
+            stmt.execute();
              
         } catch (SQLException ex) { 
              System.out.println(ex.toString());
-             throw new IntegrationException("Error inserting code element", ex);
+             throw new IntegrationException("Error deleting code element guide entry, "
+                     + "probably because it has been connected to some other business object. No delete for you!", ex);
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-                
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) { /* ignored */}
-             }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
         
     }
     
-    public HashMap getCodeElementTypesMap() throws IntegrationException{
-        System.out.println("CodeIntegrator.getCodeElementTypesMap");
-        String query = "SELECT cdeltypeid, name, description\n" +
-                        "  FROM public.codeelementtype;";
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        HashMap<String, Integer> map = new HashMap();
-
-         try {
-            con = getPostgresCon();
-            stmt = con.prepareStatement(query);
-            rs = stmt.executeQuery();
-            while(rs.next()){
-                CodeElementType cdelType = new CodeElementType();
-                cdelType.setCdelTypeID(rs.getInt(1));
-                cdelType.setName(rs.getString(2));
-                cdelType.setDescription(rs.getString(3));
-                map.put(cdelType.getName(), cdelType.getCdelTypeID());
-            }
-             
-        } catch (SQLException ex) { 
-             System.out.println(ex.toString());
-             throw new IntegrationException("Error retrieving code element types map", ex);
-        } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-            }
-            if (rs != null ){
-                try{
-                    rs.close();
-                } catch (SQLException ex) { /* ignored */ }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) { /* ignored */}
-             }
-        } // close finally
-        return map;
-    }
     
-    public CodeElementType getCodeElementType(int typeId) throws IntegrationException{
+    public CodeElementGuideEntry getCodeElementGuideEntry(int typeId) throws IntegrationException{
         String query = "SELECT cdeltypeid, name, description\n" +
                         "  FROM public.codeelementtype WHERE cdeltypeid=?;";
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        HashMap<String, Integer> map = new HashMap();
-        CodeElementType cdelType = null;
+        CodeElementGuideEntry cege = null;
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
             stmt.setInt(1, typeId);
             rs = stmt.executeQuery();
             while(rs.next()){
-                cdelType = new CodeElementType();
-                cdelType.setCdelTypeID(rs.getInt(1));
-                cdelType.setName(rs.getString(2));
-                cdelType.setDescription(rs.getString(3));
+                cege = generateCodeElementGuideEntry(rs);
             }
              
         } catch (SQLException ex) { 
              System.out.println(ex.toString());
-             throw new IntegrationException("Error retrieving code element types map", ex);
+             throw new IntegrationException("Error retrieving code element guide entry by ID", ex);
         } finally{
-            if (stmt != null){
-                try {
-                    stmt.close();
-                } catch (SQLException ex) { /* ignored */ }
-            }
-            if (rs != null ){
-                try{
-                    rs.close();
-                } catch (SQLException ex) { /* ignored */ }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) { /* ignored */}
-             }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
          
-         return cdelType;
+         return cege;
     }
+    
+    public ArrayList<CodeElementGuideEntry> getCodeElementGuideEntries() throws IntegrationException{
+        String query =  "SELECT guideentryid, category, subcategory, description, enforcementguidelines, \n" +
+                        "       inspectionguidelines, priority\n" +
+                        "  FROM public.codeelementguide;";
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<CodeElementGuideEntry> cegelist = new ArrayList();
+
+         try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                cegelist.add(generateCodeElementGuideEntry(rs));
+                
+            }
+             
+        } catch (SQLException ex) { 
+             System.out.println(ex.toString());
+             throw new IntegrationException("Error generating code element guide entry list", ex);
+        } finally{
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return cegelist;
+    }
+    
+    private CodeElementGuideEntry generateCodeElementGuideEntry(ResultSet rs) throws SQLException{
+        CodeElementGuideEntry cege = new CodeElementGuideEntry();
+        cege.setCategory(rs.getString("guideentryid"));
+        cege.setSubCategory(rs.getString("subcategory"));
+        cege.setDescription(rs.getString("description"));
+        cege.setEnforcementGuidelines(rs.getString("enforcementguidelines"));
+        cege.setInspectionGuidelines(rs.getString("inspectionguidelines"));
+        cege.setPriority(rs.getBoolean("priority"));
+        return cege;
+    }
+    
 } // close class

@@ -250,7 +250,7 @@ public class CitationIntegrator extends BackingBeanUtils implements Serializable
             c.setCitationNo(rs.getString("citationNo"));
             c.setStatus(getCitationStatus(rs.getInt("status_statusid")));
             c.setOrigin_courtentity(cei.getCourtEntity(rs.getInt("origin_courtentity_entityID")));
-            c.setUserOwner(ui.getUserByUserID(rs.getInt("login_userID")));
+            c.setUserOwner(ui.getUser(rs.getInt("login_userID")));
             c.setDateOfRecord(rs.getTimestamp("dateOfRecord").toLocalDateTime());
             c.setTimeStamp(rs.getTimestamp("transTimeStamp").toLocalDateTime());
             c.setIsActive(rs.getBoolean("isActive"));

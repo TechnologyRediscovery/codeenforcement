@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
@@ -82,7 +83,7 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
     
     public String viewPersonProfile(){
         if(selectedPerson != null){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActivePerson(selectedPerson);
             return "personProfile";
         } else {

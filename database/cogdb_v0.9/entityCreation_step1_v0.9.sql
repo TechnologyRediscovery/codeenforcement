@@ -682,24 +682,30 @@ CREATE TABLE codesource
 
 ALTER TABLE codesource ADD CONSTRAINT codesource_sourceID_pk PRIMARY KEY ( sourceID);
 
-CREATE SEQUENCE IF NOT EXISTS codeelementtype_cvTypeID_seq
-    START WITH 1000
+CREATE SEQUENCE IF NOT EXISTS codeelementguide_id_seq
+    START WITH 1
     INCREMENT BY 1
-    MINVALUE 1000
+    MINVALUE 1
     NO MAXVALUE
     CACHE 1;
 
--- this functions as a type table to be used in the sorting and management of code bits
-CREATE TABLE codeelementtype
-  (
-    cdelTypeID      INTEGER DEFAULT nextval('codeelementtype_cvTypeID_seq') NOT NULL ,
-    name            VARCHAR (50) NOT NULL,
-    description     VARCHAR (100)
-  ) ;
 
-ALTER TABLE codeelementType ADD CONSTRAINT codeelementtype_cvTypeID_pk PRIMARY KEY ( cdelTypeID ) ;
-
-
+CREATE TABLE public.codeelementguide
+(
+  guideEntryID integer NOT NULL DEFAULT nextval('codeelementguide_id_seq'::regclass),
+  category text NOT NULL,
+  subcategory text,
+  description text,
+  enforcementGuidelines text,
+  inspectionGuidelines text,
+  priority boolean,
+  CONSTRAINT codeelementtype_cvtypeid_pk PRIMARY KEY (guideEntryID)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.codeelementguide
+  OWNER TO sylvia;
 
 
 CREATE SEQUENCE IF NOT EXISTS codeelement_elementID_seq
@@ -1318,7 +1324,7 @@ CREATE SEQUENCE IF NOT EXISTS improvementID_seq
     CACHE 1;
 
 
-CREATE TABLE improvementsuggestions
+CREATE TABLE improvementsuggestion
 (
     improvementID               INTEGER DEFAULT nextval('improvementID_seq') PRIMARY KEY,
     improvementTypeID           INTEGER NOT NULL CONSTRAINT imptype_fk REFERENCES improvementType (typeid),

@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.RoleType;
 import com.tcvcog.tcvce.entities.User;
@@ -108,7 +109,7 @@ public class UserUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the userToUpdate
      */
     public User getUserToUpdate() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         userToUpdate = sm.getUtilityUserToUpdate();
         return userToUpdate;
     }

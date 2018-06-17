@@ -16,6 +16,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.CodeCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
@@ -62,13 +63,11 @@ import javax.faces.bean.SessionScoped;
  *
  * @author cedba
  */
-//@ApplicationScoped
-@ManagedBean
-@SessionScoped
+
 public class BackingBeanUtils implements Serializable{
     
     //@ManagedProperty(value="#{visit}")
-    private SessionManager sessionManager;
+    private SessionCoordinator sessionManager;
     
     private UserCoordinator userCoordinator;
     private UserIntegrator userIntegrator;
@@ -252,12 +251,12 @@ public class BackingBeanUtils implements Serializable{
     /**
      * @return the sessionManager
      */
-    public SessionManager getSessionManager() {
+    public SessionCoordinator getSessionManager() {
         FacesContext context = getFacesContext();
         ValueExpression ve = context.getApplication().getExpressionFactory()
                 .createValueExpression(context.getELContext(), 
-                        "#{sessionManager}", SessionManager.class);
-        sessionManager = (SessionManager) ve.getValue(context.getELContext());
+                        "#{sessionManager}", SessionCoordinator.class);
+        sessionManager = (SessionCoordinator) ve.getValue(context.getELContext());
    
         return sessionManager;
     }
@@ -265,7 +264,7 @@ public class BackingBeanUtils implements Serializable{
     /**
      * @param sessionManager the sessionManager to set
      */
-    public void setSessionManager(SessionManager sessionManager) {
+    public void setSessionManager(SessionCoordinator sessionManager) {
         this.sessionManager = sessionManager;
     }
 

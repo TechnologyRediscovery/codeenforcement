@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.ImprovementSuggestion;
 import com.tcvcog.tcvce.entities.ListChangeRequest;
@@ -47,7 +48,7 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
     }
 
     public String submitImprovementSuggestion(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         SystemIntegrator si = getSystemIntegrator();
 
         ImprovementSuggestion is = new ImprovementSuggestion();

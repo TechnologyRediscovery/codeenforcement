@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
@@ -94,7 +95,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
         
         currentNotice = new NoticeOfViolation();
         StringBuilder sb = new StringBuilder();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         PersonIntegrator pi = getPersonIntegrator();
         
         if(isAddPersonByID()){
@@ -184,7 +185,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     }
     
     private StringBuilder appendSignatureBlock(StringBuilder sb){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         User u = sm.getVisit().getActiveUser();
         sb.append("<p>");
         sb.append(u.getFName());
@@ -224,7 +225,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     public String queueNotice(){
         System.out.println("NoticeOfViolationBB.QueueNotice");
         CaseCoordinator caseCoord = getCaseCoordinator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CECase ceCase = sm.getVisit().getActiveCase();
 
         NoticeOfViolation notice = sm.getVisit().getActiveNotice();
@@ -264,7 +265,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     }
     
     public String saveNoticeDraft(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CECase c = sm.getVisit().getActiveCase();
         NoticeOfViolation notice = sm.getVisit().getActiveNotice();
         
@@ -334,7 +335,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      * @return the currentNotice
      */
     public NoticeOfViolation getCurrentNotice() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentNotice = sm.getVisit().getActiveNotice();
         return currentNotice;
     }
@@ -351,7 +352,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      */
     public LinkedList<TextBlock> getTextBlockListByMuni() {
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         Municipality m = sm.getVisit().getActiveCodeSet().getMuni();
         try {
             blockListByMuni = cvi.getTextBlocks(m);
@@ -372,7 +373,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      * @return the activeVList
      */
     public ArrayList<CodeViolation> getActiveVList() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         activeVList = sm.getVisit().getActiveViolationList();
         return activeVList;
     }
@@ -529,7 +530,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      */
     public ArrayList<Person> getPersonCandidateAL() {
         PersonIntegrator pi = getPersonIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         Property prop = sm.getVisit().getActiveProp();
         try {
             personCandidateAL = pi.getPersonList(prop);

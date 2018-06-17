@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeSet;
@@ -82,7 +83,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     }
     
     public String viewCodeSetElementsInSet(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActiveCodeSet(codeSet);
             if (codeSet != null){
                 //System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
@@ -121,7 +122,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
      * @return the codeSet
      */
     public CodeSet getCodeSet() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CodeSet cs = sm.getVisit().getActiveCodeSet();
         codeSet = cs;
         return codeSet;

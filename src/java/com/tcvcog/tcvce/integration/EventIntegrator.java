@@ -427,7 +427,7 @@ public class EventIntegrator extends BackingBeanUtils implements Serializable {
         ev.setEventTimeStamp(rs.getTimestamp("eventtimestamp").toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
         ev.setEventDescription(rs.getString("eventDescription"));
-        ev.setEventOwnerUser(ui.getUserByUserID(rs.getInt("login_userid")));
+        ev.setEventOwnerUser(ui.getUser(rs.getInt("login_userid")));
         ev.setDiscloseToMunicipality(rs.getBoolean("disclosetomunicipality"));
         
         ev.setDiscloseToPublic(rs.getBoolean("disclosetopublic"));

@@ -16,6 +16,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.LinkedList;
 import javax.faces.component.html.HtmlDataTable;
@@ -118,7 +119,7 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
      * @return the currentRequest
      */
     public CEActionRequest getCurrentRequest() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentRequest = sm.getVisit().getActionRequest();
         return currentRequest;
     }

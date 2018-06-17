@@ -136,6 +136,12 @@
     <!--session-scoped beans-->
 
     <managed-bean>
+        <managed-bean-name>sessionBean</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.SessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
         <managed-bean-name>loggingCoordinator</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.coordinators.LogCoordinator</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
@@ -198,7 +204,14 @@
     </managed-bean>
 
     <!--view-scoped beans-->
+    
+    <managed-bean>
+        <managed-bean-name>missionControlBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.MissionControlBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
         
+    
     <managed-bean>
         <description>Handles user credential verification and initiates session building process upon successful authentication.</description>
         <managed-bean-name>authenticationBB</managed-bean-name>
@@ -268,7 +281,7 @@
 
     <managed-bean>
         <managed-bean-name>codeElementTypeBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CodeElementTypeBB</managed-bean-class>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeElementGuideBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 
@@ -465,12 +478,17 @@
     </managed-bean>
  
     <!--request-scoped beans-->
+  
+  
+    <!-- dependent scope -->
+    
     
     <managed-bean>
-        <managed-bean-name>sessionInfoBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.SessionInfoBB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-name>backingBeanUtils</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.BackingBeanUtils</managed-bean-class>
+        <managed-bean-scope>none</managed-bean-scope>
     </managed-bean>
+ 
     
     <!--none-scoped beans-->
 
@@ -481,193 +499,49 @@
         <managed-bean-scope>none</managed-bean-scope>
     </managed-bean>
     
-    <!--navigation configurations-->
+    <!--**************** navigation configurations *******************************-->
+
+
+
+    <!--core SYSTEM entry pathway-->
+    <!--we need users to pass through this cycle as soon as they try to access anything in /restricted-->
     
     <navigation-rule>
-        <from-view-id>*</from-view-id>
-
+        <from-view-id>/public/systemHome.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>dashboard</from-outcome>
-            <to-view-id>/dashboard.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>propertySearch</from-outcome>
-            <to-view-id>/propertySearch.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>workflow</from-outcome>
-            <to-view-id>/workflow.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>case</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>home</from-outcome>
-            <to-view-id>/public/index.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-action>gotoLogin</from-action>
-            <to-view-id>/login.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    
-        <navigation-case>
-            <from-outcome>publicDashHome</from-outcome>
+            <from-outcome>publicPortal</from-outcome>
             <to-view-id>/public/publicDashboard.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-        
         <navigation-case>
-            <from-outcome>improvementSuggestion</from-outcome>
-            <to-view-id>/improvementSuggestion.xhtml</to-view-id>
+            <from-outcome>startInitiationProcess</from-outcome>
+            <to-view-id>/restricted/initiateInternalSession.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>selectItemListChange</from-outcome>
-            <to-view-id>/selectBoxListChangeRequest.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    
-        <navigation-case>
-            <from-outcome>personProfile</from-outcome>
-            <to-view-id>/personProfile.xhtml</to-view-id>
-        </navigation-case>
-    
-        <navigation-case>
-            <from-outcome>personManage</from-outcome>
-            <to-view-id>/personManage.xhtml</to-view-id>
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>propertySearch</from-outcome>
-            <to-view-id>/propertySearch.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>personManage</from-outcome>
-            <to-view-id>/personManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>caseManage</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>eventManage</from-outcome>
-            <to-view-id>/ce/eventConfiguration.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>litigationManage</from-outcome>
-            <to-view-id>/ce/courtEntityManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>codeSourceManage</from-outcome>
-            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>   
-    
-        <navigation-case>
-            <from-outcome>elementTypeManage</from-outcome>
-            <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>codeSetManage</from-outcome>
-            <to-view-id>/ce/codeSetManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>userManage</from-outcome>
-            <to-view-id>/userManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>logManage</from-outcome>
-            <to-view-id>/logManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>muniManage</from-outcome>
-            <to-view-id>/muniManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>codeEnforce</from-outcome>
-            <to-view-id>/public/submitCERequest.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>workflow</from-outcome>
-            <to-view-id>/workflow.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>caseViolations</from-outcome>
-            <to-view-id>/ce/caseViolations.xhtml</to-view-id>
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>caseNotices</from-outcome>
-            <to-view-id>/ce/caseNotices.xhtml</to-view-id>
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>caseCitations</from-outcome>
-            <to-view-id>/ce/caseCitations.xhtml</to-view-id>
-        </navigation-case>
-        
-        <navigation-case>
-            <from-outcome>caseEvents</from-outcome>
-            <to-view-id>/ce/caseEvents.xhtml</to-view-id>
-        </navigation-case>
+    </navigation-rule>
 
-        <nanavigation-case>
-            <from-outcome>noticeOfViolationBuilder</from-outcome>
-            <to-view-id>/ce/noticeOfViolationBuilder.xhtml</to-view-id>
-        </nanavigation-case>
- 
-        <nanavigation-case>
-            <from-outcome>noticeOfViolationEditor</from-outcome>
-            <to-view-id>/ce/noticeOfViolationEditor.xhtml</to-view-id>
-        </nanavigation-case>
-    
+
+    <navigation-rule>
+        <from-view-id>/restricted/initiateInternalSession.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/restricted/missionControl.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/restricted/error.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
     </navigation-rule>
     
-    <!--non-wildcard nav cases-->
     
+
+
+    <!--Public-->
+
     <navigation-rule>
         <from-view-id>/public/submitCERequest.xhtml</from-view-id>
         <navigation-case>
@@ -675,17 +549,8 @@
             <to-view-id>/public/actionReqSubConf.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/ce/requestManagement.xhtml</from-view-id>
-        <navigation-case>
-            <from-action>#{requestManagementBean.manage}</from-action>
-            <from-outcome>manageRequest</from-outcome>
-            <to-view-id>/ce/mangeActionRequest.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-
+    
+    
     <navigation-rule>
         <from-view-id>/public/checkRequestStatus.xhtml</from-view-id>
         <navigation-case>
@@ -699,75 +564,26 @@
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/ce/codeSourceAdd.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
 
-    <navigation-rule>
+        <from-view-id>*</from-view-id>    
         <navigation-case>
-            <from-action>#{authenticationBB.logout}</from-action>
-            <from-outcome>logoutSequenceComplete</from-outcome>
-            <to-view-id>/exitLanding.xhtml</to-view-id>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/public/index.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
-    
-     <navigation-rule>
-        <from-view-id>/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-action>#{authenticationBB.login}</from-action>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/dashboard.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-action>#{authenticationBB.login}</from-action>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/login.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/personManage.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>personAdd</from-outcome>
-            <to-view-id>/personAdd.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    
-    <navigation-rule>
-        <from-view-id>/propertyProfile.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>propertyUpdate</from-outcome>
-            <to-view-id>/propertyUpdate.xhtml</to-view-id>
-        </nanavigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/propertySearch.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
-        <nanavigation-case>
-            <from-outcome>propertyUpdate</from-outcome>
-            <to-view-id>/propertyUpdate.xhtml</to-view-id>
-        </nanavigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/propertyUpdate.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
-    </navigation-rule>
 
+        <navigation-case>
+            <from-outcome>codeEnforce</from-outcome>
+            <to-view-id>/public/submitCERequest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+    </navigation-rule>
+        
+    <!--site-wide navigation-->    
+
+
+    
     <navigation-rule>
         <from-view-id>/workflow.xhtml</from-view-id>
         <navigation-case>
@@ -782,15 +598,48 @@
         </navigation-case>
     </navigation-rule>
 
+
     <navigation-rule>
-        <from-view-id>/ce/caseManage.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-action>#{caseManageBB.addViolation}</from-action>
-            <from-outcome>violationSelectElement</from-outcome>
-            <to-view-id>/ce/violationSelectElement.xhtml</to-view-id>
+        <from-view-id>*</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>workflow</from-outcome>
+            <to-view-id>/workflow.xhtml</to-view-id>
             <redirect />
-        </nanavigation-case>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/dashboard.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>workflow</from-outcome>
+            <to-view-id>/workflow.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+    
+        <navigation-case>
+            <from-outcome>publicDashHome</from-outcome>
+            <to-view-id>/public/publicDashboard.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>improvementSuggestion</from-outcome>
+            <to-view-id>/improvementSuggestion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>selectItemListChange</from-outcome>
+            <to-view-id>/selectBoxListChangeRequest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
+    
     
     <navigation-rule>
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
@@ -819,6 +668,8 @@
         </navigation-case>
     </navigation-rule>
     
+    
+    
     <navigation-rule>
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
@@ -837,105 +688,354 @@
         </navigation-case>
     </navigation-rule>
     
+        
+    <!--Properties-->
+        
+    
+    <navigation-rule>
+        <from-view-id>/propertyProfile.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>propertyUpdate</from-outcome>
+            <to-view-id>/propertyUpdate.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/propertySearch.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>propertyUpdate</from-outcome>
+            <to-view-id>/propertyUpdate.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/propertyUpdate.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+        
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>propertySearch</from-outcome>
+            <to-view-id>/propertySearch.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>propertyProfile</from-outcome>
+            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>propertySearch</from-outcome>
+            <to-view-id>/propertySearch.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+        
+    <!--Persons-->
+
+        
+    <navigation-rule>
+        <from-view-id>/personManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>personAdd</from-outcome>
+            <to-view-id>/personAdd.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+    
+    
+        <navigation-case>
+            <from-outcome>personProfile</from-outcome>
+            <to-view-id>/personProfile.xhtml</to-view-id>
+        </navigation-case>
+    
+        <navigation-case>
+            <from-outcome>personManage</from-outcome>
+            <to-view-id>/personManage.xhtml</to-view-id>
+        </navigation-case>
+    
+    </navigation-rule>
+        
+    <!--Code Enforcement-->
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+
+        <navigation-case>
+            <from-outcome>caseViolations</from-outcome>
+            <to-view-id>/ce/caseViolations.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseNotices</from-outcome>
+            <to-view-id>/ce/caseNotices.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseCitations</from-outcome>
+            <to-view-id>/ce/caseCitations.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>caseEvents</from-outcome>
+            <to-view-id>/ce/caseEvents.xhtml</to-view-id>
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>noticeOfViolationBuilder</from-outcome>
+            <to-view-id>/ce/noticeOfViolationBuilder.xhtml</to-view-id>
+        </navigation-case>
+ 
+        <navigation-case>
+            <from-outcome>noticeOfViolationEditor</from-outcome>
+            <to-view-id>/ce/noticeOfViolationEditor.xhtml</to-view-id>
+        </navigation-case>
+    
+    
+        <navigation-case>
+            <from-outcome>case</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>caseManage</from-outcome>
+            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+                
+        <navigation-case>
+            <from-outcome>eventManage</from-outcome>
+            <to-view-id>/ce/eventConfiguration.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>litigationManage</from-outcome>
+            <to-view-id>/ce/courtEntityManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/ce/caseManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{caseManageBB.addViolation}</from-action>
+            <from-outcome>violationSelectElement</from-outcome>
+            <to-view-id>/ce/violationSelectElement.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+        
+    <navigation-rule>
+        <from-view-id>/ce/requestManagement.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{requestManagementBean.manage}</from-action>
+            <from-outcome>manageRequest</from-outcome>
+            <to-view-id>/ce/mangeActionRequest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
     
     <navigation-rule>
         <from-view-id>/ce/caseAdd.xhtml</from-view-id>
-        <nanavigation-case>
+        <navigation-case>
             <from-action>#{caseAddBB.addNewCase}</from-action>
             <from-outcome>caseManage</from-outcome>
             <to-view-id>/ce/caseManage.xhtml</to-view-id>
             <redirect />
-        </nanavigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/userManage.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>userUpdate</from-outcome>
-            <to-view-id>/userUpdate.xhtml</to-view-id>
-        </nanavigation-case>
-        <nanavigation-case>
-            <from-outcome>userAdd</from-outcome>
-            <to-view-id>/userAdd.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
+        </navigation-case>
     </navigation-rule>
 
-    <navigation-rule>
-        <from-view-id>/userManage.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>userManage</from-outcome>
-            <to-view-id>/userManage.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/userAdd.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>userManage</from-outcome>
-            <to-view-id>/userManage.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/ce/violationSelectElement.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>violationAdd</from-outcome>
-            <to-view-id>/ce/violationAdd.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>inspectableCodeElement.xhtml</from-view-id>
-        <nanavigation-case>
-            <from-outcome>inspectableCodeElementManage</from-outcome>
-            <to-view-id>inspectableCodeElementManage.xhtml</to-view-id>
-            <redirect />
-        </nanavigation-case>
-    </navigation-rule>
     
     <navigation-rule>
         <from-view-id>/ce/violationEdit.xhtml</from-view-id>
-        <nanavigation-case>
+        <navigation-case>
             <from-action>#{violationEditBB.backToCaseManager}</from-action>
             <from-outcome>caseManage</from-outcome>
             <to-view-id>/ce/caseManage.xhtml</to-view-id>
             <redirect />
-        </nanavigation-case>
+        </navigation-case>
     </navigation-rule>
 
+
+    <navigation-rule>
+        <from-view-id>/ce/violationSelectElement.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>violationAdd</from-outcome>
+            <to-view-id>/ce/violationAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
     <navigation-rule>
         <from-view-id>/ce/caseManage.xhtml</from-view-id>
-        <nanavigation-case>
+        <navigation-case>
             <from-action>#{caseManageBB.editViolation}</from-action>
             <from-outcome>violationEdit</from-outcome>
             <to-view-id>/ce/violationEdit.xhtml</to-view-id>
             <redirect />
-        </nanavigation-case>
+        </navigation-case>
     </navigation-rule>
     
    
     <navigation-rule>
         <from-view-id>/ce/caseManage.xhtml</from-view-id>
-        <nanavigation-case>
+        <navigation-case>
             <from-action>#{eventAddBB.startNewEvent}</from-action>
             <from-outcome>eventAdd</from-outcome>
             <to-view-id>/ce/eventAdd.xhtml</to-view-id>
             <redirect />
-        </nanavigation-case>
-        <nanavigation-case>
+        </navigation-case>
+        <navigation-case>
             <from-action>#{eventAddBB.takeNextAction}</from-action>
             <from-outcome>eventAdd</from-outcome>
             <to-view-id>/ce/eventAdd.xhtml</to-view-id>
             <redirect />
-        </nanavigation-case>
+        </navigation-case>
     </navigation-rule>
+        
+        
+    <!--Code elements and such-->
+        
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+    
+        <navigation-case>
+            <from-outcome>codeGuideView</from-outcome>
+            <to-view-id>/restricted/cogview/codeGuideView.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
+        
+        <navigation-case>
+            <from-outcome>codeGuideAdd</from-outcome>
+            <to-view-id>/restricted/cogstaff/codeGuideAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
+        
+        <navigation-case>
+            <from-outcome>codeSourceManage</from-outcome>
+            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
+    
+        <navigation-case>
+            <from-outcome>elementTypeManage</from-outcome>
+            <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>codeSetManage</from-outcome>
+            <to-view-id>/ce/codeSetManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+    </navigation-rule>    
+    
+    <navigation-rule>
+        <from-view-id>inspectableCodeElement.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>inspectableCodeElementManage</from-outcome>
+            <to-view-id>inspectableCodeElementManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/ce/codeSourceAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+
+    <!--System and internal pages-->
+
+    
+    <navigation-rule>
+        <from-view-id>/userManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>userUpdate</from-outcome>
+            <to-view-id>/userUpdate.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>userAdd</from-outcome>
+            <to-view-id>/userAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/userManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>userManage</from-outcome>
+            <to-view-id>/userManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/userAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>userManage</from-outcome>
+            <to-view-id>/userManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+
+        
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+    
+        <navigation-case>
+            <from-outcome>userManage</from-outcome>
+            <to-view-id>/userManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>logManage</from-outcome>
+            <to-view-id>/logManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>muniManage</from-outcome>
+            <to-view-id>/muniManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <!-- ************ non-wildcard nav cases ************************-->
     <managed-bean>
-        <managed-bean-name>initiateSessionBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.InitiateSessionBB</managed-bean-class>
+        <managed-bean-name>sessionInitializer</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.SessionInitializer</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

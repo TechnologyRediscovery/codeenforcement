@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
@@ -86,7 +87,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     
     public String startNewEvent(){
         System.out.println("EventAddBB.startNewEvent | category: " + selectedEventCategory.getEventCategoryTitle());
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CECase c = sm.getVisit().getActiveCase();
         EventCoordinator ec = getEventCoordinator();
         try {
@@ -104,7 +105,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     }
     
     public String addEvent() throws ViolationException{
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         //Event e = sm.getVisit().getActiveEvent();
         EventCase e = currentEvent;
         CaseCoordinator cc = getCaseCoordinator();
@@ -227,7 +228,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     public ArrayList<Person> getCandidatePersonList() {
         System.out.println("EventAddBB.getCandidatePersonList | inside method");
         PersonIntegrator pi = getPersonIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         try {
             candidatePersonList = pi.getPersonList(sm.getVisit().getActiveCase().getProperty());
@@ -293,7 +294,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the ceCase
      */
     public CECase getCeCase() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         ceCase = sm.getVisit().getActiveCase();
         return ceCase;
     }
@@ -346,7 +347,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the currentEvent
      */
     public EventCase getCurrentEvent() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         EventCase currentEvent = sm.getVisit().getActiveEvent();
         this.currentEvent = currentEvent;
         return this.currentEvent;

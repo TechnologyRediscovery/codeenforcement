@@ -11,20 +11,29 @@
     </h:head>
     <h:body>
         <ui:composition template="./../restricted/navContainer_restricted.xhtml">
-           
             <ui:define name="content">
-                <div class="mainContainer">
-                    <h:outputText value="Hello World"/>
-               
+                <f:view id="NAME_ME">
                     
-                    
-                    
-                    
-                    
-                </div>
-                
-                
-                
+                    <div class="mainContainer">
+                        <h1></h1>
+                        
+                        <h:outputText value="Hello World"/>
+
+                        <h:form id="NAME_ME">
+
+                            <p:commandButton ajax="false" value="View profile of selected person" 
+                                             action="#{personBB.viewPersonProfile}"/>
+
+                        </h:form>
+                        
+                        
+
+
+
+
+
+                    </div>
+                </f:view>
             </ui:define>
         </ui:composition>
     </h:body>

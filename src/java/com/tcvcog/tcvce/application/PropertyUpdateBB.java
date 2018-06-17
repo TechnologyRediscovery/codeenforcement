@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.integration.PropertyIntegrator;
@@ -82,7 +83,7 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
             pi.updateProperty(p);
             // pull a new version of the property from the DB and store that in
             // the session to avoid errors in viewing any data that's not in the DB
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActiveProp(p);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
@@ -240,7 +241,7 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
      * @return the property
      */
     public Property getProperty() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         property = sm.getVisit().getActiveProp();
         return property;
     }
@@ -259,7 +260,7 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
      * @return the currentPropUseTypeName
      */
     public String getCurrentPropUseTypeName() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         formPropertyUseType = sm.getVisit().getActiveProp().getPropertyUseType();
         return formPropertyUseType;
     }

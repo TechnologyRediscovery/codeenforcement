@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Property;
 import java.io.Serializable;
@@ -87,7 +88,7 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
     }
     
     private boolean hasActiveCase(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CECase c = sm.getVisit().getActiveCase();
         if(c != null){
             return true;
@@ -96,7 +97,7 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
     }
     
     private boolean hasActiveProperty(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         Property p = sm.getVisit().getActiveProp();
         if(p != null){
             return true;

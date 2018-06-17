@@ -14,6 +14,7 @@ import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.entities.Person;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import javax.faces.bean.SessionScoped;
  *
  * @author cedba
  */
-@ManagedBean
+
 @SessionScoped
 public class Visit {
 
@@ -41,6 +42,7 @@ public class Visit {
     private CodeElementEnforcable selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
+    private CodeElementGuideEntry currentCodeElementGuide;
     //private LinkedList<EnforcableCodeElement> eceList;
 
     /**
@@ -229,6 +231,20 @@ public class Visit {
      */
     public void setActiveViolationList(ArrayList<CodeViolation> activeViolationList) {
         this.activeViolationList = activeViolationList;
+    }
+
+    /**
+     * @return the currentCodeElementGuide
+     */
+    public CodeElementGuideEntry getCurrentCodeElementGuide() {
+        return currentCodeElementGuide;
+    }
+
+    /**
+     * @param currentCodeElementGuide the currentCodeElementGuide to set
+     */
+    public void setCurrentCodeElementGuide(CodeElementGuideEntry currentCodeElementGuide) {
+        this.currentCodeElementGuide = currentCodeElementGuide;
     }
 
 }

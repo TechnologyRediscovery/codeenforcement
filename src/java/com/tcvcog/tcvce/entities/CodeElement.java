@@ -27,7 +27,7 @@ public class CodeElement {
     
     private int elementID;
     
-    private CodeElementType type;
+    private CodeElementGuideEntry type;
     private int typeID;
     private CodeSource source;
     
@@ -285,14 +285,14 @@ public class CodeElement {
     /**
      * @return the type
      */
-    public CodeElementType getType() {
+    public CodeElementGuideEntry getType() {
         return type;
     }
 
     /**
      * @param type the type to set
      */
-    public void setType(CodeElementType type) {
+    public void setType(CodeElementGuideEntry type) {
         this.type = type;
     }
 

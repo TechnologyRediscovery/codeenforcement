@@ -33,7 +33,7 @@ import javax.faces.event.ActionEvent;
  *
  * @author Adam Gutonski
  */
-@ManagedBean
+
 @ViewScoped
 public class PaymentTypeBB extends BackingBeanUtils implements Serializable {
     

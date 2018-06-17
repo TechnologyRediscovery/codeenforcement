@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
@@ -75,7 +76,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     public String buildCodeSet(){
         System.out.println("CodeSetBB.buildCodeSet");
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         if (selectedCodeSet != null){
             sm.getVisit().setActiveCodeSet(selectedCodeSet);
             System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
@@ -142,7 +143,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     public String manageCodeSetElements(){
         System.out.println("CodeSetBB.manageCodeSetElements");
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         if (selectedCodeSet != null){
             sm.getVisit().setActiveCodeSet(selectedCodeSet);
             System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
@@ -195,7 +196,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     }
     
     public String makeSelectedCodeSetActive(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         if(selectedCodeSet != null){ 
             sm.getVisit().setActiveCodeSet(selectedCodeSet);
             return "dashboard";

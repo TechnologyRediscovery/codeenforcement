@@ -5,6 +5,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -85,7 +86,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     public String viewProperty(){
         System.out.println("PSearch.viewProperty");
         
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         if(selectedProperty != null){
             sm.getVisit().setActiveProp(selectedProperty);
@@ -102,7 +103,7 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     
     public String updateProperty(){
         
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         if(selectedProperty != null){
             sm.getVisit().setActiveProp(selectedProperty);

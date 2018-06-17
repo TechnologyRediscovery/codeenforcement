@@ -18,7 +18,6 @@ Council of Governments, PA
 package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
-import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
@@ -97,7 +96,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     
     public void generateAndInsertCodeViolationUpdateEvent(CECase ceCase, CodeViolation cv, EventCase event) throws IntegrationException, EventException{
         EventIntegrator ei = getEventIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         
         // the event is coming to us from the violationEditBB with the description and disclosures flags
@@ -208,7 +207,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     public void generateAndInsertPhaseChangeEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException, CaseLifecyleException{
         
         EventIntegrator ei = getEventIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CECase c = sm.getVisit().getActiveCase();
         EventCase event = getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseChangeEventCatID"))));
@@ -238,7 +237,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     
     public void generateAndInsertManualCasePhaseOverrideEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException, CaseLifecyleException{
           EventIntegrator ei = getEventIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CECase c = sm.getVisit().getActiveCase();
         EventCase event = getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseManualOverride"))));

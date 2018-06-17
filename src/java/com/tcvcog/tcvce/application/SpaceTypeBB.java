@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.SpaceType;
 
 import java.io.Serializable;
-//imported when adding @ManagedBean and @ViewScoped
+//imported when adding  and @ViewScoped
 
 import java.util.*;
 import javax.faces.application.FacesMessage;
@@ -33,7 +33,7 @@ import javax.faces.application.FacesMessage;
  *
  * @author Adam Gutonski
  */
-@ManagedBean
+
 @ViewScoped
 public class SpaceTypeBB extends BackingBeanUtils implements Serializable {
 

@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
@@ -53,7 +54,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     
     public String viewCase(){
         
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActiveCase(selectedCase);
         sm.getVisit().setActiveProp(selectedCase.getProperty());
         
@@ -61,7 +62,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     }
     
     public String viewSelectedActionRequest(){
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActionRequest(selectedRequest);
         
         return "actionRequestManage";
@@ -74,7 +75,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
      */
     public LinkedList<CEActionRequest> getRequestList() {
         CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         try {
             requestList = ari.getCEActionRequestList(sm.getVisit().getActiveUser().getMuniCode());
         } catch (IntegrationException ex) {
@@ -90,7 +91,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
      */
     public LinkedList<CECase> getCaseList() {
         CaseIntegrator ci = getCaseIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         int muniCodeForFetching = sm.getVisit().getActiveUser().getMuniCode();
         
         try {

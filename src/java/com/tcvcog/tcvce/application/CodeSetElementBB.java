@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
@@ -63,7 +64,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      * @return the eceList
      */
     public LinkedList<CodeElementEnforcable> getEceList() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
         

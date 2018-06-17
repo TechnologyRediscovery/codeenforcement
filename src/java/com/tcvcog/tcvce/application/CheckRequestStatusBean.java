@@ -16,6 +16,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
@@ -49,7 +50,7 @@ public class CheckRequestStatusBean extends BackingBeanUtils implements Serializ
         try {
             retrievedRequest = ceari.getActionRequestByControlCode(lookupControlCode);
             // now that we've got a request, store it in our session's active action request
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActionRequest(retrievedRequest);
             getFacesContext().addMessage(null, new FacesMessage 
                     (FacesMessage.SEVERITY_INFO, "Success! Code Enforcement Action Request Lookup returned the following information", ""));

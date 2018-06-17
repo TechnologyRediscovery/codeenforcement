@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
@@ -44,7 +45,7 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     }
 
     public String useSelectedElement() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         ViolationCoordinator vc = getViolationCoordinator();
         CodeViolation cv;
         if (selectedViolatedEnfElement != null && sm.getVisit() != null) {
@@ -75,7 +76,7 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
      * @return the enfElementList
      */
     public LinkedList<CodeElementEnforcable> getEnfElementList() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = sm.getVisit().getActiveCodeSet();
         System.out.println("ViolationSelectElement.getElementList| retrievedset: " + codeSet);

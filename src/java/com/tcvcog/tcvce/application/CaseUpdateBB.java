@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.IntegrationException;
@@ -140,7 +141,7 @@ public class CaseUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the currentCase
      */
     public CECase getCurrentCase() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentCase = sm.getVisit().getActiveCase();
         return currentCase;
     }

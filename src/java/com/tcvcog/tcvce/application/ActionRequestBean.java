@@ -16,6 +16,7 @@
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.Date;
 import java.io.Serializable;
@@ -172,7 +173,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         }
         // now set this action request for the session to have and send the user to the
         // confirmation page
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActionRequest(actionRequest);
     } // close method
     

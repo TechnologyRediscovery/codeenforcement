@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+        <title>Manage the code element guide</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../navContainer_restricted.xhtml">
+            <ui:define name="content">
+                <f:view id="codeGuideViewView">
+                    <div class="mainContainer">
+                        <h:form id="codeGuideViewForm">
+                            <h1>Municipal code guide management</h1>
+                            
+                            <p:commandButton ajax="false" value="Create new guide entry" action="codeGuideAdd" />
+                            
+                            <p:spacer height="15px"/>
+                            
+                            <p:dataTable
+                                id="violationTable"
+                                value="#{codeElementGuideBB.entryList}"
+                                selection="#{codeElementGuideBB.selectedGuideEntry}"
+                                tableStyleClass="primeDataTable"
+                                draggableColumns="true"
+                                reflow="true"
+                                var="cege"
+                                rowExpandMode="single"
+                                expandedRow="false">
+
+                                <p:column width="5%">
+                                    <f:facet name="header">
+                                        <h:outputText value="no." />
+                                    </f:facet>
+                                    <h:outputText value="#{cege.guideEntryID}"/>
+                                </p:column>
+
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Category" />
+                                    </f:facet>
+                                    <h:outputText value="#{cege.category}"/>
+                                </p:column>
+
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Sub Category" />
+                                    </f:facet>
+                                    <h:outputText value="#{cege.subCategory}"/>
+                                </p:column>
+                                
+                                <p:column width="20%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Description" />
+                                    </f:facet>
+                                    <h:outputText value="#{cege.subCategory}"/>
+                                </p:column>
+                                
+                                <p:column width="8%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Priority?" />
+                                    </f:facet>
+                                    <h:outputText value="#{cege.subCategory}"/>
+                                </p:column>
+                                
+
+                                <p:rowExpansion>
+
+                                    <h:outputLabel value="Enforcement Gudielines"/>
+                                    <h:outputText value="#{cege.enforcementGuidelines}" escape="false"/>
+                                    <p:spacer height="15px"/>
+                                    <h:outputLabel value="Inspection Gudielines"/>
+                                    <h:outputText value="#{cege.inspectionGuidelines}" escape="false"/>
+
+                                </p:rowExpansion>
+
+                            </p:dataTable> 
+                            
+                            <p:spacer height="15px"/>
+                            
+                            <p:commandButton ajax="false" value="Update selected entry" action="#{codeElementGuideBB.updateCodeElementGuideEntry}"/>
+                            
+                        </h:form>
+                    </div>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

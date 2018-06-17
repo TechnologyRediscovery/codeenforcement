@@ -18,7 +18,6 @@ Council of Governments, PA
 package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
-import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
 import com.tcvcog.tcvce.domain.IntegrationException;
@@ -64,7 +63,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         newCase.setCasePhase(CasePhase.PrelimInvestigationPending);
         
         CECase newlyAddedCase = ci.insertNewCECase(newCase);
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActiveCase(newlyAddedCase);
         
     }
@@ -146,7 +145,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     private void processComplianceEvent(CECase c, EventCase e) 
             throws ViolationException, IntegrationException, CaseLifecyleException{
         
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         ViolationCoordinator vc = getViolationCoordinator();
         EventCoordinator ec = getEventCoordinator();
         
@@ -189,7 +188,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         EventCoordinator ec = getEventCoordinator();
         EventIntegrator ei = getEventIntegrator();
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         
         ArrayList caseViolationList = cvi.getCodeViolations(c);
         boolean complianceWithAllViolations = false;
@@ -237,7 +236,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     private void processClosingEvent(CECase c, EventCase e) throws IntegrationException, CaseLifecyleException{
         CaseIntegrator ci = getCaseIntegrator();
         EventIntegrator ei = getEventIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CasePhase closedPhase = CasePhase.Closed;
         c.setCasePhase(closedPhase);
         ci.changeCECasePhase(c);
@@ -435,7 +434,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             throws CaseLifecyleException, IntegrationException, EventException{
         
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         EventCoordinator evCoord = getEventCoordinator();
         
         // togglign this switch puts the notice in the queue for sending
@@ -485,7 +484,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     public void refreshCase(CECase c) throws IntegrationException{
         System.out.println("CaseCoordinator.refreshCase");
         CaseIntegrator ci = getCaseIntegrator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         sm.getVisit().setActiveCase(ci.getCECase(c.getCaseID()));
         
     }

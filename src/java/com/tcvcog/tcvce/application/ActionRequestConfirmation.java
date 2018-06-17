@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import java.io.Serializable;
 
@@ -38,7 +39,7 @@ public class ActionRequestConfirmation extends BackingBeanUtils implements Seria
      * @return the actionRequest
      */
     public CEActionRequest getActionRequest() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         actionRequest = sm.getVisit().getActionRequest();
         
         return actionRequest;

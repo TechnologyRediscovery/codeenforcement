@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CECase;
@@ -69,7 +70,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     public String updateCitation(){
         System.out.println("CitationBB.updateCitation");
         CaseCoordinator cc = getCaseCoordinator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         Citation c= sm.getVisit().getActiveCitation();
         c.setStatus(formCitationStatus);
         c.setCitationNo(formCitationNumber);
@@ -95,7 +96,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     public String issueCitation(){
         System.out.println("CitationBB.IssueCitation");
         CaseCoordinator cc = getCaseCoordinator();
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         Citation c = currentCitation;
         c.setStatus(formCitationStatus);
         c.setCitationNo(formCitationNumber);
@@ -134,7 +135,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
      * @return the currentCitation
      */
     public Citation getCurrentCitation() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentCitation = sm.getVisit().getActiveCitation();
         
         

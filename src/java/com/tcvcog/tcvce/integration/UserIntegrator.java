@@ -42,6 +42,15 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
     public UserIntegrator() {
     }
     
+    /**
+     * Deprecated as of the revision to use the glassfish container security
+     * instead of our own internal code
+     * @param loginName
+     * @param loginPassword
+     * @return
+     * @throws ObjectNotFoundException
+     * @throws IntegrationException 
+     */
     public User getAuthenticatedUser(String loginName, String loginPassword) throws ObjectNotFoundException, IntegrationException{
         System.out.println("UserIntegrator.getAuthenticatedUser | attempting to get user for " + loginName);
         
@@ -77,7 +86,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
                 // user and what was retrieved from the DB
                 if(retrievedUsername.equals(loginName) && retrievedPassword.equals(loginPassword)){
                     authenticatedUserid = rs.getInt("userid");
-                    newlyAuthenticatedUser = getUserByUserID(authenticatedUserid);
+                    newlyAuthenticatedUser = getUser(authenticatedUserid);
                     return newlyAuthenticatedUser;
                     
                 }
@@ -216,7 +225,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
      * @return
      * @throws IntegrationException 
      */
-    private User createUser(ResultSet rs) throws IntegrationException{
+    private User generateUser(ResultSet rs) throws IntegrationException{
         User user = new User();
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
         CodeIntegrator ci = getCodeIntegrator();
@@ -227,7 +236,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             user.setUsername(rs.getString("username"));
             user.setPassword(rs.getString("password"));
             user.setMuniCode(rs.getInt("muni_municode"));
-            user.setDefaultCodeSet(ci.getCodeSetBySetID(rs.getInt("defaultCodeSet")));
+//            user.setDefaultCodeSet(ci.getCodeSetBySetID(rs.getInt("defaultCodeSet")));
             user.setMuni(mi.getMuniFromMuniCode(rs.getInt("muni_muniCode")));
             
             user.setFName(rs.getString("fname"));
@@ -272,12 +281,11 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
         
     } 
     
-    public User getUserByUserID(int userID) throws IntegrationException{
+    public User getUser(int userID) throws IntegrationException{
         System.out.println("UserIntegrator.getUserByID");
         Connection con = getPostgresCon();
         ResultSet rs = null;
         User newUser = new User();
-        
         String query = "SELECT * from login where userid = ?;";
         
         PreparedStatement stmt = null;
@@ -288,7 +296,37 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setInt(1, userID);
             rs = stmt.executeQuery();
             while(rs.next()){
-                newUser = createUser(rs);
+                newUser = generateUser(rs);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            throw new IntegrationException("Error inserting new person", ex);
+        } finally{
+             if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
+        
+        return newUser;
+    }
+    
+    public User getUser(String userName) throws IntegrationException{
+        System.out.println("UserIntegrator.getUserByID");
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        User newUser = new User();
+        String query = "SELECT * from login where username = ?;";
+        
+        PreparedStatement stmt = null;
+        
+        try {
+            
+            stmt = con.prepareStatement(query);
+            stmt.setString(1, userName);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                newUser = generateUser(rs);
             }
             
         } catch (SQLException ex) {
@@ -317,7 +355,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
             while(rs.next()){
-                userList.add(createUser(rs));
+                userList.add(generateUser(rs));
             }
             
         } catch (SQLException ex) {

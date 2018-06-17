@@ -17,7 +17,6 @@
 package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
-import com.tcvcog.tcvce.application.SessionManager;
 import com.tcvcog.tcvce.domain.DataStoreException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.sql.Connection;
@@ -74,7 +73,7 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
         
         authenticatedUser = ui.getAuthenticatedUser(loginName, loginPassword);
         if (authenticatedUser != null){
-            SessionManager sm = getSessionManager();
+            SessionCoordinator sm = getSessionManager();
             sm.getVisit().setActiveUser(authenticatedUser);
             System.out.println("UserCoordinator.getUser | default code set: " 
                     + authenticatedUser.getDefaultCodeSet().getCodeSetID());
@@ -84,5 +83,14 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
         return authenticatedUser;
         
     } // close getUser()
+    
+    public User getUser(String loginName) throws IntegrationException{
+        System.out.println("UserCoordinator.geUser | given: " + loginName );
+        User authenticatedUser;
+        UserIntegrator ui = getUserIntegrator();
+                con = getPostgresCon();
+        authenticatedUser = ui.getUser(loginName);
+        return authenticatedUser;
+    }
     
 } // close class

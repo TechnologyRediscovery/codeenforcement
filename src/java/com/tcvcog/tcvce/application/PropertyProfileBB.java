@@ -2,7 +2,7 @@ package com.tcvcog.tcvce.application;
 
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
-import com.tcvcog.tcvce.application.SessionManager;
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
@@ -61,7 +61,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     }
     
     public String viewPersonProfile(){
-        SessionManager sm  = getSessionManager();
+        SessionCoordinator sm  = getSessionManager();
         sm.getVisit().setActivePerson(selectedPerson);
         return "personProfile";
     }
@@ -72,7 +72,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
      * @return the currentProperty
      */
     public Property getCurrentProperty() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         currentProperty = sm.getVisit().getActiveProp();
         return currentProperty;
     }

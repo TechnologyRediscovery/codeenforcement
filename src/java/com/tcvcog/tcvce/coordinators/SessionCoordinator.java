@@ -15,8 +15,9 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.application;
+package com.tcvcog.tcvce.coordinators;
 
+import com.tcvcog.tcvce.application.Visit;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.User;
 import java.io.Serializable;
@@ -27,16 +28,17 @@ import javax.faces.bean.SessionScoped;
  *
  * @author sylvia
  */
-@ManagedBean
+
 @SessionScoped
-public class SessionManager implements Serializable{
+public class SessionCoordinator implements Serializable{
 
     /**
      * Creates a new instance of SessionManager
      */
-    public SessionManager() {
-        System.out.println("SessionManager.SessionManager");
-        visit = new Visit();
+    public SessionCoordinator() {
+        System.out.println("SessionCoordinator.Constructor");
+        // don't make this here!
+//        visit = new Visit();
         
     }
     
@@ -44,7 +46,6 @@ public class SessionManager implements Serializable{
     private CodeSource activeCodeSource;
     private User utilityUserToUpdate;
     
-
     /**
      * @return the visit
      */

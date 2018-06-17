@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.domain.EventException;
@@ -57,7 +58,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
     
     public String editViolation(){
        ViolationCoordinator violationCoordinator = getViolationCoordinator();
-       SessionManager sm = getSessionManager();
+       SessionCoordinator sm = getSessionManager();
        EventCoordinator eventCoordinator = getEventCoordinator();
        currentViolation = sm.getVisit().getActiveCodeViolation();
        CECase ceCase = sm.getVisit().getActiveCase();
@@ -113,7 +114,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
      * @return the currentViolation
      */
     public CodeViolation getCurrentViolation() {
-       SessionManager sm = getSessionManager();
+       SessionCoordinator sm = getSessionManager();
        currentViolation = sm.getVisit().getActiveCodeViolation();
         return currentViolation;
     }

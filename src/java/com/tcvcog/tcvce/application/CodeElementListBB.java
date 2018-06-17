@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeSource;
@@ -81,13 +82,17 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         
     }
     
+    /**
+     * TODO: Update for code element guide entry infrastructure
+     * @return 
+     */
     public String commitUpdatesToCodeElement() {
         CodeElement eleToUpdate = new CodeElement();
         eleToUpdate.setElementID(selectedElement.getElementID());
         System.out.println("CodeElementListBB.commitUpdatesToCodeElement | formtype = "+ formType);
         System.out.println("CodeElementListBB.commitUpdatesToCodeElement | selectedElement  = ");
         if(formType == 0){
-            eleToUpdate.setTypeID(selectedElement.getType().getCdelTypeID());
+//            eleToUpdate.setTypeID(selectedElement.getType().getCdelTypeID());
             
         } else {
             eleToUpdate.setTypeID(formType);
@@ -151,7 +156,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
      * @return the codeElementList
      */
     public LinkedList<CodeElement> getCodeElementList() {
-        SessionManager sm = getSessionManager();
+        SessionCoordinator sm = getSessionManager();
         CodeSource source = sm.getActiveCodeSource();
         CodeIntegrator codeIntegrator = getCodeIntegrator();
         try {
