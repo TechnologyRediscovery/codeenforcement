@@ -83,8 +83,8 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
             pi.updateProperty(p);
             // pull a new version of the property from the DB and store that in
             // the session to avoid errors in viewing any data that's not in the DB
-            SessionCoordinator sm = getSessionManager();
-            sm.getVisit().setActiveProp(p);
+            
+            getSessionBean().setActiveProp(p);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         "Successfully updated property with ID " + property.getPropertyID() 
@@ -241,8 +241,8 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
      * @return the property
      */
     public Property getProperty() {
-        SessionCoordinator sm = getSessionManager();
-        property = sm.getVisit().getActiveProp();
+        
+        property = getSessionBean().getActiveProp();
         return property;
     }
 
@@ -260,8 +260,8 @@ public class PropertyUpdateBB extends BackingBeanUtils implements Serializable {
      * @return the currentPropUseTypeName
      */
     public String getCurrentPropUseTypeName() {
-        SessionCoordinator sm = getSessionManager();
-        formPropertyUseType = sm.getVisit().getActiveProp().getPropertyUseType();
+        
+        formPropertyUseType = getSessionBean().getActiveProp().getPropertyUseType();
         return formPropertyUseType;
     }
 

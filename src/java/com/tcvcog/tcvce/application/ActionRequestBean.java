@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
+import com.tcvcog.tcvce.application.SessionBean;
 /**
  *
  * @author cedba
@@ -173,8 +174,8 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         }
         // now set this action request for the session to have and send the user to the
         // confirmation page
-        SessionCoordinator sm = getSessionManager();
-        sm.getVisit().setActionRequest(actionRequest);
+        
+        getSessionBean().setActionRequest(actionRequest);
     } // close method
     
     

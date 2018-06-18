@@ -48,13 +48,13 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
     }
 
     public String submitImprovementSuggestion(){
-        SessionCoordinator sm = getSessionManager();
+        
         SystemIntegrator si = getSystemIntegrator();
 
         ImprovementSuggestion is = new ImprovementSuggestion();
         
         is.setImprovementTypeID(selectedImprovementType);
-        is.setSubmitter(sm.getVisit().getActiveUser());
+        is.setSubmitter(getSessionBean().getActiveUser());
         is.setSuggestionText(systemImprovementTicketRText);
         
         try {

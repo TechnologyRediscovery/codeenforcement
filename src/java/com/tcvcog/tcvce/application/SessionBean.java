@@ -54,9 +54,10 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
     private CodeElementGuideEntry currentCodeElementGuide;
+ 
 
     /**
-     * Creates a new instance of SessionBean
+     * Creates a new instance of getSessionBean()
      */
     public SessionBean() {
     }

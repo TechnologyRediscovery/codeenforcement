@@ -54,16 +54,16 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     
     public String viewCase(){
         
-        SessionCoordinator sm = getSessionManager();
-        sm.getVisit().setActiveCase(selectedCase);
-        sm.getVisit().setActiveProp(selectedCase.getProperty());
+        
+        getSessionBean().setActiveCase(selectedCase);
+        getSessionBean().setActiveProp(selectedCase.getProperty());
         
         return "caseManage";
     }
     
     public String viewSelectedActionRequest(){
-        SessionCoordinator sm = getSessionManager();
-        sm.getVisit().setActionRequest(selectedRequest);
+        
+        getSessionBean().setActionRequest(selectedRequest);
         
         return "actionRequestManage";
         
@@ -75,9 +75,9 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
      */
     public ArrayList<CEActionRequest> getRequestList() {
         CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         try {
-            requestList = ari.getCEActionRequestList(sm.getVisit().getActiveUser().getMuniCode());
+            requestList = ari.getCEActionRequestList(getSessionBean().getActiveUser().getMuniCode());
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -91,8 +91,8 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
      */
     public ArrayList<CECase> getCaseList() {
         CaseIntegrator ci = getCaseIntegrator();
-        SessionCoordinator sm = getSessionManager();
-        int muniCodeForFetching = sm.getVisit().getActiveUser().getMuniCode();
+        
+        int muniCodeForFetching = getSessionBean().getActiveUser().getMuniCode();
         
         try {
             caseList = ci.getCECasesByMuni(muniCodeForFetching);

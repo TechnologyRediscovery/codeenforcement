@@ -116,8 +116,8 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
         
         try {
             pi.updatePerson(p);
-            SessionCoordinator sm = getSessionManager();
-            sm.getVisit().setActivePerson(p);
+            
+            getSessionBean().setActivePerson(p);
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                         "Person updated! This updated person is now your 'active person'", ""));
@@ -153,8 +153,8 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      */
     public int getFormMuniCode() {
         //System.out.println("PersonUpdateBB.getFormMuniID | muniID of active currentPerson: " + currentPerson.getMuni().getMuniCode());
-        SessionCoordinator sm = getSessionManager();
-        formMuniCode = sm.getVisit().getActivePerson().getMuniCode();
+        
+        formMuniCode = getSessionBean().getActivePerson().getMuniCode();
         return formMuniCode;
     }
 
@@ -411,8 +411,8 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the currentPerson
      */
     public Person getCurrentPerson() {
-        SessionCoordinator sm = getSessionManager();
-        currentPerson = sm.getVisit().getActivePerson();
+        
+        currentPerson = getSessionBean().getActivePerson();
         return currentPerson;
     }
 

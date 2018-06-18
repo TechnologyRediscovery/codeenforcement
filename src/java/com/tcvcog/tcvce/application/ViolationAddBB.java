@@ -58,7 +58,7 @@ public class ViolationAddBB extends BackingBeanUtils implements Serializable {
     public String addViolation(){
         
         ViolationCoordinator vc = getViolationCoordinator();
-        SessionCoordinator sm = getSessionManager();
+        
         
         currentViolation.setStipulatedComplianceDate(getStipulatedComplianceDate()
                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
@@ -144,8 +144,8 @@ public class ViolationAddBB extends BackingBeanUtils implements Serializable {
      * @return the currentViolation
      */
     public CodeViolation getCurrentViolation() {
-        SessionCoordinator sm = getSessionManager();
-        currentViolation = sm. getVisit().getActiveCodeViolation();
+        
+        currentViolation = getSessionBean().getActiveCodeViolation();
         return currentViolation;
     }
 

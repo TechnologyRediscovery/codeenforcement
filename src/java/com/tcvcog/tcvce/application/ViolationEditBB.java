@@ -58,10 +58,10 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
     
     public String editViolation(){
        ViolationCoordinator violationCoordinator = getViolationCoordinator();
-       SessionCoordinator sm = getSessionManager();
+       
        EventCoordinator eventCoordinator = getEventCoordinator();
-       currentViolation = sm.getVisit().getActiveCodeViolation();
-       CECase ceCase = sm.getVisit().getActiveCase();
+       currentViolation = getSessionBean().getActiveCodeViolation();
+       CECase ceCase = getSessionBean().getActiveCase();
        EventCase event = new EventCase();
         
         currentViolation.setStipulatedComplianceDate(getStipulatedComplianceDate()
@@ -114,8 +114,8 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
      * @return the currentViolation
      */
     public CodeViolation getCurrentViolation() {
-       SessionCoordinator sm = getSessionManager();
-       currentViolation = sm.getVisit().getActiveCodeViolation();
+       
+       currentViolation = getSessionBean().getActiveCodeViolation();
         return currentViolation;
     }
     

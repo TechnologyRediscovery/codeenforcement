@@ -156,8 +156,8 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
      * @return the codeElementList
      */
     public ArrayList<CodeElement> getCodeElementList() {
-        SessionCoordinator sm = getSessionManager();
-        CodeSource source = sm.getActiveCodeSource();
+        
+        CodeSource source = getSessionBean().getActiveCodeSource();
         CodeIntegrator codeIntegrator = getCodeIntegrator();
         try {
             codeElementList = codeIntegrator.getCodeElements(source.getSourceID());

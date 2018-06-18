@@ -45,13 +45,13 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
     }
 
     public String useSelectedElement() {
-        SessionCoordinator sm = getSessionManager();
+        
         ViolationCoordinator vc = getViolationCoordinator();
         CodeViolation cv;
-        if (selectedViolatedEnfElement != null && sm.getVisit() != null) {
-             cv = vc.generateNewCodeViolation(sm.getVisit().getActiveCase(), 
+        if (selectedViolatedEnfElement != null && getSessionBean() != null) {
+             cv = vc.generateNewCodeViolation(getSessionBean().getActiveCase(), 
                     selectedViolatedEnfElement);
-            sm.getVisit().setActiveCodeViolation(cv);
+            getSessionBean().setActiveCodeViolation(cv);
 //            System.out.println("ViolationSelectElementBB.useSelectedElement | Selected Enf Element: "
 //                    + selectedViolatedEnfElement.getCodeElement().getOrdchapterTitle());
             return "violationAdd";
@@ -76,9 +76,9 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
      * @return the enfElementList
      */
     public ArrayList<CodeElementEnforcable> getEnfElementList() {
-        SessionCoordinator sm = getSessionManager();
+        
         CodeIntegrator integrator = getCodeIntegrator();
-        CodeSet codeSet = sm.getVisit().getActiveCodeSet();
+        CodeSet codeSet = getSessionBean().getActiveCodeSet();
         System.out.println("ViolationSelectElement.getElementList| retrievedset: " + codeSet);
 
         if (codeSet != null) {

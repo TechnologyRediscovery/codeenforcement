@@ -64,9 +64,9 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      * @return the eceList
      */
     public ArrayList<CodeElementEnforcable> getEceList() {
-        SessionCoordinator sm = getSessionManager();
+        
         CodeIntegrator integrator = getCodeIntegrator();
-        CodeSet codeSet = sm.getVisit().getActiveCodeSet();
+        CodeSet codeSet = getSessionBean().getActiveCodeSet();
         
         if(codeSet != null){
             System.out.println("CodeSetElementBB.getEceList | active code set name: " + codeSet.getCodeSetName());

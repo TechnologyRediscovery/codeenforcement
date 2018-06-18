@@ -73,14 +73,14 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
 
     public String editEvent(){
         EventCoordinator ec = getEventCoordinator();
-        SessionCoordinator sm = getSessionManager();
-        EventCase e = sm.getVisit().getActiveEvent();
+        
+        EventCase e = getSessionBean().getActiveEvent();
         
         // category is already set from initialization sequence
-        e.setCaseID(sm.getVisit().getActiveCase().getCaseID());
+        e.setCaseID(getSessionBean().getActiveCase().getCaseID());
         e.setEventDescription(formEventDesc);
         e.setActiveEvent(activeEvent);
-        e.setEventOwnerUser(sm.getVisit().getActiveUser());
+        e.setEventOwnerUser(getSessionBean().getActiveUser());
         e.setDateOfRecord(formEventDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         e.setDiscloseToMunicipality(formDiscloseToMuni);
         e.setDiscloseToPublic(formDiscloseToPublic);
@@ -164,10 +164,10 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
      */
     public ArrayList<Person> getPropertyPersonList() {
         PersonIntegrator pi = getPersonIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         
         try {
-            propertyPersonList = pi.getPersonList(sm.getVisit().getActiveProp());
+            propertyPersonList = pi.getPersonList(getSessionBean().getActiveProp());
         } catch (IntegrationException ex) {
             // do nothing
         }
@@ -244,8 +244,8 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
      * @return the event
      */
     public EventCase getEvent() {
-        SessionCoordinator sm = getSessionManager();
-        EventCase currentEvent = sm.getVisit().getActiveEvent();
+        
+        EventCase currentEvent = getSessionBean().getActiveEvent();
         event = currentEvent;
         return event;
     }

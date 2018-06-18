@@ -83,8 +83,8 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
     
     public String viewPersonProfile(){
         if(selectedPerson != null){
-            SessionCoordinator sm = getSessionManager();
-            sm.getVisit().setActivePerson(selectedPerson);
+            
+            getSessionBean().setActivePerson(selectedPerson);
             return "personProfile";
         } else {
             getFacesContext().addMessage(null,

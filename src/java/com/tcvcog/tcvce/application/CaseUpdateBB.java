@@ -141,8 +141,8 @@ public class CaseUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the currentCase
      */
     public CECase getCurrentCase() {
-        SessionCoordinator sm = getSessionManager();
-        currentCase = sm.getVisit().getActiveCase();
+        
+        currentCase = getSessionBean().getActiveCase();
         return currentCase;
     }
 

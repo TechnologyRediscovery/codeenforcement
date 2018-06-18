@@ -98,7 +98,7 @@
 
 
                         <div class="logoBox">
-                            <h2 id="logoHeader">TCVCOG<br/>Code Enforcement<br />Data Hub</h2>
+                            <h2 id="logoHeader" style="font-weight: bold;">TCVCOG<br/>Code Enforcement<br />Data Hub</h2>
                         </div>
                     </f:view>
                 </div>
@@ -263,14 +263,14 @@
                                 <h:outputText value="Permissions: "/>
                                 <h:outputText value="#{facesUser.roleType.label}  | "/>   
                                 <h:outputText value="Default Municipality: "/>
-                                <h:outputText value="#{sessionManager.visit.activeUser.muni.muniName} "/><br/> 
+                                <h:outputText value="#{facesUser.muni.muniName} "/><br/> 
                                 <h:outputText value="Active Property: "/>
-                                <h:outputText value="#{sessionManager.visit.activeProp.address} "/> 
-                                <h:outputText value="(#{sessionManager.visit.activeProp.muni.muniName}  ) | "/>
+                                <h:outputText value="#{sessionBean.activeProp.address} "/> 
+                                <h:outputText value="(#{sessionBean.activeProp.muni.muniName}  ) | "/>
                                 <h:outputText value="Active Case:"/>
-                                <h:outputText value="#{sessionManager.visit.activeCase.caseName}  | "/> 
+                                <h:outputText value="#{sessionBean.activeCase.caseName}  | "/> 
                                 <h:outputText value="Code Set: "/>
-                                <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}  | " /> 
+                                <h:outputText value="#{sessionBean.activeCodeSet.codeSetName}  | " /> 
                                 
                                 
 

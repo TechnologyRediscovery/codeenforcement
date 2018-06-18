@@ -88,8 +88,8 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
     }
     
     private boolean hasActiveCase(){
-        SessionCoordinator sm = getSessionManager();
-        CECase c = sm.getVisit().getActiveCase();
+        
+        CECase c = getSessionBean().getActiveCase();
         if(c != null){
             return true;
         } 
@@ -97,8 +97,8 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
     }
     
     private boolean hasActiveProperty(){
-        SessionCoordinator sm = getSessionManager();
-        Property p = sm.getVisit().getActiveProp();
+        
+        Property p = getSessionBean().getActiveProp();
         if(p != null){
             return true;
         } 

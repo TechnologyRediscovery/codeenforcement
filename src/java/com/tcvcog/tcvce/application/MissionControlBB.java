@@ -40,8 +40,6 @@ public class MissionControlBB extends BackingBeanUtils implements Serializable {
 
   
     
-    @ManagedProperty(value="#{SessionBean}")
-    private SessionBean sessionBean;
     private User user;
     
     /**
@@ -91,19 +89,7 @@ public class MissionControlBB extends BackingBeanUtils implements Serializable {
             return "logoutSequenceComplete";
     }
 
-    /**
-     * @return the sessionBean
-     */
-    public SessionBean getSessionBean() {
-        return sessionBean;
-    }
-
-    /**
-     * @param sessionBean the sessionBean to set
-     */
-    public void setSessionBean(SessionBean sessionBean) {
-        this.sessionBean = sessionBean;
-    }
+    
 
     /**
      * @return the user

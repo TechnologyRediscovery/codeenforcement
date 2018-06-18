@@ -104,8 +104,8 @@ public class PersonAddBB extends BackingBeanUtils implements Serializable {
         
         try {
             if(formConnectToActiveProperty){
-                SessionCoordinator sm = getSessionManager();
-                Property property = sm.getVisit().getActiveProp();
+                
+                Property property = getSessionBean().getActiveProp();
                 personInt.insertPersonAndConnectToProperty(p, property);
             
                 getFacesContext().addMessage(null,
@@ -417,8 +417,8 @@ public class PersonAddBB extends BackingBeanUtils implements Serializable {
      * @return the activeProp
      */
     public Property getActiveProp() {
-        SessionCoordinator sm = getSessionManager();
-        activeProp = sm.getVisit().getActiveProp();
+        
+        activeProp = getSessionBean().getActiveProp();
         return activeProp;
     }
 

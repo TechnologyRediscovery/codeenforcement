@@ -109,8 +109,8 @@ public class UserUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the userToUpdate
      */
     public User getUserToUpdate() {
-        SessionCoordinator sm = getSessionManager();
-        userToUpdate = sm.getUtilityUserToUpdate();
+        
+        userToUpdate = getSessionBean().getUtilityUserToUpdate();
         return userToUpdate;
     }
 

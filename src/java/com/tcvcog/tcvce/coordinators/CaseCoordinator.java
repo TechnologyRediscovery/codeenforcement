@@ -63,8 +63,8 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         newCase.setCasePhase(CasePhase.PrelimInvestigationPending);
         
         CECase newlyAddedCase = ci.insertNewCECase(newCase);
-        SessionCoordinator sm = getSessionManager();
-        sm.getVisit().setActiveCase(newlyAddedCase);
+        
+        getSessionBean().setActiveCase(newlyAddedCase);
         
     }
     
@@ -145,11 +145,11 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     private void processComplianceEvent(CECase c, EventCase e) 
             throws ViolationException, IntegrationException, CaseLifecyleException{
         
-        SessionCoordinator sm = getSessionManager();
+        
         ViolationCoordinator vc = getViolationCoordinator();
         EventCoordinator ec = getEventCoordinator();
         
-        ArrayList<CodeViolation> activeViolationList = sm.getVisit().getActiveViolationList();
+        ArrayList<CodeViolation> activeViolationList = getSessionBean().getActiveViolationList();
         ListIterator<CodeViolation> li = activeViolationList.listIterator();
         CodeViolation cv;
         
@@ -188,7 +188,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         EventCoordinator ec = getEventCoordinator();
         EventIntegrator ei = getEventIntegrator();
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         
         ArrayList caseViolationList = cvi.getCodeViolations(c);
         boolean complianceWithAllViolations = false;
@@ -236,7 +236,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     private void processClosingEvent(CECase c, EventCase e) throws IntegrationException, CaseLifecyleException{
         CaseIntegrator ci = getCaseIntegrator();
         EventIntegrator ei = getEventIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         CasePhase closedPhase = CasePhase.Closed;
         c.setCasePhase(closedPhase);
         ci.changeCECasePhase(c);
@@ -247,7 +247,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         // we'll probably want to get this text from a resource file instead of
         // hardcoding it down here in the Java
         e.setDateOfRecord(LocalDateTime.now());
-        e.setEventOwnerUser(sm.getVisit().getActiveUser());
+        e.setEventOwnerUser(getSessionBean().getActiveUser());
         e.setEventDescription(getResourceBundle(Constants.MESSAGE_BUNDLE).getString("automaticClosingEventDescription"));
         e.setNotes(getResourceBundle(Constants.MESSAGE_BUNDLE).getString("automaticClosingEventNotes"));
         e.setCaseID(c.getCaseID());
@@ -434,7 +434,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
             throws CaseLifecyleException, IntegrationException, EventException{
         
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         EventCoordinator evCoord = getEventCoordinator();
         
         // togglign this switch puts the notice in the queue for sending
@@ -464,7 +464,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         String queuedNoticeEventNotes = getResourceBundle(Constants.MESSAGE_BUNDLE).getString("noticeQueuedEventDesc");
         noticeEvent.setEventDescription(queuedNoticeEventNotes);
         
-        noticeEvent.setEventOwnerUser(sm.getVisit().getActiveUser());
+        noticeEvent.setEventOwnerUser(getSessionBean().getActiveUser());
         noticeEvent.setActiveEvent(true);
         noticeEvent.setDiscloseToMunicipality(true);
         noticeEvent.setDiscloseToPublic(true);
@@ -484,8 +484,8 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
     public void refreshCase(CECase c) throws IntegrationException{
         System.out.println("CaseCoordinator.refreshCase");
         CaseIntegrator ci = getCaseIntegrator();
-        SessionCoordinator sm = getSessionManager();
-        sm.getVisit().setActiveCase(ci.getCECase(c.getCaseID()));
+        
+        getSessionBean().setActiveCase(ci.getCECase(c.getCaseID()));
         
     }
     

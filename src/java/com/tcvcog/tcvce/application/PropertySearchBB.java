@@ -86,10 +86,10 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     public String viewProperty(){
         System.out.println("PSearch.viewProperty");
         
-        SessionCoordinator sm = getSessionManager();
+        
         
         if(selectedProperty != null){
-            sm.getVisit().setActiveProp(selectedProperty);
+            getSessionBean().setActiveProp(selectedProperty);
             return "propertyProfile";
         } else {
             
@@ -103,10 +103,10 @@ public class PropertySearchBB extends BackingBeanUtils implements Serializable {
     
     public String updateProperty(){
         
-        SessionCoordinator sm = getSessionManager();
+        
         
         if(selectedProperty != null){
-            sm.getVisit().setActiveProp(selectedProperty);
+            getSessionBean().setActiveProp(selectedProperty);
             return "propertyUpdate";
         } else {
             

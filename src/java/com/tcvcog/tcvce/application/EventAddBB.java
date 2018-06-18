@@ -87,8 +87,8 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     
     public String startNewEvent(){
         System.out.println("EventAddBB.startNewEvent | category: " + selectedEventCategory.getEventCategoryTitle());
-        SessionCoordinator sm = getSessionManager();
-        CECase c = sm.getVisit().getActiveCase();
+        
+        CECase c = getSessionBean().getActiveCase();
         EventCoordinator ec = getEventCoordinator();
         try {
             currentEvent = ec.getInitializedEvent(c, selectedEventCategory);
@@ -100,22 +100,22 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
             
             
         }
-        sm.getVisit().setActiveEvent(currentEvent);
+        getSessionBean().setActiveEvent(currentEvent);
         return "eventAdd";
     }
     
     public String addEvent() throws ViolationException{
-        SessionCoordinator sm = getSessionManager();
-        //Event e = sm.getVisit().getActiveEvent();
+        
+        //Event e = getSessionBean().getActiveEvent();
         EventCase e = currentEvent;
         CaseCoordinator cc = getCaseCoordinator();
         
         // category is already set from initialization sequence
-        e.setCaseID(sm.getVisit().getActiveCase().getCaseID());
+        e.setCaseID(getSessionBean().getActiveCase().getCaseID());
         System.out.println("EventAddBB.addEvent | CaseID: " + e.getCaseID());
         e.setEventDescription(formEventDesc);
         e.setActiveEvent(activeEvent);
-        e.setEventOwnerUser(sm.getVisit().getActiveUser());
+        e.setEventOwnerUser(getSessionBean().getActiveUser());
         e.setDateOfRecord(formEventDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         e.setDiscloseToMunicipality(formDiscloseToMuni);
         e.setDiscloseToPublic(formDiscloseToPublic);
@@ -228,10 +228,10 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
     public ArrayList<Person> getCandidatePersonList() {
         System.out.println("EventAddBB.getCandidatePersonList | inside method");
         PersonIntegrator pi = getPersonIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         
         try {
-            candidatePersonList = pi.getPersonList(sm.getVisit().getActiveCase().getProperty());
+            candidatePersonList = pi.getPersonList(getSessionBean().getActiveCase().getProperty());
         } catch (IntegrationException ex) {
             // do nothing
         }
@@ -294,8 +294,8 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the ceCase
      */
     public CECase getCeCase() {
-        SessionCoordinator sm = getSessionManager();
-        ceCase = sm.getVisit().getActiveCase();
+        
+        ceCase = getSessionBean().getActiveCase();
         return ceCase;
     }
 
@@ -347,8 +347,8 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the currentEvent
      */
     public EventCase getCurrentEvent() {
-        SessionCoordinator sm = getSessionManager();
-        EventCase currentEvent = sm.getVisit().getActiveEvent();
+        
+        EventCase currentEvent = getSessionBean().getActiveEvent();
         this.currentEvent = currentEvent;
         return this.currentEvent;
     }

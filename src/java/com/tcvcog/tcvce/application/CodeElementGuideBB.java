@@ -136,8 +136,8 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
      * @return the currentGuideEntry
      */
     public CodeElementGuideEntry getCurrentGuideEntry() {
-        SessionCoordinator sm = getSessionManager();
-        currentGuideEntry = sm.getVisit().getCurrentCodeElementGuide();
+        
+        currentGuideEntry = getSessionBean().getCurrentCodeElementGuide();
                 
         return currentGuideEntry;
     }

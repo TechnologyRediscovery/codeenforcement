@@ -95,7 +95,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
         
         currentNotice = new NoticeOfViolation();
         StringBuilder sb = new StringBuilder();
-        SessionCoordinator sm = getSessionManager();
+        
         PersonIntegrator pi = getPersonIntegrator();
         
         if(isAddPersonByID()){
@@ -147,7 +147,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
         // finally, extract the String from the StringBuilder and add to our
         // current notice, which we'll make the active notice for editing
         currentNotice.setNoticeText(sb.toString());
-        sm.getVisit().setActiveNotice(currentNotice);
+        getSessionBean().setActiveNotice(currentNotice);
         
         return "noticeOfViolationEditor";
     }
@@ -185,8 +185,8 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     }
     
     private StringBuilder appendSignatureBlock(StringBuilder sb){
-        SessionCoordinator sm = getSessionManager();
-        User u = sm.getVisit().getActiveUser();
+        
+        User u = getSessionBean().getActiveUser();
         sb.append("<p>");
         sb.append(u.getFName());
         sb.append(" ");
@@ -225,10 +225,10 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     public String queueNotice(){
         System.out.println("NoticeOfViolationBB.QueueNotice");
         CaseCoordinator caseCoord = getCaseCoordinator();
-        SessionCoordinator sm = getSessionManager();
-        CECase ceCase = sm.getVisit().getActiveCase();
+        
+        CECase ceCase = getSessionBean().getActiveCase();
 
-        NoticeOfViolation notice = sm.getVisit().getActiveNotice();
+        NoticeOfViolation notice = getSessionBean().getActiveNotice();
 //        NoticeOfViolation notice = caseCoord.generateNoticeSkeleton(ceCase);
         
         notice.setNoticeText(formLetterText);
@@ -265,9 +265,9 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     }
     
     public String saveNoticeDraft(){
-        SessionCoordinator sm = getSessionManager();
-        CECase c = sm.getVisit().getActiveCase();
-        NoticeOfViolation notice = sm.getVisit().getActiveNotice();
+        
+        CECase c = getSessionBean().getActiveCase();
+        NoticeOfViolation notice = getSessionBean().getActiveNotice();
         
         CodeViolationIntegrator ci = getCodeViolationIntegrator();
         
@@ -335,8 +335,8 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      * @return the currentNotice
      */
     public NoticeOfViolation getCurrentNotice() {
-        SessionCoordinator sm = getSessionManager();
-        currentNotice = sm.getVisit().getActiveNotice();
+        
+        currentNotice = getSessionBean().getActiveNotice();
         return currentNotice;
     }
 
@@ -352,8 +352,8 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      */
     public ArrayList<TextBlock> getTextBlockListByMuni() {
         CodeViolationIntegrator cvi = getCodeViolationIntegrator();
-        SessionCoordinator sm = getSessionManager();
-        Municipality m = sm.getVisit().getActiveCodeSet().getMuni();
+        
+        Municipality m = getSessionBean().getActiveCodeSet().getMuni();
         try {
             blockListByMuni = cvi.getTextBlocks(m);
         } catch (IntegrationException ex) {
@@ -373,8 +373,8 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      * @return the activeVList
      */
     public ArrayList<CodeViolation> getActiveVList() {
-        SessionCoordinator sm = getSessionManager();
-        activeVList = sm.getVisit().getActiveViolationList();
+        
+        activeVList = getSessionBean().getActiveViolationList();
         return activeVList;
     }
 
@@ -530,8 +530,8 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
      */
     public ArrayList<Person> getPersonCandidateAL() {
         PersonIntegrator pi = getPersonIntegrator();
-        SessionCoordinator sm = getSessionManager();
-        Property prop = sm.getVisit().getActiveProp();
+        
+        Property prop = getSessionBean().getActiveProp();
         try {
             personCandidateAL = pi.getPersonList(prop);
         } catch (IntegrationException ex) {

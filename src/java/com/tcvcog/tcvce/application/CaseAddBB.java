@@ -51,7 +51,7 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
         // backing bean will interact with the caseintegrator
         // to enforce business logic concerning cases
         CaseCoordinator cc = getCaseCoordinator();
-        SessionCoordinator sm = getSessionManager();
+        
         
         // cases originate here
         CECase newCase = new CECase();
@@ -61,8 +61,8 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
         // timestamp set by postgres
         // no closing date, by design of case flow
         newCase.setPublicControlCode(casePCC);
-        newCase.setProperty(sm.getVisit().getActiveProp());
-        newCase.setUser(sm.getVisit().getActiveUser());
+        newCase.setProperty(getSessionBean().getActiveProp());
+        newCase.setUser(getSessionBean().getActiveUser());
         newCase.setCaseName(formCaseName);
         newCase.setOriginationDate(formOriginationDate.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
@@ -146,8 +146,8 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
      * @return the caseProperty
      */
     public Property getCaseProperty() {
-        SessionCoordinator sm = getSessionManager();
-        caseProperty = sm.getVisit().getActiveProp();
+        
+        caseProperty = getSessionBean().getActiveProp();
         return caseProperty;
     }
 

@@ -62,7 +62,7 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     
     public String viewPersonProfile(){
         SessionCoordinator sm  = getSessionManager();
-        sm.getVisit().setActivePerson(selectedPerson);
+        getSessionBean().setActivePerson(selectedPerson);
         return "personProfile";
     }
     
@@ -72,8 +72,8 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
      * @return the currentProperty
      */
     public Property getCurrentProperty() {
-        SessionCoordinator sm = getSessionManager();
-        currentProperty = sm.getVisit().getActiveProp();
+        
+        currentProperty = getSessionBean().getActiveProp();
         return currentProperty;
     }
 

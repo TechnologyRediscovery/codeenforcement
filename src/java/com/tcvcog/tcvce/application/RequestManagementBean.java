@@ -119,8 +119,8 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
      * @return the currentRequest
      */
     public CEActionRequest getCurrentRequest() {
-        SessionCoordinator sm = getSessionManager();
-        currentRequest = sm.getVisit().getActionRequest();
+        SessionBean sb = getSessionBean();
+        currentRequest = getSessionBean().getActionRequest();
         return currentRequest;
     }
 

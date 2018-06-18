@@ -70,12 +70,12 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     public String updateCitation(){
         System.out.println("CitationBB.updateCitation");
         CaseCoordinator cc = getCaseCoordinator();
-        SessionCoordinator sm = getSessionManager();
-        Citation c= sm.getVisit().getActiveCitation();
+        
+        Citation c= getSessionBean().getActiveCitation();
         c.setStatus(formCitationStatus);
         c.setCitationNo(formCitationNumber);
         c.setOrigin_courtentity(formCourtEntity);
-        c.setUserOwner(sm.getVisit().getActiveUser());
+        c.setUserOwner(getSessionBean().getActiveUser());
         c.setDateOfRecord(formDateOfRecord.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
         c.setIsActive(formIsActive);
@@ -96,12 +96,12 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
     public String issueCitation(){
         System.out.println("CitationBB.IssueCitation");
         CaseCoordinator cc = getCaseCoordinator();
-        SessionCoordinator sm = getSessionManager();
+        
         Citation c = currentCitation;
         c.setStatus(formCitationStatus);
         c.setCitationNo(formCitationNumber);
         c.setOrigin_courtentity(formCourtEntity);
-        c.setUserOwner(sm.getVisit().getActiveUser());
+        c.setUserOwner(getSessionBean().getActiveUser());
         c.setDateOfRecord(formDateOfRecord.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
         c.setIsActive(formIsActive);
@@ -135,8 +135,8 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
      * @return the currentCitation
      */
     public Citation getCurrentCitation() {
-        SessionCoordinator sm = getSessionManager();
-        currentCitation = sm.getVisit().getActiveCitation();
+        
+        currentCitation = getSessionBean().getActiveCitation();
         
         
         

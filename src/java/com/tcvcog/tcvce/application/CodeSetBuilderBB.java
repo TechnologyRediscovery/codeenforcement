@@ -83,8 +83,8 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     }
     
     public String viewCodeSetElementsInSet(){
-        SessionCoordinator sm = getSessionManager();
-            sm.getVisit().setActiveCodeSet(codeSet);
+        
+            getSessionBean().setActiveCodeSet(codeSet);
             if (codeSet != null){
                 //System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
                 return "codeSetBuilder";
@@ -122,8 +122,8 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
      * @return the codeSet
      */
     public CodeSet getCodeSet() {
-        SessionCoordinator sm = getSessionManager();
-        CodeSet cs = sm.getVisit().getActiveCodeSet();
+        
+        CodeSet cs = getSessionBean().getActiveCodeSet();
         codeSet = cs;
         return codeSet;
     }

@@ -76,9 +76,9 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     public String buildCodeSet(){
         System.out.println("CodeSetBB.buildCodeSet");
-        SessionCoordinator sm = getSessionManager();
+        
         if (selectedCodeSet != null){
-            sm.getVisit().setActiveCodeSet(selectedCodeSet);
+            getSessionBean().setActiveCodeSet(selectedCodeSet);
             System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
             return "codeSetBuilder";
         } else {
@@ -143,9 +143,9 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     public String manageCodeSetElements(){
         System.out.println("CodeSetBB.manageCodeSetElements");
-        SessionCoordinator sm = getSessionManager();
+        
         if (selectedCodeSet != null){
-            sm.getVisit().setActiveCodeSet(selectedCodeSet);
+            getSessionBean().setActiveCodeSet(selectedCodeSet);
             System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
             return "codeSetElementManage";
         } else {
@@ -196,9 +196,9 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     }
     
     public String makeSelectedCodeSetActive(){
-        SessionCoordinator sm = getSessionManager();
+        
         if(selectedCodeSet != null){ 
-            sm.getVisit().setActiveCodeSet(selectedCodeSet);
+            getSessionBean().setActiveCodeSet(selectedCodeSet);
             return "dashboard";
         } else {
             getFacesContext().addMessage(null,

@@ -96,7 +96,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     
     public void generateAndInsertCodeViolationUpdateEvent(CECase ceCase, CodeViolation cv, EventCase event) throws IntegrationException, EventException{
         EventIntegrator ei = getEventIntegrator();
-        SessionCoordinator sm = getSessionManager();
+        
         
         
         // the event is coming to us from the violationEditBB with the description and disclosures flags
@@ -116,7 +116,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setDateOfRecord(LocalDateTime.now());
         event.setEventDescription(updateViolationDescr);
         //even descr set by violation coordinator
-        event.setEventOwnerUser(sm.getVisit().getActiveUser());
+        event.setEventOwnerUser(getSessionBean().getActiveUser());
         // disclose to muni from violation coord
         // disclose to public from violation coord
         event.setActiveEvent(true);
@@ -207,8 +207,8 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     public void generateAndInsertPhaseChangeEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException, CaseLifecyleException{
         
         EventIntegrator ei = getEventIntegrator();
-        SessionCoordinator sm = getSessionManager();
-        CECase c = sm.getVisit().getActiveCase();
+        
+        CECase c = getSessionBean().getActiveCase();
         EventCase event = getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseChangeEventCatID"))));
         
@@ -224,7 +224,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setDateOfRecord(LocalDateTime.now());
         // not sure if I can access the session level info for the specific user here in the
         // coordinator bean
-        event.setEventOwnerUser(sm.getVisit().getActiveUser());
+        event.setEventOwnerUser(getSessionBean().getActiveUser());
         event.setActiveEvent(true);
         
         insertEvent(event);
@@ -237,8 +237,8 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
     
     public void generateAndInsertManualCasePhaseOverrideEvent(CECase currentCase, CasePhase pastPhase) throws IntegrationException, CaseLifecyleException{
           EventIntegrator ei = getEventIntegrator();
-        SessionCoordinator sm = getSessionManager();
-        CECase c = sm.getVisit().getActiveCase();
+        
+        CECase c = getSessionBean().getActiveCase();
         EventCase event = getInitializedEvent(c, ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("casePhaseManualOverride"))));
         
@@ -254,7 +254,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setDateOfRecord(LocalDateTime.now());
         // not sure if I can access the session level info for the specific user here in the
         // coordinator bean
-        event.setEventOwnerUser(sm.getVisit().getActiveUser());
+        event.setEventOwnerUser(getSessionBean().getActiveUser());
         event.setActiveEvent(true);
         
         insertEvent(event);

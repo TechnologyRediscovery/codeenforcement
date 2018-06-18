@@ -56,6 +56,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 
@@ -65,6 +66,9 @@ import javax.faces.bean.SessionScoped;
  */
 
 public class BackingBeanUtils implements Serializable{
+    
+    @ManagedProperty(value="sessionBean")
+    private SessionBean sessionBean;
     
     //@ManagedProperty(value="#{visit}")
     private SessionCoordinator sessionManager;
@@ -607,6 +611,20 @@ public class BackingBeanUtils implements Serializable{
         logIntegrator = (LogIntegrator) ve.getValue(context.getELContext());
         
         return logIntegrator;
+    }
+
+    /**
+     * @return the sessionBean
+     */
+    public SessionBean getSessionBean() {
+        return sessionBean;
+    }
+
+    /**
+     * @param sessionBean the sessionBean to set
+     */
+    public void setSessionBean(SessionBean sessionBean) {
+        this.sessionBean = sessionBean;
     }
 
 }
