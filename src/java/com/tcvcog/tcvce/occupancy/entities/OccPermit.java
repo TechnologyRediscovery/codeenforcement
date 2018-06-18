@@ -22,19 +22,20 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
-public class OccupancyPermit {
+public class OccPermit {
     
     private int permitID;
+    // used for storing municipality-generated IDs associated with the permit
     private String referenceNo;
-    private OccupancyInspection inspection;
+    
     private LocalDateTime dateIssued;
     private LocalDateTime dateExpires;
-    private CodeSource issuingCodeSource;
+    private String issuingCodeSourceName;
     private String specialConditions;
     private String notes;
-
+    
     /**
      * @return the permitID
      */
@@ -49,12 +50,7 @@ public class OccupancyPermit {
         return referenceNo;
     }
 
-    /**
-     * @return the inspection
-     */
-    public OccupancyInspection getInspection() {
-        return inspection;
-    }
+   
 
     /**
      * @return the dateIssued
@@ -70,12 +66,7 @@ public class OccupancyPermit {
         return dateExpires;
     }
 
-    /**
-     * @return the issuingCodeSource
-     */
-    public CodeSource getIssuingCodeSource() {
-        return issuingCodeSource;
-    }
+  
 
     /**
      * @return the specialConditions
@@ -105,13 +96,7 @@ public class OccupancyPermit {
         this.referenceNo = referenceNo;
     }
 
-    /**
-     * @param inspection the inspection to set
-     */
-    public void setInspection(OccupancyInspection inspection) {
-        this.inspection = inspection;
-    }
-
+    
     /**
      * @param dateIssued the dateIssued to set
      */
@@ -126,12 +111,7 @@ public class OccupancyPermit {
         this.dateExpires = dateExpires;
     }
 
-    /**
-     * @param issuingCodeSource the issuingCodeSource to set
-     */
-    public void setIssuingCodeSource(CodeSource issuingCodeSource) {
-        this.issuingCodeSource = issuingCodeSource;
-    }
+   
 
     /**
      * @param specialConditions the specialConditions to set
@@ -145,6 +125,22 @@ public class OccupancyPermit {
      */
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+   
+
+    /**
+     * @return the issuingCodeSourceName
+     */
+    public String getIssuingCodeSourceName() {
+        return issuingCodeSourceName;
+    }
+
+    /**
+     * @param issuingCodeSourceName the issuingCodeSourceName to set
+     */
+    public void setIssuingCodeSourceName(String issuingCodeSourceName) {
+        this.issuingCodeSourceName = issuingCodeSourceName;
     }
     
     

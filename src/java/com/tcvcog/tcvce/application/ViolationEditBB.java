@@ -33,7 +33,7 @@ import javax.faces.application.FacesMessage;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class ViolationEditBB extends BackingBeanUtils implements Serializable{
 

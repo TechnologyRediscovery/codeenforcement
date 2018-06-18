@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class ActionRequestManageBB extends BackingBeanUtils implements Serializable{
 

@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.coordinators;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class PropertyUnitCoordinator {
 

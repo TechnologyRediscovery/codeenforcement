@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class DateTesting {
     

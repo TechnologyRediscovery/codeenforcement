@@ -17,12 +17,12 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.entities;
 
-import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
+import com.tcvcog.tcvce.occupancy.entities.OccPermit;
 import java.util.ArrayList;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class PropertyUnit {
     
@@ -33,7 +33,7 @@ public class PropertyUnit {
     private boolean rental;
     private Property thisProperty;
     private ArrayList<Person> propertyUnitPeople;
-    private ArrayList<OccupancyPermit> occupancyPermitList;
+    private ArrayList<OccPermit> occupancyPermitList;
     
 
     /**
@@ -123,14 +123,14 @@ public class PropertyUnit {
     /**
      * @return the occupancyPermitList
      */
-    public ArrayList<OccupancyPermit> getOccupancyPermitList() {
+    public ArrayList<OccPermit> getOccupancyPermitList() {
         return occupancyPermitList;
     }
 
     /**
      * @param occupancyPermitList the occupancyPermitList to set
      */
-    public void setOccupancyPermitList(ArrayList<OccupancyPermit> occupancyPermitList) {
+    public void setOccupancyPermitList(ArrayList<OccPermit> occupancyPermitList) {
         this.occupancyPermitList = occupancyPermitList;
     }
 

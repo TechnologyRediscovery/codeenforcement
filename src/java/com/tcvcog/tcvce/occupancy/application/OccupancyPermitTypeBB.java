@@ -20,7 +20,7 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyPermitIntegrator;
-import com.tcvcog.tcvce.occupancy.entities.OccupancyPermitType;
+import com.tcvcog.tcvce.occupancy.entities.OccPermitType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.inject.Named;
@@ -38,15 +38,15 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializable {
     
-    private ArrayList<OccupancyPermitType> occupancyPermitTypeList;
-    private OccupancyPermitType selectedOccupancyPermitType;
+    private ArrayList<OccPermitType> occupancyPermitTypeList;
+    private OccPermitType selectedOccupancyPermitType;
     private int formOccupancyPermitTypeID;
     private int formOccupancyPermitTypeMuniCodeID;
     private String formOccupancyPermitTypeName;
     private String formOccupancyPermitTypeDescription; 
     
     //create data fields for user editing/updating of permit types
-    private OccupancyPermitType newFormSelectedOccupancyPermitType;
+    private OccPermitType newFormSelectedOccupancyPermitType;
     private int newFormOccupancyPermitTypeID;
     private Municipality formMuni;
     //private int newFormOccupancyPermitTypeMuniCodeID;
@@ -61,7 +61,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     
     public void addNewOccupancyPermitType(ActionEvent e){
         OccupancyPermitIntegrator oi = getOccupancyPermitIntegrator();
-        OccupancyPermitType o = new OccupancyPermitType();
+        OccPermitType o = new OccPermitType();
         
         o.setOccupancyPermitTypeID(newFormOccupancyPermitTypeID);
         o.setMuni(formMuni);
@@ -121,7 +121,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     
     public void commitUpdates(ActionEvent e){
         OccupancyPermitIntegrator oi = getOccupancyPermitIntegrator();
-        OccupancyPermitType o = selectedOccupancyPermitType;
+        OccPermitType o = selectedOccupancyPermitType;
         
         //o.setOccupancyPermitTypeID(getFormOccupancyPermitTypeID());
         //o.setOccupancyPermitTypeMuniCodeID(getFormOccupancyPermitTypeMuniCodeID());
@@ -143,7 +143,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     
     
     public String addOccupancyPermitType(){
-        OccupancyPermitType o = new OccupancyPermitType();
+        OccPermitType o = new OccPermitType();
         OccupancyPermitIntegrator oi = new OccupancyPermitIntegrator();
         o.setOccupancyPermitTypeID(formOccupancyPermitTypeID);
         o.setMuni(getFormMuni());
@@ -172,7 +172,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     /**
      * @return the occupancyPermitTypeList
      */
-    public ArrayList<OccupancyPermitType> getOccupancyPermitTypeList() {
+    public ArrayList<OccPermitType> getOccupancyPermitTypeList() {
         try {
             OccupancyPermitIntegrator oi = getOccupancyPermitIntegrator();
             occupancyPermitTypeList = oi.getOccupancyPermitTypeList();
@@ -194,7 +194,7 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     /**
      * @param occupancyPermitTypeList the occupancyPermitTypeList to set
      */
-    public void setOccupancyPermitTypeList(ArrayList<OccupancyPermitType> occupancyPermitTypeList) {
+    public void setOccupancyPermitTypeList(ArrayList<OccPermitType> occupancyPermitTypeList) {
         this.occupancyPermitTypeList = occupancyPermitTypeList;
     }
 
@@ -257,28 +257,28 @@ public class OccupancyPermitTypeBB extends BackingBeanUtils implements Serializa
     /**
      * @return the selectedOccupancyPermitType
      */
-    public OccupancyPermitType getSelectedOccupancyPermitType() {
+    public OccPermitType getSelectedOccupancyPermitType() {
         return selectedOccupancyPermitType;
     }
 
     /**
      * @param selectedOccupancyPermitType the selectedOccupancyPermitType to set
      */
-    public void setSelectedOccupancyPermitType(OccupancyPermitType selectedOccupancyPermitType) {
+    public void setSelectedOccupancyPermitType(OccPermitType selectedOccupancyPermitType) {
         this.selectedOccupancyPermitType = selectedOccupancyPermitType;
     }
 
     /**
      * @return the newFormSelectedOccupancyPermitType
      */
-    public OccupancyPermitType getNewFormSelectedOccupancyPermitType() {
+    public OccPermitType getNewFormSelectedOccupancyPermitType() {
         return newFormSelectedOccupancyPermitType;
     }
 
     /**
      * @param newFormSelectedOccupancyPermitType the newFormSelectedOccupancyPermitType to set
      */
-    public void setNewFormSelectedOccupancyPermitType(OccupancyPermitType newFormSelectedOccupancyPermitType) {
+    public void setNewFormSelectedOccupancyPermitType(OccPermitType newFormSelectedOccupancyPermitType) {
         this.newFormSelectedOccupancyPermitType = newFormSelectedOccupancyPermitType;
     }
 

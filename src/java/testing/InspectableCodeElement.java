@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.occupancy.entities;
+package testing;
 
 //--> not needed yet for codeElement import com.tcvcog.tcvce.entities.CodeElement;
 import java.time.LocalDateTime;

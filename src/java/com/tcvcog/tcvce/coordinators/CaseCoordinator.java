@@ -44,7 +44,7 @@ import javax.faces.application.FacesMessage;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class CaseCoordinator extends BackingBeanUtils implements Serializable{
 

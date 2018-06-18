@@ -20,7 +20,7 @@ Council of Governments, PA
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class codeSetElementManageBB {
 

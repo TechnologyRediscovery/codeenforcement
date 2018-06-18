@@ -41,7 +41,7 @@ import javax.faces.component.ActionSource;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class CodeIntegrator extends BackingBeanUtils implements Serializable {
 

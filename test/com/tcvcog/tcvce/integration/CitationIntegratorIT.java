@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class CitationIntegratorIT {
     

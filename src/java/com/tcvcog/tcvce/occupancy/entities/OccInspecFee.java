@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  *
  * @author Adam Gutonski
  */
-public class OccupancyInspectionFee {
+public class OccInspecFee {
     private int occupancyInspectionFeeID;
     private Municipality muni;
     private String occupancyInspectionFeeName;

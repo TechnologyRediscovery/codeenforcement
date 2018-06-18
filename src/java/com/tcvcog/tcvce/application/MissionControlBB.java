@@ -34,7 +34,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class MissionControlBB extends BackingBeanUtils implements Serializable {
 

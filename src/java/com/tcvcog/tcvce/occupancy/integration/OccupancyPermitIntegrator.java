@@ -23,8 +23,8 @@ import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.entities.PropertyUnit;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
-import com.tcvcog.tcvce.occupancy.entities.OccupancyPermitType;
+import com.tcvcog.tcvce.occupancy.entities.OccPermit;
+import com.tcvcog.tcvce.occupancy.entities.OccPermitType;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class OccupancyPermitIntegrator extends BackingBeanUtils implements Serializable {
 
@@ -46,8 +46,8 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     public OccupancyPermitIntegrator() {
     }
     
-    public OccupancyPermit getOccupancyPermit(int permitID) throws IntegrationException{
-        OccupancyPermit op = null;
+    public OccPermit getOccupancyPermit(int permitID) throws IntegrationException{
+        OccPermit op = null;
         
         String query =  "SELECT permitid, referenceno, occinspec_inspectionid, permittype, dateissued, \n" +
                         " dateexpires, issuedunder, specialconditions, notes\n" +
@@ -78,11 +78,11 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
         
     }
     
-    public OccupancyPermit generateOccupancyPermit(ResultSet rs) throws SQLException, IntegrationException{
+    public OccPermit generateOccupancyPermit(ResultSet rs) throws SQLException, IntegrationException{
         OccupancyInspectionIntegrator ii = getOccupancyInspectionIntegrator();
         CodeIntegrator ci = getCodeIntegrator();
         
-        OccupancyPermit op = new OccupancyPermit();
+        OccPermit op = new OccPermit();
         
         op.setPermitID(rs.getInt("permitid"));
         op.setReferenceNo(rs.getString("referenceno"));
@@ -96,13 +96,13 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
         return op;
     }
     
-    public ArrayList<OccupancyPermit> getOccupancyPermitList(PropertyUnit pu){
+    public ArrayList<OccPermit> getOccupancyPermitList(PropertyUnit pu){
         return new ArrayList();
     }
     
-    public ArrayList<OccupancyPermit> getOccupancyPermitList(Property p) throws IntegrationException{
+    public ArrayList<OccPermit> getOccupancyPermitList(Property p) throws IntegrationException{
         
-        ArrayList<OccupancyPermit> permitList = new ArrayList();
+        ArrayList<OccPermit> permitList = new ArrayList();
         String query =  " ";
         
         Connection con = getPostgresCon();
@@ -133,7 +133,7 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     
     
     
-    public void updateOccupancyPermitType(OccupancyPermitType opt) throws IntegrationException {
+    public void updateOccupancyPermitType(OccPermitType opt) throws IntegrationException {
         String query = "UPDATE public.occpermittype\n" +
                     "   SET typename=?, typedescription=?\n" +
                     " WHERE typeid=?;";
@@ -159,7 +159,7 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
         
     }
     
-    public void deleteOccupancyPermitType(OccupancyPermitType opt) throws IntegrationException{
+    public void deleteOccupancyPermitType(OccPermitType opt) throws IntegrationException{
          String query = "DELETE FROM public.occpermittype\n" +
                         " WHERE typeid=?;";
         Connection con = getPostgresCon();
@@ -182,13 +182,13 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     }
     
     
-    public ArrayList<OccupancyPermitType> getOccupancyPermitTypeList() throws IntegrationException{
+    public ArrayList<OccPermitType> getOccupancyPermitTypeList() throws IntegrationException{
         String query = "SELECT typeid, muni_municode, typename, typedescription\n" +
                        "  FROM public.occpermittype";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        ArrayList<OccupancyPermitType> occupancyPermitTypeList = new ArrayList();
+        ArrayList<OccPermitType> occupancyPermitTypeList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);
@@ -210,7 +210,7 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     }
     
     
-    public void insertOccupancyPermitType(OccupancyPermitType occupancyPermitType) throws IntegrationException{
+    public void insertOccupancyPermitType(OccPermitType occupancyPermitType) throws IntegrationException{
         String query = "INSERT INTO public.occpermittype(\n" +
                     "  typeid, muni_municode, typename, typedescription)\n" +
                     "  VALUES (DEFAULT, ?, ?, ?)";
@@ -238,8 +238,8 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
     
     
     
-    private OccupancyPermitType generateOccupancyPermitType(ResultSet rs) throws IntegrationException{
-        OccupancyPermitType newOpt = new OccupancyPermitType();
+    private OccPermitType generateOccupancyPermitType(ResultSet rs) throws IntegrationException{
+        OccPermitType newOpt = new OccPermitType();
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
         
         try{

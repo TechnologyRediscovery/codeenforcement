@@ -16,24 +16,38 @@
  */
 package com.tcvcog.tcvce.occupancy.entities;
 
+import com.tcvcog.tcvce.entities.User;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author Adam Gutonski
  */
-public class OccupancyInspection {
+public class OccInspec {
     
     private int inspectionID;
-    private int propertyUnitID;
-    private int loginUserID;
+    private User caseManager;
+    
+    private InspectedElement checklist;
+    
+    private boolean totalFeePaid;
+    
+    private OccPermitApplication application;
+    private OccInspecStatus status;
+    
     private LocalDateTime firstInspectionDate;
     private boolean firstInspectionPass;
     private LocalDateTime secondInspectionDate;
     private boolean SecondInspectionPass;
-    private boolean resolved;
-    private boolean totalFeePaid;
+    
     private String occupancyInspectionNotes; 
+    
+    private int pacc;
+    private boolean enablePacc;
+    private User muniAuthGrantedBy;
+    private String muniAuthNotes;
+    
+    private OccPermit permit;
 
     /**
      * @return the inspectionID
@@ -47,34 +61,6 @@ public class OccupancyInspection {
      */
     public void setInspectionID(int inspectionID) {
         this.inspectionID = inspectionID;
-    }
-
-    /**
-     * @return the propertyUnitID
-     */
-    public int getPropertyUnitID() {
-        return propertyUnitID;
-    }
-
-    /**
-     * @param propertyUnitID the propertyUnitID to set
-     */
-    public void setPropertyUnitID(int propertyUnitID) {
-        this.propertyUnitID = propertyUnitID;
-    }
-
-    /**
-     * @return the loginUserID
-     */
-    public int getLoginUserID() {
-        return loginUserID;
-    }
-
-    /**
-     * @param loginUserID the loginUserID to set
-     */
-    public void setLoginUserID(int loginUserID) {
-        this.loginUserID = loginUserID;
     }
 
     /**
@@ -134,20 +120,6 @@ public class OccupancyInspection {
     }
 
     /**
-     * @return the resolved
-     */
-    public boolean isResolved() {
-        return resolved;
-    }
-
-    /**
-     * @param resolved the resolved to set
-     */
-    public void setResolved(boolean resolved) {
-        this.resolved = resolved;
-    }
-
-    /**
      * @return the totalFeePaid
      */
     public boolean isTotalFeePaid() {
@@ -173,6 +145,132 @@ public class OccupancyInspection {
      */
     public void setOccupancyInspectionNotes(String occupancyInspectionNotes) {
         this.occupancyInspectionNotes = occupancyInspectionNotes;
+    }
+
+    /**
+     * @return the checklist
+     */
+    public InspectedElement getChecklist() {
+        return checklist;
+    }
+
+    /**
+     * @param checklist the checklist to set
+     */
+    public void setChecklist(InspectedElement checklist) {
+        this.checklist = checklist;
+    }
+
+    /**
+     * @return the permit
+     */
+    public OccPermit getPermit() {
+        return permit;
+    }
+
+    /**
+     * @param permit the permit to set
+     */
+    public void setPermit(OccPermit permit) {
+        this.permit = permit;
+    }
+
+    /**
+     * @return the caseManager
+     */
+    public User getCaseManager() {
+        return caseManager;
+    }
+
+    /**
+     * @param caseManager the caseManager to set
+     */
+    public void setCaseManager(User caseManager) {
+        this.caseManager = caseManager;
+    }
+
+    /**
+     * @return the application
+     */
+    public OccPermitApplication getApplication() {
+        return application;
+    }
+
+    /**
+     * @param application the application to set
+     */
+    public void setApplication(OccPermitApplication application) {
+        this.application = application;
+    }
+
+    /**
+     * @return the status
+     */
+    public OccInspecStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(OccInspecStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the pacc
+     */
+    public int getPacc() {
+        return pacc;
+    }
+
+    /**
+     * @return the enablePacc
+     */
+    public boolean isEnablePacc() {
+        return enablePacc;
+    }
+
+    /**
+     * @return the muniAuthGrantedBy
+     */
+    public User getMuniAuthGrantedBy() {
+        return muniAuthGrantedBy;
+    }
+
+    /**
+     * @return the muniAuthNotes
+     */
+    public String getMuniAuthNotes() {
+        return muniAuthNotes;
+    }
+
+    /**
+     * @param pacc the pacc to set
+     */
+    public void setPacc(int pacc) {
+        this.pacc = pacc;
+    }
+
+    /**
+     * @param enablePacc the enablePacc to set
+     */
+    public void setEnablePacc(boolean enablePacc) {
+        this.enablePacc = enablePacc;
+    }
+
+    /**
+     * @param muniAuthGrantedBy the muniAuthGrantedBy to set
+     */
+    public void setMuniAuthGrantedBy(User muniAuthGrantedBy) {
+        this.muniAuthGrantedBy = muniAuthGrantedBy;
+    }
+
+    /**
+     * @param muniAuthNotes the muniAuthNotes to set
+     */
+    public void setMuniAuthNotes(String muniAuthNotes) {
+        this.muniAuthNotes = muniAuthNotes;
     }
     
     

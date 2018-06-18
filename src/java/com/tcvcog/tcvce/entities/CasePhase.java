@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.entities;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public enum CasePhase {
 

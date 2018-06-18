@@ -24,7 +24,7 @@ import java.util.Objects;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class Citation {
     private int citationID;

@@ -34,7 +34,7 @@ import javax.faces.event.ActionEvent;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
 

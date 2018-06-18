@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.occupancy.coordinators;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class PaymentCoordinator {
 

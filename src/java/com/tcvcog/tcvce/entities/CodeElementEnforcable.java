@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.entities;
 
 /**
  *  Represents a codesetelement stated with fidelity to the ERD
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class CodeElementEnforcable extends CodeElement{
     

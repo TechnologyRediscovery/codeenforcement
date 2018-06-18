@@ -37,7 +37,7 @@ import javax.faces.application.FacesMessage;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
 

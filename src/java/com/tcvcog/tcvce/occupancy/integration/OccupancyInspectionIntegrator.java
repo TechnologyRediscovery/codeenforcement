@@ -21,8 +21,11 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.PropertyUnit;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
-import com.tcvcog.tcvce.occupancy.entities.OccupancyInspectionFee;
+import com.tcvcog.tcvce.occupancy.entities.OccInspec;
+import com.tcvcog.tcvce.occupancy.entities.OccInspecFee;
+import com.tcvcog.tcvce.occupancy.entities.OccInspecStatus;
+import com.tcvcog.tcvce.occupancy.entities.OccPermitApplication;
+import com.tcvcog.tcvce.occupancy.entities.OccPermitApplicationReason;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -36,7 +39,42 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
     }
     
-    public void insertOccupanyInspection(OccupancyInspection occupancyInspection) throws IntegrationException{
+    public void insertOccPermitApplication(OccPermitApplication application){
+        
+    }
+    
+    public ArrayList<OccPermitApplicationReason> getOccPermitApplicationReasons(){
+        
+    }
+    
+    public OccPermitApplication getOccPermitApplication(int applicationID){
+        
+    }
+    
+    private OccPermitApplication generateApplication(ResultSet rs){
+        OccPermitApplication app = new OccPermitApplication();
+        
+        return app;
+    }
+    
+    public void updateOccPermitApplication(OccPermitApplication application){
+        
+    }
+    
+    public void deleteOccPermitApplication(OccPermitApplication application){
+        
+    }
+    
+    public ArrayList<OccInspecStatus> getOccInspecStatusList(){
+        
+    }
+    
+    public void updateOccInspecStatus(OccInspec oi, OccInspecStatus updatedStatus){
+        
+        
+    }
+    
+    public void insertOccupanyInspection(OccInspec occupancyInspection) throws IntegrationException{
         String query = "INSERT INTO public.occupancyinspection(\n" +
                 "   inspectionid, propertyunitid, login_userid, firstinspectiondate, "
             +   "firstinspectionpass, secondinspectiondate, secondinspectionpass, "
@@ -79,7 +117,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
                 
     }
     
-    public void updateOccupancyInspection(OccupancyInspection occInspection) throws IntegrationException {
+    public void updateOccupancyInspection(OccInspec occInspection) throws IntegrationException {
         String query = "UPDATE public.occupancyinspection\n" +
                         "   SET propertyunitid=?, login_userid=?, firstinspectiondate=?, \n" +
                         "       firstinspectionpass=?, secondinspectiondate=?, secondinspectionpass=?, \n" +
@@ -125,7 +163,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
     }
     
-    public void deleteOccupancyInspection(OccupancyInspection occInspection) throws IntegrationException{
+    public void deleteOccupancyInspection(OccInspec occInspection) throws IntegrationException{
          String query = "DELETE FROM public.occupancyinspection\n" +
                         " WHERE inspectionid=?;";
         Connection con = getPostgresCon();
@@ -147,8 +185,8 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         } // close finally
     }
     
-    private OccupancyInspection generateOccupancyInspection(ResultSet rs) throws IntegrationException{
-        OccupancyInspection newInspection = new OccupancyInspection();
+    private OccInspec generateOccupancyInspection(ResultSet rs) throws IntegrationException{
+        OccInspec newInspection = new OccInspec();
         
         try{
             newInspection.setInspectionID(rs.getInt("inspectionid"));
@@ -178,12 +216,12 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         return newInspection;
     }
     
-    public OccupancyInspection getOccupancyInspection(int inspectionID){
+    public OccInspec getOccupancyInspection(int inspectionID){
         
-        return new OccupancyInspection();
+        return new OccInspec();
     }
     
-    public ArrayList<OccupancyInspection> getOccupancyInspectionList(PropertyUnit pu) throws IntegrationException{
+    public ArrayList<OccInspec> getOccupancyInspectionList(PropertyUnit pu) throws IntegrationException{
         String query = "SELECT inspectionid, propertyunitid, login_userid, firstinspectiondate, \n" +
                     "       firstinspectionpass, secondinspectiondate, secondinspectionpass, \n" +
                     "       resolved, totalfeepaid, notes\n" +
@@ -191,7 +229,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     Connection con = getPostgresCon();
     ResultSet rs = null;
     PreparedStatement stmt = null;
-    ArrayList<OccupancyInspection> occupancyInspectionList = new ArrayList();
+    ArrayList<OccInspec> occupancyInspectionList = new ArrayList();
     
     try{
         stmt = con.prepareStatement(query);
@@ -213,7 +251,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     
     }
     
-     public void updateOccupancyInspectionFee(OccupancyInspectionFee oif) throws IntegrationException {
+     public void updateOccupancyInspectionFee(OccInspecFee oif) throws IntegrationException {
         String query = "UPDATE public.occinspectionfee\n" +
                     "   SET muni_municode=?, feename=?, feeamount=?, effectivedate=?, \n" +
                     "       expirydate=?, notes=? \n" +
@@ -255,14 +293,14 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     }
     
     
-    public ArrayList<OccupancyInspectionFee> getOccupancyInspectionFeeList() throws IntegrationException {
+    public ArrayList<OccInspecFee> getOccupancyInspectionFeeList() throws IntegrationException {
             String query = "SELECT feeid, muni_municode, feename, feeamount, effectivedate, expirydate, \n" +
                             "       notes\n" +
                             "  FROM public.occinspectionfee";
             Connection con = getPostgresCon();
             ResultSet rs = null;
             PreparedStatement stmt = null;
-            ArrayList<OccupancyInspectionFee> occupancyInspectionFeeList = new ArrayList();
+            ArrayList<OccInspecFee> occupancyInspectionFeeList = new ArrayList();
         
         try {
             stmt = con.prepareStatement(query);
@@ -285,7 +323,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     }
     
        
-    public void insertOccupancyInspectionFee(OccupancyInspectionFee occupancyInspectionFee) throws IntegrationException {
+    public void insertOccupancyInspectionFee(OccInspecFee occupancyInspectionFee) throws IntegrationException {
         String query = "INSERT INTO public.occinspectionfee(\n" +
                         "            feeid, muni_municode, feename, feeamount, effectivedate, expirydate, \n" +
                         "            notes)\n" +
@@ -325,7 +363,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
     }
     
-    public void deleteOccupancyInspectionFee(OccupancyInspectionFee oif) throws IntegrationException{
+    public void deleteOccupancyInspectionFee(OccInspecFee oif) throws IntegrationException{
          String query = "DELETE FROM public.occinspectionfee\n" +
                 " WHERE feeid= ?;";
         Connection con = getPostgresCon();
@@ -348,8 +386,8 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     }
     
     
-    private OccupancyInspectionFee generateOccupancyInspectionFee(ResultSet rs) throws IntegrationException {
-        OccupancyInspectionFee newOif = new OccupancyInspectionFee();
+    private OccInspecFee generateOccupancyInspectionFee(ResultSet rs) throws IntegrationException {
+        OccInspecFee newOif = new OccInspecFee();
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
     
         try {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 sylvia
+ * Copyright (C) 2017 Eric C. Darsow
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class TestDB {
     
@@ -45,7 +45,7 @@ public class TestDB {
         Jdbc3PoolingDataSource source = new Jdbc3PoolingDataSource();
         source.setServerName("localhost:5432");
         source.setDatabaseName("cogdb");
-        source.setUser("sylvia");
+        source.setUser("Eric C. Darsow");
         source.setPassword("c0d3");
         source.setMaxConnections(10);
         try {

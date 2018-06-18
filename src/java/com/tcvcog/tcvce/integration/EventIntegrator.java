@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class EventIntegrator extends BackingBeanUtils implements Serializable {
 

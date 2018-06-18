@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.domain;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class ViolationException extends BaseException {
     

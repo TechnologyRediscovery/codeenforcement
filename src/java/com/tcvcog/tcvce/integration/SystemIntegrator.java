@@ -22,7 +22,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.ImprovementSuggestion;
 import com.tcvcog.tcvce.entities.ListChangeRequest;
 import com.tcvcog.tcvce.entities.Person;
-import com.tcvcog.tcvce.occupancy.entities.OccupancyPermit;
+import com.tcvcog.tcvce.occupancy.entities.OccPermit;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class SystemIntegrator extends BackingBeanUtils implements Serializable {
 

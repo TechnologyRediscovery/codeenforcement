@@ -26,7 +26,7 @@ import javax.faces.bean.SessionScoped;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 
 @SessionScoped

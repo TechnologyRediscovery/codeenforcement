@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class NoticeOfViolation {
     

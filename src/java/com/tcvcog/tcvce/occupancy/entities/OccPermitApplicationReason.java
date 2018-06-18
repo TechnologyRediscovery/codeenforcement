@@ -15,39 +15,12 @@ Council of Governments, PA
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tcvcog.tcvce.application;
-
-import java.io.Serializable;
+package com.tcvcog.tcvce.occupancy.entities;
 
 /**
  *
  * @author Eric C. Darsow
  */
-public class DashboardBB extends BackingBeanUtils implements Serializable {
-
-    /**
-     * Creates a new instance of DashboardBB
-     */
-    public DashboardBB() {
-    }
-    
-    private String sessionManagerVersion;
-
-    /**
-     * @return the sessionManagerVersion
-     */
-    public String getSessionManagerVersion() {
-        
-        return sessionManagerVersion;
-    }
-
-    /**
-     * @param sessionManagerVersion the sessionManagerVersion to set
-     */
-    public void setSessionManagerVersion(String sessionManagerVersion) {
-        this.sessionManagerVersion = sessionManagerVersion;
-    }
-    
-    
+public class OccPermitApplicationReason {
     
 }

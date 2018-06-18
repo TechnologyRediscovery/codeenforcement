@@ -23,7 +23,7 @@ import com.tcvcog.tcvce.entities.Municipality;
  *
  * @author Adam Gutonski
  */
-public class OccupancyPermitType {
+public class OccPermitType {
     
     private int occupancyPermitTypeID;
     private Municipality muni;

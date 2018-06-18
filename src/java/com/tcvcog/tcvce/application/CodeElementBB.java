@@ -33,7 +33,7 @@ import javax.faces.context.FacesContext;
 
 /**
  *
- * @author sylvia
+ * @author Eric C. Darsow
  */
 public class CodeElementBB extends BackingBeanUtils implements Serializable{
 
