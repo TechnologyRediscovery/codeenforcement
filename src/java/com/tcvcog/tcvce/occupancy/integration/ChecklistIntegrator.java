@@ -167,7 +167,8 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
 
-        
+        // temp to close
+        return new ImplementedChecklist();
     }
     
     
@@ -570,7 +571,8 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
 
-        
+        // temp to close
+        return new ImplementedChecklist();
         
     }
     
@@ -599,6 +601,9 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
              if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
+        
+        // temp to close
+        return new ArrayList();
 
     }
     

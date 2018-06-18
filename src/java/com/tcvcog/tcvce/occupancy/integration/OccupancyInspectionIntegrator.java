@@ -44,11 +44,12 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     }
     
     public ArrayList<OccPermitApplicationReason> getOccPermitApplicationReasons(){
-        
+        // temp to close
+        return new ArrayList();
     }
     
     public OccPermitApplication getOccPermitApplication(int applicationID){
-        
+        return new OccPermitApplication();
     }
     
     private OccPermitApplication generateApplication(ResultSet rs){
@@ -66,7 +67,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     }
     
     public ArrayList<OccInspecStatus> getOccInspecStatusList(){
-        
+        return new ArrayList();
     }
     
     public void updateOccInspecStatus(OccInspec oi, OccInspecStatus updatedStatus){
@@ -86,8 +87,8 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
         try {
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, occupancyInspection.getPropertyUnitID());
-            stmt.setInt(2, occupancyInspection.getLoginUserID());
+//            stmt.setInt(1, occupancyInspection.getPropertyUnitID());
+//            stmt.setInt(2, occupancyInspection.getLoginUserID());
             if(occupancyInspection.getFirstInspectionDate() != null){
                 stmt.setTimestamp(3, java.sql.Timestamp.valueOf(occupancyInspection.getFirstInspectionDate()));
             } else {
@@ -100,7 +101,6 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
                 stmt.setNull(5, java.sql.Types.NULL);
             }
             stmt.setBoolean(6, occupancyInspection.isSecondInspectionPass());
-            stmt.setBoolean(7, occupancyInspection.isResolved());
             stmt.setBoolean(8, occupancyInspection.isTotalFeePaid());
             stmt.setString(9, occupancyInspection.getOccupancyInspectionNotes());
             
@@ -129,8 +129,8 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
         try{
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, occInspection.getPropertyUnitID());
-            stmt.setInt(2, occInspection.getLoginUserID());
+//            stmt.setInt(1, occInspection.getPropertyUnitID());
+//            stmt.setInt(2, occInspection.getLoginUserID());
             //update first inspection date
             if(occInspection.getFirstInspectionDate() != null){
                 stmt.setTimestamp(3, java.sql.Timestamp.valueOf(occInspection.getFirstInspectionDate()));
@@ -147,7 +147,6 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
                 stmt.setNull(5, java.sql.Types.NULL);
             }
             stmt.setBoolean(6, occInspection.isSecondInspectionPass());
-            stmt.setBoolean(7, occInspection.isResolved());
             stmt.setBoolean(8, occInspection.isTotalFeePaid());
             stmt.setString(9, occInspection.getOccupancyInspectionNotes());
             stmt.setInt(10, occInspection.getInspectionID());
@@ -190,8 +189,8 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
         try{
             newInspection.setInspectionID(rs.getInt("inspectionid"));
-            newInspection.setPropertyUnitID(rs.getInt("propertyunitid"));
-            newInspection.setLoginUserID(rs.getInt("login_userid"));
+//            newInspection.setPropertyUnitID(rs.getInt("propertyunitid"));
+//            newInspection.setLoginUserID(rs.getInt("login_userid"));
             java.sql.Timestamp s = rs.getTimestamp("firstinspectiondate");
             if(s != null){
                 newInspection.setFirstInspectionDate(s.toLocalDateTime());
@@ -205,7 +204,6 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
             } else {
                 newInspection.setSecondInspectionDate(null);
             }
-            newInspection.setResolved(rs.getBoolean("resolved"));
             newInspection.setTotalFeePaid(rs.getBoolean("totalfeepaid"));
             newInspection.setOccupancyInspectionNotes(rs.getString("notes"));
             

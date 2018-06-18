@@ -86,10 +86,10 @@ public class OccupancyPermitIntegrator extends BackingBeanUtils implements Seria
         
         op.setPermitID(rs.getInt("permitid"));
         op.setReferenceNo(rs.getString("referenceno"));
-        op.setInspection(ii.getOccupancyInspection(rs.getInt("occinspec_inspectionid")));
+//        op.setInspection(ii.getOccupancyInspection(rs.getInt("occinspec_inspectionid")));
         op.setDateIssued(rs.getTimestamp("dateissued").toLocalDateTime());
         op.setDateExpires(rs.getTimestamp("dateexpires").toLocalDateTime());
-        op.setIssuingCodeSource(ci.getCodeSource(rs.getInt("issuedunder")));
+//        op.setIssuingCodeSource(ci.getCodeSource(rs.getInt("issuedunder")));
         op.setSpecialConditions(rs.getString("specialconditions"));
         op.setNotes(rs.getString("notes"));
         

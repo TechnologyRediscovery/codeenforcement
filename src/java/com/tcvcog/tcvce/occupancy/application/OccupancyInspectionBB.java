@@ -65,11 +65,11 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     public void editOccupancyInspection(ActionEvent e){
         if(getSelectedOccupancyInspection() != null){
             setFormInspectionID(selectedOccupancyInspection.getInspectionID());
-            setFormPropertyUnitID(selectedOccupancyInspection.getPropertyUnitID());
-            setFormLoginUserID(selectedOccupancyInspection.getLoginUserID());
+//            setFormPropertyUnitID(selectedOccupancyInspection.getPropertyUnitID());
+//            setFormLoginUserID(selectedOccupancyInspection.getLoginUserID());
             setFormFirstInspectionPass(selectedOccupancyInspection.isFirstInspectionPass());
             setFormSecondInspectionPass(selectedOccupancyInspection.isSecondInspectionPass());
-            setFormResolved(selectedOccupancyInspection.isResolved());
+//            setFormResolved(selectedOccupancyInspection.isResolved());
             setFormTotalFeePaid(selectedOccupancyInspection.isTotalFeePaid());
             setFormOccupancyInspectionNotes(selectedOccupancyInspection.getOccupancyInspectionNotes());
             //setFormOccupancyInspectionFeeNotes(selectedOccupancyInspectionFee.getOccupancyInspectionFeeNotes());
@@ -114,8 +114,8 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
         OccInspec occInspection = selectedOccupancyInspection;
         
         occInspection.setInspectionID(formInspectionID);
-        occInspection.setPropertyUnitID(formPropertyUnitID);
-        occInspection.setLoginUserID(formLoginUserID);
+//        occInspection.setPropertyUnitID(formPropertyUnitID);
+//        occInspection.setLoginUserID(formLoginUserID);
         occInspection.setFirstInspectionDate(formFirstInspectionDate.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime());
@@ -124,7 +124,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime());
         occInspection.setSecondInspectionPass(formSecondInspectionPass);
-        occInspection.setResolved(formResolved);
+//        occInspection.setResolved(formResolved);
         occInspection.setTotalFeePaid(formTotalFeePaid);
         occInspection.setOccupancyInspectionNotes(formOccupancyInspectionNotes);
         //oif.setOccupancyInspectionFeeNotes(formOccupancyInspectionFeeNotes);
@@ -145,8 +145,8 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
         OccInspec o = new OccInspec();
         OccupancyInspectionIntegrator oii =  getOccupancyInspectionIntegrator();
         
-        o.setPropertyUnitID(formPropertyUnitID);
-        o.setLoginUserID(formLoginUserID);
+//        o.setPropertyUnitID(formPropertyUnitID);
+//        o.setLoginUserID(formLoginUserID);
         o.setFirstInspectionDate(formFirstInspectionDate.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime());
@@ -155,7 +155,6 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime());
         o.setSecondInspectionPass(formSecondInspectionPass);
-        o.setResolved(formResolved);
         o.setTotalFeePaid(formTotalFeePaid);
         o.setOccupancyInspectionNotes(formOccupancyInspectionNotes);
     
