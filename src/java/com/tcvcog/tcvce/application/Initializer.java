@@ -43,14 +43,10 @@ import com.tcvcog.tcvce.occupancy.integration.PaymentIntegrator;
 import com.tcvcog.tcvce.integration.LogIntegrator;
 import com.tcvcog.tcvce.integration.SystemIntegrator;
 
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener; 
-  
 import javax.servlet.annotation.WebListener;
-
-
 
 /**
  *
@@ -157,16 +153,11 @@ public class Initializer implements ServletContextListener{
         
         LogIntegrator logInt = new LogIntegrator();
         servletContext.setAttribute("logIntegrator", logInt);
-        
-        
-        
     }
     
     @Override
     public void contextDestroyed(ServletContextEvent event){
         
     }
-    
-    
     
 }

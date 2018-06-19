@@ -29,18 +29,15 @@
                     <h:outputText value="Enter the address of the property of concern or describe its location " styleClass="uiLabel" />
                 </h:outputLabel>
                 <p:inputText id="controlCode" value="#{checkRequestStatusBean.lookupControlCode}" 
-                             style="width: 100%;" tabindex="0" required="false" styleClass="inputText"/>
+                             style="width: 100%;" tabindex="1" required="false" styleClass="inputText"/>
                 <h:message for="controlCode" showDetail="false" showSummary="true" 
                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                 <h:commandButton 
-                        id="submitCheckRequest" 
+                    id="submitCheckRequest"  tabindex="2"
                         value="Check Request Status" 
                         styleClass="buttonOwnLine"
                         action="#{checkRequestStatusBean.lookupRequest}"/>
             </h:form>
-              <p>
-            <h:outputLink value="index.xhtml">Return to code enforcement home</h:outputLink>
-            </p>
         </f:view>
         </div>
     </h:body>

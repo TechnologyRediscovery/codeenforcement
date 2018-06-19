@@ -204,6 +204,11 @@
     </managed-bean>
 
     <!--view-scoped beans-->
+    <managed-bean>
+        <managed-bean-name>sessionInitializer</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.SessionInitializer</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
     
     <managed-bean>
         <managed-bean-name>missionControlBB</managed-bean-name>
@@ -519,6 +524,15 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>systemHome</from-outcome>
+            <to-view-id>/public/systemHome.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
 
 
     <navigation-rule>
@@ -547,31 +561,13 @@
         </navigation-case>
     </navigation-rule>
     
-    
-    <navigation-rule>
-        <from-view-id>/public/checkRequestStatus.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/public/requestStatus.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/public/checkRequestStatus.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-
     <navigation-rule>
 
         <from-view-id>*</from-view-id>    
-        <navigation-case>
-            <from-outcome>home</from-outcome>
-            <to-view-id>/public/index.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
+        
         <navigation-case>
             <from-outcome>codeEnforce</from-outcome>
-            <to-view-id>/public/submitCERequest.xhtml</to-view-id>
+            <to-view-id>/public/services/submitCERequest.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
@@ -582,16 +578,16 @@
 
     
     <navigation-rule>
-        <from-view-id>/workflow.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/workflow.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{workflowBB.viewSelectedActionRequest}</from-action>
             <from-outcome>actionRequestManage</from-outcome>
-            <to-view-id>/ce/actionRequestManage.xhtml</to-view-id>
+            <to-view-id>/restricted/ce/actionRequestManage.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-action>#{workflowBB.viewCase}</from-action>
             <from-outcome>caseManage</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
@@ -601,19 +597,19 @@
         
         <navigation-case>
             <from-outcome>workflow</from-outcome>
-            <to-view-id>/workflow.xhtml</to-view-id>
+            <to-view-id>/restricted/cogviewworkflow.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <navigation-case>
             <from-outcome>dashboard</from-outcome>
-            <to-view-id>/dashboard.xhtml</to-view-id>
+            <to-view-id>/restricted/dashboard.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
         <navigation-case>
             <from-outcome>workflow</from-outcome>
-            <to-view-id>/workflow.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/workflow.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
@@ -626,13 +622,13 @@
         
         <navigation-case>
             <from-outcome>improvementSuggestion</from-outcome>
-            <to-view-id>/improvementSuggestion.xhtml</to-view-id>
+            <to-view-id>/public/improvementSuggestion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
         <navigation-case>
             <from-outcome>selectItemListChange</from-outcome>
-            <to-view-id>/selectBoxListChangeRequest.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/gen/selectBoxListChangeRequest.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -642,7 +638,7 @@
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
             <from-outcome>ceCaseLookup</from-outcome>
-            <to-view-id>/public/codeEnforcementCaseLookUp.xhtml</to-view-id>
+            <to-view-id>/public/services/codeEnforcementCaseLookUp.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -651,7 +647,7 @@
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
             <from-outcome>scheduleOccIns</from-outcome>
-            <to-view-id>/public/scheduleOccupancyInspection.xhtml</to-view-id>
+            <to-view-id>/public/services/scheduleOccupancyInspection.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -660,7 +656,7 @@
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
             <from-outcome>registerLandlord</from-outcome>
-            <to-view-id>/public/registerYourLandlord.xhtml</to-view-id>
+            <to-view-id>/public/services/registerYourLandlord.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -671,7 +667,7 @@
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
             <from-outcome>checkRequestStatus</from-outcome>
-            <to-view-id>/public/checkCodeEnforcementStatus.xhtml</to-view-id>
+            <to-view-id>/public/services/checkCodeEnforcementStatus.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -680,7 +676,7 @@
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
         <navigation-case>
             <from-outcome>occPermitAccessPortal</from-outcome>
-            <to-view-id>/public/occupancyPermitAccessPortal.xhtml</to-view-id>
+            <to-view-id>/public/services/occupancyPermitAccessPortal.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -690,31 +686,31 @@
         
     
     <navigation-rule>
-        <from-view-id>/propertyProfile.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/propertyProfile.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>propertyUpdate</from-outcome>
-            <to-view-id>/propertyUpdate.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/gen/propertyUpdate.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/propertySearch.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/propertySearch.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/propertyProfile.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>propertyUpdate</from-outcome>
-            <to-view-id>/propertyUpdate.xhtml</to-view-id>
+            <to-view-id>restricted/cogstaff/propertyUpdate.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/propertyUpdate.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/propertyUpdate.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/propertyProfile.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -724,108 +720,98 @@
         
         <navigation-case>
             <from-outcome>propertySearch</from-outcome>
-            <to-view-id>/propertySearch.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/propertySearch.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
         <navigation-case>
             <from-outcome>propertyProfile</from-outcome>
-            <to-view-id>/propertyProfile.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/propertyProfile.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <navigation-case>
             <from-outcome>propertySearch</from-outcome>
-            <to-view-id>/propertySearch.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/propertySearch.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
         
     <!--Persons-->
-
-        
-    <navigation-rule>
-        <from-view-id>/personManage.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>personAdd</from-outcome>
-            <to-view-id>/personAdd.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    
     <navigation-rule>
         <from-view-id>*</from-view-id>
-    
-    
+
         <navigation-case>
             <from-outcome>personProfile</from-outcome>
-            <to-view-id>/personProfile.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/personProfile.xhtml</to-view-id>
         </navigation-case>
-    
-        <navigation-case>
-            <from-outcome>personManage</from-outcome>
-            <to-view-id>/personManage.xhtml</to-view-id>
-        </navigation-case>
-    
+        
     </navigation-rule>
+    
         
     <!--Code Enforcement-->
+    
     <navigation-rule>
         <from-view-id>*</from-view-id>
-
+    
         <navigation-case>
             <from-outcome>caseViolations</from-outcome>
-            <to-view-id>/ce/caseViolations.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/caseViolations.xhtml</to-view-id>
+        </navigation-case>
+    
+        <navigation-case>
+            <from-outcome>textBlockManageg</from-outcome>
+            <to-view-id>/restricted/cogstaff/ce/textBlockManage.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>caseNotices</from-outcome>
-            <to-view-id>/ce/caseNotices.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/caseNotices.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>caseCitations</from-outcome>
-            <to-view-id>/ce/caseCitations.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/caseCitations.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>caseEvents</from-outcome>
-            <to-view-id>/ce/caseEvents.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/caseEvents.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>noticeOfViolationBuilder</from-outcome>
-            <to-view-id>/ce/noticeOfViolationBuilder.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/noticeOfViolationBuilder.xhtml</to-view-id>
         </navigation-case>
  
         <navigation-case>
             <from-outcome>noticeOfViolationEditor</from-outcome>
-            <to-view-id>/ce/noticeOfViolationEditor.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/noticeOfViolationEditor.xhtml</to-view-id>
         </navigation-case>
     
     
         <navigation-case>
             <from-outcome>case</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
         <navigation-case>
             <from-outcome>caseManage</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 
                 
         <navigation-case>
             <from-outcome>eventManage</from-outcome>
-            <to-view-id>/ce/eventConfiguration.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/eventConfiguration.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <navigation-case>
             <from-outcome>litigationManage</from-outcome>
-            <to-view-id>/ce/courtEntityManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/courtEntityManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     
@@ -833,84 +819,136 @@
     
     
     <navigation-rule>
-        <from-view-id>/ce/caseManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/caseManage.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{caseManageBB.addViolation}</from-action>
             <from-outcome>violationSelectElement</from-outcome>
-            <to-view-id>/ce/violationSelectElement.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/violationSelectElement.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
         
     <navigation-rule>
-        <from-view-id>/ce/requestManagement.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/ce/requestManagement.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{requestManagementBean.manage}</from-action>
             <from-outcome>manageRequest</from-outcome>
-            <to-view-id>/ce/mangeActionRequest.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/mangeActionRequest.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
     
     <navigation-rule>
-        <from-view-id>/ce/caseAdd.xhtml</from-view-id>
+        <from-view-id>/restructed/cogstaff/ce/caseAdd.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{caseAddBB.addNewCase}</from-action>
             <from-outcome>caseManage</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
     
     <navigation-rule>
-        <from-view-id>/ce/violationEdit.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/ce/violationEdit.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{violationEditBB.backToCaseManager}</from-action>
             <from-outcome>caseManage</from-outcome>
-            <to-view-id>/ce/caseManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
 
     <navigation-rule>
-        <from-view-id>/ce/violationSelectElement.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/ce/violationSelectElement.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>violationAdd</from-outcome>
-            <to-view-id>/ce/violationAdd.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/violationAdd.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     
     <navigation-rule>
-        <from-view-id>/ce/caseManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/caseManage.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{caseManageBB.editViolation}</from-action>
             <from-outcome>violationEdit</from-outcome>
-            <to-view-id>/ce/violationEdit.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/violationEdit.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
    
     <navigation-rule>
-        <from-view-id>/ce/caseManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/caseManage.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{eventAddBB.startNewEvent}</from-action>
             <from-outcome>eventAdd</from-outcome>
-            <to-view-id>/ce/eventAdd.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/eventAdd.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-action>#{eventAddBB.takeNextAction}</from-action>
             <from-outcome>eventAdd</from-outcome>
-            <to-view-id>/ce/eventAdd.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/ce/eventAdd.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+    </navigation-rule>
+    
+    
+    <!--  OCCUPANCY  -->
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+    
+        <navigation-case>
+            <from-outcome>occPermitApplications</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/permitApplications.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>occInspections</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/occupancyInspections.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>occInspectionAdd</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/occInspectionAdd.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>occInspectionProfile</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/occProfile.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>checklists</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/checklsits.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>payments</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/paymentManage.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>feeManage</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/occInspectionFeeManage.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>occPermitTypeManage</from-outcome>
+            <to-view-id>/restricted/cogstaff/occ/occPermitTypeManage.xhtml</to-view-id>
+        </navigation-case>
+        
+        
+        
+        
+        
     </navigation-rule>
         
         
@@ -927,45 +965,35 @@
         
         <navigation-case>
             <from-outcome>codeGuideAdd</from-outcome>
-            <to-view-id>/restricted/cogstaff/codeGuideAdd.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/code/codeGuideEntryAdd.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
         
         <navigation-case>
             <from-outcome>codeSourceManage</from-outcome>
-            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
     
         <navigation-case>
             <from-outcome>elementTypeManage</from-outcome>
-            <to-view-id>/ce/codeElementTypeManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/code/codeElementTypeManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <navigation-case>
             <from-outcome>codeSetManage</from-outcome>
-            <to-view-id>/ce/codeSetManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/code/codeSetManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
     </navigation-rule>    
-    
-    <navigation-rule>
-        <from-view-id>inspectableCodeElement.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>inspectableCodeElementManage</from-outcome>
-            <to-view-id>inspectableCodeElementManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
         
     <navigation-rule>
-        <from-view-id>/ce/codeSourceAdd.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/code/codeSourceAdd.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/ce/codeSourceManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
@@ -974,32 +1002,32 @@
 
     
     <navigation-rule>
-        <from-view-id>/userManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogadmin/userManage.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>userUpdate</from-outcome>
-            <to-view-id>/userUpdate.xhtml</to-view-id>
+            <to-view-id>/restricted/cogadmin/userUpdate.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>userAdd</from-outcome>
-            <to-view-id>/userAdd.xhtml</to-view-id>
+            <to-view-id>/restricted/cogadmin/userAdd.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/userManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogadmin/userManage.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>userManage</from-outcome>
-            <to-view-id>/userManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogadmin/userManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/userAdd.xhtml</from-view-id>
+        <from-view-id>/restricted/cogadmin/userAdd.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>userManage</from-outcome>
-            <to-view-id>/userManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogadmin/userManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1011,28 +1039,24 @@
     
         <navigation-case>
             <from-outcome>userManage</from-outcome>
-            <to-view-id>/userManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogadmin/userManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <navigation-case>
             <from-outcome>logManage</from-outcome>
-            <to-view-id>/logManage.xhtml</to-view-id>
+            <to-view-id>/restricted/dev/logManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <navigation-case>
             <from-outcome>muniManage</from-outcome>
-            <to-view-id>/muniManage.xhtml</to-view-id>
+            <to-view-id>/restricted/cogadmin/muniManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     
     <!-- ************ non-wildcard nav cases ************************-->
-    <managed-bean>
-        <managed-bean-name>sessionInitializer</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.SessionInitializer</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+    
 </faces-config>

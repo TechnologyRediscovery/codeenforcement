@@ -10,7 +10,7 @@
         <title>Session Logout</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="./navContainer_public.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -22,7 +22,7 @@
             
                        <f:view id="exitLandingView">
                         <h:form id="exitLandingForm">
-                            <p:commandLink ajax="false" action="gotoLogin" value="&larr; Return to login page and start all over"/>
+                            <p:commandLink ajax="false" action="systemHome" value="&larr; Return to login page and start all over" />
                         </h:form>
                     </f:view>
                 </div>
