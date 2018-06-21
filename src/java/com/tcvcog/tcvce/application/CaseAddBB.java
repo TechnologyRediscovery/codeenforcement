@@ -62,7 +62,7 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
         // no closing date, by design of case flow
         newCase.setPublicControlCode(casePCC);
         newCase.setProperty(getSessionBean().getActiveProp());
-        newCase.setUser(getSessionBean().getActiveUser());
+        newCase.setUser(getFacesUser());
         newCase.setCaseName(formCaseName);
         newCase.setOriginationDate(formOriginationDate.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());

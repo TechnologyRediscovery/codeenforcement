@@ -80,7 +80,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
         e.setCaseID(getSessionBean().getActiveCase().getCaseID());
         e.setEventDescription(formEventDesc);
         e.setActiveEvent(activeEvent);
-        e.setEventOwnerUser(getSessionBean().getActiveUser());
+        e.setEventOwnerUser(getFacesUser());
         e.setDateOfRecord(formEventDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         e.setDiscloseToMunicipality(formDiscloseToMuni);
         e.setDiscloseToPublic(formDiscloseToPublic);

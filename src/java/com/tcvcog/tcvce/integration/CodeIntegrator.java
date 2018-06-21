@@ -25,7 +25,6 @@ import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
-import com.tcvcog.tcvce.entities.Municipality;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -285,7 +284,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                cs = (populateCodeSetFromRS(rs));
+                cs = populateCodeSetFromRS(rs);
             }
             
         } catch (SQLException ex) { 
@@ -300,24 +299,18 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public String getCodeSetName(int setID){
-        String codeSetName;
-        return "";
-        
-    }
     
     private CodeSet populateCodeSetFromRS(ResultSet rs) throws SQLException, IntegrationException{
         CodeSet set = new CodeSet();
         MunicipalityIntegrator muniInt = getMunicipalityIntegrator();
+        
         set.setCodeSetID(rs.getInt("codesetid"));
         set.setCodeSetName(rs.getString("name"));
         set.setCodeSetDescription(rs.getString("description"));
+        // the key call: grab a list of all enforcable code elements in this set (large)
         set.setEnfCodeElementList(getEnforcableCodeElementList(rs.getInt("codesetid")));
-        int muniCodeTest = rs.getInt("municipality_municode");
-        set.setMuni(muniInt.getMuniFromMuniCode(muniCodeTest));
-        if (set.getMuni() == null){
-            throw new IntegrationException("Exception in CodeSetIntegrator: Cannot find any code sets for selected Municipality");
-        }
+        
+        set.setMuni(muniInt.getMuniFromMuniCode(rs.getInt("municipality_municode")));
 
         return set;
         
@@ -409,7 +402,13 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public int insertCodeSet(CodeSet codeSetToInsert) throws IntegrationException{
+    /**
+     * Adds a code set listing which is then a container for enforcable code set elements
+     * @param codeSetToInsert
+     * @return the code set list (each code set does not have the list of enfcodeelements)
+     * @throws IntegrationException 
+     */
+    public int insertCodeSetMetadata(CodeSet codeSetToInsert) throws IntegrationException{
         
         PreparedStatement stmt = null;
         Connection con = null;
@@ -511,7 +510,9 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             while(rs.next()){
                 CodeElementEnforcable newEce = new CodeElementEnforcable();
+                // start with the base code element
                 newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
+                
                 newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
                 newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
                 newEce.setMinPenalty(rs.getInt("elementminpenalty"));
@@ -551,6 +552,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 e.setElementID(rs.getInt("elementid"));
                 
                 e.setGuideEntry(getCodeElementGuideEntry(rs.getInt("guideentryid")));
+                
                 e.setSource(getCodeSource(rs.getInt("codesource_sourceid")));
                 
                 e.setOrdchapterNo(rs.getInt("ordchapterno"));
@@ -839,7 +841,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public void updateCodeSet(CodeSet set) throws IntegrationException{
+    public void updateCodeSetMetadata(CodeSet set) throws IntegrationException{
         String query = "UPDATE public.codeset\n" +
             "SET name=?, description=?, municipality_municode=?\n" +
             "WHERE codeSetid=?;";
@@ -919,6 +921,11 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          return cege;
     }
     
+    /**
+     * Retrieves the entire code guide!
+     * @return the full code guide for browsing
+     * @throws IntegrationException 
+     */
     public ArrayList<CodeElementGuideEntry> getCodeElementGuideEntries() throws IntegrationException{
         String query =  "SELECT guideentryid, category, subcategory, description, enforcementguidelines, \n" +
                         "       inspectionguidelines, priority\n" +

@@ -156,12 +156,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         while(li.hasNext()){
             cv = li.next();
             cv.setActualComplianceDate(e.getDateOfRecord());
-            if(cv.getActualComplianceDate().isAfter(cv.getDateOfRecord())){
-                vc.updateCodeViolation(cv);
-            } else {
-                throw new CaseLifecyleException(
-                        "Violation Compliance date must be after the violation's date of record.");
-            }
+            vc.updateCodeViolation(cv);
         } // close while
         
         // first insert our nice compliance event for all selected violations
@@ -247,7 +242,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         // we'll probably want to get this text from a resource file instead of
         // hardcoding it down here in the Java
         e.setDateOfRecord(LocalDateTime.now());
-        e.setEventOwnerUser(getSessionBean().getActiveUser());
+        e.setEventOwnerUser(getFacesUser());
         e.setEventDescription(getResourceBundle(Constants.MESSAGE_BUNDLE).getString("automaticClosingEventDescription"));
         e.setNotes(getResourceBundle(Constants.MESSAGE_BUNDLE).getString("automaticClosingEventNotes"));
         e.setCaseID(c.getCaseID());
@@ -464,7 +459,7 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         String queuedNoticeEventNotes = getResourceBundle(Constants.MESSAGE_BUNDLE).getString("noticeQueuedEventDesc");
         noticeEvent.setEventDescription(queuedNoticeEventNotes);
         
-        noticeEvent.setEventOwnerUser(getSessionBean().getActiveUser());
+        noticeEvent.setEventOwnerUser(getFacesUser());
         noticeEvent.setActiveEvent(true);
         noticeEvent.setDiscloseToMunicipality(true);
         noticeEvent.setDiscloseToPublic(true);

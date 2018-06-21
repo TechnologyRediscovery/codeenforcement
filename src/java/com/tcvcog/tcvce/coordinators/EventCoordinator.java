@@ -116,7 +116,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setDateOfRecord(LocalDateTime.now());
         event.setEventDescription(updateViolationDescr);
         //even descr set by violation coordinator
-        event.setEventOwnerUser(getSessionBean().getActiveUser());
+        event.setEventOwnerUser(getFacesUser());
         // disclose to muni from violation coord
         // disclose to public from violation coord
         event.setActiveEvent(true);
@@ -224,7 +224,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setDateOfRecord(LocalDateTime.now());
         // not sure if I can access the session level info for the specific user here in the
         // coordinator bean
-        event.setEventOwnerUser(getSessionBean().getActiveUser());
+        event.setEventOwnerUser(getFacesUser());
         event.setActiveEvent(true);
         
         insertEvent(event);

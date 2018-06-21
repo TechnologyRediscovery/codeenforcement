@@ -86,6 +86,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
     
     public Municipality generateMuni(ResultSet rs) throws SQLException{
                 
+        CodeIntegrator codeInt = getCodeIntegrator();
         Municipality muni = new Municipality();
         muni.setMuniCode(rs.getInt("municode"));
         muni.setMuniName(rs.getString("muniname"));
@@ -103,6 +104,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         muni.setManagerPhone(rs.getString("managerphone"));
         muni.setPopulation(rs.getInt("population"));
         muni.setActiveInProgram(rs.getBoolean("activeinprogram"));             
+        muni.setDefaultCodeSetID(rs.getInt("defaultcodeset"));
         
         return muni;
     }
@@ -134,6 +136,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         municipalityMap = muniMap;
     }
     
+    //TODO: finish me
     public void updateMuni(Municipality muni){
         
         

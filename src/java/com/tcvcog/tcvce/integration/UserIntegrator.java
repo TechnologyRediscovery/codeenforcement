@@ -236,7 +236,6 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             user.setUsername(rs.getString("username"));
             user.setPassword(rs.getString("password"));
             user.setMuniCode(rs.getInt("muni_municode"));
-//            user.setDefaultCodeSet(ci.getCodeSetBySetID(rs.getInt("defaultCodeSet")));
             user.setMuni(mi.getMuniFromMuniCode(rs.getInt("muni_muniCode")));
             
             user.setFName(rs.getString("fname"));

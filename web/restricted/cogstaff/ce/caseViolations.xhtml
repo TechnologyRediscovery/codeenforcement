@@ -11,22 +11,22 @@
     </h:head>
     <h:body>
         <ui:composition template="../../navContainer_restricted.xhtml">
-           
+
             <ui:define name="content">
                 <div class="mainContainer">
                     <f:view id="violationView">
-                        
-                    <h:messages globalOnly="true" showDetail="false" showSummary="true"
-                                warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
-                    </h:messages>
-                    <h1>Municipal Code Violations</h1>
-                    
+
+                        <h:messages globalOnly="true" showDetail="false" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
+                        <h1>Municipal Code Violations</h1>
+
                         <h:form id="form_codeViolations">
 
                             <h2>Assigned Code Violations</h2>
-                            
+
                             <h:outputText value="Current Case: #{caseProfileBB.currentCase.caseName}"/>
-                            
+
                             <p:spacer height="10px"/>
 
                             <p:commandButton ajax="false" action="#{caseProfileBB.addViolation}"
@@ -118,33 +118,36 @@
                             <p:spacer height="15px"/>
 
                             <p:commandButton ajax="false" action="#{caseProfileBB.recordCompliance}"
-                                                value="Record Compliance "
-                                                icon="fa fa-check" />
+                                             value="Record Compliance "
+                                             icon="fa fa-check" />
 
-                                <p:commandButton ajax="false" action="#{caseProfileBB.editViolation}"
-                                                value="Edit violation details"
-                                                icon="fa fa-edit"/>
+                            <p:commandButton ajax="false" action="#{caseProfileBB.editViolation}"
+                                             value="Edit violation details"
+                                             icon="fa fa-edit"/>
+                            <p style="font-style: italic; font-size: 0.8em; margin-bottom: 0px;">(To clear selections, re-access this "Violations" page from the left sidebar.)</p>
+
+                            
                             <p:spacer height="5px"/>
 
                             <h3>Notice of violation actions</h3>
-                            
-                                <p:commandButton ajax="false" action="#{caseProfileBB.createNewNoticeForAllViolations}"
-                                                value="Generate Notice Letter for all Violations"
-                                                icon="fa fa-envelope"/>
-                                
-                                <p:commandButton disabled="false" ajax="false" 
-                                                action="#{caseProfileBB.createNewNoticeForSelectedViolations()}"
-                                                value="Generate Notice Letter for selected violations"
-                                                icon="fa fa-list"/>
+
+                            <p:commandButton ajax="false" action="#{caseProfileBB.createNewNoticeForAllViolations}"
+                                             value="Generate Notice Letter for all Violations"
+                                             icon="fa fa-envelope"/>
+
+                            <p:commandButton disabled="false" ajax="false" 
+                                             action="#{caseProfileBB.createNewNoticeForSelectedViolations()}"
+                                             value="Generate Notice Letter for selected violations"
+                                             icon="fa fa-list"/>
                             <p:spacer height="5px"/>
 
                             <h3>Citation actions</h3>
 
-                                <p:commandButton ajax="false" action="#{caseProfileBB.createCitationForAllViolations}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.createCitationForAllViolations}"
                                              value="Generate citation for all Violations"
                                              icon="fa fa-warning"/>
-                                
-                                <p:commandButton ajax="false" action="#{caseProfileBB.createCitationFromSelected}"
+
+                            <p:commandButton ajax="false" action="#{caseProfileBB.createCitationFromSelected}"
                                              value="Generate citation for selected violations"
                                              icon="fa fa-warning"/>
 

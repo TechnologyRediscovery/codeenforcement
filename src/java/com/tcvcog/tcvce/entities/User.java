@@ -32,7 +32,6 @@ public class User implements Serializable{
     private String password;
     private int muniCode;
     private Municipality muni;
-    private CodeSet defaultCodeSet;
     private String fName;
     private String lName;
     private String workTitle;
@@ -350,20 +349,6 @@ public class User implements Serializable{
         this.address_state = address_state;
     }
 
-    /**
-     * @return the defaultCodeSet
-     */
-    public CodeSet getDefaultCodeSet() {
-        return defaultCodeSet;
-    }
-
-    /**
-     * @param defaultCodeSet the defaultCodeSet to set
-     */
-    public void setDefaultCodeSet(CodeSet defaultCodeSet) {
-        this.defaultCodeSet = defaultCodeSet;
-    }
-    
     
     
     

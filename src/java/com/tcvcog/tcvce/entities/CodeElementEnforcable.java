@@ -27,6 +27,8 @@ public class CodeElementEnforcable extends CodeElement{
     
     }
     
+    // code set elements and enforcable code elments are equivalent
+    // TODO: unify these names
     private int codeSetElementID;
     private CodeElement codeElement;
     private double maxPenalty;

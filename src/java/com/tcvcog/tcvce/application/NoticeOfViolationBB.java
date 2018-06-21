@@ -186,7 +186,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     
     private StringBuilder appendSignatureBlock(StringBuilder sb){
         
-        User u = getSessionBean().getActiveUser();
+        User u = getFacesUser();
         sb.append("<p>");
         sb.append(u.getFName());
         sb.append(" ");

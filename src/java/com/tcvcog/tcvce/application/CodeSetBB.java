@@ -126,7 +126,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         CodeIntegrator codeInt = getCodeIntegrator();
         try {
             System.out.println("CodeSetBB.updateSelectedCodeSet | selectedCodeSetName: " + selectedCodeSet.getCodeSetName());
-            codeInt.updateCodeSet(setToUpdate);
+            codeInt.updateCodeSetMetadata(setToUpdate);
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
@@ -177,7 +177,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         CodeIntegrator codeInt = getCodeIntegrator();
         
         try {
-            codeInt.insertCodeSet(cs);
+            codeInt.insertCodeSetMetadata(cs);
         } catch (IntegrationException ex) {
               getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 

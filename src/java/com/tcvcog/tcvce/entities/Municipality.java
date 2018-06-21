@@ -39,7 +39,6 @@ public class Municipality {
     private int population;
     private boolean activeInProgram;
     private int defaultCodeSetID;
-    private String defaultCodeSetName;
 
     /**
      * @return the muniCode
@@ -303,12 +302,6 @@ public class Municipality {
         return defaultCodeSetID;
     }
 
-    /**
-     * @return the defaultCodeSetName
-     */
-    public String getDefaultCodeSetName() {
-        return defaultCodeSetName;
-    }
 
     /**
      * @param defaultCodeSetID the defaultCodeSetID to set
@@ -317,11 +310,5 @@ public class Municipality {
         this.defaultCodeSetID = defaultCodeSetID;
     }
 
-    /**
-     * @param defaultCodeSetName the defaultCodeSetName to set
-     */
-    public void setDefaultCodeSetName(String defaultCodeSetName) {
-        this.defaultCodeSetName = defaultCodeSetName;
-    }
     
 }

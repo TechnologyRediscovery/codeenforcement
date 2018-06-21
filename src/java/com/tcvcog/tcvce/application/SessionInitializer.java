@@ -18,10 +18,15 @@ Council of Governments, PA
 package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
+import com.tcvcog.tcvce.domain.AuthorizationException;
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.User;
+import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -44,7 +49,18 @@ public class SessionInitializer extends BackingBeanUtils implements Serializable
     public SessionInitializer() {
     }
     
-     public String initiateInternalSession(){
+    /**
+     * Central method for setting up the user's session:
+     * 1) First get the user from the system
+     * 2) User comes back with a default municipality object, which is stored in the session
+     * 3) From this muni, extract the default code set ID, which is then used to grab
+     * the code set from the DB and store this in the session as well.
+     * 
+     * @return success or failure String used by faces to navigate to the internal page
+     * or the error page
+     */
+    public String initiateInternalSession(){
+        CodeIntegrator ci = getCodeIntegrator();
         System.out.println("SessionInitializer.initiateInternalSession");
         FacesContext facesContext = getFacesContext();
         UserCoordinator uc = getUserCoordinator();
@@ -56,7 +72,12 @@ public class SessionInitializer extends BackingBeanUtils implements Serializable
                 ec.getSessionMap().put("facesUser", extractedUser);
                 System.out.println("SessionInitializer.initiateInternalSession "
                         + "| facesUserFromDB: " + extractedUser.getLName());
-                getSessionBean().setActiveMuni(extractedUser.getMuni());
+                // get the user's default municipality
+                Municipality muni = extractedUser.getMuni();
+                getSessionBean().setActiveMuni(muni);
+                // grab code set ID from the muni object, ask integrator for the CodeSet object, 
+                //and then and store in sessionBean
+                getSessionBean().setActiveCodeSet(ci.getCodeSetBySetID(muni.getDefaultCodeSetID()));
             
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
                     "Good morning, " + extractedUser.getFName() + "!", ""));
@@ -69,18 +90,11 @@ public class SessionInitializer extends BackingBeanUtils implements Serializable
                     "Integration module error. Unable to connect your server user to the COG system user.", 
                     "Please contact system administrator Eric Darsow at 412.923.9907"));
             return "failure";
+        } catch (AuthorizationException ex) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    ex.getMessage(), ""));
         }
-        // creating and setting the new session manager who lives in BeackingBeanUtils
-//        setSessionManager(new SessionCoordinator());
-        
-//        Visit visit = new Visit();
-//        CodeSet cs = new CodeSet();
-//        
-//        cs.setCodeSetName("I have a name!");
-//        visit.setActiveCodeSet(cs);
-//        System.out.println("AuthenticationBB.login | setting active code set in session manager");
-//        sessionManager.setVisit(visit);
-//        
+          
         return "success";
     }
 

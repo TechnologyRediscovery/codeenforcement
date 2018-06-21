@@ -17,6 +17,7 @@
 package com.tcvcog.tcvce.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.domain.AuthorizationException;
 import com.tcvcog.tcvce.domain.DataStoreException;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.sql.Connection;
@@ -54,6 +55,7 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
      * in the DB, a User object is created and returned, allow the user to progress 
      * pass the authentication screen.
      * 
+     * @deprecated due to the switch to glassfish container security. getUser(Stringloginname) instead
      * @param loginName the login name entered by the user
      * @param loginPassword the password entered by the user
      * 
@@ -75,22 +77,40 @@ public class UserCoordinator extends BackingBeanUtils implements Serializable {
         if (authenticatedUser != null){
             
             getSessionBean().setActiveUser(authenticatedUser);
-            System.out.println("UserCoordinator.getUser | default code set: " 
-                    + authenticatedUser.getDefaultCodeSet().getCodeSetID());
-            getSessionBean().setActiveCodeSet(authenticatedUser.getDefaultCodeSet());
         }
          
         return authenticatedUser;
         
     } // close getUser()
     
-    public User getUser(String loginName) throws IntegrationException{
+    /**
+     * Primary user retrieval method: Note that there aren't as many checks here
+     * since the glassfish container is managing the lookup of authenticated uers. 
+     * We are pulling the login name from the already authenticated glassfish user 
+     * and just grabbing their profile from the db
+     * 
+     * @param loginName
+     * @return the fully baked cog user
+     * @throws IntegrationException 
+     * @throws com.tcvcog.tcvce.domain.AuthorizationException occurs if the user
+     * has been retrieved from the database but their access has been toggled off
+     */
+    public User getUser(String loginName) throws IntegrationException, AuthorizationException{
         System.out.println("UserCoordinator.geUser | given: " + loginName );
         User authenticatedUser;
         UserIntegrator ui = getUserIntegrator();
                 con = getPostgresCon();
         authenticatedUser = ui.getUser(loginName);
-        return authenticatedUser;
+        if(authenticatedUser.isAccessPermitted()){
+            return authenticatedUser;
+            
+        } else {
+            
+            throw new AuthorizationException("User exists but access to system "
+                    + "has been switched off. If you believe you are receiving "
+                    + "this message in error, please contact system administrator "
+                    + "Eric Darsow at 412.923.9907.");
+        }
     }
     
 } // close class

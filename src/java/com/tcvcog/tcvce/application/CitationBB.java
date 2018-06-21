@@ -75,7 +75,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
         c.setStatus(formCitationStatus);
         c.setCitationNo(formCitationNumber);
         c.setOrigin_courtentity(formCourtEntity);
-        c.setUserOwner(getSessionBean().getActiveUser());
+        c.setUserOwner(getFacesUser());
         c.setDateOfRecord(formDateOfRecord.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
         c.setIsActive(formIsActive);
@@ -101,7 +101,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
         c.setStatus(formCitationStatus);
         c.setCitationNo(formCitationNumber);
         c.setOrigin_courtentity(formCourtEntity);
-        c.setUserOwner(getSessionBean().getActiveUser());
+        c.setUserOwner(getFacesUser());
         c.setDateOfRecord(formDateOfRecord.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime());
         c.setIsActive(formIsActive);

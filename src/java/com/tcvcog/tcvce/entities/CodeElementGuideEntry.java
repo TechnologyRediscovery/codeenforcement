@@ -27,7 +27,9 @@ public class CodeElementGuideEntry {
     private String category;
     private String subCategory;
     private String description;
+    // rich text content
     private String enforcementGuidelines;
+    // rich text content
     private String inspectionGuidelines;
     private boolean priority;
 

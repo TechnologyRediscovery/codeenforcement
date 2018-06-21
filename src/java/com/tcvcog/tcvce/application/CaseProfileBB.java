@@ -94,6 +94,10 @@ public class CaseProfileBB extends BackingBeanUtils implements Serializable{
         return "";
     }
     
+    public String reloadPage(){
+        return "";
+    }
+    
     public String recordCompliance() throws IntegrationException{
         CaseCoordinator cc = getCaseCoordinator();
         
