@@ -1,8 +1,6 @@
 package com.tcvcog.tcvce.application;
 
 
-import com.tcvcog.tcvce.application.BackingBeanUtils;
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
@@ -11,9 +9,6 @@ import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.integration.PersonIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * Copyright (C) 2018 Turtle Creek Valley
@@ -54,14 +49,12 @@ public class PropertyProfileBB extends BackingBeanUtils implements Serializable{
     
     
     public String createCase(){
-        System.out.println("PropertyProfileBB.createCase");
         
         
-        return "/ce/caseAdd.xhtml";
+        return "addNewCase";
     }
     
     public String viewPersonProfile(){
-        SessionCoordinator sm  = getSessionManager();
         getSessionBean().setActivePerson(selectedPerson);
         return "personProfile";
     }

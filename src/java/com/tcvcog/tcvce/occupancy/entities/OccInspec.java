@@ -28,7 +28,7 @@ public class OccInspec {
     private int inspectionID;
     private User caseManager;
     
-    private InspectedElement checklist;
+    private ImplementedChecklist checklist;
     
     private boolean totalFeePaid;
     
@@ -150,14 +150,14 @@ public class OccInspec {
     /**
      * @return the checklist
      */
-    public InspectedElement getChecklist() {
+    public ImplementedChecklist getChecklist() {
         return checklist;
     }
 
     /**
      * @param checklist the checklist to set
      */
-    public void setChecklist(InspectedElement checklist) {
+    public void setChecklist(ImplementedChecklist checklist) {
         this.checklist = checklist;
     }
 

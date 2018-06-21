@@ -211,6 +211,12 @@
     </managed-bean>
     
     <managed-bean>
+        <managed-bean-name>codeSourceAddUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeSourceAddUpdateBB</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    
+    <managed-bean>
         <managed-bean-name>missionControlBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.MissionControlBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
@@ -687,6 +693,15 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/restricted/cogview/propertyProfile.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>addNewCase</from-outcome>
+            <to-view-id>/restricted/cogstaff/ce/caseAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
         
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -936,6 +951,18 @@
             <to-view-id>/restricted/cogview/codeGuideView.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
+
+        <navigation-case>
+            <from-outcome>codeSourceAddUpdate</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeSourceAddUpdate.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>codeElementList</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeElementList.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
         
         <navigation-case>
             <from-outcome>codeGuideAdd</from-outcome>
@@ -948,23 +975,28 @@
             <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
-        
         <navigation-case>
             <from-outcome>codeSetManage</from-outcome>
             <to-view-id>/restricted/cogstaff/code/codeSetManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
+        <navigation-case>
+            <from-outcome>codeElementAdd</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeElementAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
     </navigation-rule>    
         
     <navigation-rule>
-        <from-view-id>/restricted/cogstaff/code/codeSourceAdd.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/code/codeSourceAddUpdate.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
             <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-
+       
 
     <!--System and internal pages-->
 

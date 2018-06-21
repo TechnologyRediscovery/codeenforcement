@@ -16,7 +16,7 @@
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.Date;
 import java.io.Serializable;

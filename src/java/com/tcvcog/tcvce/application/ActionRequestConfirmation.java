@@ -17,7 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import java.io.Serializable;
 

@@ -17,7 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
@@ -309,8 +309,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the activeCodeSource
      */
     public CodeSource getActiveCodeSource() {
-      SessionCoordinator sessionManager = getSessionManager();
-      activeCodeSource = sessionManager.getActiveCodeSource();
+        activeCodeSource = getSessionBean().getActiveCodeSource();
         return activeCodeSource;
     }
 

@@ -17,7 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
@@ -121,7 +121,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
         e.setDiscloseToPublic(formDiscloseToPublic);
         e.setRequiresViewConfirmation(formRequireViewConfirmation);
         e.setNotes(formEventDesc);
-        e.setEventPersons(formSelectedPersons);
+//        e.setEventPersons(formSelectedPersons);
         
         // now check for persons to connect
         
@@ -194,7 +194,11 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the formDiscloseToMuni
      */
     public boolean isFormDiscloseToMuni() {
-        formDiscloseToMuni = currentEvent.isDiscloseToMunicipality();
+         if(currentEvent == null){
+            formDiscloseToMuni = true;
+        } else {
+            formDiscloseToMuni = currentEvent.isDiscloseToMunicipality();
+        }
         return formDiscloseToMuni;
     }
 
@@ -210,7 +214,11 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
      * @return the activeEvent
      */
     public boolean isActiveEvent() {
-        activeEvent = currentEvent.isActiveEvent();
+        if(currentEvent == null){
+            activeEvent = true;
+        } else {
+            activeEvent = currentEvent.isActiveEvent();
+        }
         return activeEvent;
     }
 

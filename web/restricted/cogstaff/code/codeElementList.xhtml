@@ -10,17 +10,17 @@
         <title>View Code Elements by Source</title>
     </h:head>
     <h:body>
-        <ui:composition template="navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
-                <div class="mainContainer">
-                    <h1>Code Elements by Source</h1>
-                    <f:view>
-                    <h:outputLink value="codeSourceManage.xhtml">&lt;-- Back to code source manager</h:outputLink>
+                <f:view id="codeElementListView">
+                    <div class="mainContainer">
+                        <h1>View Code Elements in <h:outputText value="#{sessionBean.activeCodeSource.sourceName} (#{sessionBean.activeCodeSource.sourceYear})"/></h1>
+                        
                         <h:form id="codeElementsBySource">
-                            
+
                             <h:messages globalOnly="false"
                                         warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError"/>
-                            
+
                             <p:dataTable
                                 id="codeElementTable"
                                 var="element"
@@ -72,7 +72,7 @@
                                     <h:outputText value="#{element.isActive}"/>
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <p:commandButton
                                 id="updateCodeElement" value="Update Selected Element"
                                 styleClass="multiButtonLineButton"
@@ -84,8 +84,8 @@
                                 actionListener="#{codeElementListBB.deleteCodeElement}"/>
 
                         </h:form>
-                    </f:view>
                 </div>
+                </f:view>
             </ui:define>
         </ui:composition>
     </h:body>

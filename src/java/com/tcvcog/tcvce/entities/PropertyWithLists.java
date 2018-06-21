@@ -29,7 +29,7 @@ public class PropertyWithLists extends Property{
     private ArrayList<CECase> propertyCaseList;
     // property units store occupancy data
     private ArrayList<PropertyUnit> propertyUnitList;
-    // both are connected to Person objects all over teh place
+    // both are connected to Person objects all over the place
     private ArrayList<Person> propertyPersonList;
 
     /**

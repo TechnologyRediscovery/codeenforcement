@@ -5,7 +5,7 @@
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.io.Serializable;
 import java.sql.Connection;

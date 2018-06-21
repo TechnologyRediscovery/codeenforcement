@@ -36,21 +36,6 @@
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                 </h:panelGroup>
 
-                                
-                                <h:outputLabel value="Associated with a Unit?" for="isUnitAssociatedSwitch"/>
-                                <h:panelGroup>
-                                    <p:inputSwitch id="isUnitAssociatedSwitch" value="#{caseAddBB.isUnitAssociated}" onLabel="Yes" offLabel="No" tabindex="2"/>
-                                    
-                                    <p:selectOneMenu id="unitSelectorMenu" required="false" value="#{caseAddBB.formPropertyUnitID}">
-                                        <f:selectItems value="#{caseAddBB.caseProperty.propertyUnitHashMap}"
-                                                       var="pt" itemValue="#{pt}" itemLabel="#{pt.label}"/>
-                                    </p:selectOneMenu>
-                                    
-                                    <h:message for="unitSelectorMenu" showDetail="false" showSummary="true" 
-                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                                    
-                                </h:panelGroup>
-                            
                                 <h:outputLabel value="Case Opening Date:" for="formOpenDateCal"/>
                                 <h:panelGroup>
                                     <p:calendar value="#{caseAddBB.formOriginationDate}" 

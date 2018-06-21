@@ -17,7 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.coordinators.CaseCoordinator;
 import com.tcvcog.tcvce.domain.CaseLifecyleException;
 import com.tcvcog.tcvce.domain.EventException;
@@ -86,7 +86,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
     
     public String assembleNotice(){
         
-        if(selectedRecipient == null || (addPersonByID == true && recipientPersonID == 0)){
+        if((addPersonByID == false && selectedRecipient == null) && (addPersonByID == true && recipientPersonID == 0)){
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                 "A notice needs a recipient! Please either select a person from the table or add a person by ID",""));
@@ -113,35 +113,26 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
         } else {
             currentNotice.setRecipient(selectedRecipient);
         }
-        
         sb.append(getPrettyDate(LocalDateTime.now()));
         sb.append("<br/><br/>");
         appendRecipientAddrBlock(sb, currentNotice.getRecipient());
-        
         appendTextBlockAsPara(greetingBlock, sb);
         appendTextBlockAsPara(introBlock, sb);
-        
         if(useTb1){
             appendTextBlockAsPara(tb1, sb);
         }
-        
         if(useTb2){
             appendTextBlockAsPara(tb2, sb);
         }
-        
         appendViolationList(activeVList, sb);
-        
         appendTextBlockAsPara(complianceBlock, sb);
         appendTextBlockAsPara(penaltyBlock, sb);
-        
         if(useTb3){
             appendTextBlockAsPara(tb3, sb);
         }
-        
         if(useTb4){
             appendTextBlockAsPara(tb4, sb);
         }
-        
         appendSignatureBlock(sb);
         
         // finally, extract the String from the StringBuilder and add to our

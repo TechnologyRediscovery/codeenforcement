@@ -436,7 +436,11 @@ public class CaseCoordinator extends BackingBeanUtils implements Serializable{
         // flag violation letter as ready to send
         // this will also need to trigger a letter mailing process that hasn't been implemented as
         // of 2 March 2018
-        nov.setRequestToSend(true);
+        if(nov.isRequestToSend() == false){
+            nov.setRequestToSend(true);
+        } else {
+            throw new CaseLifecyleException("Notice is already queued for sending");
+        }
         
         // new letters won't have a LocalDateTime object
         // so insert instead of update in this case

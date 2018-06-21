@@ -33,7 +33,7 @@
                         
                             <h3>Add recipient from property persons</h3>
                             
-                            <p>Select the notice recipient from the list below of persons connected to <h:outputText value="#{sessionManager.visit.activeProp.address}"/></p>
+                            <p>Select the notice recipient from the list below of persons connected to <h:outputText value="#{sessionBean.activeProp.address}"/></p>
                             
                             <p:dataTable
                                     id="selectPersonTable"
@@ -96,8 +96,11 @@
                         
                             <p:inputSwitch id="addPersonByIdIS" value="#{noticeOfViolationBB.addPersonByID}" 
                                            onLabel="Add by ID" offLabel="Add from data table" />
+                            
                             <p:spacer height="15px"/>
+                            
                             <h:outputLabel for="personIDIT" value="Person ID Number: "/>
+                            
                             <p:inputText id="personIDIT" value="#{noticeOfViolationBB.recipientPersonID}"/>
                                            
                         <h2>Greeting</h2>
@@ -344,11 +347,11 @@
                         <h2>Signature</h2>
                         
                         <p>
-                            <h:outputText id="sig1" value="#{sessionManager.visit.activeUser.FName} #{sessionManager.visit.activeUser.LName}"/><br/>
-                            <h:outputText id="sig2" value="#{sessionManager.visit.activeUser.workTitle}"/><br/>
-                            <h:outputText id="sig3" value="#{sessionManager.visit.activeUser.muni.muniName}"/><br/>
-                            <h:outputText id="sig4" value="#{sessionManager.visit.activeUser.phoneCell}"/><br/>
-                            <h:outputText id="sig5" value="#{sessionManager.visit.activeUser.email}"/>
+                            <h:outputText id="sig1" value="#{facesUser.FName} #{facesUser.LName}"/><br/>
+                            <h:outputText id="sig2" value="#{facesUser.workTitle}"/><br/>
+                            <h:outputText id="sig3" value="#{facesUser.muni.muniName}"/><br/>
+                            <h:outputText id="sig4" value="#{facesUser.phoneCell}"/><br/>
+                            <h:outputText id="sig5" value="#{facesUser.email}"/>
                         </p>
 
                         <p:spacer height="15px"/>

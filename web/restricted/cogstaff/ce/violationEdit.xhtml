@@ -153,18 +153,16 @@
                                     </f:facet>
                                  
                                 </h:panelGrid>
-                                
-                               
-                                 
                              </p:fieldset>
                             
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton    ajax="false" action="#{violationEditBB.backTocaseProfiler}"
-                                                value="Return to case without editing" tabindex="6" icon="fa fa-stop"/>
-                            <p:spacer width="10px"/>
                             <p:commandButton    ajax="false" action="#{violationEditBB.editViolation}"
                                                 value="Update violation record and return to case home" icon="fa fa-edit" tabindex="6"/>
+                            
+                            <p:commandButton    ajax="false" action="caseProfile"
+                                                value="Cancel" tabindex="7" icon="fa fa-stop"/>
+                            
                             
                         </h:form>
                     </f:view>

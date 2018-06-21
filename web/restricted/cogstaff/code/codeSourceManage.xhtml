@@ -6,135 +6,99 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>CodeManagement</title>
+        <title>Code Source Management</title>
     </h:head>
     <h:body>
-       
-         <ui:composition template="../../navContainer_restricted.xhtml">
-
-            
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
-                <div class="mainContainer">
-                <h1>Manage municipal code sources</h1>
-                
-                <f:view>
-                   <h:form id="manageSingleActionRequest"> 
-                    <p:commandButton id="sourceManCommand" ajax="false" value="Create a new code source" action="/ce/codeSourceAdd.xhtml" styleClass="manButton"/>
-                    <!--<h:outputLink value="../ce/codeSourceAdd.xhtml">Create a new code source</h:outputLink>-->
-                    
-                    <!--<h:form id="manageSingleActionRequest">-->
-                         <h:messages globalOnly="true"></h:messages>
-                        
-                        <h:outputLabel for="codesourceid" >
-                            <h:outputText value="Enter a code source ID number" styleClass="uiLabel" />
-                        </h:outputLabel>
-                        <p:inputText id="codesourceid" value="#{codeSourceBB.sourceID}" 
-                                     style="width: 100%;" tabindex="0" required="true" styleClass="inputText"/>
-                        <h:message for="codesourceid" showDetail="true" showSummary="true" 
-                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                        <p:commandButton 
-                                id="lookupsource" 
-                                value="Look Up Source" 
-                                styleClass="buttonOwnLine1"
-                                action="#{codeSourceBB.lookUpSource}"/>
-                        
-                       
-                        
-                         <p:commandButton 
-                                id="completeCodeSourceList" 
-                                value="Retrieve All Code Sources" 
-                                styleClass="buttonOwnLine1"
-                                action="#{codeSourceBB.retrieveAllCodeSources}"/>
-                         
-                        
-                        
-                        <p:dataTable
-                            id="codeSourceTable"
-                            var="source"
-                            value="#{codeSourceBB.codeSources}"
-                            selectionMode="single"
-                            selection="#{codeSourceBB.selectedCodeSource}"
-                            rowKey="#{source.sourceID}"
-                            tableStyleClass="primeDataTable">
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Source ID" />
-                                </f:facet>
-                                <h:outputText value="#{source.sourceID}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Source Name" />
-                                </f:facet>
-                                <h:outputText value="#{source.sourceName}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Year" />
-                                </f:facet>
-                                <h:outputText value="#{source.sourceYear}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Description" />
-                                </f:facet>
-                                <h:outputText value="#{source.sourceDescription}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Active?" />
-                                </f:facet>
-                                <h:outputText value="#{source.isActive}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Link" />
-                                </f:facet>
-                                <h:outputText value="#{source.URL}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Notes" />
-                                </f:facet>
-                                <h:outputText value="#{source.sourceNotes}"/>
-                            </p:column>
-                        </p:dataTable>
-                         
-                        <p:spacer height="5"/>
-                        
-                        <p:commandButton 
-                            id="getDetails" 
-                            value="Get Info on Selected Source" 
-                            styleClass="buttonOwnLine"
-                            actionListener="#{codeSourceBB.lookUpSource}"/>
-                        
-                         <p:commandButton
-                             id="addElementToSource"
-                             value="Add Element to Source"
-                             styleClass="buttonOwnLine"
-                             action="#{codeSourceBB.addElementToSource}" />
-                         
-                          <p:commandButton
-                             id="viewElementsInSource"
-                             value="View list of elements in source"
-                             styleClass="buttonOwnLine"
-                             action="#{codeSourceBB.viewElementsInSource}" />
-                        
+                <f:view id="codeSourceManageView">
+                    <div class="mainContainer">
+                        <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError"></h:messages>
+                        <h1>Manage municipal code sources</h1>
+
+                        <h:form id="codeSourceManageForm"> 
+                            <p:commandButton id="newCodeSourceButton" ajax="false" 
+                                             value="Add a new code source" icon="fa fa-plus" action="#{codeSourceBB.addNewSource}" />
+                            
+                            <p:spacer height="15px"/>
+                            
+                            <p:dataTable
+                                id="codeSourceTable"
+                                var="source"
+                                value="#{codeSourceBB.codeSourceList}"
+                                selectionMode="single"
+                                selection="#{codeSourceBB.selectedCodeSource}"
+                                rowKey="#{source.sourceID}"
+                                tableStyleClass="primeDataTable">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Source ID" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.sourceID}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Source Name" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.sourceName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Year" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.sourceYear}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Description" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.sourceDescription}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Active?" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.isActive}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Link" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.URL}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Notes" />
+                                    </f:facet>
+                                    <h:outputText value="#{source.sourceNotes}"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:spacer height="15px"/>
+
+                            <p:commandButton 
+                                id="codeSourceUpdateButton" ajax="false"
+                                value="Update source metatdata" icon="fa fa-edit"
+                                styleClass="codeSourceUpdate"
+                                action="#{codeSourceBB.updateCodeSource}"/>
+
+                            <p:commandButton
+                                id="addElementToSourceButton" ajax="false"
+                                value="Add Element to Source"
+                                styleClass="buttonOwnLine" icon="fa fa-plus"
+                                action="#{codeSourceBB.addElementToSource}" />
+
+                            <p:commandButton
+                                id="viewElementsInSourceButton" ajax="false"
+                                value="View list of elements in source"
+                                styleClass="buttonOwnLine" icon="fa fa-list"
+                                action="#{codeSourceBB.viewElementsInSource}" />
+
                         </h:form>
-                    
-                        <p:spacer height="10"/>
-                        <hr/>
-                        <p:spacer height="10"/>
-                        
-                    <p>
-                    </p>
-
+                    </div>
                 </f:view>
-                </div>
             </ui:define>
-
-
-
         </ui:composition>
     </h:body>
 </html>

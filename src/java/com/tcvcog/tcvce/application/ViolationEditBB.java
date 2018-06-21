@@ -17,7 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
+
 import com.tcvcog.tcvce.coordinators.EventCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
 import com.tcvcog.tcvce.domain.EventException;
@@ -86,9 +86,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
 
              getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "Success! Violation added to case and stored in DB "
-                                    + "and notice event generated", ""));
-            return "caseProfile";
+                            "Success! Violation updated and notice event generated", ""));
         } catch (IntegrationException ex) {
             System.out.println(ex);
              getFacesContext().addMessage(null,
@@ -106,8 +104,8 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             ex.getMessage(), "Unable to generate automated event to log violation update"));
         }
-        return "caseProfile";
         
+            return "caseViolations";
     }
 
     /**
