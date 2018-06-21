@@ -65,10 +65,6 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     
     private CodeSet setToUpdate;
     
-    
-    private String newCodeElementTypeName;
-    private String newCodeElementTypeDesc;
-    
     private String formCodeSetName;
     private String formCodeSetDescription;
     private int formMuniCode;
@@ -174,8 +170,8 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     public void addNewCodeSet(ActionEvent event){
         CodeSet cs = new CodeSet();
         cs.setMuniCode(formNewMuniCode);
-        cs.setCodeSetName(newCodeElementTypeName);
-        cs.setCodeSetDescription(newCodeElementTypeDesc);
+        cs.setCodeSetName(formCodeSetName);
+        cs.setCodeSetDescription(formCodeSetDescription);
         
         System.out.println("CodeSetBB.addNewCodeSet | set to add name: " + cs.getCodeSetName());
         CodeIntegrator codeInt = getCodeIntegrator();
@@ -199,7 +195,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         
         if(selectedCodeSet != null){ 
             getSessionBean().setActiveCodeSet(selectedCodeSet);
-            return "dashboard";
+            return "missionControl";
         } else {
             getFacesContext().addMessage(null,
                   new FacesMessage(FacesMessage.SEVERITY_WARN, 
@@ -419,33 +415,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         this.setToUpdate = setToUpdate;
     }
 
-    /**
-     * @return the newCodeElementTypeName
-     */
-    public String getNewCodeElementTypeName() {
-        return newCodeElementTypeName;
-    }
-
-    /**
-     * @param newCodeElementTypeName the newCodeElementTypeName to set
-     */
-    public void setNewCodeElementTypeName(String newCodeElementTypeName) {
-        this.newCodeElementTypeName = newCodeElementTypeName;
-    }
-
-    /**
-     * @return the newCodeElementTypeDesc
-     */
-    public String getNewCodeElementTypeDesc() {
-        return newCodeElementTypeDesc;
-    }
-
-    /**
-     * @param newCodeElementTypeDesc the newCodeElementTypeDesc to set
-     */
-    public void setNewCodeElementTypeDesc(String newCodeElementTypeDesc) {
-        this.newCodeElementTypeDesc = newCodeElementTypeDesc;
-    }
+   
 
     /**
      * @return the formNewMuniCode

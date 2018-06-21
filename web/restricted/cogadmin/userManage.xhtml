@@ -11,7 +11,7 @@
         <title>User Manager</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -22,7 +22,7 @@
                     <f:view>
                         <h:form id="userManageForm">
                             
-                            <p:commandButton ajax="false" value="Add a New User --> " action="#{userBB.addUser}"/>
+                            <p:commandButton ajax="false" value="Add New User" icon="fa fa-plus" action="#{userBB.addUser}"/>
                             <p:spacer height="15px"/>
                             
                              <p:dataTable
@@ -74,8 +74,8 @@
                             <p:spacer height="15px"/>
                             
                             <p:commandButton ajax="false"
-                                id="updateUser" value="Update Selected User"
-                                styleClass="multiButtonLineButton"
+                                id="updateUser" value="Edit Selected User"
+                                styleClass="multiButtonLineButton" icon="fa fa-edit"
                                 action="#{userBB.updateUser}"/>
 
                         

@@ -49,7 +49,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
     }
     
     public Municipality getMuniFromMuniCode(int muniCode) throws IntegrationException{
-        Municipality muni = new Municipality();
+        Municipality muni = null;
         PreparedStatement stmt = null;
         Connection con = null;
         // note that muniCode is not returned in this query since it is specified in the WHERE
@@ -67,7 +67,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
             //System.out.println("MunicipalityIntegrator.getMuniFromMuniCode | query: " + stmt.toString());
             rs = stmt.executeQuery();
             while(rs.next()){
-                generateMuni(rs);
+                muni = generateMuni(rs);
             }
             
             
@@ -84,7 +84,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         
     }
     
-    public void generateMuni(ResultSet rs) throws SQLException{
+    public Municipality generateMuni(ResultSet rs) throws SQLException{
                 
         Municipality muni = new Municipality();
         muni.setMuniCode(rs.getInt("municode"));
@@ -104,7 +104,7 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         muni.setPopulation(rs.getInt("population"));
         muni.setActiveInProgram(rs.getBoolean("activeinprogram"));             
         
-        
+        return muni;
     }
     
     public void generateCompleteMuniNameIDMap() throws IntegrationException{
@@ -156,9 +156,9 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
         this.municipalityMap = municipalityMap;
     }
     
-    public ArrayList<Municipality> getAllMuniList() throws IntegrationException{
+    public ArrayList<Municipality> getCompleteMuniList() throws IntegrationException{
         ArrayList<Municipality> ll = new ArrayList<>();
-                
+        Municipality m;
         Connection con = getPostgresCon();
         String query = "SELECT muniCode, muniName FROM municipality;";
         ResultSet rs = null;
@@ -168,7 +168,9 @@ public class MunicipalityIntegrator extends BackingBeanUtils implements Serializ
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             while(rs.next()){
-                ll.add(getMuniFromMuniCode(rs.getInt("muniCode")));
+                m = getMuniFromMuniCode(rs.getInt("muniCode"));
+                System.out.println("MunicipalityIntegrator.getCompleteMuniList | adding muni: " + m.getMuniName());
+                ll.add(m);
                 
             }
         } catch (SQLException ex) {

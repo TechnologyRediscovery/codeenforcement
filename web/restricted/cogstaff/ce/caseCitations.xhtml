@@ -10,7 +10,7 @@
         <title>Citations</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
            
             <ui:define name="content">
                 <div class="mainContainer">
@@ -19,7 +19,7 @@
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                         </h:messages>
                         <h1>Citations</h1>
-                        <h:outputText value="Current Case: #{caseManageBB.currentCase.caseName}"/>
+                        <h:outputText value="Current Case: #{caseProfileBB.currentCase.caseName}"/>
                         <p:spacer height="15px"/>
                         
                         <h:form id="citationForm">
@@ -27,9 +27,9 @@
                                 id="citationTable"
                                 var="citation"
                                 selectionMode="single"
-                                selection="#{caseManageBB.selectedCitation}"
+                                selection="#{caseProfileBB.selectedCitation}"
                                 rowKey="#{citation.citationID}"
-                                value="#{caseManageBB.citationList}"
+                                value="#{caseProfileBB.citationList}"
                                 tableStyleClass="primeDataTable"
                                 expandedRow="false"
                                 rowExpandMode="multiple"
@@ -91,10 +91,10 @@
 
                             </p:dataTable>
 
-                                <p:commandButton ajax="false" action="#{caseManageBB.updateCitation}"
+                                <p:commandButton ajax="false" action="#{caseProfileBB.updateCitation}"
                                              value="Updated selected citation"/>
 
-                                <p:commandButton ajax="false" action="#{caseManageBB.deleteCitation}"
+                                <p:commandButton ajax="false" action="#{caseProfileBB.deleteCitation}"
                                              value="Nuke selected citation forever"/>
 
                             <p:separator/>

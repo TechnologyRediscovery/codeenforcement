@@ -10,21 +10,21 @@
         <title>Select Violated Code Element</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
-                <div class="mainContainer">
-                    <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                <f:view>
+                    <div class="mainContainer">
+                        <h:messages globalOnly="true" showDetail="true" showSummary="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
-                    </h:messages>
-                            
-                    <h1>Select Violated Code Element</h1>
-                    
-                    <p>You are viewing enforcable code elements in your active code set: 
-                        <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/></p>
-                    
-                    <f:view>
+                        </h:messages>
+
+                        <h1>Select Violated Code Element</h1>
+
+                        <p>You are viewing enforcable code elements in your active code set: 
+                            <h:outputText value="#{sessionManager.visit.activeCodeSet.codeSetName}"/></p>
+
                         <h:form id="selectViolatedElementForm">
-                            
+
                             <p:dataTable
                                 id="enforcableCodeElementSelectTable"
                                 var="cse"
@@ -70,15 +70,15 @@
                                     <h:outputText value="#{cse.penaltyNotes}"/>
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <p:commandButton ajax="false" 
                                              action="#{violationSelectElementBB.useSelectedElement}"
-                                             value="Add selected violation to current case"/>
-                            
+                                             value="Add selected violation to current case" icon="fa fa-edit"/>
+
 
                         </h:form>
-                    </f:view>
-                </div>
+                    </div>
+                </f:view>
             </ui:define>
         </ui:composition>
     </h:body>

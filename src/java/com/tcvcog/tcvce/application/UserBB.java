@@ -27,16 +27,24 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Eric C. Darsow
  */
+@ManagedBean(name="userBB")
+@ViewScoped
 public class UserBB extends BackingBeanUtils implements Serializable {
 
     private ArrayList<User> userList;
     private User selectedUser;
 
+//    @ManagedProperty(value="#{sessionBean}")
+//    private SessionBean subclassSessionBean;
+    
     private RoleType formRoleType;
     private RoleType[] roleTypeArray;
     private String formUsername;
@@ -65,7 +73,6 @@ public class UserBB extends BackingBeanUtils implements Serializable {
     }
 
     public String updateUser() {
-
         
         getSessionBean().setUtilityUserToUpdate(selectedUser);
 
@@ -442,4 +449,6 @@ public class UserBB extends BackingBeanUtils implements Serializable {
         this.roleTypeArray = roleTypeArray;
     }
 
+    
+   
 }

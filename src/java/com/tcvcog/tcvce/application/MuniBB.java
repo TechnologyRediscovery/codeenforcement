@@ -49,7 +49,7 @@ public class MuniBB extends BackingBeanUtils implements Serializable {
      */
     public ArrayList<Municipality> getMuniList() throws IntegrationException {
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
-        muniList = mi.getAllMuniList();
+        muniList = mi.getCompleteMuniList();
         
         return muniList;
     }

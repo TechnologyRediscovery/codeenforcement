@@ -10,7 +10,7 @@
         <title>Add user to system</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -211,7 +211,7 @@
                             
                             <p:spacer height="15px"/>
                             
-                            <p:commandButton ajax="false" value="Add New User" action="#{userBB.commitInsert}"/>
+                            <p:commandButton ajax="false" value="Add New User" icon="fa fa-plus" action="#{userBB.commitInsert}"/>
 
                         </h:form>
                     </f:view>

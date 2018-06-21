@@ -550,7 +550,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
                 e.setElementID(rs.getInt("elementid"));
                 
-                e.setType(getCodeElementGuideEntry(rs.getInt("codeelementtype_cdeltypeid")));
+                e.setGuideEntry(getCodeElementGuideEntry(rs.getInt("guideentryid")));
                 e.setSource(getCodeSource(rs.getInt("codesource_sourceid")));
                 
                 e.setOrdchapterNo(rs.getInt("ordchapterno"));
@@ -590,7 +590,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         PreparedStatement stmt = null;
         Connection con = null;
         // note that muniCode is not returned in this query since it is specified in the WHERE
-        String query = "SELECT elementid, codeelementtype_cdeltypeid, codesource_sourceid, ordchapterno, \n" +
+        String query = "SELECT elementid, guideentryid, codesource_sourceid, ordchapterno, \n" +
             "ordchaptertitle, ordsecnum, ordsectitle, ordsubsecnum, ordsubsectitle, \n" +
             "ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, isactive, \n" +
             "isenforcementpriority, resourceurl, inspectiontips, datecreated\n" +
@@ -667,7 +667,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     
     public void insertCodeElement(CodeElement element) throws IntegrationException{
          String query = "INSERT INTO public.codeelement( " 
-                 + "elementid, codeelementtype_cdeltypeid, codesource_sourceid, "
+                 + "elementid, guideentryid, codesource_sourceid, "
                  + "ordchapterno, ordchaptertitle, ordsecnum, "
                  + "ordsectitle, ordsubsecnum, ordsubsectitle, " 
                  + "ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, "
@@ -685,7 +685,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, element.getTypeID());
+            stmt.setInt(1, element.getGuideEntry().getGuideEntryID());
             stmt.setInt(2, element.getSource().getSourceID());
             
             stmt.setInt(3, element.getOrdchapterNo());
@@ -722,7 +722,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     public void updateCodeElement(CodeElement element) throws IntegrationException{
         System.out.println("CodeIntegrator.udpateCodeElement | element to insert chapter name: " + element.getOrdchapterTitle());
           String query = "UPDATE public.codeelement\n" +
-                "SET codeelementtype_cdeltypeid=?, \n" +
+                "SET guideentryid=?, \n" +
                 "ordchapterno=?, ordchaptertitle=?, ordsecnum=?, ordsectitle=?, \n" +
                 "ordsubsecnum=?, ordsubsectitle=?, ordtechnicaltext=?, ordhumanfriendlytext=?, \n" +
                 "defaultpenalty=?, isactive=?, isenforcementpriority=?, resourceurl=?, \n" +
@@ -735,7 +735,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, element.getTypeID());
+            stmt.setInt(1, element.getGuideEntry().getGuideEntryID());
             
             // no source changes on element update
             //stmt.setInt(2, element.getSource().getSourceID());
@@ -890,9 +890,10 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
     
-    public CodeElementGuideEntry getCodeElementGuideEntry(int typeId) throws IntegrationException{
-        String query = "SELECT cdeltypeid, name, description\n" +
-                        "  FROM public.codeelementtype WHERE cdeltypeid=?;";
+    public CodeElementGuideEntry getCodeElementGuideEntry(int entryid) throws IntegrationException{
+        String query =  "SELECT guideentryid, category, subcategory, description, enforcementguidelines, \n" +
+                        " inspectionguidelines, priority\n" +
+                        " FROM public.codeelementguide WHERE guideentryid = ?;";
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -900,7 +901,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, typeId);
+            stmt.setInt(1, entryid);
             rs = stmt.executeQuery();
             while(rs.next()){
                 cege = generateCodeElementGuideEntry(rs);

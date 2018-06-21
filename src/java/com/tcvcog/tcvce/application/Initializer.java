@@ -153,6 +153,9 @@ public class Initializer implements ServletContextListener{
         
         LogIntegrator logInt = new LogIntegrator();
         servletContext.setAttribute("logIntegrator", logInt);
+        
+//        SessionBean sb = new SessionBean();
+//        servletContext.setAttribute("sessionBean", sb);
     }
     
     @Override

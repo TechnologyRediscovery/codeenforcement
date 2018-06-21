@@ -126,41 +126,45 @@
                     <h:form id="panelMenu">
 
                         <p:panelMenu style="width:100%">
-                            
+
                             <p:submenu label="General" expanded="true">
                                 <p:menuitem value="Mission control" action="missionControl" ajax="false" icon="ui-icon-disk" />
                             </p:submenu>
-                            
+
                             <p:submenu label="Properties &amp; Persons" expanded="true">
                                 <p:menuitem value="Property search" action="propertySearch" ajax="false" icon="ui-icon-disk" />
-                                <p:menuitem value="Property profile" action="#{navigationBB.gotoPropertyProfile}" ajax="false" icon="ui-icon-disk" />
+                                <p:menuitem value="Property profile" action="#{navigationBB.gotoPropertyProfile}" ajax="false" 
+                                            icon="ui-icon-disk" disabled="#{navigationBB.noActiveProperty}"/>
                                 <p:menuitem value="Person search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w" />
                                 <p:menuitem value="Owner search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w" />
                             </p:submenu>
-                            
+
                             <p:separator />
-                            
-                            <p:submenu label="Code Enforcement" expanded="false">
-                                <p:menuitem value="Open cases" action="workflow"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Action Requests" action="workflow"  ajax="false" icon="ui-icon-close"/>
-                                <!--<p:menuitem value="Review messages" action="workflow"  ajax="false" icon="ui-icon-close"/>-->
-                                <!--<p:menuitem value="Reports" action=""  ajax="false" icon="ui-icon-close"/>-->
+
+                            <p:submenu label="Code Enforcement" expanded="true">
+                                <p:menuitem value="Open cases" action="ceCases"  ajax="false" icon="ui-icon-close"/>
+                                <p:menuitem value="Action Requests" action="ceCases"  ajax="false" icon="ui-icon-close"/>
                                 <p:menuitem value="Court Entities" action="litigationManage"  ajax="false" icon="ui-icon-close"/>
                                 <p:menuitem value="Notice text blocks" action="textBlockManage"  ajax="false" icon="ui-icon-close"/>
                             </p:submenu>
-                            
+
                             <p:separator />
-                            
-                            <p:submenu label="Active CE Case" expanded="true">
-                                <p:menuitem value="Case profile" action="#{navigationBB.gotoCaseProfile}"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Events" action="#{navigationBB.gotoCaseEvents}"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Violations" action="#{navigationBB.gotoCaseViolations}"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Notices" action="#{navigationBB.gotoCaseNotices}"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Citations" action="#{navigationBB.gotoCaseCitations}"  ajax="false" icon="ui-icon-close"/>
+
+                            <p:submenu label="Active CE Case" expanded="false">
+                                <p:menuitem value="Case profile" action="caseProfile"  ajax="false" 
+                                            icon="ui-icon-close" disabled="#{navigationBB.noActiveCase}"/>
+                                <p:menuitem value="Events" action="caseEvents"  ajax="false" 
+                                            icon="ui-icon-close" disabled="#{navigationBB.noActiveCase}"/>
+                                <p:menuitem value="Violations" action="caseViolations"  ajax="false" 
+                                            icon="ui-icon-close" disabled="#{navigationBB.noActiveCase}"/>
+                                <p:menuitem value="Notices" action="caseNotices"  ajax="false" 
+                                            icon="ui-icon-close" disabled="#{navigationBB.noActiveCase}"/>
+                                <p:menuitem value="Citations" action="caseCitations"  ajax="false" 
+                                            icon="ui-icon-close" disabled="#{navigationBB.noActiveCase}"/>
                             </p:submenu>
-                            
+
                             <p:separator />
-                            
+
                             <p:submenu label="Occupancy">
                                 <p:menuitem value="Applications" action="occPermitApplications" ajax="false" icon="ui-icon-document" />
                                 <p:menuitem value="Open inspections" action="occInspections" ajax="false" icon="ui-icon-home" />
@@ -170,41 +174,39 @@
                                 <p:menuitem value="Payments" action="payments" ajax="false" icon="ui-icon-wrench" />
                                 <p:menuitem value="Fee config" action="feeManage" ajax="false" icon="ui-icon-wrench" />
                                 <p:menuitem value="Permits config"  action="occPermitTypeManage" ajax="false" icon="ui-icon-wrench" />
-                                <!--<p:menuitem value="Reports" action="" ajax="false" icon="ui-icon-wrench" />-->
                             </p:submenu>
-                            
+
                             <p:separator /> 
-                            
+
                             <p:submenu label="Municpal code">
-                                <p:menuitem value="Browse code" action="" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="Code guide" action="" ajax="false" icon="ui-icon-arrowthick-1-s" />
-                                <p:menuitem value="Code Sources" action="" ajax="false" icon="ui-icon-home" />
-                                <p:menuitem value="Add element" action="" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Code guide" action="codeGuideView" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Code Sources" action="codeSourceManage" ajax="false" icon="ui-icon-home" />
+                                <p:menuitem value="Code Sets" action="codeSetManage" ajax="false" icon="ui-icon-home" />
+                                <p:menuitem value="Add element" action="elementTypeManage" ajax="false" icon="ui-icon-arrowthick-1-s" />
                             </p:submenu>
-                            
+
                             <p:separator />
-                            
+
                             <p:submenu label="Public">
-                                <p:menuitem value="CE action request" action="" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="Occ permit application" action="" ajax="false" icon="ui-icon-home" />
-                                <p:menuitem value="Public info lookup" action="" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Public portal" action="publicPortal" ajax="false" icon="ui-icon-document" />
+                                <p:menuitem value="CE action request" action="ceActionRequest" ajax="false" icon="ui-icon-document" />
                             </p:submenu>
-                        
+
                             <p:separator />
-                            
+
                             <p:submenu label="System">
-                                <p:menuitem value="User configuration" action="" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="Municipalities" action="" ajax="false" icon="ui-icon-arrowthick-1-s" />
-                                <p:menuitem value="CE event config" action="" ajax="false" icon="ui-icon-arrowthick-1-s" />
-                                <p:menuitem value="Request list changes" action="" ajax="false" icon="ui-icon-home" />
-                                <p:menuitem value="Bugs &amp; suggestions" action="" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="User configuration" action="userManage" ajax="false" icon="ui-icon-document" />
+                                <p:menuitem value="Municipalities" action="muniManage" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="CE event config" action="eventManage" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Request list changes" action="selectItemListChange" ajax="false" icon="ui-icon-home" />
+                                <p:menuitem value="Bugs &amp; suggestions" action="bugReporting" ajax="false" icon="ui-icon-arrowthick-1-s" />
                             </p:submenu>
-                        
+
                         </p:panelMenu>
                     </h:form>
 
 
-              
+
                 </f:view>
             </div>
 
@@ -223,8 +225,8 @@
                                 <h:outputText value="#{facesUser.LName}  | "/>
                                 <h:outputText value="Permissions: "/>
                                 <h:outputText value="#{facesUser.roleType.label}  | "/>   
-                                <h:outputText value="Default Municipality: "/>
-                                <h:outputText value="#{facesUser.muni.muniName} "/><br/> 
+                                <h:outputText value="Municipality: "/>
+                                <h:outputText value="#{sessionBean.activeMuni.muniName} "/><br/> 
                                 <h:outputText value="Active Property: "/>
                                 <h:outputText value="#{sessionBean.activeProp.address} "/> 
                                 <h:outputText value="(#{sessionBean.activeProp.muni.muniName}  ) | "/>

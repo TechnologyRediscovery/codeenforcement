@@ -10,7 +10,7 @@
         <title>Citation Editor</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
            
             <ui:define name="content">
                 <div class="mainContainer">
@@ -185,7 +185,7 @@
                             <p:spacer height="10px"/>
                             <p:commandButton ajax="false" value="Issue Citation" action="#{citationBB.issueCitation}" />
                             <p:commandButton ajax="false" value="Update Citation" action="#{citationBB.updateCitation}" />
-                            <p:commandButton ajax="false" value="Cancel and return" action="caseManage" />
+                            <p:commandButton ajax="false" value="Cancel and return" action="caseProfile" />
                             <p:commandButton disabled="true" ajax="false" value="Save but do NOT issue" action="#{citationBB.saveButDoNotIssueCitation}" />
                         </h:form>
                     </f:view>

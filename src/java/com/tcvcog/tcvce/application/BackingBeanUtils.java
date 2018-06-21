@@ -27,6 +27,7 @@ import java.sql.Connection;
 import com.tcvcog.tcvce.integration.PostgresConnectionFactory;
 import com.tcvcog.tcvce.coordinators.UserCoordinator;
 import com.tcvcog.tcvce.coordinators.ViolationCoordinator;
+import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import com.tcvcog.tcvce.integration.CitationIntegrator;
@@ -58,6 +59,7 @@ import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 
 
 /**
@@ -67,10 +69,9 @@ import javax.faces.bean.SessionScoped;
 
 public class BackingBeanUtils implements Serializable{
     
-    @ManagedProperty(value="sessionBean")
+//    @ManagedProperty(value="sessionBean")
     private SessionBean sessionBean;
     
-    //@ManagedProperty(value="#{visit}")
     private SessionCoordinator sessionManager;
     
     private UserCoordinator userCoordinator;
@@ -100,6 +101,8 @@ public class BackingBeanUtils implements Serializable{
     // system integrators
     private SystemIntegrator systemIntegrator;
     private LogIntegrator logIntegrator;
+    
+    private User facesUser;
     
     /**
      * Creates a new instance of BackingBeanUtils
@@ -617,6 +620,10 @@ public class BackingBeanUtils implements Serializable{
      * @return the sessionBean
      */
     public SessionBean getSessionBean() {
+        FacesContext context = getFacesContext();
+        ValueExpression ve = context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), "#{sessionBean}", SessionBean.class);
+        sessionBean = (SessionBean) ve.getValue(context.getELContext());
         return sessionBean;
     }
 
@@ -625,6 +632,22 @@ public class BackingBeanUtils implements Serializable{
      */
     public void setSessionBean(SessionBean sessionBean) {
         this.sessionBean = sessionBean;
+    }
+
+    /**
+     * @return the facesUser
+     */
+    public User getFacesUser() {
+        ExternalContext ec = getFacesContext().getExternalContext();
+        facesUser = (User) ec.getSessionMap().get("facesUser");
+        return facesUser;
+    }
+
+    /**
+     * @param facesUser the facesUser to set
+     */
+    public void setFacesUser(User facesUser) {
+        this.facesUser = facesUser;
     }
 
 }

@@ -10,7 +10,7 @@
         <title>Case Event Configuration Tool</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -217,7 +217,7 @@
                                        
                                    </h:panelGrid>
                                 
-                                <p:commandButton ajax="false" 
+                                <p:commandButton ajax="false" icon="fa fa-edit"
                                            actionListener="#{eventConfigurationBB.commitUpdates}"
                                            value="Commit Updates" tabindex="8"/>
                                  </h:form>
@@ -312,7 +312,7 @@
                                        
                                    </h:panelGrid>
                                             
-                                <p:commandButton ajax="false" 
+                                <p:commandButton ajax="false" icon="fa fa-plus"
                                     actionListener="#{eventConfigurationBB.addNewEventCategory}"
                                     value="Add Event Category" tabindex="13"/>
                                 </h:form>

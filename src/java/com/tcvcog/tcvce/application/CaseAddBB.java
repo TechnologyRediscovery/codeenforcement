@@ -72,8 +72,8 @@ public class CaseAddBB extends BackingBeanUtils implements Serializable{
             cc.createNewCECase(newCase);
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                            "Successfully added case to property!", ""));
-            return "caseManage";
+                            "Successfully added case to property! Access the case from the list below.", ""));
+            return "ceCases";
         } catch (IntegrationException ex) {
             System.out.println(ex);
             getFacesContext().addMessage(null,

@@ -105,7 +105,7 @@ public class EventEditBB extends BackingBeanUtils implements Serializable {
         
         
         
-        return "caseManage";
+        return "caseProfile";
     }
     
     

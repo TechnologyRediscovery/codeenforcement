@@ -119,7 +119,7 @@ public class CitationBB extends BackingBeanUtils implements Serializable{
             System.out.println(ex);
             return "";
         }
-        return "caseManage";
+        return "caseProfile";
     }
     
     public String saveButDoNotIssueCitation(){

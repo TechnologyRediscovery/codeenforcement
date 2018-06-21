@@ -26,20 +26,26 @@ import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.CodeViolation;
 import com.tcvcog.tcvce.entities.EventCase;
+import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.entities.User;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Eric C. Darsow
  */
+@ManagedBean(name="sessionBean")
+@SessionScoped
 public class SessionBean extends BackingBeanUtils implements Serializable{
     
     private User utilityUserToUpdate;
+    private Municipality activeMuni;
     private CodeSource activeCodeSource;
     private Property activeProp;
     private CECase activeCase;
@@ -60,6 +66,7 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
      * Creates a new instance of getSessionBean()
      */
     public SessionBean() {
+        System.out.println("SessionBean.SessionBean");
     }
 
     /**
@@ -270,6 +277,21 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
      */
     public void setActiveCodeSource(CodeSource activeCodeSource) {
         this.activeCodeSource = activeCodeSource;
+    }
+
+    /**
+     * @return the activeMuni
+     */
+    public Municipality getActiveMuni() {
+        return activeMuni;
+    }
+
+    /**
+     * @param activeMuni the activeMuni to set
+     */
+    public void setActiveMuni(Municipality activeMuni) {
+        System.out.println("MissionControlBB.setActiveMuni | set: " + activeMuni.getMuniName());
+        this.activeMuni = activeMuni;
     }
     
 }

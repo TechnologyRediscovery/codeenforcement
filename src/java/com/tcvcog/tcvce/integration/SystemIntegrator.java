@@ -22,6 +22,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.ImprovementSuggestion;
 import com.tcvcog.tcvce.entities.ListChangeRequest;
 import com.tcvcog.tcvce.entities.Person;
+import com.tcvcog.tcvce.entities.User;
 import com.tcvcog.tcvce.occupancy.entities.OccPermit;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -59,7 +60,7 @@ public class SystemIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setInt(1, is.getImprovementTypeID());
             stmt.setString(2, is.getSuggestionText());
             // hard-coded status for expediency
-            stmt.setInt(3, 1);
+            stmt.setInt(3, is.getStatusID());
             stmt.setInt(4, is.getSubmitter().getUserID());
             System.out.println("PersonIntegrator.getPersonListByPropertyID | sql: " + stmt.toString());
 

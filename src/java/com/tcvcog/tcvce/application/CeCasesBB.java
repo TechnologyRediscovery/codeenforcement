@@ -17,13 +17,10 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.EventCase;
 import com.tcvcog.tcvce.entities.Person;
-import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import com.tcvcog.tcvce.integration.CaseIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,57 +30,24 @@ import javax.faces.application.FacesMessage;
  *
  * @author Eric C. Darsow
  */
-public class WorkflowBB extends BackingBeanUtils implements Serializable{
+public class CeCasesBB extends BackingBeanUtils implements Serializable{
 
     
-    private ArrayList<CEActionRequest> requestList;
-    private CEActionRequest selectedRequest;
     private ArrayList<CECase> caseList;
     private CECase selectedCase;
     private ArrayList<EventCase> recentEventList;
     private ArrayList<Person> muniPeopleList;
     
-    
-    
     /**
-     * Creates a new instance of WorkflowBB
+     * Creates a new instance of ceCasesBB
      */
-    public WorkflowBB() {
+    public CeCasesBB() {
     }
-    
     
     public String viewCase(){
-        
-        
         getSessionBean().setActiveCase(selectedCase);
         getSessionBean().setActiveProp(selectedCase.getProperty());
-        
-        return "caseManage";
-    }
-    
-    public String viewSelectedActionRequest(){
-        
-        getSessionBean().setActionRequest(selectedRequest);
-        
-        return "actionRequestManage";
-        
-        
-    }
-
-    /**
-     * @return the requestList
-     */
-    public ArrayList<CEActionRequest> getRequestList() {
-        CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
-        
-        try {
-            requestList = ari.getCEActionRequestList(getSessionBean().getActiveUser().getMuniCode());
-        } catch (IntegrationException ex) {
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to load action requests due to an error in the Integration Module", ""));
-        }
-        return requestList;
+        return "caseProfile";
     }
 
     /**
@@ -92,7 +56,7 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
     public ArrayList<CECase> getCaseList() {
         CaseIntegrator ci = getCaseIntegrator();
         
-        int muniCodeForFetching = getSessionBean().getActiveUser().getMuniCode();
+        int muniCodeForFetching = getSessionBean().getActiveMuni().getMuniCode();
         
         try {
             caseList = ci.getCECasesByMuni(muniCodeForFetching);
@@ -116,13 +80,6 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
      */
     public ArrayList<Person> getMuniPeopleList() {
         return muniPeopleList;
-    }
-
-    /**
-     * @param requestList the requestList to set
-     */
-    public void setRequestList(ArrayList<CEActionRequest> requestList) {
-        this.requestList = requestList;
     }
 
     /**
@@ -160,18 +117,5 @@ public class WorkflowBB extends BackingBeanUtils implements Serializable{
         this.selectedCase = selectedCase;
     }
 
-    /**
-     * @return the selectedRequest
-     */
-    public CEActionRequest getSelectedRequest() {
-        return selectedRequest;
-    }
-
-    /**
-     * @param selectedRequest the selectedRequest to set
-     */
-    public void setSelectedRequest(CEActionRequest selectedRequest) {
-        this.selectedRequest = selectedRequest;
-    }
-    
+   
 }

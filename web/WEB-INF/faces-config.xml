@@ -133,13 +133,13 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
     
-    <!--session-scoped beans-->
-
     <managed-bean>
-        <managed-bean-name>sessionBean</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.SessionBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-name>courtEntityIntegrator</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.integration.CourtEntityIntegrator</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+    
+    <!--session-scoped beans-->
     
     <managed-bean>
         <managed-bean-name>loggingCoordinator</managed-bean-name>
@@ -250,13 +250,7 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
-    <managed-bean>
-        <description>Backing bean for ActReqSubConf.xhtml confirmation of action request - public</description>
-        <managed-bean-name>actReqSubConfBean</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ActReqSubConfBean</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
+  
     <managed-bean>
         <description>Models a request for code enforcement action</description>
         <managed-bean-name>actionRequestBean</managed-bean-name>
@@ -285,7 +279,7 @@
     </managed-bean>
 
     <managed-bean>
-        <managed-bean-name>codeElementTypeBB</managed-bean-name>
+        <managed-bean-name>codeElementGuideBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementGuideBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
@@ -308,11 +302,6 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
-    <managed-bean>
-        <managed-bean-name>dashboardBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.DashboardBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
     
     <managed-bean>
         <managed-bean-name>personBB</managed-bean-name>
@@ -363,14 +352,14 @@
     </managed-bean>
     
     <managed-bean>
-        <managed-bean-name>workflowBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.WorkflowBB</managed-bean-class>
+        <managed-bean-name>ceCasesBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CeCasesBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
-        <managed-bean-name>caseManageBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.CaseManageBB</managed-bean-class>
+        <managed-bean-name>caseProfileBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CaseProfileBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 
@@ -445,19 +434,6 @@
         <managed-bean-class>com.tcvcog.tcvce.application.CitationBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>courtEntityIntegrator</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.integration.CourtEntityIntegrator</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>navigationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.NavigationBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
     <managed-bean>
         <managed-bean-name>caseUpdateBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CaseUpdateBB</managed-bean-class>
@@ -483,6 +459,21 @@
     </managed-bean>
  
     <!--request-scoped beans-->
+    
+    <managed-bean>
+        <managed-bean-name>navigationBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.NavigationBB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+      <managed-bean>
+        <description>Backing bean for ActReqSubConf.xhtml confirmation of action request - public</description>
+        <managed-bean-name>actReqSubConfBean</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.ActReqSubConfBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    
   
   
     <!-- dependent scope -->
@@ -566,7 +557,7 @@
         <from-view-id>*</from-view-id>    
         
         <navigation-case>
-            <from-outcome>codeEnforce</from-outcome>
+            <from-outcome>ceActionRequest</from-outcome>
             <to-view-id>/public/services/submitCERequest.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -578,16 +569,16 @@
 
     
     <navigation-rule>
-        <from-view-id>/restricted/cogview/workflow.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/ceCases.xhtml</from-view-id>
         <navigation-case>
-            <from-action>#{workflowBB.viewSelectedActionRequest}</from-action>
+            <from-action>#{ceCasesBB.viewSelectedActionRequest}</from-action>
             <from-outcome>actionRequestManage</from-outcome>
             <to-view-id>/restricted/ce/actionRequestManage.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
-            <from-action>#{workflowBB.viewCase}</from-action>
-            <from-outcome>caseManage</from-outcome>
-            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
+            <from-action>#{ceCasesBB.viewCase}</from-action>
+            <from-outcome>caseProfile</from-outcome>
+            <to-view-id>/restricted/cogview/caseProfile.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
@@ -596,24 +587,18 @@
         <from-view-id>*</from-view-id>
         
         <navigation-case>
-            <from-outcome>workflow</from-outcome>
-            <to-view-id>/restricted/cogviewworkflow.xhtml</to-view-id>
+            <from-outcome>ceCases</from-outcome>
+            <to-view-id>/restricted/cogview/ceCases.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
+        
         <navigation-case>
-            <from-outcome>dashboard</from-outcome>
-            <to-view-id>/restricted/dashboard.xhtml</to-view-id>
+            <from-outcome>missionControl</from-outcome>
+            <to-view-id>/restricted/missionControl.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-
-        <navigation-case>
-            <from-outcome>workflow</from-outcome>
-            <to-view-id>/restricted/cogview/workflow.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-    
+        
         <navigation-case>
             <from-outcome>publicDashHome</from-outcome>
             <to-view-id>/public/publicDashboard.xhtml</to-view-id>
@@ -629,16 +614,6 @@
         <navigation-case>
             <from-outcome>selectItemListChange</from-outcome>
             <to-view-id>/restricted/cogstaff/gen/selectBoxListChangeRequest.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    
-    <navigation-rule>
-        <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
-        <navigation-case>
-            <from-outcome>ceCaseLookup</from-outcome>
-            <to-view-id>/public/services/codeEnforcementCaseLookUp.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -660,8 +635,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
-    
     
     <navigation-rule>
         <from-view-id>/public/publicDashboard.xhtml</from-view-id>  
@@ -753,6 +726,24 @@
     
     <navigation-rule>
         <from-view-id>*</from-view-id>
+
+        <navigation-case>
+            <from-outcome>ceCases</from-outcome>
+            <to-view-id>/restricted/cogview/ceCases.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>caseProfile</from-outcome>
+            <to-view-id>/restricted/cogview/caseProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>ceActionRequests</from-outcome>
+            <to-view-id>/restricted/cogview/ceActionRequests.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     
         <navigation-case>
             <from-outcome>caseViolations</from-outcome>
@@ -764,10 +755,6 @@
             <to-view-id>/restricted/cogstaff/ce/textBlockManage.xhtml</to-view-id>
         </navigation-case>
         
-        <navigation-case>
-            <from-outcome>caseNotices</from-outcome>
-            <to-view-id>/restricted/cogstaff/ce/caseNotices.xhtml</to-view-id>
-        </navigation-case>
         
         <navigation-case>
             <from-outcome>caseCitations</from-outcome>
@@ -780,6 +767,11 @@
         </navigation-case>
 
         <navigation-case>
+            <from-outcome>caseNotices</from-outcome>
+            <to-view-id>/restricted/cogstaff/ce/caseNotices.xhtml</to-view-id>
+        </navigation-case>
+
+        <navigation-case>
             <from-outcome>noticeOfViolationBuilder</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/noticeOfViolationBuilder.xhtml</to-view-id>
         </navigation-case>
@@ -788,20 +780,6 @@
             <from-outcome>noticeOfViolationEditor</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/noticeOfViolationEditor.xhtml</to-view-id>
         </navigation-case>
-    
-    
-        <navigation-case>
-            <from-outcome>case</from-outcome>
-            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>caseManage</from-outcome>
-            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-
                 
         <navigation-case>
             <from-outcome>eventManage</from-outcome>
@@ -819,9 +797,9 @@
     
     
     <navigation-rule>
-        <from-view-id>/restricted/cogview/caseManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/caseProfile.xhtml</from-view-id>
         <navigation-case>
-            <from-action>#{caseManageBB.addViolation}</from-action>
+            <from-action>#{caseProfileBB.addViolation}</from-action>
             <from-outcome>violationSelectElement</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/violationSelectElement.xhtml</to-view-id>
             <redirect />
@@ -841,11 +819,11 @@
 
     
     <navigation-rule>
-        <from-view-id>/restructed/cogstaff/ce/caseAdd.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/ce/caseAdd.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{caseAddBB.addNewCase}</from-action>
-            <from-outcome>caseManage</from-outcome>
-            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
+            <from-outcome>ceCases</from-outcome>
+            <to-view-id>/restricted/cogview/ceCases.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -854,9 +832,9 @@
     <navigation-rule>
         <from-view-id>/restricted/cogstaff/ce/violationEdit.xhtml</from-view-id>
         <navigation-case>
-            <from-action>#{violationEditBB.backToCaseManager}</from-action>
-            <from-outcome>caseManage</from-outcome>
-            <to-view-id>/restricted/cogview/caseManage.xhtml</to-view-id>
+            <from-action>#{violationEditBB.backTocaseProfiler}</from-action>
+            <from-outcome>caseProfile</from-outcome>
+            <to-view-id>/restricted/cogview/caseProfile.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -873,9 +851,9 @@
     
     
     <navigation-rule>
-        <from-view-id>/restricted/cogview/caseManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/caseProfile.xhtml</from-view-id>
         <navigation-case>
-            <from-action>#{caseManageBB.editViolation}</from-action>
+            <from-action>#{caseProfileBB.editViolation}</from-action>
             <from-outcome>violationEdit</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/violationEdit.xhtml</to-view-id>
             <redirect />
@@ -884,7 +862,7 @@
     
    
     <navigation-rule>
-        <from-view-id>/restricted/cogview/caseManage.xhtml</from-view-id>
+        <from-view-id>/restricted/cogview/caseProfile.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{eventAddBB.startNewEvent}</from-action>
             <from-outcome>eventAdd</from-outcome>
@@ -945,10 +923,6 @@
             <to-view-id>/restricted/cogstaff/occ/occPermitTypeManage.xhtml</to-view-id>
         </navigation-case>
         
-        
-        
-        
-        
     </navigation-rule>
         
         
@@ -974,12 +948,6 @@
             <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
-    
-        <navigation-case>
-            <from-outcome>elementTypeManage</from-outcome>
-            <to-view-id>/restricted/cogstaff/code/codeElementTypeManage.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
         
         <navigation-case>
             <from-outcome>codeSetManage</from-outcome>
@@ -1054,9 +1022,19 @@
             <to-view-id>/restricted/cogadmin/muniManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>bugReporting</from-outcome>
+            <to-view-id>/restricted/improvementSuggestion_internal.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
     
     <!-- ************ non-wildcard nav cases ************************-->
-    
+    <managed-bean>
+        <managed-bean-name>ceActionRequestsBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CeActionRequestsBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

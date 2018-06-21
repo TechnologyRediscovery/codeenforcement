@@ -100,6 +100,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
     } // close submitActionRequest
     
     private StringBuilder getSelectActionRequestSQLStatement(int requestID){
+        
         StringBuilder sb = new StringBuilder();
         
         sb.append("SELECT requestid, requestpubliccc, public.ceactionrequest.muni_municode AS muni_municode, \n" +
@@ -250,29 +251,21 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
     
     public ArrayList getCEActionRequestList(int muniCode) throws IntegrationException{
         ArrayList<CEActionRequest> requestList = new ArrayList();
+        int requestID;
         String query = "SELECT requestid, requestpubliccc FROM public.ceactionrequest "
                 + "WHERE muni_municode = ?;"; 
         ResultSet rs = null;
         PreparedStatement stmt = null;
-         int requestID;
-         
-         //FacesContext context = getFacesContext();
-         //DBConnection dbCon = context.getApplication().evaluateExpressionGet(context, "#{dBConnection}", DBConnection.class);
-         
         Connection con = getPostgresCon();
         CEActionRequest cear;
         
          try {
            stmt = con.prepareStatement(query);
            stmt.setInt(1, muniCode);
-            
-               System.out.println("CEActionRequestorIntegrator.getCEActionRequestList | sql: " + stmt.toString());
-            // Retrieve action data from postgres
            rs = stmt.executeQuery();
            while(rs.next()){
                requestID = rs.getInt("requestid");
                cear = getActionRequestByRequestID(requestID);
-               System.out.println("CEActionRequestorIntegrator.getCEActionRequestList | retrieved action requestID: " + cear.getRequestID());
                requestList.add(cear);
            } // close while
                

@@ -11,7 +11,7 @@
         <title>Add a violation</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -128,11 +128,8 @@
                             </h:panelGrid>
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton    ajax="false" action="#{violationAddBB.addViolation}"
+                            <p:commandButton    ajax="false" action="#{violationAddBB.addViolation}" 
                                                 value="Add code violation to case and return to case home" tabindex="6"/>
-                            
-                            
-                            
                         </h:form>
                     </f:view>
                 </div>

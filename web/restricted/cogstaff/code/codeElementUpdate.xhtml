@@ -10,7 +10,7 @@
         <title>Update Code Element</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                      <h:outputLink value="codeElementList.xhtml">&lt;-- Back to element manager</h:outputLink>
@@ -37,16 +37,6 @@
                                 All fields will be overwritten, so leave untouched those you wish to remain unchanged.</p>
                             
                             <p> <span class="bold">Element ID:</span><h:outputText value="#{codeElementListBB.selectedElement.elementID}"/></p>
-                            
-                            <p> <span class="bold">Current Type: </span><h:outputText value="#{codeElementListBB.selectedElement.type.name}"/></p>
-                            
-                            <p>If you wish to change the current type, select a new one from this list:</p>
-                            <p:selectOneListbox value="#{codeElementListBB.formType}"
-                                            id="elementTypes" style="width: 400px"
-                                            tabindex="1">
-                                <f:selectItems value="#{codeElementTypeBB.codeElementTypesMap}"/>
-                            </p:selectOneListbox>
-                            
                             
                             <h:outputLabel for="cdelOrdChapterNo" >
                                 <h:outputText value="Ordiance chapter number (numbers only)" styleClass="uiLabel" />
@@ -178,11 +168,10 @@
                             
                             <p:spacer height="15px"/>
                             
-                            <h:commandButton 
-                             id="insertCodeElement" 
+                            <p:commandButton 
+                             id="insertCodeElement"  ajax="false"
                              value="Update code element" 
-                             styleClass="buttonOwnLine"
-                             tabindex="15"
+                             tabindex="15" icon="fa fa-edit"
                              action="#{codeElementListBB.commitUpdatesToCodeElement()}"/>
                             
                         </h:form>

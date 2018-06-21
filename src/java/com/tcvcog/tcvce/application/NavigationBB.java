@@ -29,6 +29,10 @@ import javax.faces.application.FacesMessage;
  */
 public class NavigationBB extends BackingBeanUtils implements Serializable {
 
+    private boolean noActiveCase;
+    private boolean noActiveProperty;
+    private boolean noActiveInspection;
+    
     /**
      * Creates a new instance of NavigationBB
      */
@@ -36,73 +40,77 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
     }
     
     public String gotoPropertyProfile(){
-        if(hasActiveProperty()){
+        if(getSessionBean().getActiveProp() != null){
+            return "propertyProfile";
+        } else {
+             getFacesContext().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "No active property to profile! Please search for and "
+                                + "select a property and re-attempt navigation",
+                        ""));
             return "propertySearch";
-        } else return "propertyProfile";
+        }
     }
     
     public String gotoCaseProfile(){
-        if(hasActiveCase()){
-            return "caseManage";
-        } else{
-            
-             getFacesContext().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "No active case! Please select a case from the list below and re-attempt navigation",
-                        ""));
-            return "workflow";
-        }
-        
-    }
-    
-    public String gotoCaseViolations(){
-        if(hasActiveCase()){
-            return "caseViolations";
+        if(getSessionBean().getActiveCase() != null ){
+            return "caseProfile";
         } else{
              getFacesContext().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "No active case! Please select a case from the list below and re-attempt navigation",
                         ""));
-            return "workflow";
+            return "ceCases";
         }
-    }
-    
-    public String gotoCaseNotices(){
-        
-        if(hasActiveCase()){
-            return "caseNotices";
-        } else return "workflow";
-    }
-    
-    public String gotoCaseCitations(){
-        if(hasActiveCase()){
-            return "caseCitations";
-        } else return "workflow";
         
     }
     
-    public String gotoCaseEvents(){
-        if(hasActiveCase()){
-            return "caseEvents";
-        } else return "workflow";
-    }
     
-    private boolean hasActiveCase(){
-        
+    
+    /**
+     * @return the noActiveCase
+     */
+    public boolean isNoActiveCase() {
         CECase c = getSessionBean().getActiveCase();
-        if(c != null){
-            return true;
-        } 
-        return false;
+        noActiveCase = (c == null);
+        return noActiveCase; 
     }
-    
-    private boolean hasActiveProperty(){
-        
+
+    /**
+     * @return the noActiveProperty
+     */
+    public boolean isNoActiveProperty() {
         Property p = getSessionBean().getActiveProp();
-        if(p != null){
-            return true;
-        } 
-        return false;
+        noActiveProperty = (p == null);
+        return noActiveProperty;
+    }
+
+    /**
+     * @return the noActiveInspection
+     */
+    public boolean isNoActiveInspection() {
+        return noActiveInspection;
+    }
+
+    /**
+     * @param noActiveCase the noActiveCase to set
+     */
+    public void setNoActiveCase(boolean noActiveCase) {
+        this.noActiveCase = noActiveCase;
+    }
+
+    /**
+     * @param noActiveProperty the noActiveProperty to set
+     */
+    public void setNoActiveProperty(boolean noActiveProperty) {
+        this.noActiveProperty = noActiveProperty;
+    }
+
+    /**
+     * @param noActiveInspection the noActiveInspection to set
+     */
+    public void setNoActiveInspection(boolean noActiveInspection) {
+        this.noActiveInspection = noActiveInspection;
     }
     
     

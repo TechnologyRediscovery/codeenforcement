@@ -42,7 +42,7 @@ import javax.faces.event.ActionEvent;
  *
  * @author Eric C. Darsow
  */
-public class CaseManageBB extends BackingBeanUtils implements Serializable{
+public class CaseProfileBB extends BackingBeanUtils implements Serializable{
 
     private CECase currentCase;
     private CasePhase nextPhase;
@@ -66,7 +66,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
     /**
      * Creates a new instance of CaseManageBB
      */
-    public CaseManageBB() {
+    public CaseProfileBB() {
     }
     
     /**
@@ -306,7 +306,7 @@ public class CaseManageBB extends BackingBeanUtils implements Serializable{
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                    "Unable to refresh case, Sorry. Please reslect the csae from the muni dashboard", ""));
+                    "Unable to refresh case, Sorry. Please try reselecting the case from the case listing", ""));
             
         }
     }

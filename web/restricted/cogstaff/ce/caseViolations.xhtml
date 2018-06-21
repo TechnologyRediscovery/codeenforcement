@@ -10,7 +10,7 @@
         <title>Case Violations</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
            
             <ui:define name="content">
                 <div class="mainContainer">
@@ -25,11 +25,11 @@
 
                             <h2>Assigned Code Violations</h2>
                             
-                            <h:outputText value="Current Case: #{caseManageBB.currentCase.caseName}"/>
+                            <h:outputText value="Current Case: #{caseProfileBB.currentCase.caseName}"/>
                             
                             <p:spacer height="10px"/>
 
-                            <p:commandButton ajax="false" action="#{caseManageBB.addViolation}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.addViolation}"
                                              value="Add new code violation to case"
                                              icon="fa fa-plus"/>
                             <p:spacer height="15px"/>
@@ -38,9 +38,9 @@
                                 id="violationTable"
                                 var="v"
                                 selectionMode="mulitiple"
-                                selection="#{caseManageBB.selectedViolations}"
+                                selection="#{caseProfileBB.selectedViolations}"
                                 rowKey="#{v.violationID}"
-                                value="#{caseManageBB.fullCaseViolationList}"
+                                value="#{caseProfileBB.fullCaseViolationList}"
                                 tableStyleClass="primeDataTable"
                                 expandedRow="false"
                                 rowExpandMode="multiple"
@@ -117,34 +117,34 @@
 
                             <p:spacer height="15px"/>
 
-                            <p:commandButton ajax="false" action="#{caseManageBB.recordCompliance}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.recordCompliance}"
                                                 value="Record Compliance "
                                                 icon="fa fa-check" />
 
-                                <p:commandButton ajax="false" action="#{caseManageBB.editViolation}"
+                                <p:commandButton ajax="false" action="#{caseProfileBB.editViolation}"
                                                 value="Edit violation details"
                                                 icon="fa fa-edit"/>
                             <p:spacer height="5px"/>
 
                             <h3>Notice of violation actions</h3>
                             
-                                <p:commandButton ajax="false" action="#{caseManageBB.createNewNoticeForAllViolations}"
+                                <p:commandButton ajax="false" action="#{caseProfileBB.createNewNoticeForAllViolations}"
                                                 value="Generate Notice Letter for all Violations"
                                                 icon="fa fa-envelope"/>
                                 
                                 <p:commandButton disabled="false" ajax="false" 
-                                                action="#{caseManageBB.createNewNoticeForSelectedViolations()}"
+                                                action="#{caseProfileBB.createNewNoticeForSelectedViolations()}"
                                                 value="Generate Notice Letter for selected violations"
                                                 icon="fa fa-list"/>
                             <p:spacer height="5px"/>
 
                             <h3>Citation actions</h3>
 
-                                <p:commandButton ajax="false" action="#{caseManageBB.createCitationForAllViolations}"
+                                <p:commandButton ajax="false" action="#{caseProfileBB.createCitationForAllViolations}"
                                              value="Generate citation for all Violations"
                                              icon="fa fa-warning"/>
                                 
-                                <p:commandButton ajax="false" action="#{caseManageBB.createCitationFromSelected}"
+                                <p:commandButton ajax="false" action="#{caseProfileBB.createCitationFromSelected}"
                                              value="Generate citation for selected violations"
                                              icon="fa fa-warning"/>
 

@@ -16,17 +16,11 @@
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
-import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.ArrayList;
 import javax.faces.component.html.HtmlDataTable;
-//import org.primefaces.component.datatable.DataTable;
 import com.tcvcog.tcvce.entities.*;
 import com.tcvcog.tcvce.integration.CEActionRequestIntegrator;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -55,11 +49,9 @@ public class RequestManagementBean extends BackingBeanUtils implements Serializa
 
     // action listener method for managing requests by COG staff
     public String manage(){
-        System.out.println("RequestManagementBean.manage - action event");
         currentRequest = (CEActionRequest) requestTable.getRowData();
         // these next lines were created for testing purposes only and can be deleted
         currentRequestAddressOfConcern = String.valueOf(currentRequest.getAddressOfConcern());
-        System.out.println("RequestManagementBean.manage - got address:" + currentRequest.getAddressOfConcern());
         
         return "manageRequest";
         

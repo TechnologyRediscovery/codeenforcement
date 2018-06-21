@@ -69,14 +69,10 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     
     
     public String insertCodeElement(){
-        
-        
-        
         CodeIntegrator codeIntegrator = getCodeIntegrator();
         CodeElement newCE = new CodeElement();
         
         newCE.setSource(activeCodeSource);
-        newCE.setTypeID(formType);
         
         newCE.setOrdchapterNo(formOrdChapterNo);
         

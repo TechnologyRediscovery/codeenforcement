@@ -17,7 +17,6 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeSource;
@@ -91,12 +90,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         eleToUpdate.setElementID(selectedElement.getElementID());
         System.out.println("CodeElementListBB.commitUpdatesToCodeElement | formtype = "+ formType);
         System.out.println("CodeElementListBB.commitUpdatesToCodeElement | selectedElement  = ");
-        if(formType == 0){
-//            eleToUpdate.setTypeID(selectedElement.getType().getCdelTypeID());
-            
-        } else {
-            eleToUpdate.setTypeID(formType);
-        }
+        
         eleToUpdate.setOrdchapterNo(formOrdChapterNo);
         
         eleToUpdate.setOrdchapterTitle(formOrdChapterTitle);
@@ -164,9 +158,8 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to populate list of code elements", 
+                            "Unable to populate list of code elements, sorry!", 
                             "This error will require administrator attention"));
-            
         }
         
         return codeElementList;
@@ -186,13 +179,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         return activeCodeSource;
     }
 
-    /**
-     * @return the formType
-     */
-    public int getFormType() {
-        formType = selectedElement.getTypeID();
-        return  formType;
-    }
+    
 
     /**
      * @return the formOrdChapterNo

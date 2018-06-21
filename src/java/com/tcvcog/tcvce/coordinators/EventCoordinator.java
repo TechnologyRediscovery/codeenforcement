@@ -168,7 +168,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         EventIntegrator ei = getEventIntegrator();
         ei.updateEvent(event);
         
-        return "caseManage";
+        return "caseProfile";
     }
     
     
@@ -254,7 +254,7 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         event.setDateOfRecord(LocalDateTime.now());
         // not sure if I can access the session level info for the specific user here in the
         // coordinator bean
-        event.setEventOwnerUser(getSessionBean().getActiveUser());
+        event.setEventOwnerUser(getFacesUser());
         event.setActiveEvent(true);
         
         insertEvent(event);

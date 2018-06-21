@@ -27,8 +27,7 @@ public class CodeElement {
     
     private int elementID;
     
-    private CodeElementGuideEntry type;
-    private int typeID;
+    private CodeElementGuideEntry guideEntry;
     private CodeSource source;
     
     private int ordchapterNo;
@@ -283,31 +282,19 @@ public class CodeElement {
     }
 
     /**
-     * @return the type
+     * @return the guideEntry
      */
-    public CodeElementGuideEntry getType() {
-        return type;
+    public CodeElementGuideEntry getGuideEntry() {
+        return guideEntry;
     }
 
     /**
-     * @param type the type to set
+     * @param guideEntry the guideEntry to set
      */
-    public void setType(CodeElementGuideEntry type) {
-        this.type = type;
+    public void setGuideEntry(CodeElementGuideEntry guideEntry) {
+        this.guideEntry = guideEntry;
     }
 
-    /**
-     * @return the typeID
-     */
-    public int getTypeID() {
-        return typeID;
-    }
 
-    /**
-     * @param typeID the typeID to set
-     */
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
-    }
     
 }

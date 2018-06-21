@@ -88,7 +88,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Success! Violation added to case and stored in DB "
                                     + "and notice event generated", ""));
-            return "caseManage";
+            return "caseProfile";
         } catch (IntegrationException ex) {
             System.out.println(ex);
              getFacesContext().addMessage(null,
@@ -106,7 +106,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                             ex.getMessage(), "Unable to generate automated event to log violation update"));
         }
-        return "caseManage";
+        return "caseProfile";
         
     }
 
@@ -120,7 +120,7 @@ public class ViolationEditBB extends BackingBeanUtils implements Serializable{
     }
     
     public String backToCaseManager(){
-        return "caseManage";
+        return "caseProfile";
     }
 
     /**

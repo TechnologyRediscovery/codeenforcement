@@ -10,7 +10,7 @@
         <title>Add event</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
            
             <ui:define name="content">
                 <div class="mainContainer">
@@ -181,7 +181,7 @@
 
                             </p:fieldset>
                                 <p:commandButton ajax="false" action="#{eventAddBB.addEvent}"
-                                            value="Create new event"/>
+                                                 value="Create new event" icon="fa fa-plus"/>
                         </h:form>
                                 
                     </f:view>

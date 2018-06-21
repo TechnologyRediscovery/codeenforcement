@@ -408,7 +408,7 @@ public class CourtEntityBB extends BackingBeanUtils implements Serializable {
     public ArrayList<Municipality> getMuniList() {
         MunicipalityIntegrator mi = getMunicipalityIntegrator();
         try {
-            muniList = mi.getAllMuniList();
+            muniList = mi.getCompleteMuniList();
         } catch (IntegrationException ex) {
             System.out.println("ex");
         }

@@ -17,7 +17,6 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
@@ -44,7 +43,7 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
     
     
     /**
-     * Creates a new instance of CodeElementTypeBB
+     * Creates a new instance of CodeElementGuide
      */
     public CodeElementGuideBB() {
     }
@@ -80,7 +79,7 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
     }
     
     public String updateCodeElementGuideEntry(){
-        System.out.println("CodeElementTypeBB.updateCodeElement");
+        System.out.println("CodeElementGuideBB.updateCodeElement");
         CodeIntegrator ci = getCodeIntegrator();
         
         currentGuideEntry.setCategory(formCategory);

@@ -53,9 +53,14 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
 
         ImprovementSuggestion is = new ImprovementSuggestion();
         
+        is.setSubmitter(getFacesUser());
         is.setImprovementTypeID(selectedImprovementType);
-        is.setSubmitter(getSessionBean().getActiveUser());
         is.setSuggestionText(systemImprovementTicketRText);
+        // back to the hard-coded since I couldn't get the resource bundle lookup
+        // to work after 5 tries!!
+        is.setStatusID(1);
+//        is.setStatusID(Integer.parseInt(getResourceBundle("dbFixedValueLookup")
+//                .getString("suggestionSubmittedTypeID")));
         
         try {
             si.insertImprovementSuggestion(is);
@@ -66,10 +71,10 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
             getFacesContext().addMessage(null,
                  new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                     ex.getLocalizedMessage(), 
-                    "This issue will need to be addressed by the system admin, sorry"));
+                    "Unable to log bug--which is a bug itself! Crazy! This issue will need to be addressed by the system admin, sorry"));
         }
         
-        return "dashboard";
+        return "missionControl";
     }
     
     public String submitListItemChange(){
@@ -86,7 +91,7 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
                          "This issue will need to be addressed by the system admin, sorry"));
         }
         
-        return "dashboard";
+        return "missionControl";
     }
     
     /**

@@ -17,19 +17,18 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-import com.tcvcog.tcvce.coordinators.SessionCoordinator;
-import com.tcvcog.tcvce.coordinators.UserCoordinator;
-import com.tcvcog.tcvce.domain.DataStoreException;
 import com.tcvcog.tcvce.domain.IntegrationException;
-import com.tcvcog.tcvce.domain.ObjectNotFoundException;
+import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.User;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -37,10 +36,11 @@ import javax.servlet.http.HttpSession;
  * @author Eric C. Darsow
  */
 public class MissionControlBB extends BackingBeanUtils implements Serializable {
-
-  
     
     private User user;
+    private Municipality currentMuni;
+    private ArrayList<Municipality> muniList;
+    private Municipality selectedMuni;
     
     /**
      * Creates a new instance of InitiateSessionBB
@@ -48,8 +48,15 @@ public class MissionControlBB extends BackingBeanUtils implements Serializable {
     public MissionControlBB() {
     }
     
-    
-   
+    public String switchMuni(){
+        getSessionBean().setActiveMuni(selectedMuni);
+        System.out.println("MissionControlBB.switchMuni | selected muni: " + selectedMuni.getMuniName());
+        FacesContext facesContext = getFacesContext();
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                "Successfully switch your current municipality to: " + selectedMuni.getMuniName(), ""));
+            
+        return "missionControl";
+    }
     
     public String jumpToPublicPortal(){
         return "publicPortal";
@@ -95,9 +102,10 @@ public class MissionControlBB extends BackingBeanUtils implements Serializable {
      * @return the user
      */
     public User getUser() {
-        ExternalContext ec = getFacesContext().getExternalContext();
-        user = (User) ec.getSessionMap().get("facesUser");
-        System.out.println("MissionControlBB.getUser | facesUser: " + user.getFName());
+        user = getFacesUser();
+        if(user != null){
+            System.out.println("MissionControlBB.getUser | facesUser: " + user.getFName());
+        }
         return user;
     }
 
@@ -106,6 +114,55 @@ public class MissionControlBB extends BackingBeanUtils implements Serializable {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /**
+     * @return the currentMuni
+     */
+    public Municipality getCurrentMuni() {
+        currentMuni = getSessionBean().getActiveMuni();
+        return currentMuni;
+    }
+
+    /**
+     * @param currentMuni the currentMuni to set
+     */
+    public void setCurrentMuni(Municipality currentMuni) {
+        this.currentMuni = currentMuni;
+    }
+
+    /**
+     * @return the muniList
+     */
+    public ArrayList<Municipality> getMuniList() {
+        MunicipalityIntegrator mi = getMunicipalityIntegrator();
+        try {
+            muniList = mi.getCompleteMuniList();
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
+        return muniList;
+    }
+
+    /**
+     * @param muniList the muniList to set
+     */
+    public void setMuniList(ArrayList<Municipality> muniList) {
+        this.muniList = muniList;
+    }
+
+    /**
+     * @return the selectedMuni
+     */
+    public Municipality getSelectedMuni() {
+        return selectedMuni;
+    }
+
+    /**
+     * @param selectedMuni the selectedMuni to set
+     */
+    public void setSelectedMuni(Municipality selectedMuni) {
+        this.selectedMuni = selectedMuni;
     }
     
     

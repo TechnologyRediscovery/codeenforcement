@@ -10,7 +10,7 @@
         <title>Edit Code Violation Details</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     
@@ -114,9 +114,6 @@
                             <p>This record change will generate a notice event for the case log. Please populate the following event information fields. 
                                 For example: Describe in a sentence or two why these changes are necessary in the notes section</p>
                             
-                            
-                            
-                            
                              <p:fieldset legend="Record change event"
                                          toggleable="true" collapsed="false">
                                  
@@ -163,11 +160,11 @@
                             
                             <p:spacer height="10px"/>
                             
-                            <p:commandButton    ajax="false" action="#{violationEditBB.backToCaseManager}"
-                                                value="Return to case without editing" tabindex="6"/>
+                            <p:commandButton    ajax="false" action="#{violationEditBB.backTocaseProfiler}"
+                                                value="Return to case without editing" tabindex="6" icon="fa fa-stop"/>
                             <p:spacer width="10px"/>
                             <p:commandButton    ajax="false" action="#{violationEditBB.editViolation}"
-                                                value="Update violation record and return to case home" tabindex="6"/>
+                                                value="Update violation record and return to case home" icon="fa fa-edit" tabindex="6"/>
                             
                         </h:form>
                     </f:view>

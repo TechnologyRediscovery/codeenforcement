@@ -260,7 +260,7 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
             
         }
         
-        return "caseManage";
+        return "caseProfile";
         
     }
     

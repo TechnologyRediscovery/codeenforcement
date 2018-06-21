@@ -12,25 +12,39 @@
     <h:body>
         <ui:composition template="navContainer_restricted.xhtml">
             <ui:define name="content">
-                <f:view id="NAME_ME">
-
+                <f:view id="missionControlView">
                     <div class="mainContainer">
-                        <h1>Mission Control</h1>
-                        
-                        <h2>Current municipality</h2>
-                        <p>Select the system-wide municipality. (Your selected muni's default code set will be automatically activated.)</p>
+                        <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
+                        <h:form id="missionControlForm">
 
-                        
-                        
-                        <h2>User info verification:</h2>
+                            <h1>Mission Control</h1>
+
+                            <h2>Municipality control</h2>
+                            <h3>Current municipality</h3>
+                            <h:outputText value="#{missionControlBB.currentMuni.muniName}"/>
+                            <h3>Change current municipality</h3>
+                            <p>Select the system-wide municipality. (Your selected muni's default code set will be automatically activated.)</p>
                             
-                        <h:outputText value="Authenticated Faces user: 
-                                      #{missionControlBB.user.FName} #{missionControlBB.user.LName}"/>
+                            <p:selectOneMenu id="muniSelectMenu" tabindex="1" value="#{missionControlBB.selectedMuni}">
+                                <f:converter converterId="muniConverter"/>
+                                <f:selectItems id="muniNameList" value="#{missionControlBB.muniList}" var="m" itemValue="#{m}" itemLabel="#{m.muniName}" />
+                            </p:selectOneMenu>
+                            
+                            <h:message for="muniSelectMenu" showDetail="true" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                            <p:spacer height="15px;"/>
+                            <p:commandButton value="Switch to selected municiplaity" action="#{missionControlBB.switchMuni}" icon="fa fa-gears" />
 
-                        <h2>System indicators</h2>
+                            <h2>User info verification:</h2>
 
-                        <h:form id="missionControlNavForm">
-                            <p>Mission control form/nav here</p>
+
+                            <h:outputText value="Authenticated Faces user: 
+                                          #{missionControlBB.user.FName} #{missionControlBB.user.LName}"/>
+
+                            <h2>System indicators</h2>
+
 
                         </h:form>
                     </div>

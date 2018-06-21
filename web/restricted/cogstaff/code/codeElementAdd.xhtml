@@ -39,15 +39,6 @@
                                          columnClasses="gridTd, gridTd, gridTd, gridTd" 
                                          footerClass="gridFooter">
                                 
-                                <h:outputLabel value="Select an appropriate type for this element:" for="elementTypes"/>
-                                    <h:panelGroup>
-                                        <p:selectOneMenu value="#{codeElementBB.formType}"
-                                                    id="elementTypes" 
-                                                    tabindex="1">
-                                        <f:selectItems value="#{codeElementGuideBB.codeElementTypesMap}"/>
-                                        </p:selectOneMenu>
-                                    </h:panelGroup>    
-                                
                                 <h:outputLabel value="Ordiance chapter number (numbers only):"/>
                                     <h:panelGroup>               
                                         <p:inputText id="cdelOrdChapterNo" value="#{codeElementBB.formOrdChapterNo}" 
@@ -162,12 +153,12 @@
                                 </f:facet>    
                             
                             </h:panelGrid>
+                            
+                            <p:spacer height="15px"/>
+                            
                             <p:commandButton 
-                             id="insertCodeElement" 
-                             value="Add code element" 
-                             ajax="false"
-                             tabindex="15"
-                             action="#{codeElementListBB.commitUpdatesToCodeElement}"/>
+                             id="insertCodeElement" value="Add code element" 
+                             ajax="false" tabindex="15" icon="fa fa-plus" action="#{codeElementBB.insertCodeElement}"/>
                             
                         </h:form>
                     </f:view>

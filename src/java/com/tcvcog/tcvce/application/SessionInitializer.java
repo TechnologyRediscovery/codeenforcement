@@ -56,6 +56,7 @@ public class SessionInitializer extends BackingBeanUtils implements Serializable
                 ec.getSessionMap().put("facesUser", extractedUser);
                 System.out.println("SessionInitializer.initiateInternalSession "
                         + "| facesUserFromDB: " + extractedUser.getLName());
+                getSessionBean().setActiveMuni(extractedUser.getMuni());
             
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
                     "Good morning, " + extractedUser.getFName() + "!", ""));
@@ -80,7 +81,6 @@ public class SessionInitializer extends BackingBeanUtils implements Serializable
 //        System.out.println("AuthenticationBB.login | setting active code set in session manager");
 //        sessionManager.setVisit(visit);
 //        
-  
         return "success";
     }
 
@@ -105,6 +105,7 @@ public class SessionInitializer extends BackingBeanUtils implements Serializable
         
         FacesContext fc = getFacesContext();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        // prints out the current session attributes to standard out
 //        Enumeration e = session.getAttributeNames();
 //        System.out.println("SessionInitailzier.getSessionID | Dumping lots of attrs");
 //        while (e.hasMoreElements())

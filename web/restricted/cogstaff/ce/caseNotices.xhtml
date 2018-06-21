@@ -10,7 +10,7 @@
         <title>Notices of Violation</title>
     </h:head>
     <h:body>
-        <ui:composition template="./../restricted/navContainer_restricted.xhtml">
+        <ui:composition template="../../navContainer_restricted.xhtml">
            
             <ui:define name="content">
                 <div class="mainContainer">
@@ -26,7 +26,7 @@
                             <p:separator/>
 
                             <h2>Notices of Violation</h2>
-                            <h:outputText value="Current Case: #{caseManageBB.currentCase.caseName}"/>
+                            <h:outputText value="Current Case: #{caseProfileBB.currentCase.caseName}"/>
 
                             <p:spacer height="15px"/>
 
@@ -35,9 +35,9 @@
                                 id="noticeOfViolationTab"
                                 var="notice"
                                 selectionMode="single"
-                                selection="#{caseManageBB.selectedNotice}"
+                                selection="#{caseProfileBB.selectedNotice}"
                                 rowKey="#{notice.noticeID}"
-                                value="#{caseManageBB.noticeList}"
+                                value="#{caseProfileBB.noticeList}"
                                 tableStyleClass="primeDataTable"
                                 expandedRow="false"
                                 rowExpandMode="multiple"
@@ -96,19 +96,19 @@
 
                             <p:spacer height="15px"/>
 
-                            <p:commandButton ajax="false" action="#{caseManageBB.editNoticeOfViolation()}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.editNoticeOfViolation()}"
                                              value="Edit &amp; queue selected notice"
                                              icon="fa fa-edit "/>
 
-                            <p:commandButton ajax="false" action="#{caseManageBB.markNoticeOfViolationAsSent}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.markNoticeOfViolationAsSent}"
                                              value="Mark selected notice as sent"
                                              icon="fa fa-send"/>
                             
-                            <p:commandButton ajax="false" action="#{caseManageBB.markNoticeOfViolationAsReturned}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.markNoticeOfViolationAsReturned}"
                                              value="Mark selected notice as returned"
                                              icon="fa fa-mail-reply"/>
 
-                            <p:commandButton ajax="false" action="#{caseManageBB.deleteNoticeOfViolation}"
+                            <p:commandButton ajax="false" action="#{caseProfileBB.deleteNoticeOfViolation}"
                                              value="Nuke selected notice"
                                              icon="fa fa-bomb"/>
 

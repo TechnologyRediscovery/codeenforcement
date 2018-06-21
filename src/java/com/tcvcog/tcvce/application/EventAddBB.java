@@ -159,7 +159,7 @@ public class EventAddBB extends BackingBeanUtils implements Serializable {
             case Compliance:
                 return "caseViolations";
             default:
-                return "caseManage";
+                return "caseProfile";
                 
         }
     }
