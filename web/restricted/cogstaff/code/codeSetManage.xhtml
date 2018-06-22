@@ -9,195 +9,143 @@
         <title>Code Set Management</title>
     </h:head>
     <h:body>
-       
-         <ui:composition template="../../navContainer_restricted.xhtml">
 
-            
+        <ui:composition template="../../navContainer_restricted.xhtml">
+
+
             <ui:define name="content">
-                <div class="mainContainer">
-                <h1>Manage municipal code sets</h1>
-                 
                 <f:view>
-                   
-                    <h:form id="manageSingleCodeSet">
-                        <h3>Message Corner:</h3>
-                        <h:messages globalOnly="false"></h:messages>
-                        
-                        <h2>Existing code sets</h2>
-                        <p><span style="font-style: italic">A code set is a grouping of code elements which apply to a single municipality. Code sets may contain code elements from any source. Each element can customized for enforcement in a single municipality.</span></p>
-                        
-                         <h:outputLabel for="muni" >
-                            <h:outputText styleClass="uiLabel" value="Select a municipality" />
-                        </h:outputLabel>
-                        <p:selectOneMenu 
-                                id="muni" 
-                                value="#{codeSetBB.selectedMuniCode}">
+                    <div class="mainContainer">
+                        <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
+                        <h1>Manage municipal code sets</h1>
 
-                            <f:selectItems value="#{codeSetBB.muniMap}"/>
 
-                        </p:selectOneMenu>
-                        
-                        <p:commandButton
-                            id="loadCodeSets" 
-                            value="Retrieve all Code Sets" 
-                            ajax="false"
-                            styleClass="buttonOwnLine"
-                            actionListener="#{codeSetBB.retrieveCodeSetsByMuni}"/>
-                        
-                        <p:dataTable
-                            id="codeSourceTable"
-                            var="set"
-                            value="#{codeSetBB.codeSetList}"
-                            selectionMode="single"
-                            selection="#{codeSetBB.selectedCodeSet}"
-                            rowKey="#{set.codeSetID}"
-                            tableStyleClass="primeDataTable">
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Municipality" />
-                                </f:facet>
-                                <h:outputText value="#{set.muni.muniName}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Set ID" />
-                                </f:facet>
-                                <h:outputText value="#{set.codeSetID}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Name" />
-                                </f:facet>
-                                <h:outputText value="#{set.codeSetName}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Description" />
-                                </f:facet>
-                                <h:outputText value="#{set.codeSetDescription}"/>
-                            </p:column>
-                        </p:dataTable>
-                         
-                        <p:spacer height="5"/>
+                        <h:form id="manageSingleCodeSet">
 
-                        <p:commandButton 
-                            id="SetActiveButton" ajax="false"
-                            value="Make selected code set my active set" 
-                            action="#{codeSetBB.makeSelectedCodeSetActive()}"/>
-                        
-                        <p:commandButton 
-                            id="updateCodeSetDetails"  ajax="false"
-                            value="View selected code set meta-data" 
-                            actionListener="#{codeSetBB.displaySelectedCodeSet}"/>
-                        
-                         <p:commandButton 
-                            id="viewCodeElementsInSet" ajax="false"
-                            value="View &amp; edit code set elements" 
-                            action="#{codeSetBB.manageCodeSetElements}"/>
-                         
-                         <p:commandButton 
-                             id="codeSetBuilderButton" ajax="false"
-                            value="Build code set" 
-                            action="#{codeSetBB.buildCodeSet}"/>
-                    </h:form>
-                       
+
+                            <h2>Existing code sets</h2>
+
+                            <p><span style="font-style: italic">A code set is a grouping of 
+                                    code elements which apply to a single municipality. 
+                                    Code sets may contain code elements from any source. 
+                                    When an element is added to a code set, it is 
+                                    wrapped in enforcement data specific to the municipality 
+                                    to which the set is attached.</span></p>
+
+                            <p:selectOneListbox value="#{codeSetBB.selectedCodeSetID}" tabindex="1"
+                                                id="codeSetSelectOneLB" style="width: 400px;">
+                                <p:ajax update="selCodeSetIDOT selectedCodeSetName selectedCodeSetDesc" immediate="true"/>
+                                <f:selectItems value="#{codeSetBB.codeSetMap}"></f:selectItems>
+                            </p:selectOneListbox>
+
+
+                            <p:spacer height="15px"/>
+
+                            <p:commandButton 
+                                id="viewCodeElementsInSet" ajax="false" icon="fa fa-gears"
+                                value="View &amp; edit code selected set elements" tabindex="2"
+                                action="#{codeSetBB.manageCodeSetElements}"/>
+
+                            <p:spacer height="15px"/>
+
+                            <p:commandButton 
+                                id="codeSetBuilderButton" ajax="false" icon="fa fa-plus"
+                                value="Add elements to selected code set" tabindex="3"
+                                action="#{codeSetBB.buildCodeSet}"/>
+
+                            <p:spacer height="10"/>
+                            <hr/>
+                            <p:spacer height="10"/>
+
+                            <h2>Update Code Set</h2>
+
+                            <h:outputText value="Code set ID: #{codeSetBB.selectedCodeSetID}" id="selCodeSetIDOT" />
+
+                            <p:spacer height="15"/>
+
+                            <p:outputLabel for="selectedCodeSetName">
+                                <h:outputText value="Code Set Name"/>
+                            </p:outputLabel>
+
+                            <p:inputText id="selectedCodeSetName" value="#{codeSetBB.formCodeSetName}" 
+                                         style="width: 20%;" tabindex="4" required="true" styleClass="inputText"/>
+                            <h:message for="selectedCodeSetName" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <p:spacer height="15"/>
+
+                            <p:outputLabel for="selectedCodeSetDesc">
+                                <h:outputText value="Description"/>
+                            </p:outputLabel>
+
+                            <p:inputText id="selectedCodeSetDesc" value="#{codeSetBB.formCodeSetDescription}" 
+                                         style="width: 90%;" tabindex="5" required="true" styleClass="inputText"/>
+                            <h:message for="selectedCodeSetDesc" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <p class="note">Moving an existing code set to a new municipality must be done on the "back end" by an administrator.</p>
+
+                            <p:commandButton 
+                                id="updatSet" 
+                                value="Commit updates to code set" 
+                                ajax="false" icon="fa fa-check"
+                                styleClass="buttonOwnLine" tabindex="6"
+                                actionListener="#{codeSetBB.commitUpdatesToCodeSet}"/>
+
+                        </h:form>
+
                         <p:spacer height="10"/>
                         <hr/>
                         <p:spacer height="10"/>
-                        
-                    <h:form id="updateCodeSetForm">
-                        
-                        
-                        <h2>Update Code Set</h2>
-                        <p>Move code set to a new municipality by changing the selected muni below:</p>
-                        <p:selectOneMenu 
-                            id="muni" 
-                            value="#{codeSetBB.formMuniCode}">
+                        <h2>Add a new code set</h2>
 
-                            <f:selectItems value="#{codeSetBB.muniMap}"/>
+                        <h:form id="addNewCodeSet">
+                            <p:fieldset legend="Add new code set"
+                                        toggleable="true"
+                                        collapsed="false">
 
-                        </p:selectOneMenu>
+                                <p:selectOneMenu 
+                                    id="muni" tabindex="7"
+                                    value="#{codeSetBB.formNewMuniCode}"
+                                    style="display: block; clear: right;">
+                                    <f:selectItems value="#{codeSetBB.muniMap}"/>
+                                </p:selectOneMenu>
 
-                        <p:spacer height="15"/>
+                                <p:spacer height="15px;"/>
 
-                        <p:outputLabel for="selectedCodeSetName">
-                            <h:outputText value="Code Set Name"/>
-                        </p:outputLabel>
-                        <p:inputText id="selectedCodeSetName" value="#{codeSetBB.formCodeSetName}" 
-                                  style="width: 20%;" tabindex="3" required="true" styleClass="inputText"/>
-                        <h:message for="selectedCodeSetName" showDetail="false" showSummary="true" 
-                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                <p:outputLabel for="newCodeSetName">
+                                    <h:outputText value="New Code Set Name"/>
+                                </p:outputLabel>
 
-                        <p:spacer height="15"/>
+                                <p:inputText id="newCodeSetName" value="#{codeSetBB.formNewCodeSetName}" 
+                                             style="width: 50%;" tabindex="8" required="true" styleClass="inputText"/>
+                                <h:message for="newCodeSetName" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
-                        <p:outputLabel for="selectedCodeSetDesc">
-                            <h:outputText value="Description"/>
-                        </p:outputLabel>
-                        <p:inputText id="selectedCodeSetDesc" value="#{codeSetBB.formCodeSetDescription}" 
-                                  style="width: 90%;" tabindex="4" required="true" styleClass="inputText"/>
-                        <h:message for="selectedCodeSetDesc" showDetail="false" showSummary="true" 
-                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                <p:spacer height="15px;"/>
 
-                           <p:commandButton 
-                            id="updatSet" 
-                            value="Update Code Set" 
-                            ajax="false"
-                            styleClass="buttonOwnLine"
-                            actionListener="#{codeSetBB.updateSelectedCodeSet}"/>
-                    <p>
-                    </p>
+                                <p:outputLabel for="newCodeSetDescription">
+                                    <h:outputText value="New Code Set Description"/>
+                                </p:outputLabel>
+                                <p:inputText id="newCodeSetDescription" value="#{codeSetBB.formNewCodeSetDescription}" 
+                                             style="width: 50%;" tabindex="9" required="true" styleClass="inputText"/>
+                                <h:message for="newCodeSetDescription" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
-                    </h:form>
-                        
-                    <p:spacer height="10"/>
-                    <hr/>
-                    <p:spacer height="10"/>
-                    <h2>Add a new code set</h2>
-                        
-                    <h:form>
-                        <p:fieldset legend="Add new code set"
-                                    toggleable="true"
-                            collapsed="false">
-                                        
-                            <p:selectOneMenu 
-                            id="muni" 
-                            value="#{codeSetBB.formNewMuniCode}"
-                            style="display: block; clear: right;">
-                                <f:selectItems value="#{codeSetBB.muniMap}"/>
-                            </p:selectOneMenu>
-                            
-                            <p:outputLabel for="newCodeSetName">
-                                <h:outputText value="New Code Set Name"/>
-                            </p:outputLabel>
-                            <p:inputText id="newCodeSetName" value="#{codeSetBB.formCodeSetName}" 
-                                      style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
-                            <h:message for="newCodeSetName" showDetail="false" showSummary="true" 
-                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                            
-                            <p:outputLabel for="newCodeSetDescription">
-                                <h:outputText value="New Code Set Description"/>
-                            </p:outputLabel>
-                            <p:inputText id="newCodeSetDescription" value="#{codeSetBB.formCodeSetDescription}" 
-                                      style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
-                            <h:message for="newCodeSetDescription" showDetail="false" showSummary="true" 
-                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                <p:spacer height="15px;"/>
 
-                            <h:commandButton
-                                id="newCodeSet"
-                                value="Add new set"
-                                styleClass="buttonOwnLine"
-                                actionListener="#{codeSetBB.addNewCodeSet}"/>
-                            
-                            
-                        </p:fieldset>
-
-                    </h:form>
+                                <p:commandButton
+                                    id="newCodeSet" icon="fa fa-plus" tabindex="10"
+                                    value="Add new set" ajax="false"
+                                    styleClass="buttonOwnLine" update="codeSetSelectOneLB"
+                                    actionListener="#{codeSetBB.addNewCodeSet}"/>
+                            </p:fieldset>
+                        </h:form>
+                    </div>
                 </f:view>
-                </div>
             </ui:define>
-
-
-
         </ui:composition>
     </h:body>
 </html>

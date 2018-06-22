@@ -224,13 +224,6 @@
         
     
     <managed-bean>
-        <description>Handles user credential verification and initiates session building process upon successful authentication.</description>
-        <managed-bean-name>authenticationBB</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.AuthenticationBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
         <description>Utility class for producting a hash map of action requestor types</description>
         <managed-bean-name>publicViolationSet</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.resultsets.PublicViolationSet</managed-bean-class>
@@ -287,6 +280,12 @@
     <managed-bean>
         <managed-bean-name>codeElementGuideBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CodeElementGuideBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>codeElementGuideAddUpdateBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.CodeElementGuideAddUpdateBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 
@@ -949,6 +948,18 @@
         <navigation-case>
             <from-outcome>codeGuideView</from-outcome>
             <to-view-id>/restricted/cogview/codeGuideView.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
+
+        <navigation-case>
+            <from-outcome>codeGuideEntryAdd</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeGuideEntryAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
+
+        <navigation-case>
+            <from-outcome>codeGuideEntryUpdate</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeGuideEntryUpdate.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
 

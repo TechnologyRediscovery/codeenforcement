@@ -59,7 +59,7 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     private CodeElementEnforcable selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
-    private CodeElementGuideEntry currentCodeElementGuide;
+    private CodeElementGuideEntry activeCodeElementGuideEntry;
  
 
     /**
@@ -154,10 +154,10 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the currentCodeElementGuide
+     * @return the activeCodeElementGuideEntry
      */
-    public CodeElementGuideEntry getCurrentCodeElementGuide() {
-        return currentCodeElementGuide;
+    public CodeElementGuideEntry getActiveCodeElementGuideEntry() {
+        return activeCodeElementGuideEntry;
     }
 
     /**
@@ -245,10 +245,10 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @param currentCodeElementGuide the currentCodeElementGuide to set
+     * @param activeCodeElementGuideEntry the activeCodeElementGuideEntry to set
      */
-    public void setCurrentCodeElementGuide(CodeElementGuideEntry currentCodeElementGuide) {
-        this.currentCodeElementGuide = currentCodeElementGuide;
+    public void setActiveCodeElementGuideEntry(CodeElementGuideEntry activeCodeElementGuideEntry) {
+        this.activeCodeElementGuideEntry = activeCodeElementGuideEntry;
     }
 
     /**

@@ -16,17 +16,12 @@
             <ui:define name="content">
                 <f:view id="guideEntryBuilder">
                     <div class="mainContainer">
-                        
+                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                    </h:messages>
                     <h1>Update code guide entry</h1>
                     
-                    <p><h:outputText value="You are editing Code Guide Entry no. #{codeElementGuideBB.currentGuideEntry.guideEntryID}"/></p>
-                        
-                        <p>Assemble guidelines for inspecting and enforcing municipal 
-                        code elements. A single guide entry is generally attached to 
-                        a single code element (i.e. a chapter, section, and 
-                        subsection of code from a single source)</p>
-                    
-                    <h2>Categorization</h2>
+                    <p><h:outputText value="You are editing Code Guide Entry no. #{codeElementGuideAddUpdateBB.currentGuideEntry.guideEntryID}"/></p>
                     
                         <h:form id="guideBuilderForm">
 
@@ -34,10 +29,9 @@
                                             cellpadding="5" columnClasses="gridTd, gridTd"
                                             footerClass="gridFooter">
 
-
                                    <h:outputLabel value="Guide entry category" for="catIT"/>
                                    <h:panelGroup>
-                                       <p:inputText id="catIT" value="#{codeElementGuideBB.formCategory}" 
+                                       <p:inputText id="catIT" value="#{codeElementGuideAddUpdateBB.formCategory}" 
                                               style="width: 250px;" tabindex="1" required="true" styleClass="inputText"/>
                                        <h:message for="catIT" showDetail="false" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -45,7 +39,7 @@
 
                                    <h:outputLabel value="Subcategory" for="catsubIT"/>
                                    <h:panelGroup>
-                                       <p:inputText id="catsubIT" value="#{codeElementGuideBB.formSubCategory}" 
+                                       <p:inputText id="catsubIT" value="#{codeElementGuideAddUpdateBB.formSubCategory}" 
                                               style="width: 250px;" tabindex="2" required="true" styleClass="inputText"/>
                                        <h:message for="catsubIT" showDetail="false" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -53,7 +47,7 @@
 
                                    <h:outputLabel value="Brief Description" for="desIT"/>
                                    <h:panelGroup>
-                                       <p:inputText id="desIT" value="#{codeElementGuideBB.formDescription}" 
+                                       <p:inputText id="desIT" value="#{codeElementGuideAddUpdateBB.formDescription}" 
                                               style="width: 800px;" tabindex="3" required="true" styleClass="inputText"/>
                                        <h:message for="desIT" showDetail="false" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
@@ -61,7 +55,7 @@
 
                                    <h:outputLabel value="Is a priority element?" for="desIT"/>
                                    <h:panelGroup>
-                                       <p:inputSwitch tabindex="10" id="isIUrgentSwitch" value="#{actionRequestBean.form_isUrgent}" 
+                                       <p:inputSwitch tabindex="4" id="isIUrgentSwitch" value="#{codeElementGuideAddUpdateBB.formPriority}" />
                                    </h:panelGroup>
 
                             </h:panelGrid>
@@ -70,7 +64,7 @@
                        
                            <p>Tips, tools, and rules for inspecting code elements during the occupancy permitting process. </p>
 
-                           <p:editor  id="inspecGuidelinesEd"  value="#{codeElementGuideBB.formInspectionGuidelines}" 
+                           <p:editor  id="inspecGuidelinesEd"  value="#{codeElementGuideAddUpdateBB.formInspectionGuidelines}" 
                                        controls="bold italic underline strikethrough font size style color 
                                        bullets numbering center undo redo rule link removeformat outdent 
                                        indent link unlink copy cut paste rule alignleft center alignright"
@@ -84,7 +78,7 @@
 
                             <p>Guidelines for conducting enforcement efforts related to code elements connected to this guide entry</p>
 
-                            <p:editor  id="enforcementGuideEd"  value="#{codeElementGuideBB.formEnforcementGuidelines}" 
+                            <p:editor  id="enforcementGuideEd"  value="#{codeElementGuideAddUpdateBB.formEnforcementGuidelines}" 
                                        controls="bold italic underline strikethrough font size style color 
                                        bullets numbering center undo redo rule link removeformat outdent 
                                        indent link unlink copy cut paste rule alignleft center alignright"
@@ -95,8 +89,8 @@
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                            <p:spacer height="15px"/>
                            
-                           <p:commandButton ajax="false" disabled="" value="Update guide entry" action="#{codeElementGuideBB.updateCodeElementGuideEntry}"/>
-                           <p:commandButton ajax="false" disabled="" value="Nuke this guide entry" action="#{codeElementGuideBB.deleteCodeElementGuideEntry}"/>
+                           <p:commandButton ajax="false" value="Update guide entry" icon="fa fa-edit" tabindex="5"
+                                            action="#{codeElementGuideAddUpdateBB.commitUpdatesToCodeGuideEntry}"/>
 
                         </h:form>
                     </div>

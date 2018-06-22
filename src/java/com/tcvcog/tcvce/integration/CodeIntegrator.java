@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -297,6 +298,33 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
         return cs;
         
+    }
+    
+    public Map<String, Integer> getSystemWideCodeSetMap() throws IntegrationException{
+        Map<String, Integer> setMap = new HashMap<>();
+        String query = "SELECT codesetid, name FROM public.codeset;";
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                setMap.put(rs.getString("name"), rs.getInt("codesetid"));
+            }
+            
+        } catch (SQLException ex) { 
+             System.out.println("CodeIntegrator.getCodeSetBySetID | " + ex.toString());
+             throw new IntegrationException("Exception in CodeSetIntegrator", ex);
+        } finally{
+            if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+            if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+            if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return setMap;
     }
     
     
@@ -569,9 +597,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 e.setDefaultPenalty(rs.getDouble("defaultpenalty"));
                 e.setIsActive(rs.getBoolean("isactive"));
                 
-                e.setIsEnforcementPriority(rs.getBoolean("isenforcementpriority"));
                 e.setResourceURL(rs.getString("resourceurl"));
-                e.setInspectionTips(rs.getString("inspectiontips"));
                 
                 e.setDateCreated(rs.getTimestamp("datecreated").toLocalDateTime());
                 
@@ -595,7 +621,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         String query = "SELECT elementid, guideentryid, codesource_sourceid, ordchapterno, \n" +
             "ordchaptertitle, ordsecnum, ordsectitle, ordsubsecnum, ordsubsectitle, \n" +
             "ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, isactive, \n" +
-            "isenforcementpriority, resourceurl, inspectiontips, datecreated\n" +
+            "resourceurl, datecreated\n" +
             "FROM public.codeelement WHERE elementid=?;";
         ResultSet rs = null;
  
@@ -673,12 +699,12 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                  + "ordchapterno, ordchaptertitle, ordsecnum, "
                  + "ordsectitle, ordsubsecnum, ordsubsectitle, " 
                  + "ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, "
-                 + "isactive, isenforcementpriority, "
-                 + "resourceurl, inspectiontips, datecreated) " +
+                 + "isactive,  "
+                 + "resourceurl, datecreated) " +
                     "    VALUES (DEFAULT, ?, ?, ?, \n" +
                     "            ?, ?, ?, ?, ?, \n" +
-                    "            ?, ?, ?, ?, \n" +
                     "            ?, ?, ?, \n" +
+                    "            ?, ?, \n" +
                     "            now());";
 
         Connection con = null;
@@ -703,10 +729,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setDouble(11, element.getDefaultPenalty());
             
             stmt.setBoolean(12, element.isIsActive());
-            stmt.setBoolean(13, element.isIsEnforcementPriority());
-            stmt.setString(14, element.getResourceURL());
-            
-            stmt.setString(15, element.getInspectionTips());
+            stmt.setString(13, element.getResourceURL());
             
             System.out.println("CodeIntegrator.insertCodeElement | insert statement: " + stmt.toString());
             
@@ -727,8 +750,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 "SET guideentryid=?, \n" +
                 "ordchapterno=?, ordchaptertitle=?, ordsecnum=?, ordsectitle=?, \n" +
                 "ordsubsecnum=?, ordsubsectitle=?, ordtechnicaltext=?, ordhumanfriendlytext=?, \n" +
-                "defaultpenalty=?, isactive=?, isenforcementpriority=?, resourceurl=?, \n" +
-                "inspectiontips=?, datecreated=now()\n" +
+                "defaultpenalty=?, isactive=?, resourceurl=?, \n" +
+                "datecreated=now()\n" +
                 " WHERE elementid=?;";
 
         Connection con = null;
@@ -755,12 +778,9 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setDouble(10, element.getDefaultPenalty());
             
             stmt.setBoolean(11, element.isIsActive());
-            stmt.setBoolean(12, element.isIsEnforcementPriority());
-            stmt.setString(13, element.getResourceURL());
+            stmt.setString(12, element.getResourceURL());
             
-            stmt.setString(14, element.getInspectionTips());
-            
-            stmt.setInt(15, element.getElementID());
+            stmt.setInt(13, element.getElementID());
             
             System.out.println("CodeIntegrator.updateCodeElement | update statement: " + stmt.toString());
             
@@ -776,10 +796,26 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
     public void deleteCodeElement(CodeElement element) throws IntegrationException{
-       
+        String query =  "DELETE FROM public.codeelement\n" +
+                        " WHERE elementid = ?;";
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+         try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, element.getElementID());
+            stmt.execute();
+             
+        } catch (SQLException ex) { 
+             System.out.println(ex.toString());
+             throw new IntegrationException("Unable to delete code element--"
+                     + "probably because it has been used somewhere in the system. It's here to stay.", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
     }
-    
-   
     
     public void insertCodeElementGuideEntry(CodeElementGuideEntry cege) throws IntegrationException{
         String query =  "INSERT INTO public.codeelementguide(\n" +
@@ -787,7 +823,6 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                         "            inspectionguidelines, priority)\n" +
                         "    VALUES (DEFAULT, ?, ?, ?, ?, \n" +
                         "            ?, ?);";
-        
         Connection con = null;
         PreparedStatement stmt = null;
 
@@ -815,7 +850,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     }
     
-    public void updateCodeElementGuideEntry(CodeElementGuideEntry cdelType) throws IntegrationException{
+    public void updateCodeElementGuideEntry(CodeElementGuideEntry cege) throws IntegrationException{
         String query =  "UPDATE public.codeelementguide\n" +
                         "   SET category=?, subcategory=?, description=?, enforcementguidelines=?, \n" +
                         "       inspectionguidelines=?, priority=?\n" +
@@ -826,9 +861,14 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            
-            // TODO: build statement
-            
+            stmt.setString(1, cege.getCategory());
+            stmt.setString(2, cege.getSubCategory());
+            stmt.setString(3, cege.getDescription());
+            stmt.setString(4, cege.getEnforcementGuidelines());
+            stmt.setString(5, cege.getInspectionGuidelines());
+            stmt.setBoolean(6, cege.isPriority());
+            stmt.setInt(7, cege.getGuideEntryID());
+             System.out.println("CodeIntegrator.updateCodeElementGuideEntry | stmt: " + stmt.toString());
             stmt.execute();
              
         } catch (SQLException ex) { 
@@ -843,8 +883,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     
     public void updateCodeSetMetadata(CodeSet set) throws IntegrationException{
         String query = "UPDATE public.codeset\n" +
-            "SET name=?, description=?, municipality_municode=?\n" +
-            "WHERE codeSetid=?;";
+            "SET name=?, description=? WHERE codeSetid=?;";
         Connection con = null;
         PreparedStatement stmt = null;
 
@@ -853,8 +892,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt = con.prepareStatement(query);
             stmt.setString(1, set.getCodeSetName());
             stmt.setString(2, set.getCodeSetDescription());
-            stmt.setInt(3, set.getMuniCode());
-            stmt.setInt(4, set.getCodeSetID());
+            stmt.setInt(3, set.getCodeSetID());
             stmt.execute();
              
         } catch (SQLException ex) { 
@@ -957,7 +995,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     
     private CodeElementGuideEntry generateCodeElementGuideEntry(ResultSet rs) throws SQLException{
         CodeElementGuideEntry cege = new CodeElementGuideEntry();
-        cege.setCategory(rs.getString("guideentryid"));
+        cege.setGuideEntryID(rs.getInt("guideentryid"));
+        cege.setCategory(rs.getString("category"));
         cege.setSubCategory(rs.getString("subcategory"));
         cege.setDescription(rs.getString("description"));
         cege.setEnforcementGuidelines(rs.getString("enforcementguidelines"));

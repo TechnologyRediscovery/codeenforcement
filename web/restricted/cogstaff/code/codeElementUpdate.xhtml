@@ -138,16 +138,6 @@
          
                             <p:spacer height="15px"/>
                             
-                            <h:outputLabel for="cdelEnfPriority" >
-                                <h:outputText value="Toggle code enforcement priority." styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:selectBooleanCheckbox id="cdelEnfPriority" value="#{codeElementListBB.formIsEnforcementPriority}" 
-                                       tabindex="12" required="true" styleClass="selectOneRadio"/>
-                            <h:message for="cdelEnfPriority" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-         
-                            <p:spacer height="15px"/>
-                            
                             <h:outputLabel for="cdelUrl" >
                                 <h:outputText value="Web address of element resource" styleClass="uiLabel" />
                             </h:outputLabel>
@@ -156,16 +146,6 @@
                             <h:message for="cdelUrl" showDetail="true" showSummary="true" 
                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
          
-                            <p:spacer height="15px"/>
-                            
-                            <h:outputLabel for="cdelInspectionTips" >
-                                <h:outputText value="Inspection procedure or best practices" styleClass="uiLabel" />
-                            </h:outputLabel>
-                            <p:inputTextarea id="cdelInspectionTips" value="#{codeElementListBB.formInspectionTips}" 
-                                         style="width: 100%;" tabindex="14" required="false" styleClass="inputText"/>
-                            <h:message for="cdelInspectionTips" showDetail="true" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                            
                             <p:spacer height="15px"/>
                             
                             <p:commandButton 

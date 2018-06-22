@@ -19,6 +19,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
+import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     public CodeElementListBB() {
         System.out.println("CodeElementListBB.CodeElementListBB | const");
     }
+    private CodeSet currentCodeSet;
     
     private CodeElement selectedElement;
     private ArrayList<CodeElement> codeElementList;
@@ -59,9 +61,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     private double formDefaultPenalty;
     private boolean formIsActive;
     
-    private boolean formIsEnforcementPriority;
     private String formResourceURL;
-    private String formInspectionTips;
     
     
     public String moveToUpdateCodeElement(){
@@ -105,9 +105,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         eleToUpdate.setDefaultPenalty(formDefaultPenalty);
         eleToUpdate.setIsActive(formIsActive);
         
-        eleToUpdate.setIsEnforcementPriority(formIsEnforcementPriority);
         eleToUpdate.setResourceURL(formResourceURL);
-        eleToUpdate.setInspectionTips(formInspectionTips);
         
         CodeIntegrator integrator = getCodeIntegrator();
         try {
@@ -127,6 +125,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     }
     
     public void deleteCodeElement(ActionEvent event){
+        
         
     }
     
@@ -261,13 +260,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         return formIsActive;
     }
 
-    /**
-     * @return the formIsEnforcementPriority
-     */
-    public boolean isFormIsEnforcementPriority() {
-        formIsEnforcementPriority = selectedElement.isIsEnforcementPriority();
-        return formIsEnforcementPriority;
-    }
+    
 
     /**
      * @return the formResourceURL
@@ -277,13 +270,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         return formResourceURL;
     }
 
-    /**
-     * @return the formInspectionTips
-     */
-    public String getFormInspectionTips() {
-        formInspectionTips = selectedElement.getInspectionTips();
-        return formInspectionTips;
-    }
+    
 
     /**
      * @param activeCodeSource the activeCodeSource to set
@@ -370,13 +357,6 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     }
 
     /**
-     * @param formIsEnforcementPriority the formIsEnforcementPriority to set
-     */
-    public void setFormIsEnforcementPriority(boolean formIsEnforcementPriority) {
-        this.formIsEnforcementPriority = formIsEnforcementPriority;
-    }
-
-    /**
      * @param formResourceURL the formResourceURL to set
      */
     public void setFormResourceURL(String formResourceURL) {
@@ -384,11 +364,17 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     }
 
     /**
-     * @param formInspectionTips the formInspectionTips to set
+     * @return the currentCodeSet
      */
-    public void setFormInspectionTips(String formInspectionTips) {
-        this.formInspectionTips = formInspectionTips;
+    public CodeSet getCurrentCodeSet() {
+        currentCodeSet = getSessionBean().getActiveCodeSet();
+        return currentCodeSet;
     }
-    
-    
+
+    /**
+     * @param currentCodeSet the currentCodeSet to set
+     */
+    public void setCurrentCodeSet(CodeSet currentCodeSet) {
+        this.currentCodeSet = currentCodeSet;
+    }
 }

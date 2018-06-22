@@ -34,13 +34,6 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
     private ArrayList<CodeElementGuideEntry> entryList;
     private CodeElementGuideEntry selectedGuideEntry;
     
-    private String formCategory;
-    private String formSubCategory;
-    private String formDescription;
-    private String formEnforcementGuidelines;
-    private String formInspectionGuidelines;
-    private boolean formPriority;
-    
     
     /**
      * Creates a new instance of CodeElementGuide
@@ -48,96 +41,58 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
     public CodeElementGuideBB() {
     }
     
-    public String addCodeElementGuideEntry(){
-        
-        CodeElementGuideEntry cege = new CodeElementGuideEntry();
-        CodeIntegrator ci = getCodeIntegrator();
-        
-        cege.setCategory(formCategory);
-        cege.setSubCategory(formCategory);
-        cege.setDescription(formDescription);
-        cege.setEnforcementGuidelines(formEnforcementGuidelines);
-        cege.setInspectionGuidelines(formInspectionGuidelines);
-        cege.setPriority(formPriority);
-        
-        try {
-            ci.insertCodeElementGuideEntry(cege);
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                        "Succesfully added code guide entry", ""));
-        } catch (IntegrationException ex) {
-
-            System.out.println(ex.toString());
-
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        ex.getLocalizedMessage(), 
-                        "This must be corrected by the System Administrator, sorry"));
-        }
-        
-        return "codeGuideView";
-    }
-    
-    public String updateCodeElementGuideEntry(){
-        System.out.println("CodeElementGuideBB.updateCodeElement");
-        CodeIntegrator ci = getCodeIntegrator();
-        
-        currentGuideEntry.setCategory(formCategory);
-        currentGuideEntry.setSubCategory(formCategory);
-        currentGuideEntry.setDescription(formDescription);
-        currentGuideEntry.setEnforcementGuidelines(formEnforcementGuidelines);
-        currentGuideEntry.setInspectionGuidelines(formInspectionGuidelines);
-        currentGuideEntry.setPriority(formPriority);
-        
-        try {
-
-            System.out.println("CodeElementGuideBB.updateCodeElementGuideEntry: " 
-                    + currentGuideEntry.getGuideEntryID());
-
-            ci.updateCodeElementGuideEntry(currentGuideEntry);
-
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Updated code element guide entry!", ""));
-
-        } catch (IntegrationException ex) {
-
-            System.out.println(ex.toString());
-
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        ex.getLocalizedMessage(), 
-                        "This must be corrected by the System Administrator"));
-        }
-        
-        return "codeGuideView";
-            
-    }
+   
     
     public String deleteCodeElementGuideEntry(){
-        CodeElementGuideEntry cege = currentGuideEntry;
-        try {
-            CodeIntegrator ci = getCodeIntegrator();
-            ci.deleteCodeElementGuideEntry(cege);
-        } catch (IntegrationException ex) {
-            System.out.println(ex.toString());
+        if(selectedGuideEntry != null){
+            
+            CodeElementGuideEntry cege = selectedGuideEntry;
+            try {
+                CodeIntegrator ci = getCodeIntegrator();
+                ci.deleteCodeElementGuideEntry(cege);
 
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        ex.getLocalizedMessage(), 
-                        "This must be corrected by the System Administrator"));
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Code guide entry nuked forever!", ""));
+            } catch (IntegrationException ex) {
+                System.out.println(ex.toString());
+
+                getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            ex.getLocalizedMessage(), 
+                            "This must be corrected by the System Administrator"));
+            }
+            return "codeGuideView";
+        } else {
+                getFacesContext().addMessage(null,
+                   new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Please select a gode guide entry to delete it", ""));
+            return "";
         }
-        
-        return "codeGuideView";
+    }
+    
+    public String updateSelectedGuideEntry(){
+        if(selectedGuideEntry != null){
+            getSessionBean().setActiveCodeElementGuideEntry(selectedGuideEntry);
+            System.out.println("CodeElementGuideBB.updateSelectedGuideEntry | selectedGuideEntry: " + selectedGuideEntry.getDescription());
+            return "codeGuideEntryUpdate";
+        } else {
+            getFacesContext().addMessage(null,
+               new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Please select a gode guide entry to update it", ""));
+            return "";
+        }
+    }
+    
+    public String addNewCodeGuideEntry(){
+        return "codeGuideEntryAdd";
     }
     
     /**
      * @return the currentGuideEntry
      */
     public CodeElementGuideEntry getCurrentGuideEntry() {
-        
-        currentGuideEntry = getSessionBean().getCurrentCodeElementGuide();
-                
+        currentGuideEntry = getSessionBean().getActiveCodeElementGuideEntry();
         return currentGuideEntry;
     }
 
@@ -149,7 +104,7 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
         try {
             entryList = ci.getCodeElementGuideEntries();
         } catch (IntegrationException ex) {
-            System.out.println("CodeElementGuideBB.getEntryList | " + ex.getLocalizedMessage());
+            System.out.println("CodeElementGuideBB.getEntryList | " + ex.getMessage());
         }
         return entryList;
     }
@@ -161,53 +116,7 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
         return selectedGuideEntry;
     }
 
-    /**
-     * @return the formCategory
-     */
-    public String getFormCategory() {
-        formCategory = currentGuideEntry.getCategory();
-        return formCategory;
-    }
-
-    /**
-     * @return the formSubCategory
-     */
-    public String getFormSubCategory() {
-        formSubCategory = currentGuideEntry.getSubCategory();
-        return formSubCategory;
-    }
-
-    /**
-     * @return the formDescription
-     */
-    public String getFormDescription() {
-        formDescription = currentGuideEntry.getDescription();
-        return formDescription;
-    }
-
-    /**
-     * @return the formEnforcementGuidelines
-     */
-    public String getFormEnforcementGuidelines() {
-        formEnforcementGuidelines = currentGuideEntry.getEnforcementGuidelines();
-        return formEnforcementGuidelines;
-    }
-
-    /**
-     * @return the formInspectionGuidelines
-     */
-    public String getFormInspectionGuidelines() {
-        formInspectionGuidelines = currentGuideEntry.getInspectionGuidelines();
-        return formInspectionGuidelines;
-    }
-
-    /**
-     * @return the formPriority
-     */
-    public boolean isFormPriority() {
-        formPriority = currentGuideEntry.isPriority();
-        return formPriority;
-    }
+  
 
     /**
      * @param currentGuideEntry the currentGuideEntry to set
@@ -230,48 +139,6 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
         this.selectedGuideEntry = selectedGuideEntry;
     }
 
-    /**
-     * @param formCategory the formCategory to set
-     */
-    public void setFormCategory(String formCategory) {
-        this.formCategory = formCategory;
-    }
-
-    /**
-     * @param formSubCategory the formSubCategory to set
-     */
-    public void setFormSubCategory(String formSubCategory) {
-        this.formSubCategory = formSubCategory;
-    }
-
-    /**
-     * @param formDescription the formDescription to set
-     */
-    public void setFormDescription(String formDescription) {
-        this.formDescription = formDescription;
-    }
-
-    /**
-     * @param formEnforcementGuidelines the formEnforcementGuidelines to set
-     */
-    public void setFormEnforcementGuidelines(String formEnforcementGuidelines) {
-        this.formEnforcementGuidelines = formEnforcementGuidelines;
-    }
-
-    /**
-     * @param formInspectionGuidelines the formInspectionGuidelines to set
-     */
-    public void setFormInspectionGuidelines(String formInspectionGuidelines) {
-        this.formInspectionGuidelines = formInspectionGuidelines;
-    }
-
-    /**
-     * @param formPriority the formPriority to set
-     */
-    public void setFormPriority(boolean formPriority) {
-        this.formPriority = formPriority;
-    }
-    
-
+   
     
 }

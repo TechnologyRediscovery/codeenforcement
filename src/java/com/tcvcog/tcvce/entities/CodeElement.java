@@ -44,10 +44,7 @@ public class CodeElement {
     private double defaultPenalty;
     private boolean isActive;
     
-    private boolean isEnforcementPriority;
     private String resourceURL;
-    private String inspectionTips;
-    
     private LocalDateTime dateCreated;
 
     
@@ -208,19 +205,6 @@ public class CodeElement {
         this.isActive = isActive;
     }
 
-    /**
-     * @return the isEnforcementPriority
-     */
-    public boolean isIsEnforcementPriority() {
-        return isEnforcementPriority;
-    }
-
-    /**
-     * @param isEnforcementPriority the isEnforcementPriority to set
-     */
-    public void setIsEnforcementPriority(boolean isEnforcementPriority) {
-        this.isEnforcementPriority = isEnforcementPriority;
-    }
 
 
     /**
@@ -235,20 +219,6 @@ public class CodeElement {
      */
     public void setResourceURL(String resourceURL) {
         this.resourceURL = resourceURL;
-    }
-
-    /**
-     * @return the inspectionTips
-     */
-    public String getInspectionTips() {
-        return inspectionTips;
-    }
-
-    /**
-     * @param inspectionTips the inspectionTips to set
-     */
-    public void setInspectionTips(String inspectionTips) {
-        this.inspectionTips = inspectionTips;
     }
 
     /**

@@ -14,10 +14,21 @@
             <ui:define name="content">
                 <f:view id="codeGuideViewView">
                     <div class="mainContainer">
+                         <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
                         <h:form id="codeGuideViewForm">
                             <h1>Municipal code guide management</h1>
                             
-                            <p:commandButton ajax="false" value="Create new guide entry" action="codeGuideAdd" />
+                            <p>Each row in this data table represents a single code guide entry which can be
+                            attached to any code element, thus linking the municipal code to tips regarding
+                            enforcing and inspecting a given component of the code.</p>
+                            
+                            <p>The category and sub-category of the code guide entries is also a handy way to organize
+                            and search through the code base.</p>
+                            
+                            <p:commandButton ajax="false" value="Create new guide entry" 
+                                             action="#{codeElementGuideBB.addNewCodeGuideEntry}" icon="fa fa-plus"/>
                             
                             <p:spacer height="15px"/>
                             
@@ -27,12 +38,21 @@
                                 selection="#{codeElementGuideBB.selectedGuideEntry}"
                                 tableStyleClass="primeDataTable"
                                 draggableColumns="true"
+                                selectionMode="single"
+                                rowKey="#{cege.guideEntryID}"
                                 reflow="true"
                                 var="cege"
-                                rowExpandMode="single"
+                                rowExpandMode="multiple"
                                 expandedRow="false">
 
-                                <p:column width="5%">
+                                <p:column width="3%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Expand" />
+                                    </f:facet>
+                                    <p:rowToggler />
+                                </p:column>
+                                
+                                <p:column width="3%">
                                     <f:facet name="header">
                                         <h:outputText value="no." />
                                     </f:facet>
@@ -57,23 +77,25 @@
                                     <f:facet name="header">
                                         <h:outputText value="Description" />
                                     </f:facet>
-                                    <h:outputText value="#{cege.subCategory}"/>
+                                    <h:outputText value="#{cege.description}"/>
                                 </p:column>
                                 
                                 <p:column width="8%">
                                     <f:facet name="header">
                                         <h:outputText value="Priority?" />
                                     </f:facet>
-                                    <h:outputText value="#{cege.subCategory}"/>
+                                    <h:outputText value="#{cege.priority}"/>
                                 </p:column>
                                 
 
                                 <p:rowExpansion>
 
-                                    <h:outputLabel value="Enforcement Gudielines"/>
+                                    <h:outputLabel value="Enforcement Gudielines:"/>
+                                    <p:spacer height="10px"/>
                                     <h:outputText value="#{cege.enforcementGuidelines}" escape="false"/>
                                     <p:spacer height="15px"/>
-                                    <h:outputLabel value="Inspection Gudielines"/>
+                                    <h:outputLabel value="Inspection Gudielines:"/>
+                                    <p:spacer height="10px"/>
                                     <h:outputText value="#{cege.inspectionGuidelines}" escape="false"/>
 
                                 </p:rowExpansion>
@@ -82,7 +104,8 @@
                             
                             <p:spacer height="15px"/>
                             
-                            <p:commandButton ajax="false" value="Update selected entry" action="#{codeElementGuideBB.updateCodeElementGuideEntry}"/>
+                            <p:commandButton ajax="false" value="Update selected entry" icon="fa fa-edit"
+                                             action="#{codeElementGuideBB.updateSelectedGuideEntry}"/>
                             
                         </h:form>
                     </div>

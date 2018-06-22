@@ -20,16 +20,10 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
-import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
-import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -62,11 +56,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     private double formDefaultPenalty;
     private boolean formIsActive;
     
-    private boolean formIsEnforcementPriority;
     private String formResourceURL;
-    private String formInspectionTips;
-    
-    
     
     public String insertCodeElement(){
         CodeIntegrator codeIntegrator = getCodeIntegrator();
@@ -88,9 +78,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         newCE.setDefaultPenalty(formDefaultPenalty);
         newCE.setIsActive(formIsActive);
         
-        newCE.setIsEnforcementPriority(formIsEnforcementPriority);
         newCE.setResourceURL(formResourceURL);
-        newCE.setInspectionTips(formInspectionTips);
         
         try {
             codeIntegrator.insertCodeElement(newCE);
@@ -250,20 +238,6 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the formIsEnforcementPriority
-     */
-    public boolean isFormIsEnforcementPriority() {
-        return formIsEnforcementPriority;
-    }
-
-    /**
-     * @param formIsEnforcementPriority the formIsEnforcementPriority to set
-     */
-    public void setFormIsEnforcementPriority(boolean formIsEnforcementPriority) {
-        this.formIsEnforcementPriority = formIsEnforcementPriority;
-    }
-
-    /**
      * @return the formResourceURL
      */
     public String getFormResourceURL() {
@@ -275,20 +249,6 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      */
     public void setFormResourceURL(String formResourceURL) {
         this.formResourceURL = formResourceURL;
-    }
-
-    /**
-     * @return the formInspectionTips
-     */
-    public String getFormInspectionTips() {
-        return formInspectionTips;
-    }
-
-    /**
-     * @param formInspectionTips the formInspectionTips to set
-     */
-    public void setFormInspectionTips(String formInspectionTips) {
-        this.formInspectionTips = formInspectionTips;
     }
 
     /**

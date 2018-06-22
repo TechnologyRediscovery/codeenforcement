@@ -17,7 +17,6 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeElementEnforcable;
@@ -27,6 +26,9 @@ import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -34,172 +36,139 @@ import javax.faces.event.ActionEvent;
  *
  * @author Eric C. Darsow
  */
-
-
-public class CodeSetBB extends BackingBeanUtils implements Serializable{
+public class CodeSetBB extends BackingBeanUtils implements Serializable {
 
     /**
      * Creates a new instance of CodeSetBB
      */
     public CodeSetBB() {
     }
-    
-   
-    
+
     private HashMap muniMap;
     private Municipality selectedMuni;
     private ArrayList<CodeSet> codeSetList;
+
     // used by codeSetElementManage
     private CodeSet selectedCodeSet;
     private CodeElementEnforcable selectedEnforcableCodeElement;
-    
-    
+
+    private Map<String, Integer> codeSetMap;
+    private Integer selectedCodeSetID;
+
     private int currentCodeSetID;
-    
     private int selectedMuniCode;
-    
+
     private String currentCodeSetName;
     private String currentCodeSetDescription;
     private int currentCodeSetMuniCode;
     private String currentCodeSetMuniName;
-    
+
     private CodeSet setToUpdate;
-    
+
     private String formCodeSetName;
     private String formCodeSetDescription;
-    private int formMuniCode;
-    private int formNewMuniCode;
     
-    public String buildCodeSet(){
-        System.out.println("CodeSetBB.buildCodeSet");
-        
-        if (selectedCodeSet != null){
-            getSessionBean().setActiveCodeSet(selectedCodeSet);
-            System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
-            return "codeSetBuilder";
+    private int formNewMuniCode;
+    private String formNewCodeSetName;
+    private String formNewCodeSetDescription;
+
+
+    public String manageCodeSetElements() {
+        if (selectedCodeSetID != null) {
+            CodeIntegrator ci = getCodeIntegrator();
+            try {
+                getSessionBean().setActiveCodeSet(ci.getCodeSetBySetID(selectedCodeSetID));
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+            }
+            return "codeElementList";
         } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Please select a code set to build in ", ""));
             return "";
         }
-        
     }
-    
-    
-    public void retrieveCodeSetsByMuni(ActionEvent event){
-        CodeIntegrator codeInt = getCodeIntegrator();
-        ArrayList<CodeSet> retrievedCodeSetList;
-        try {
-            System.out.println("CodeSetBB.retrieveCodeSetsByMuniID | selected Muni Code:  "+ selectedMuniCode);
-            
-            retrievedCodeSetList = codeInt.getCodeSets(selectedMuniCode);
-            if(!retrievedCodeSetList.isEmpty()){
-                codeSetList = retrievedCodeSetList;
-                getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                                "Code sets loaded for municipality with ID Code: " + selectedMuniCode, 
-                                ""));
-            } else {
-                getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Hark! No code sets exist for the selected muni. Conveneintly, you may add one at the bottom of this page.", 
-                            ""));
-                
+    public String buildCodeSet() {
+
+        if (selectedCodeSetID != null) {
+            CodeIntegrator ci = getCodeIntegrator();
+            try {
+                getSessionBean().setActiveCodeSet(ci.getCodeSetBySetID(selectedCodeSetID));
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
             }
-        } catch (IntegrationException ex) {
-            System.out.println(ex.toString());
+            return "codeSetBuilder";
+        } else {
             getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to load code sets for this municipality.", 
-                        "This must be corrected by the System Administrator"));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Please select a code set to build in ", ""));
+            return "";
         }
-        
-        //return "";
-        
     }
-    
-    public void updateSelectedCodeSet(ActionEvent event){
+
+    public void commitUpdatesToCodeSet(ActionEvent event) {
         setToUpdate = new CodeSet();
+
+        setToUpdate.setCodeSetID(selectedCodeSetID);
         setToUpdate.setCodeSetName(formCodeSetName);
         setToUpdate.setCodeSetDescription(formCodeSetDescription);
-        setToUpdate.setMuniCode(formMuniCode);
-        setToUpdate.setCodeSetID(selectedCodeSet.getCodeSetID());
-        
+
         CodeIntegrator codeInt = getCodeIntegrator();
         try {
-            System.out.println("CodeSetBB.updateSelectedCodeSet | selectedCodeSetName: " + selectedCodeSet.getCodeSetName());
             codeInt.updateCodeSetMetadata(setToUpdate);
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to update code set, sorry.", 
-                        "This must be corrected by the System Administrator"));
-        }
-        
-    }
-    
-    public String manageCodeSetElements(){
-        System.out.println("CodeSetBB.manageCodeSetElements");
-        
-        if (selectedCodeSet != null){
-            getSessionBean().setActiveCodeSet(selectedCodeSet);
-            System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
-            return "codeSetElementManage";
-        } else {
-            return "";
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Unable to update code set, sorry.",
+                            "This must be corrected by the System Administrator"));
         }
     }
-    
-    
 
-    
-    public void displaySelectedCodeSet(ActionEvent event){
-        System.out.println("CodeSetBB.displaySelectedCodeSet");
-        
-        if(selectedCodeSet != null){
+    public void displaySelectedCodeSet(ActionEvent event) {
+        if (selectedCodeSet != null) {
             formCodeSetName = selectedCodeSet.getCodeSetName();
             formCodeSetDescription = selectedCodeSet.getCodeSetDescription();
-            
+
         } else {
-                getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "Hark! No code set selected--Please select a code set", ""));
-            
+
         }
     }
-    
-    public void addNewCodeSet(ActionEvent event){
+
+    public void addNewCodeSet(ActionEvent event) {
         CodeSet cs = new CodeSet();
         cs.setMuniCode(formNewMuniCode);
-        cs.setCodeSetName(formCodeSetName);
-        cs.setCodeSetDescription(formCodeSetDescription);
-        
-        System.out.println("CodeSetBB.addNewCodeSet | set to add name: " + cs.getCodeSetName());
+        cs.setCodeSetName(formNewCodeSetName);
+        cs.setCodeSetDescription(formNewCodeSetDescription);
         CodeIntegrator codeInt = getCodeIntegrator();
-        
+
         try {
             codeInt.insertCodeSetMetadata(cs);
         } catch (IntegrationException ex) {
-              getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Unable to add code set to DB", "Your fearless system administrator will need to correct this."));
         }
         getFacesContext().addMessage(null,
-              new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                      "New Code Set named " + cs.getCodeSetName() + "!", ""));
-        
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "New Code Set named " + cs.getCodeSetName() + " has been added", ""));
+
 //        return "";
-        
     }
-    
-    public String makeSelectedCodeSetActive(){
-        
-        if(selectedCodeSet != null){ 
+
+    public String makeSelectedCodeSetActive() {
+
+        if (selectedCodeSet != null) {
             getSessionBean().setActiveCodeSet(selectedCodeSet);
             return "missionControl";
         } else {
             getFacesContext().addMessage(null,
-                  new FacesMessage(FacesMessage.SEVERITY_WARN, 
-                          "Please select a code set to make your active set", ""));
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "Please select a code set to make your active set", ""));
             return "";
         }
     }
@@ -208,7 +177,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
      * @return the muniMap
      * @throws com.tcvcog.tcvce.domain.IntegrationException
      */
-    public HashMap getMuniMap() throws IntegrationException{
+    public HashMap getMuniMap() throws IntegrationException {
         MunicipalityIntegrator muniInt = getMunicipalityIntegrator();
         muniMap = muniInt.getMunicipalityMap();
         return muniMap;
@@ -309,6 +278,14 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
      * @return the formCodeSetName
      */
     public String getFormCodeSetName() {
+        if (selectedCodeSetID != null) {
+            CodeIntegrator ci = getCodeIntegrator();
+            try {
+                formCodeSetName = ci.getCodeSetBySetID(selectedCodeSetID).getCodeSetName();
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+            }
+        }
         return formCodeSetName;
     }
 
@@ -323,6 +300,16 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
      * @return the formCodeSetDescription
      */
     public String getFormCodeSetDescription() {
+        if (selectedCodeSetID != null) {
+            
+            CodeIntegrator ci = getCodeIntegrator();
+            try {
+                formCodeSetDescription = ci.getCodeSetBySetID(selectedCodeSetID).getCodeSetDescription();
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+            }
+        }
+
         return formCodeSetDescription;
     }
 
@@ -337,18 +324,18 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
      * @return the codeSetList
      */
     public ArrayList<CodeSet> getCodeSetList() {
-        
+
         CodeIntegrator codeInt = getCodeIntegrator();
         try {
             codeSetList = codeInt.getCodeSets(selectedMuniCode);
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to retrieve code sets by Muni Code, sorry.", 
-                        "This must be corrected by the System Administrator"));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Unable to retrieve code sets by Muni Code, sorry.",
+                            "This must be corrected by the System Administrator"));
         }
-        
+
         return codeSetList;
     }
 
@@ -363,6 +350,12 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
      * @return the selectedCodeSet
      */
     public CodeSet getSelectedCodeSet() {
+        CodeIntegrator ci = getCodeIntegrator();
+        try {
+            selectedCodeSet = ci.getCodeSetBySetID(selectedCodeSetID);
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
         return selectedCodeSet;
     }
 
@@ -388,20 +381,6 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the formMuniCode
-     */
-    public int getFormMuniCode() {
-        return formMuniCode;
-    }
-
-    /**
-     * @param formMuniCode the formMuniCode to set
-     */
-    public void setFormMuniCode(int formMuniCode) {
-        this.formMuniCode = formMuniCode;
-    }
-
-    /**
      * @return the setToUpdate
      */
     public CodeSet getSetToUpdate() {
@@ -414,8 +393,6 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     public void setSetToUpdate(CodeSet setToUpdate) {
         this.setToUpdate = setToUpdate;
     }
-
-   
 
     /**
      * @return the formNewMuniCode
@@ -431,9 +408,6 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
         this.formNewMuniCode = formNewMuniCode;
     }
 
-   
-
-  
     /**
      * @return the selectedEnforcableCodeElement
      */
@@ -442,12 +416,73 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @param selectedEnforcableCodeElement the selectedEnforcableCodeElement to set
+     * @param selectedEnforcableCodeElement the selectedEnforcableCodeElement to
+     * set
      */
     public void setSelectedEnforcableCodeElement(CodeElementEnforcable selectedEnforcableCodeElement) {
         this.selectedEnforcableCodeElement = selectedEnforcableCodeElement;
     }
-    
-    
-    
+
+    /**
+     * @return the codeSetMap
+     */
+    public Map<String, Integer> getCodeSetMap() {
+        CodeIntegrator ci = getCodeIntegrator();
+        try {
+            codeSetMap = ci.getSystemWideCodeSetMap();
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
+        return codeSetMap;
+    }
+
+    /**
+     * @param codeSetMap the codeSetMap to set
+     */
+    public void setCodeSetMap(Map<String, Integer> codeSetMap) {
+        this.codeSetMap = codeSetMap;
+    }
+
+    /**
+     * @return the selectedCodeSetID
+     */
+    public Integer getSelectedCodeSetID() {
+        return selectedCodeSetID;
+    }
+
+    /**
+     * @param selectedCodeSetID the selectedCodeSetID to set
+     */
+    public void setSelectedCodeSetID(Integer selectedCodeSetID) {
+        this.selectedCodeSetID = selectedCodeSetID;
+    }
+
+    /**
+     * @return the formNewCodeSetName
+     */
+    public String getFormNewCodeSetName() {
+        return formNewCodeSetName;
+    }
+
+    /**
+     * @return the formNewCodeSetDescription
+     */
+    public String getFormNewCodeSetDescription() {
+        return formNewCodeSetDescription;
+    }
+
+    /**
+     * @param formNewCodeSetName the formNewCodeSetName to set
+     */
+    public void setFormNewCodeSetName(String formNewCodeSetName) {
+        this.formNewCodeSetName = formNewCodeSetName;
+    }
+
+    /**
+     * @param formNewCodeSetDescription the formNewCodeSetDescription to set
+     */
+    public void setFormNewCodeSetDescription(String formNewCodeSetDescription) {
+        this.formNewCodeSetDescription = formNewCodeSetDescription;
+    }
+
 }

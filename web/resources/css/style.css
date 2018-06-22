@@ -414,6 +414,11 @@ div.headerLinkCont{
     font-weight: bold;
 }
 
+.note{
+    font-style: italic;
+    font-size: 0.8em;
+}
+
 
 /***************** CLOSE TEXT AND SPANS ***********************/
 
