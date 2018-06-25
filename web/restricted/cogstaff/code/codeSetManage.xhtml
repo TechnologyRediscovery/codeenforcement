@@ -9,10 +9,7 @@
         <title>Code Set Management</title>
     </h:head>
     <h:body>
-
         <ui:composition template="../../navContainer_restricted.xhtml">
-
-
             <ui:define name="content">
                 <f:view>
                     <div class="mainContainer">
@@ -21,9 +18,7 @@
                         </h:messages>
                         <h1>Manage municipal code sets</h1>
 
-
                         <h:form id="manageSingleCodeSet">
-
 
                             <h2>Existing code sets</h2>
 
@@ -39,7 +34,6 @@
                                 <p:ajax update="selCodeSetIDOT selectedCodeSetName selectedCodeSetDesc" immediate="true"/>
                                 <f:selectItems value="#{codeSetBB.codeSetMap}"></f:selectItems>
                             </p:selectOneListbox>
-
 
                             <p:spacer height="15px"/>
 

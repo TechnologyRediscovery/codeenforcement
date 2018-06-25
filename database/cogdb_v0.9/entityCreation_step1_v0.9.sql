@@ -1005,12 +1005,11 @@ CREATE TABLE occupancyinspection
     firstInspectionPass             boolean DEFAULT FALSE,
     secondInspectionDate            TIMESTAMP WITH TIME ZONE,
     secondInspectionPass            boolean DEFAULT FALSE,
-    resolved                        boolean DEFAULT FALSE, -- deprecated from old db
     assignedFee                     INTEGER NOT NULL,
     totalFeePaid                    boolean DEFAULT FALSE,
     notes                           text,
     publicaccesscc                  INTEGER,
-    enablecc                        boolean DEFAULT TRUE,
+    enablepacc                      boolean DEFAULT TRUE,
     muniauthgrantedby               INTEGER CONSTRAINT occInspec_muniauthgrantedby_fk REFERENCES login (userID),
     muniauthtimestamp               TIMESTAMP WITH TIME ZONE,
     muniauthnotes                   text
@@ -1350,6 +1349,22 @@ CREATE TABLE listchangerequest
     changeText                  text
 
 ) ;
+
+CREATE SEQUENCE IF NOT EXISTS spaceid_seq
+    START WITH 100
+    INCREMENT BY 1
+    MINVALUE 10
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE space
+(
+    spaceID                     INTEGER DEFAULT nextval('spaceID_seq') PRIMARY KEY,
+    name                        text NOT NULL,
+    spaceType                   INTEGER NOT NULL CONSTRAINT spacetype_fk REFERENCES spacetype (spacetypeid)
+);
+
 
 
 -- COMMIT;

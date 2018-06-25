@@ -3,100 +3,9 @@
 --   site:      Oracle Database 11g
 --   type:      Oracle Database 11g
 
-CREATE TABLE paymentType
-  (
-    typeId INTEGER NOT NULL ,
-    name   VARCHAR (50) NOT NULL
-  ) ;
-ALTER TABLE PaymentType ADD CONSTRAINT PaymentType_PK PRIMARY KEY ( typeId ) ;
 
 
-CREATE TABLE actionRequestor
-  (
-    requestorID                INTEGER NOT NULL ,
-    requestorFName             VARCHAR (50) ,
-    requestorLName             VARCHAR (50) ,
-    phone                      VARCHAR (12) ,
-    notes                      VARCHAR (200) ,
-    actionRequestorType_typeID INTEGER NOT NULL
-  ) ;
-ALTER TABLE actionRequestor ADD CONSTRAINT actionRequestor_PK PRIMARY KEY ( requestorID ) ;
-
-
-CREATE TABLE actionRequestorType
-  (
-    typeID          INTEGER NOT NULL ,
-    typeName        VARCHAR (50) NOT NULL ,
-    roleDescription VARCHAR (100)
-  ) ;
-ALTER TABLE actionRequestorType ADD CONSTRAINT actionRequestorType_PK PRIMARY KEY ( typeID ) ;
-
-
-CREATE TABLE actionRqstIssueType
-  (
-    issueTypeID     INTEGER NOT NULL ,
-    typeName        VARCHAR (50) ,
-    typeDescription VARCHAR (100) ,
-    notes           VARCHAR (200)
-  ) ;
-ALTER TABLE actionRqstIssueType ADD CONSTRAINT actionRqstIssueType_PK PRIMARY KEY ( issueTypeID ) ;
-
-
-CREATE TABLE codeEnfActionRequest
-  (
-    requestID                   INTEGER NOT NULL ,
-    municipality_municipalityID INTEGER NOT NULL ,
-    requestDate                 DATE NOT NULL ,
-    actionRequestor_requestorID INTEGER NOT NULL ,
-    issueTypeID                 INTEGER NOT NULL ,
-    requestNotes                VARCHAR (200) ,
-    anonymous                   BOOLEAN
-  ) ;
-CREATE UNIQUE INDEX codeEnfActionRequest__IDX ON codeEnfActionRequest
-  (
-    requestID ASC
-  )
-  ;
-ALTER TABLE codeEnfActionRequest ADD CONSTRAINT codeEnfActionRequest_PK PRIMARY KEY ( requestID ) ;
-
-
-CREATE TABLE codeEnfCase
-  (
-    caseID                      INTEGER NOT NULL ,
-    caseOpenDate                DATE ,
-    property_propertyID         INTEGER NOT NULL ,
-    codeOfficer_officerID       INTEGER NOT NULL ,
-    CaseStatus_ceEventStatusID  INTEGER NOT NULL ,
-    codeEnfActionRqst_requestID INTEGER ,
-    courtCase_courtCaseID       INTEGER ,
-    lastUpdated                 DATE
-  ) ;
-CREATE UNIQUE INDEX codeEnfCase__IDX ON codeEnfCase
-  (
-    codeEnfActionRqst_requestID ASC
-  )
-  ;
-ALTER TABLE codeEnfCase ADD CONSTRAINT codeEnfCase_PK PRIMARY KEY ( caseID ) ;
-
-
-CREATE TABLE codeEnfCaseStatus
-  (
-    ceEventStatusID   INTEGER NOT NULL ,
-    statusName        VARCHAR (50) NOT NULL ,
-    statusDescription VARCHAR (100)
-  ) ;
-ALTER TABLE codeEnfCaseStatus ADD CONSTRAINT codeEnfCaseStatus_PK PRIMARY KEY ( ceEventStatusID ) ;
-
-
-CREATE TABLE codeEnfCaseViolation
-  (
-    codeViolation_violationID INTEGER NOT NULL ,
-    codeEnfCase_caseID        INTEGER NOT NULL
-  ) ;
-ALTER TABLE codeEnfCaseViolation ADD CONSTRAINT codeEnfCaseViolation_PK PRIMARY KEY ( codeViolation_violationID, codeEnfCase_caseID ) ;
-
-
-CREATE TABLE codeEnfEvent
+CREATE TABLE legacy_codeEnfEvent
   (
     eventID                     INTEGER NOT NULL ,
     eventDate                   DATE ,
@@ -109,7 +18,7 @@ CREATE TABLE codeEnfEvent
     lastUpdated                 DATE ,
     codeEnfLetter_letterID      INTEGER
   ) ;
-CREATE UNIQUE INDEX codeEnfEvent__IDX ON codeEnfEvent
+CREATE UNIQUE INDEX legacy_codeEnfEvent__IDX ON codeEnfEvent
   (
     eventID ASC
   )
@@ -117,37 +26,8 @@ CREATE UNIQUE INDEX codeEnfEvent__IDX ON codeEnfEvent
 ALTER TABLE codeEnfEvent ADD CONSTRAINT codeEnfEvent_PK PRIMARY KEY ( eventID ) ;
 
 
-CREATE TABLE codeEnfEventPhotoDoc
-  (
-    photoDoc_photoDocID  INTEGER NOT NULL ,
-    codeEnfEvent_eventID INTEGER NOT NULL
-  ) ;
-ALTER TABLE codeEnfEventPhotoDoc ADD CONSTRAINT codeEnforcementEventPhoto_PK PRIMARY KEY ( photoDoc_photoDocID, codeEnfEvent_eventID ) ;
 
-
-CREATE TABLE codeEnfEventType
-  (
-    codeEnfEventTypeID INTEGER NOT NULL ,
-    typeName           VARCHAR (50) NOT NULL ,
-    typeDescription    VARCHAR (100)
-  ) ;
-ALTER TABLE codeEnfEventType ADD CONSTRAINT codeEnfEventType_PK PRIMARY KEY ( codeEnfEventTypeID ) ;
-
-
-CREATE TABLE codeEnfLetter
-  (
-    letterID   INTEGER NOT NULL ,
-    letterText VARCHAR (2000)
-  ) ;
-CREATE UNIQUE INDEX codeEnfLetter__IDX ON codeEnfLetter
-  (
-    letterID ASC
-  )
-  ;
-ALTER TABLE codeEnfLetter ADD CONSTRAINT codeEnfLetter_PK PRIMARY KEY ( letterID ) ;
-
-
-CREATE TABLE codeOfficer
+CREATE TABLE legacy_codeOfficer
   (
     officerID       INTEGER NOT NULL ,
     firstName       VARCHAR (50) NOT NULL ,
@@ -159,89 +39,7 @@ CREATE TABLE codeOfficer
 ALTER TABLE codeOfficer ADD CONSTRAINT codeOfficer_PK PRIMARY KEY ( officerID ) ;
 
 
-CREATE TABLE codeViolation
-  (
-    violationID                 INTEGER NOT NULL ,
-    municipalCodeNum            INTEGER ,
-    violationName               VARCHAR (100) NOT NULL ,
-    violationLetter             VARCHAR (200) ,
-    active                      CHAR (1) ,
-    codeViolType_codeViolTypeID INTEGER NOT NULL ,
-    daysToComply                INTEGER NOT NULL
-  ) ;
-ALTER TABLE codeViolation ADD CONSTRAINT codeViolation_PK PRIMARY KEY ( violationID ) ;
-
-
-CREATE TABLE codeViolationType
-  (
-    codeViolationTypeID INTEGER NOT NULL ,
-    typeName            VARCHAR (50) ,
-    typeDescription     VARCHAR (100)
-  ) ;
-ALTER TABLE codeViolationType ADD CONSTRAINT codeViolationType_PK PRIMARY KEY ( codeViolationTypeID ) ;
-
-
-CREATE TABLE courtCase
-  (
-    courtCaseID        INTEGER NOT NULL ,
-    citationFileDate   DATE ,
-    courtDate          DATE ,
-    courtDetermination VARCHAR (100) ,
-    courtComments      VARCHAR (2000) ,
-    courtCaseCloseDate DATE
-  ) ;
-ALTER TABLE courtCase ADD CONSTRAINT courtCase_PK PRIMARY KEY ( courtCaseID ) ;
-
-
-CREATE TABLE courtCasephotoDoc
-  (
-    photoDoc_photoDocID   INTEGER NOT NULL ,
-    courtCase_courtCaseID INTEGER NOT NULL
-  ) ;
-ALTER TABLE courtCasephotoDoc ADD CONSTRAINT courtCase_photoDoc_PK PRIMARY KEY ( photoDoc_photoDocID, courtCase_courtCaseID ) ;
-
-
-CREATE TABLE disCondLetter
-  (
-    disCondLetterID   INTEGER NOT NULL ,
-    disCondLetterText VARCHAR (2000)
-  );
-  
-ALTER TABLE disCondLetter ADD CONSTRAINT disCondLetter_PK PRIMARY KEY ( disCondLetterID ) ;
-
-
-CREATE TABLE disCondPhotoDoc
-  (
-    photoDoc_photoDocID INTEGER NOT NULL ,
-    disCond_incidentID  INTEGER NOT NULL
-  );
-ALTER TABLE disCondPhotoDoc ADD CONSTRAINT disCondPhotoDoc_PK PRIMARY KEY ( photoDoc_photoDocID, disCond_incidentID ) ;
-
-
-CREATE TABLE disrupCondCaseStatus
-  (
-    statusID           INTEGER NOT NULL ,
-    disCondStatusName  VARCHAR (50) NOT NULL ,
-    disCondStatusDescr VARCHAR (200)
-  );
-ALTER TABLE disrupCondCaseStatus ADD CONSTRAINT disrupCondCaseStatus_PK PRIMARY KEY ( statusID ) ;
-
-
-CREATE TABLE disruptiveConduct
-  (
-    incidentID                    INTEGER NOT NULL ,
-    caseStatus                    INTEGER NOT NULL ,
-    incidentDate                  DATE NOT NULL ,
-    disCondDescription            VARCHAR (500) NOT NULL ,
-    disCondCaseNum                VARCHAR (20) ,
-    resolutionDate                DATE ,
-    resolutionActionDescr         VARCHAR (500) ,
-    disCondLetter_disCondLetterID INTEGER
-  ) ;
-ALTER TABLE disruptiveConduct ADD CONSTRAINT disruptiveConduct_PK PRIMARY KEY ( incidentID ) ;
-
-
-CREATE TABLE inspecChecklist
+CREATE TABLE legacy_inspecChecklist
   ( checklistID INTEGER NOT NULL,
     Roof VARCHAR (100) ,
     Roof_VID VARCHAR (100) ,
@@ -393,24 +191,7 @@ CREATE TABLE inspecChecklist
  ) ;
 ALTER TABLE inspecChecklist ADD CONSTRAINT inspecChecklist_PK PRIMARY KEY ( checklistID ) ;
 
-
-CREATE TABLE inspectionStatus
-  (
-    stausID           INTEGER NOT NULL ,
-    statusName        VARCHAR (50) NOT NULL ,
-    statusDescription VARCHAR (100)
-  ) ;
-ALTER TABLE inspectionStatus ADD CONSTRAINT inspectionStatus_PK PRIMARY KEY ( stausID ) ;
-
-
-CREATE TABLE muni_codeOff
-  (
-    municipality_municipalityID INTEGER NOT NULL ,
-    codeOfficer_officerID       INTEGER NOT NULL
-  ) ;
-ALTER TABLE muni_codeOff ADD CONSTRAINT muni_codeOff_PK PRIMARY KEY ( municipality_municipalityID, codeOfficer_officerID ) ;
-
-
+-- let's try to connect to the existing muni table
 CREATE TABLE municipality
   (
     municipalityID       INTEGER NOT NULL ,
@@ -560,7 +341,7 @@ CREATE TABLE property
 ALTER TABLE property ADD CONSTRAINT property_PK PRIMARY KEY ( propertyID ) ;
 
 
-CREATE TABLE propertyAgent
+CREATE TABLE legacy_propertyAgent
   (
     agentID        INTEGER NOT NULL ,
     agentFirstName VARCHAR (50) NOT NULL ,

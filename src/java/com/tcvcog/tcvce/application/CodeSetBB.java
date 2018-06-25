@@ -85,7 +85,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable {
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Please select a code set to build in ", ""));
+                            "Please select a code set to view", ""));
             return "";
         }
     }
@@ -102,7 +102,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable {
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Please select a code set to build in ", ""));
+                            "Please select a code set to build ", ""));
             return "";
         }
     }

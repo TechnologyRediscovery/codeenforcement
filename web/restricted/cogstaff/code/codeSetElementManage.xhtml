@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <link rel="stylesheet" type="text/css" href="css/style.css"></link>
-        <title>Mangae code source elements</title>
+        <title>Enforcable code elements</title>
     </h:head>
     <h:body>
         <ui:composition template="../../navContainer_restricted.xhtml">
@@ -16,7 +16,7 @@
                     
                 <f:view id="enforcableCodeElementsInsSetManage">
                    <h:outputLink value="codeSetManage.xhtml">&lt;--Return to set manager</h:outputLink>
-                    <h2>Enforceable code elements in set</h2>
+                    <h2>Enforceable code elements in code set: </h2>
                    <h:messages globalOnly="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                     </h:messages>
@@ -25,9 +25,9 @@
                             <p:dataTable
                             id="enforcableCodeElementTable"
                             var="cs"
-                            value="#{codeSetElementBB.eceList}"
+                            value="#{codeSetElementBB.getcEEList}"
                             selectionMode="single"
-                            selection="#{codeSetElementBB.selectedEce}"
+                            selection="#{codeSetElementBB.selectedCEE}"
                             rowKey="#{cs.codeSetElementID}"
                             tableStyleClass="primeDataTable">
                             <p:column>

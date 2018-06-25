@@ -38,32 +38,30 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      */
     public CodeSetElementBB() {
     }
-    
    
+    private CodeSet currentCodeSet;
     
-    private CodeElementEnforcable selectedEce;
-    private ArrayList<CodeElementEnforcable> eceList;
-
-   
+    private CodeElementEnforcable selectedCEE;
+    private ArrayList<CodeElementEnforcable> cEEList;
 
     /**
-     * @return the selectedEce
+     * @return the selectedCEE
      */
-    public CodeElementEnforcable getSelectedEce() {
-        return selectedEce;
+    public CodeElementEnforcable getSelectedCEE() {
+        return selectedCEE;
     }
 
     /**
-     * @param selectedEce the selectedEce to set
+     * @param selectedCEE the selectedCEE to set
      */
-    public void setSelectedEce(CodeElementEnforcable selectedEce) {
-        this.selectedEce = selectedEce;
+    public void setSelectedCEE(CodeElementEnforcable selectedCEE) {
+        this.selectedCEE = selectedCEE;
     }
 
     /**
-     * @return the eceList
+     * @return the cEEList
      */
-    public ArrayList<CodeElementEnforcable> getEceList() {
+    public ArrayList<CodeElementEnforcable> getcEEList() {
         
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = getSessionBean().getActiveCodeSet();
@@ -72,7 +70,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
             System.out.println("CodeSetElementBB.getEceList | active code set name: " + codeSet.getCodeSetName());
             int setID = codeSet.getCodeSetID();
             try {
-                eceList =  integrator.getEnforcableCodeElementList(setID);
+                cEEList =  integrator.getEnforcableCodeElementList(setID);
 //                getFacesContext().addMessage(null,
 //                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
 //                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
@@ -83,14 +81,29 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
                                 "No Enforcable Code Elements were found with SetID: " + setID, ""));
             }
         } 
-        return eceList;
+        return cEEList;
     }
 
     /**
-     * @param eceList the eceList to set
+     * @param cEEList the cEEList to set
      */
-    public void setEceList(ArrayList<CodeElementEnforcable> eceList) {
-        this.eceList = eceList;
+    public void setcEEList(ArrayList<CodeElementEnforcable> cEEList) {
+        this.cEEList = cEEList;
+    }
+
+    /**
+     * @return the currentCodeSet
+     */
+    public CodeSet getCurrentCodeSet() {
+        currentCodeSet = getSessionBean().getActiveCodeSet();
+        return currentCodeSet;
+    }
+
+    /**
+     * @param currentCodeSet the currentCodeSet to set
+     */
+    public void setCurrentCodeSet(CodeSet currentCodeSet) {
+        this.currentCodeSet = currentCodeSet;
     }
     
     
