@@ -19,7 +19,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
@@ -50,7 +50,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable {
 
     // used by codeSetElementManage
     private CodeSet selectedCodeSet;
-    private CodeElementEnforcable selectedEnforcableCodeElement;
+    private EnforcableCodeElement selectedEnforcableCodeElement;
 
     private Map<String, Integer> codeSetMap;
     private Integer selectedCodeSetID;
@@ -81,7 +81,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable {
             } catch (IntegrationException ex) {
                 System.out.println(ex);
             }
-            return "codeElementList";
+            return "codeSetElementList";
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -411,7 +411,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable {
     /**
      * @return the selectedEnforcableCodeElement
      */
-    public CodeElementEnforcable getSelectedEnforcableCodeElement() {
+    public EnforcableCodeElement getSelectedEnforcableCodeElement() {
         return selectedEnforcableCodeElement;
     }
 
@@ -419,7 +419,7 @@ public class CodeSetBB extends BackingBeanUtils implements Serializable {
      * @param selectedEnforcableCodeElement the selectedEnforcableCodeElement to
      * set
      */
-    public void setSelectedEnforcableCodeElement(CodeElementEnforcable selectedEnforcableCodeElement) {
+    public void setSelectedEnforcableCodeElement(EnforcableCodeElement selectedEnforcableCodeElement) {
         this.selectedEnforcableCodeElement = selectedEnforcableCodeElement;
     }
 

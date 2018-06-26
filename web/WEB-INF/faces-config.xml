@@ -962,6 +962,13 @@
             <to-view-id>/restricted/cogstaff/code/codeGuideEntryUpdate.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
+        
+        
+        <navigation-case>
+            <from-outcome>codeGuideAdd</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeGuideEntryAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>   
 
         <navigation-case>
             <from-outcome>codeSourceAddUpdate</from-outcome>
@@ -976,16 +983,11 @@
         </navigation-case>   
         
         <navigation-case>
-            <from-outcome>codeGuideAdd</from-outcome>
-            <to-view-id>/restricted/cogstaff/code/codeGuideEntryAdd.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>   
-        
-        <navigation-case>
             <from-outcome>codeSourceManage</from-outcome>
             <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
             <redirect />
         </navigation-case>   
+        
         <navigation-case>
             <from-outcome>codeSetManage</from-outcome>
             <to-view-id>/restricted/cogstaff/code/codeSetManage.xhtml</to-view-id>
@@ -1007,10 +1009,17 @@
             <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-       
+        
+    <navigation-rule>
+        <from-view-id>/restricted/cogstaff/code/codeSetManage.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{codeSetBB.manageCodeSetElements}</from-action>
+            <from-outcome>codeSetElementList</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeSetElementManage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 
     <!--System and internal pages-->
-
     
     <navigation-rule>
         <from-view-id>/restricted/cogadmin/userManage.xhtml</from-view-id>

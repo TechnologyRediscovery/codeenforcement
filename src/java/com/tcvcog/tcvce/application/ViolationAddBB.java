@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.domain.ViolationException;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;

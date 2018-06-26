@@ -20,10 +20,12 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 
 /** 
@@ -41,27 +43,48 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
    
     private CodeSet currentCodeSet;
     
-    private CodeElementEnforcable selectedCEE;
-    private ArrayList<CodeElementEnforcable> cEEList;
-
-    /**
-     * @return the selectedCEE
-     */
-    public CodeElementEnforcable getSelectedCEE() {
-        return selectedCEE;
+    private EnforcableCodeElement selectedECE;
+    private ArrayList<EnforcableCodeElement> cEEList;
+    
+    // for editing
+    private int formCodeSetElementID;
+    private double formMaxPenalty;
+    private double formMinPenalty;
+    private double formNormPenalty;
+    private String formPenaltyNotes;
+    private int formNormDaysToComply;
+    private String formDaysToComplyNotes; 
+    
+    public String updateECEData(){
+        CodeIntegrator ci = getCodeIntegrator();
+        try {
+            ci.updateEnforcableCodeElement(selectedECE);
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    ex.getMessage(), ""));
+        }
+        return "";
     }
 
     /**
-     * @param selectedCEE the selectedCEE to set
+     * @return the selectedECE
      */
-    public void setSelectedCEE(CodeElementEnforcable selectedCEE) {
-        this.selectedCEE = selectedCEE;
+    public EnforcableCodeElement getSelectedECE() {
+        return selectedECE;
+    }
+
+    /**
+     * @param selectedECE the selectedECE to set
+     */
+    public void setSelectedECE(EnforcableCodeElement selectedECE) {
+        this.selectedECE = selectedECE;
     }
 
     /**
      * @return the cEEList
      */
-    public ArrayList<CodeElementEnforcable> getcEEList() {
+    public ArrayList<EnforcableCodeElement> getcEEList() {
         
         CodeIntegrator integrator = getCodeIntegrator();
         CodeSet codeSet = getSessionBean().getActiveCodeSet();
@@ -87,7 +110,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     /**
      * @param cEEList the cEEList to set
      */
-    public void setcEEList(ArrayList<CodeElementEnforcable> cEEList) {
+    public void setcEEList(ArrayList<EnforcableCodeElement> cEEList) {
         this.cEEList = cEEList;
     }
 
@@ -104,6 +127,122 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      */
     public void setCurrentCodeSet(CodeSet currentCodeSet) {
         this.currentCodeSet = currentCodeSet;
+    }
+
+    /**
+     * @return the formCodeSetElementID
+     */
+    public int getFormCodeSetElementID() {
+        return formCodeSetElementID;
+    }
+
+    /**
+     * @return the formMaxPenalty
+     */
+    public double getFormMaxPenalty() {
+        if(selectedECE != null){
+            formMaxPenalty = selectedECE.getMaxPenalty();
+        }
+        return formMaxPenalty;
+    }
+
+    /**
+     * @return the formMinPenalty
+     */
+    public double getFormMinPenalty() {
+        if(selectedECE != null){
+            formMinPenalty = selectedECE.getMinPenalty();
+        }
+        return formMinPenalty;
+    }
+
+    /**
+     * @return the formNormPenalty
+     */
+    public double getFormNormPenalty() {
+        if(selectedECE != null){
+            formNormPenalty = selectedECE.getNormPenalty();
+        }
+        return formNormPenalty;
+    }
+
+    /**
+     * @return the formPenaltyNotes
+     */
+    public String getFormPenaltyNotes() {
+        if(selectedECE != null){
+            formPenaltyNotes = selectedECE.getPenaltyNotes();
+        }
+        return formPenaltyNotes;
+    }
+
+    /**
+     * @return the formNormDaysToComply
+     */
+    public int getFormNormDaysToComply() {
+        if(selectedECE != null){
+            formNormDaysToComply = selectedECE.getNormDaysToComply();
+        }
+        return formNormDaysToComply;
+    }
+
+    /**
+     * @return the formDaysToComplyNotes
+     */
+    public String getFormDaysToComplyNotes() {
+        if(selectedECE != null){
+            formDaysToComplyNotes = selectedECE.getDaysToComplyNotes();
+        }
+        return formDaysToComplyNotes;
+    }
+
+    /**
+     * @param formCodeSetElementID the formCodeSetElementID to set
+     */
+    public void setFormCodeSetElementID(int formCodeSetElementID) {
+        this.formCodeSetElementID = formCodeSetElementID;
+    }
+
+    /**
+     * @param formMaxPenalty the formMaxPenalty to set
+     */
+    public void setFormMaxPenalty(double formMaxPenalty) {
+        this.formMaxPenalty = formMaxPenalty;
+    }
+
+    /**
+     * @param formMinPenalty the formMinPenalty to set
+     */
+    public void setFormMinPenalty(double formMinPenalty) {
+        this.formMinPenalty = formMinPenalty;
+    }
+
+    /**
+     * @param formNormPenalty the formNormPenalty to set
+     */
+    public void setFormNormPenalty(double formNormPenalty) {
+        this.formNormPenalty = formNormPenalty;
+    }
+
+    /**
+     * @param formPenaltyNotes the formPenaltyNotes to set
+     */
+    public void setFormPenaltyNotes(String formPenaltyNotes) {
+        this.formPenaltyNotes = formPenaltyNotes;
+    }
+
+    /**
+     * @param formNormDaysToComply the formNormDaysToComply to set
+     */
+    public void setFormNormDaysToComply(int formNormDaysToComply) {
+        this.formNormDaysToComply = formNormDaysToComply;
+    }
+
+    /**
+     * @param formDaysToComplyNotes the formDaysToComplyNotes to set
+     */
+    public void setFormDaysToComplyNotes(String formDaysToComplyNotes) {
+        this.formDaysToComplyNotes = formDaysToComplyNotes;
     }
     
     

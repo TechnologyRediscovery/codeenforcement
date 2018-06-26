@@ -30,7 +30,7 @@ public class CodeSet {
     private Municipality muni;
     private String codeSetName;
     private String codeSetDescription;
-    private ArrayList<CodeElementEnforcable> enfCodeElementList;
+    private ArrayList<EnforcableCodeElement> enfCodeElementList;
 
     /**
      * @return the codeSetID
@@ -106,14 +106,14 @@ public class CodeSet {
     /**
      * @return the enfCodeElementList
      */
-    public ArrayList<CodeElementEnforcable> getEnfCodeElementList() {
+    public ArrayList<EnforcableCodeElement> getEnfCodeElementList() {
         return enfCodeElementList;
     }
 
     /**
      * @param enfCodeElementList the enfCodeElementList to set
      */
-    public void setEnfCodeElementList(ArrayList<CodeElementEnforcable> enfCodeElementList) {
+    public void setEnfCodeElementList(ArrayList<EnforcableCodeElement> enfCodeElementList) {
         this.enfCodeElementList = enfCodeElementList;
     }
     

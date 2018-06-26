@@ -16,89 +16,89 @@
                 <div class="mainContainer">
                     <f:view>
 
-                            <h:messages globalOnly="true" showDetail="false" showSummary="true"
-                                        warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
-                            </h:messages>
+                        <h:messages globalOnly="true" showDetail="false" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
 
-                            <h1>Code Enforcement Case Profile</h1>
+                        <h1>Code Enforcement Case Profile</h1>
 
-                                <span class="bold">Profile for case: </span>
-                                <h:outputText value="#{caseProfileBB.currentCase.caseName}"/>
-                                <span> @ </span>
-                                <h:outputText value="#{sessionBean.activeProp.address}"/>
-                                <span> in </span>
-                                <h:outputText value="#{caseProfileBB.currentCase.property.muni.muniName}"/>
-                                <span> (case ID#: </span>
-                                <h:outputText value="#{caseProfileBB.currentCase.caseID}"/>
-                                <span> ) </span>
-                                
-
-                            <h2>Case Phase</h2>
-
-                                <span class="bold">Current phase: </span>
-                                <h:outputText class="mono" value="#{caseProfileBB.currentCase.casePhase.label}"/>
-                                
-                            <h2>Next case action</h2>
-
-                                <span class="bold">Next phase: </span>
-                                <h:outputText class="mono" value="#{caseProfileBB.nextPhase.label}"/>
-
-                                <p:spacer height="10px"/>
-                                
-                                <span class="bold">Next action in protocol: </span>
-                                
-                                <h:outputText value="#{caseProfileBB.eventForTriggeringCasePhaseAdvancement.category.eventCategoryTitle}"/>
-                                
-                                <!--takeNextAction-->
+                        <span class="bold">Profile for case: </span>
+                        <h:outputText value="#{caseProfileBB.currentCase.caseName}"/>
+                        <span> @ </span>
+                        <h:outputText value="#{sessionBean.activeProp.address}"/>
+                        <span> in </span>
+                        <h:outputText value="#{caseProfileBB.currentCase.property.muni.muniName}"/>
+                        <span> (case ID#: </span>
+                        <h:outputText value="#{caseProfileBB.currentCase.caseID}"/>
+                        <span> ) </span>
 
 
-                            <h2>Case key details</h2>
-                            
-                                <span class="bold">Case Manager: </span>
-                                <h:outputText value="#{caseProfileBB.currentCase.user.LName}"/>
-                                
-                                <p:spacer height="10px"/>
-                            
-                                <span class="bold">Date Opened: </span>
-                                <h:outputText value="#{caseProfileBB.currentCase.originiationDatePretty}"/>
-                                
-                                <p:spacer height="10px"/>
-                            
-                                <span class="bold">Date Closed: </span>
-                                <h:outputText value="#{caseProfileBB.currentCase.closingDatePretty}"/>
+                        <h2>Case Phase</h2>
 
-                                <h2>Case tools</h2>
-                            
-                                <h3>Update case details</h3>
-                                
-                                    <p:fieldset legend="Expand to update case metadata"
-                                              toggleable="true" collapsed="true">
-                                        
-                                        <h:outputText value="You are editing case no. #{caseUpdateBB.currentCase.caseID}"/>
-                                        <p:spacer height="10px"/>
-                                        
-                                        <h:form id="updateCaseForm">
-                                            
-                                            <h:panelGrid columns="2" border="0" 
+                        <span class="bold">Current phase: </span>
+                        <h:outputText class="mono" value="#{caseProfileBB.currentCase.casePhase.label}"/>
+
+                        <h2>Next case action</h2>
+
+                        <span class="bold">Next phase: </span>
+                        <h:outputText class="mono" value="#{caseProfileBB.nextPhase.label}"/>
+
+                        <p:spacer height="10px"/>
+
+                        <span class="bold">Next action in protocol: </span>
+
+                        <h:outputText value="#{caseProfileBB.eventForTriggeringCasePhaseAdvancement.category.eventCategoryTitle}"/>
+
+                        <!--takeNextAction-->
+
+
+                        <h2>Case key details</h2>
+
+                        <span class="bold">Case Manager: </span>
+                        <h:outputText value="#{caseProfileBB.currentCase.user.LName}"/>
+
+                        <p:spacer height="10px"/>
+
+                        <span class="bold">Date Opened: </span>
+                        <h:outputText value="#{caseProfileBB.currentCase.originiationDatePretty}"/>
+
+                        <p:spacer height="10px"/>
+
+                        <span class="bold">Date Closed: </span>
+                        <h:outputText value="#{caseProfileBB.currentCase.closingDatePretty}"/>
+
+                        <h2>Case tools</h2>
+
+                        <h3>Update case details</h3>
+
+                        <p:fieldset legend="Expand to update case metadata"
+                                    toggleable="true" collapsed="true">
+
+                            <h:outputText value="You are editing case no. #{caseUpdateBB.currentCase.caseID}"/>
+                            <p:spacer height="10px"/>
+
+                            <h:form id="updateCaseForm">
+
+                                <h:panelGrid columns="2" border="0" 
                                              cellpadding="2" columnClasses="gridTd, gridTd"
-                                                footerClass="gridFooter">
-                                                <h:panelGroup>
-                                                    <h:outputText value="Public access control code"/>
-                                                </h:panelGroup> 
-                                                <h:panelGroup>
-                                                    <h:inputText value="#{caseUpdateBB.formControlCode}"/>
-                                                </h:panelGroup> 
-                                                <h:panelGroup>
-                                                    <h:outputText value="Case name"/>
-                                                </h:panelGroup> 
-                                                <h:panelGroup>
-                                                    <h:inputText value="#{caseUpdateBB.formCaseName}"/>
-                                                </h:panelGroup> 
-                                                <h:panelGroup>
-                                                    <h:outputText value="Opening date"/>
-                                                </h:panelGroup> 
-                                                <h:panelGroup>
-                                                    <p:calendar value="#{caseUpdateBB.formOriginDate}" 
+                                             footerClass="gridFooter">
+                                    <h:panelGroup>
+                                        <h:outputText value="Public access control code"/>
+                                    </h:panelGroup> 
+                                    <h:panelGroup>
+                                        <h:inputText value="#{caseUpdateBB.formControlCode}"/>
+                                    </h:panelGroup> 
+                                    <h:panelGroup>
+                                        <h:outputText value="Case name"/>
+                                    </h:panelGroup> 
+                                    <h:panelGroup>
+                                        <h:inputText value="#{caseUpdateBB.formCaseName}"/>
+                                    </h:panelGroup> 
+                                    <h:panelGroup>
+                                        <h:outputText value="Opening date"/>
+                                    </h:panelGroup> 
+                                    <h:panelGroup>
+                                        <p:calendar value="#{caseUpdateBB.formOriginDate}" 
                                                     mode="popup" tabindex="3"
                                                     id="formCaseOriginationDateCal"
                                                     showOn="button"
@@ -108,137 +108,133 @@
                                                     showTodayButton="true"
                                                     required="true"/>
 
-                                                    <h:message for="formCaseOriginationDateCal" showDetail="false" showSummary="true" 
-                                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-                                                </h:panelGroup>
-                                                <h:panelGroup>
-                                                    <h:outputText value="Notes:"/>
-                                                </h:panelGroup> 
-                                                <h:panelGroup>
-                                                    <h:inputTextarea value="#{caseUpdateBB.formCaseNotes}"/>
-                                                </h:panelGroup> 
+                                        <h:message for="formCaseOriginationDateCal" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:outputText value="Notes:"/>
+                                    </h:panelGroup> 
+                                    <h:panelGroup>
+                                        <h:inputTextarea value="#{caseUpdateBB.formCaseNotes}"/>
+                                    </h:panelGroup> 
 
 
-                                            </h:panelGrid>
-                                            
-                                            <p:spacer height="10px"/>
-                                            
-                                            <p:commandButton ajax="false" value="Update Case" action="#{caseUpdateBB.updateCase}"  icon="fa fa-edit"/>
+                                </h:panelGrid>
 
-                                        </h:form>
-                                  </p:fieldset>
-                                
-                             <h3>Manually change case phase</h3>
-                                    <h:form id="casePhaseChangeForm">
+                                <p:spacer height="10px"/>
+
+                                <p:commandButton ajax="false" value="Update Case" action="#{caseUpdateBB.updateCase}"  icon="fa fa-edit"/>
+
+                            </h:form>
+                        </p:fieldset>
+
+                        <h3>Manually change case phase</h3>
+                        <h:form id="casePhaseChangeForm">
 
 
-                                        <p:selectOneMenu value="#{caseProfileBB.selectedCasePhase}"
-                                                         id="casePhaseSOM">
+                            <p:selectOneMenu value="#{caseProfileBB.selectedCasePhase}"
+                                             id="casePhaseSOM">
 
-                                            <f:selectItems value="#{caseProfileBB.casePhaseList}"
-                                                           var="cp"
-                                                           itemValue="#{cp}"
-                                                           itemLabel="#{cp.label}"/>
-                                        </p:selectOneMenu>
-                                        <p:spacer height="10px"/>
+                                <f:selectItems value="#{caseProfileBB.casePhaseList}"
+                                               var="cp"
+                                               itemValue="#{cp}"
+                                               itemLabel="#{cp.label}"/>
+                            </p:selectOneMenu>
+                            <p:spacer height="10px"/>
 
-                                        <p:commandButton onclick="PF('cd').show()" type="button" icon="fa fa-bullhorn"
-                                                         value="Manually override case phase to selected value"/>
+                            <p:commandButton onclick="PF('cd').show()" type="button" icon="fa fa-bullhorn"
+                                             value="Manually override case phase to selected value"/>
 
-                                        <p:confirmDialog message="Manually override a case's phase can cause a spaghetti-like mess of our
-                                                        case management process. Note: This action will generate a special event which will
-                                                        be analyzed at our next group meeting to discuss changes to our standard protocol to avoid
-                                                        the need for any manual case phase changes. Please add a note event to the case to explain
-                                                        why the case phase is being changed manually." severity="alert" widgetVar="cd">
+                            <p:confirmDialog message="Manually override a case's phase can cause a spaghetti-like mess of our
+                                             case management process. Note: This action will generate a special event which will
+                                             be analyzed at our next group meeting to discuss changes to our standard protocol to avoid
+                                             the need for any manual case phase changes. Please add a note event to the case to explain
+                                             why the case phase is being changed manually." severity="alert" widgetVar="cd">
 
-                                            <p:commandButton ajax="false" action="#{caseProfileBB.overrideCasePhase}" icon="fa fa-bullhorn"
-                                                             value="Yes, override phase" oncomplete="PF('cd').hide()"/>
-                                            <p:commandButton value="Abort override" onclick="PF('cd').hide()" type="button" icon="fa fa-stop"/>
-                                        </p:confirmDialog>
-                                    </h:form>
-                            
-                            <h2>Event Log</h2>
-                            
-                                <h:form id="caseProfileForm">
+                                <p:commandButton ajax="false" action="#{caseProfileBB.overrideCasePhase}" icon="fa fa-bullhorn"
+                                                 value="Yes, override phase" oncomplete="PF('cd').hide()"/>
+                                <p:commandButton value="Abort override" onclick="PF('cd').hide()" type="button" icon="fa fa-stop"/>
+                            </p:confirmDialog>
+                        </h:form>
 
-                                    <p:commandButton ajax="false" action="caseEvents" icon="fa fa-plus"
-                                                 value="Create new event"/>
+                        <h2>Event Log</h2>
+
+                        <h:form id="caseProfileForm">
+
+                            <p:commandButton ajax="false" action="caseEvents" icon="fa fa-plus"
+                                             value="Create new event"/>
+
+                            <p:spacer height="10px"/>
+
+                            <p:dataTable
+                                id="caseEventTable"
+                                var="e"
+                                selectionMode="single"
+                                selection="#{caseProfileBB.selectedEvent}"
+                                rowKey="#{e.eventID}"
+                                value="#{caseProfileBB.eventList}"
+                                tableStyleClass="primeDataTable">
+                                <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Date" />
+                                    </f:facet>
+                                    <h:outputText value="#{e.prettyDateOfRecord}"/>
+                                </p:column>
+                                <p:column width="10%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Type" />
+                                    </f:facet>
+                                    <h:outputText value="#{e.category.eventType}"/>
+                                </p:column>
+                                <p:column width="20%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Category" />
+                                    </f:facet>
+                                    <h:outputText value="#{e.category.eventCategoryTitle}"/>
+                                </p:column>
+                                <p:column width="8%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Creator" />
+                                    </f:facet>
+                                    <h:outputText value="#{e.eventOwnerUser.LName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Description" />
+                                    </f:facet>
+                                    <h:outputText value="#{e.eventDescription}"/>
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <h:outputLabel value="Disclose to Municipality Staff? "/>
+                                    <h:outputText value="#{e.discloseToMunicipality}"/>
 
                                     <p:spacer height="10px"/>
 
-                                    <p:dataTable
-                                        id="caseEventTable"
-                                        var="e"
-                                        selectionMode="single"
-                                        selection="#{caseProfileBB.selectedEvent}"
-                                        rowKey="#{e.eventID}"
-                                        value="#{caseProfileBB.eventList}"
-                                        tableStyleClass="primeDataTable">
-                                        <!--<p:ajax event="rowSelect" update="selectedRowLabel"/>-->
+                                    <h:outputLabel value="Disclose to Public? "/>
+                                    <h:outputText value="#{e.discloseToPublic}"/>
 
-                                        <p:column width="15%">
-                                            <f:facet name="header">
-                                                <h:outputText value="Date" />
-                                            </f:facet>
-                                            <h:outputText value="#{e.prettyDateOfRecord}"/>
-                                        </p:column>
-                                        <p:column width="10%">
-                                            <f:facet name="header">
-                                                <h:outputText value="Type" />
-                                            </f:facet>
-                                            <h:outputText value="#{e.category.eventType}"/>
-                                        </p:column>
-                                        <p:column width="20%">
-                                            <f:facet name="header">
-                                                <h:outputText value="Category" />
-                                            </f:facet>
-                                            <h:outputText value="#{e.category.eventCategoryTitle}"/>
-                                        </p:column>
-                                        <p:column width="8%">
-                                            <f:facet name="header">
-                                                <h:outputText value="Creator" />
-                                            </f:facet>
-                                            <h:outputText value="#{e.eventOwnerUser.LName}"/>
-                                        </p:column>
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Description" />
-                                            </f:facet>
-                                            <h:outputText value="#{e.eventDescription}"/>
-                                        </p:column>
+                                    <p:spacer height="10px"/>
 
-                                        <p:rowExpansion>
-                                            <h:outputLabel value="Disclose to Municipality Staff? "/>
-                                            <h:outputText value="#{e.discloseToMunicipality}"/>
+                                    <h:outputLabel value="Active Event? "/>
+                                    <h:outputText value="#{e.activeEvent}"/>
 
-                                            <p:spacer height="10px"/>
+                                    <p:spacer height="10px"/>
 
-                                            <h:outputLabel value="Disclose to Public? "/>
-                                            <h:outputText value="#{e.discloseToPublic}"/>
+                                    <h:outputLabel value="Event Notes: "/>
+                                    <h:outputText value="#{e.notes}" escape="false"/>
 
-                                            <p:spacer height="10px"/>
+                                </p:rowExpansion>
 
-                                            <h:outputLabel value="Active Event? "/>
-                                            <h:outputText value="#{e.activeEvent}"/>
+                            </p:dataTable>
 
-                                            <p:spacer height="10px"/>
+                            <p:spacer height="15px"/>
 
-                                            <h:outputLabel value="Event Notes: "/>
-                                            <h:outputText value="#{e.notes}" escape="false"/>
-
-                                        </p:rowExpansion>
-
-                                    </p:dataTable>
-
-                                    <p:spacer height="15px"/>
-
-                                    <p:commandButton ajax="false" action="#{caseProfileBB.editSelectedEvent}"
-                                                 value="Edit Selected Event" icon="fa fa-edit"/>
-                                </h:form>
-
-                            
-                            
-                               
+                            <p:commandButton ajax="false" action="#{caseProfileBB.editSelectedEvent}"
+                                             value="Edit Selected Event" icon="fa fa-edit"/>
+                        </h:form>
                     </f:view>
                 </div>
             </ui:define>

@@ -24,7 +24,7 @@ import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.CodeSet;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -216,11 +216,12 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     public HashMap getCodeSourceMap() throws IntegrationException{
         ArrayList<CodeSource> csList = getCompleteCodeSourceList();
         HashMap<String, Integer> csMap = new HashMap();
-        
+        String stringKey;
         ListIterator li = csList.listIterator();
         while(li.hasNext()){
             CodeSource cs = (CodeSource) li.next();
-            csMap.put(cs.getSourceName(), cs.getSourceID());
+             stringKey = cs.getSourceName() + "(" + String.valueOf(cs.getSourceYear()) + ")";
+            csMap.put(stringKey, cs.getSourceID());
         }
         return csMap;
     }
@@ -377,7 +378,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
     /**
-     * Creates what we call an CodeElementEnforcable, which means
+     * Creates what we call an EnforcableCodeElement, which means
  we find an existing code element and add muni-specific 
  enforcement data to that element and store it in the DB
  
@@ -389,7 +390,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @param codeSetID 
      * @throws com.tcvcog.tcvce.domain.IntegrationException 
      */
-    public void addEnforcableCodeElementToCodeSet(CodeElementEnforcable enforcableCodeElement, int codeSetID) throws IntegrationException{
+    public void addEnforcableCodeElementToCodeSet(EnforcableCodeElement enforcableCodeElement, int codeSetID) throws IntegrationException{
         PreparedStatement stmt = null;
         Connection con = null;
         String query = "INSERT INTO public.codesetelement(\n" +
@@ -425,9 +426,56 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
     }
     
-    public void removeCodeElementFromCodeSet(CodeElement element ){
+    public void updateEnforcableCodeElement(EnforcableCodeElement enforcableCodeElement) throws IntegrationException{
+        PreparedStatement stmt = null;
+        Connection con = null;
+        String query =  "UPDATE public.codesetelement\n" +
+                        "   SET elementmaxpenalty=?, elementminpenalty=?, elementnormpenalty=?, \n" +
+                        "       penaltynotes=?, normdaystocomply=?, daystocomplynotes=?\n" +
+                        " WHERE codesetelementid=?;";
+        try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setDouble(1, enforcableCodeElement.getMaxPenalty());
+            stmt.setDouble(2, enforcableCodeElement.getMinPenalty());
+            stmt.setDouble(3, enforcableCodeElement.getNormPenalty());
+            stmt.setString(4, enforcableCodeElement.getPenaltyNotes());
+            stmt.setInt(5, enforcableCodeElement.getNormDaysToComply());
+            stmt.setString(6, enforcableCodeElement.getDaysToComplyNotes());
+            stmt.setInt(7, enforcableCodeElement.getCodeSetElementID());
+            System.out.println("CodeIntegrator.updateEnforcableCodeElement | ece update: " + stmt.toString());
+            
+            stmt.execute();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to update enforcable code element data", ex);
+        } finally{
+           if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+           if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
         
-        
+    }
+    
+    public void deleteEnforcableCodeElementFromCodeSet(EnforcableCodeElement ece ) throws IntegrationException{
+         PreparedStatement stmt = null;
+        Connection con = null;
+        String query =  "DELETE FROM public.codesetelement\n" +
+                        " WHERE codesetelementid = ?;";
+        try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, ece.getCodeSetElementID());
+            stmt.execute();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to delete enforcable code element: "
+                    + "it is probably used somewhere in the system and is here to stay!", ex);
+        } finally{
+           if (stmt != null){ try { stmt.close(); } catch (SQLException ex) {/* ignored */ } }
+           if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
     }
     
     /**
@@ -466,14 +514,14 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
     /**
-     * Creates and populates single CodeElementEnforcable object based on giving ID number. 
+     * Creates and populates single EnforcableCodeElement object based on giving ID number. 
      * 
      * @param codeSetElementID
-     * @return the fully-baked CodeElementEnforcable
+     * @return the fully-baked EnforcableCodeElement
      * @throws IntegrationException 
      */
-    public CodeElementEnforcable getEnforcableCodeElement(int codeSetElementID) throws IntegrationException{
-        CodeElementEnforcable newEce = new CodeElementEnforcable();
+    public EnforcableCodeElement getEnforcableCodeElement(int codeSetElementID) throws IntegrationException{
+        EnforcableCodeElement newEce = new EnforcableCodeElement();
         PreparedStatement stmt = null;
         Connection con = null;
         String query = "SELECT codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, \n" +
@@ -511,7 +559,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     }
     
   /**
-   * Returns a ArrayList of fully-baked CodeElementEnforcable objects based on a search with
+   * Returns a ArrayList of fully-baked EnforcableCodeElement objects based on a search with
  setID. Handy for then populating data tables of codes, such as in creating
    * a codeviolation. This involves a rather complicated object composition process
    * that draws on several other methods in this class for retrieving from the database
@@ -528,7 +576,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 " daystocomplynotes\n" +
                 " FROM public.codesetelement where codeset_codesetid=?;";
         ResultSet rs = null;
-        ArrayList<CodeElementEnforcable> eceList = new ArrayList();
+        ArrayList<EnforcableCodeElement> eceList = new ArrayList();
  
         try {
             con = getPostgresCon();
@@ -537,7 +585,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                CodeElementEnforcable newEce = new CodeElementEnforcable();
+                EnforcableCodeElement newEce = new EnforcableCodeElement();
                 // start with the base code element
                 newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
                 
@@ -654,7 +702,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * Each code element returned by a single call to this method contains its own 
  instance of a CodeSource object whose field values are identical.
  
- NOTE these are CodeElement that can become CodeElementEnforcable when they are
+ NOTE these are CodeElement that can become EnforcableCodeElement when they are
  added to a codset (which is, in turn, associated with a single muni)
      * 
      * @param sourceID the CodeSource id used in the WHERE clause of the embedded SQL statment

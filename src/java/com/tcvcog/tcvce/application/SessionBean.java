@@ -20,7 +20,7 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Citation;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeSource;
@@ -56,7 +56,7 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
     private Citation activeCitation;
-    private CodeElementEnforcable selectedEnfCodeElement;
+    private EnforcableCodeElement selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
     private CodeElementGuideEntry activeCodeElementGuideEntry;
@@ -135,7 +135,7 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     /**
      * @return the selectedEnfCodeElement
      */
-    public CodeElementEnforcable getSelectedEnfCodeElement() {
+    public EnforcableCodeElement getSelectedEnfCodeElement() {
         return selectedEnfCodeElement;
     }
 
@@ -226,7 +226,7 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     /**
      * @param selectedEnfCodeElement the selectedEnfCodeElement to set
      */
-    public void setSelectedEnfCodeElement(CodeElementEnforcable selectedEnfCodeElement) {
+    public void setSelectedEnfCodeElement(EnforcableCodeElement selectedEnfCodeElement) {
         this.selectedEnfCodeElement = selectedEnfCodeElement;
     }
 

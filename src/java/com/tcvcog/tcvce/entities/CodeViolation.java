@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
  */
 public class CodeViolation {
     private int violationID;
-    private CodeElementEnforcable violatedEnfElement;
+    private EnforcableCodeElement violatedEnfElement;
     private int ceCaseID;
     private CECase attachedCase;
     private int citationID;
@@ -55,14 +55,14 @@ public class CodeViolation {
     /**
      * @return the codeViolated
      */
-    public CodeElementEnforcable getCodeViolated() {
+    public EnforcableCodeElement getCodeViolated() {
         return getViolatedEnfElement();
     }
 
     /**
      * @param codeViolated the codeViolated to set
      */
-    public void setCodeViolated(CodeElementEnforcable codeViolated) {
+    public void setCodeViolated(EnforcableCodeElement codeViolated) {
         this.setViolatedEnfElement(codeViolated);
     }
 
@@ -111,7 +111,7 @@ public class CodeViolation {
     /**
      * @return the violatedEnfElement
      */
-    public CodeElementEnforcable getViolatedEnfElement() {
+    public EnforcableCodeElement getViolatedEnfElement() {
         return violatedEnfElement;
     }
 
@@ -146,7 +146,7 @@ public class CodeViolation {
     /**
      * @param violatedEnfElement the violatedEnfElement to set
      */
-    public void setViolatedEnfElement(CodeElementEnforcable violatedEnfElement) {
+    public void setViolatedEnfElement(EnforcableCodeElement violatedEnfElement) {
         this.violatedEnfElement = violatedEnfElement;
     }
 

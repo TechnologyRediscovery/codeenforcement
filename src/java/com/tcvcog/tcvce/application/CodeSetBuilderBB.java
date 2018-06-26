@@ -17,16 +17,18 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
-
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeSource;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
 
@@ -34,103 +36,134 @@ import javax.faces.event.ActionEvent;
  *
  * @author Eric C. Darsow
  */
-public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
+public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable {
 
     /**
      * Creates a new instance of CodeSetBuilderBB
      */
     public CodeSetBuilderBB() {
+        formMaxPenalty = 1000;
+        formMinPenalty = 10;
+        formNormPenalty = 50;
+        formPenaltyNotes = "Default value";
+        formNormDaysToComply = 30;
+        formDaysToComplyNotes = "Default value";
+
     }
-    
-    private CodeSet codeSet;
+
     private ArrayList<CodeSource> codeSourceList;
     private int selectedCodeSourceID;
     private HashMap<String, CodeSource> codeSourceMap;
+
+    private CodeSet currentCodeSet;
+
     private ArrayList<CodeElement> codeElementList;
-    private CodeElement selectedElement;
-    
-    // form fields mapped to CodeElementEnforcable fields
-    private int formCodeSetElementID;
-    //private CodeElement formCodeElement; // populated with selectedElement field
+    private ArrayList<CodeElement> selectedElementsToAddToSet;
+
+    // default data values for all added EnforcableCodeElements
     private double formMaxPenalty;
     private double formMinPenalty;
     private double formNormPenalty;
     private String formPenaltyNotes;
     private int formNormDaysToComply;
-    private String formDaysToComplyNotes; 
-    
-     
-    public void retrieveCodeElementsFromSelectedSource(ActionEvent event){
+    private String formDaysToComplyNotes;
+
+    // memebers for editing existing enforcablecodeelements 
+    private EnforcableCodeElement selectedECE;
+
+    public void retrieveCodeElementsFromSelectedSource(ActionEvent event) {
         System.out.println("CodeSetBuilderBB.retrieveCodeElementsFromSelectedSource | Start of method");
         CodeIntegrator integrator = getCodeIntegrator();
         try {
             System.out.println("CodeSetBuilderBB.retrieveCodeElementsFromSelectedSource | selected source: " + selectedCodeSourceID);
             codeElementList = integrator.getCodeElements(selectedCodeSourceID);
         } catch (IntegrationException ex) {
-               System.out.println(ex.toString());
-               getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to find any code elements in the selected source, sorry.", ""));
-        }
-        
-    }
-    
-    public void prepareSlectedElementForCodeSet(ActionEvent event){
-        // used for page reload only
-        
-    }
-    
-    public String viewCodeSetElementsInSet(){
-        
-            getSessionBean().setActiveCodeSet(codeSet);
-            if (codeSet != null){
-                //System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
-                return "codeSetBuilder";
-            } else {
-                return "";
-            }
-    }
-    
-    public void addElementToSet(ActionEvent event){
-        CodeElementEnforcable ece = new CodeElementEnforcable();
-        ece.setCodeElement(selectedElement);
-        ece.setMaxPenalty(formMaxPenalty);
-        ece.setMinPenalty(formMinPenalty);
-        ece.setNormPenalty(formNormPenalty);
-        ece.setPenaltyNotes(formPenaltyNotes);
-        ece.setNormDaysToComply(formNormDaysToComply);
-        ece.setDaysToComplyNotes(formDaysToComplyNotes);
-        
-        CodeIntegrator integrator = getCodeIntegrator();
-        
-        try {
-            integrator.addEnforcableCodeElementToCodeSet(ece, codeSet.getCodeSetID());
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                    "Successfully created enforcable code element!", ""));            
-        } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                    "Unable to add enforcement data to code element, sorry.", "This is an unwanted system error."));            
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Unable to find any code elements in the selected source, sorry.", ""));
+        }
+    }
+
+    public String addElementsToCodeSet() {
+        if (selectedElementsToAddToSet != null) {
+            CodeIntegrator ci = getCodeIntegrator();
+            EnforcableCodeElement ece;
+            ListIterator<CodeElement> iterator = selectedElementsToAddToSet.listIterator();
+            while (iterator.hasNext()) {
+                ece = new EnforcableCodeElement();
+                // gets the next code element in the selected list
+                ece.setCodeElement(iterator.next());
+                ece.setMaxPenalty(formMaxPenalty);
+                ece.setMinPenalty(formMinPenalty);
+                ece.setNormPenalty(formNormPenalty);
+                ece.setPenaltyNotes(formPenaltyNotes);
+                ece.setNormDaysToComply(formNormDaysToComply);
+                ece.setDaysToComplyNotes(formDaysToComplyNotes);
+                try {
+                    ci.addEnforcableCodeElementToCodeSet(ece, currentCodeSet.getCodeSetID());
+                } catch (IntegrationException ex) {
+                    getFacesContext().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+                }
+            }
+        } else {
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Please select at least one element from this source to add to the current code set", ""));
+        }
+        getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Added " 
+                        + selectedElementsToAddToSet.size() + " elements to code set: " 
+                        + currentCodeSet.getCodeSetName(), ""));
+        return "";
+    }
+
+    public String nukeCodeSetElement() {
+        CodeIntegrator ci = getCodeIntegrator();
+        try {
+            ci.deleteEnforcableCodeElementFromCodeSet(selectedECE);
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                            "Success: Removed Enf. Code Element no. " 
+                                    + selectedECE.getCodeSetElementID() + " from the code set", ""));
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+        }
+        return "";
+    }
+
+    public String viewCodeSetElementsInSet() {
+
+        getSessionBean().setActiveCodeSet(currentCodeSet);
+        if (currentCodeSet != null) {
+            //System.out.println("CodeSetBB.buildCodeSet | selected set: " + selectedCodeSet.getCodeSetName());
+            return "codeSetBuilder";
+        } else {
+            return "";
         }
     }
 
     /**
-     * @return the codeSet
+     * @return the currentCodeSet
      */
-    public CodeSet getCodeSet() {
-        
+    public CodeSet getCurrentCodeSet() {
+        CodeIntegrator ci = getCodeIntegrator();
         CodeSet cs = getSessionBean().getActiveCodeSet();
-        codeSet = cs;
-        return codeSet;
+        try {
+            currentCodeSet = ci.getCodeSetBySetID(cs.getCodeSetID());
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
+        return currentCodeSet;
     }
 
     /**
-     * @param codeSet the codeSet to set
+     * @param currentCodeSet the currentCodeSet to set
      */
-    public void setCodeSet(CodeSet codeSet) {
-        this.codeSet = codeSet;
+    public void setCurrentCodeSet(CodeSet currentCodeSet) {
+        this.currentCodeSet = currentCodeSet;
     }
 
     /**
@@ -162,24 +195,10 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the selectedElement
-     */
-    public CodeElement getSelectedElement() {
-        return selectedElement;
-    }
-
-    /**
-     * @param selectedElement the selectedElement to set
-     */
-    public void setSelectedElement(CodeElement selectedElement) {
-        this.selectedElement = selectedElement;
-    }
-
-    /**
      * @return the codeSourceMap
      */
     public HashMap getCodeSourceMap() {
-        
+
         System.out.println("CodeSetBuilderBB.getCodeSourceMap");
         CodeIntegrator integrator = getCodeIntegrator();
         try {
@@ -187,7 +206,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "Unable to find code sources, sorry.", "This is an unwanted system error."));
         }
         return codeSourceMap;
@@ -214,12 +233,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
         this.selectedCodeSourceID = selectedCodeSource;
     }
 
-    /**
-     * @return the formCodeSetElementID
-     */
-    public int getFormCodeSetElementID() {
-        return formCodeSetElementID;
-    }
+    
 
     /**
      * @return the formMaxPenalty
@@ -263,14 +277,7 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
         return formDaysToComplyNotes;
     }
 
-    /**
-     * @param formCodeSetElementID the formCodeSetElementID to set
-     */
-    public void setFormCodeSetElementID(int formCodeSetElementID) {
-        this.formCodeSetElementID = formCodeSetElementID;
-    }
-
-
+    
 
     /**
      * @param formMaxPenalty the formMaxPenalty to set
@@ -327,7 +334,33 @@ public class CodeSetBuilderBB extends BackingBeanUtils implements Serializable{
     public void setSelectedCodeSourceID(int selectedCodeSourceID) {
         this.selectedCodeSourceID = selectedCodeSourceID;
     }
-    
-    
-    
+
+    /**
+     * @return the selectedElementsToAddToSet
+     */
+    public ArrayList<CodeElement> getSelectedElementsToAddToSet() {
+        return selectedElementsToAddToSet;
+    }
+
+    /**
+     * @param selectedElementsToAddToSet the selectedElementsToAddToSet to set
+     */
+    public void setSelectedElementsToAddToSet(ArrayList<CodeElement> selectedElementsToAddToSet) {
+        this.selectedElementsToAddToSet = selectedElementsToAddToSet;
+    }
+
+    /**
+     * @return the selectedECE
+     */
+    public EnforcableCodeElement getSelectedECE() {
+        return selectedECE;
+    }
+
+    /**
+     * @param selectedECE the selectedECE to set
+     */
+    public void setSelectedECE(EnforcableCodeElement selectedECE) {
+        this.selectedECE = selectedECE;
+    }
+
 }

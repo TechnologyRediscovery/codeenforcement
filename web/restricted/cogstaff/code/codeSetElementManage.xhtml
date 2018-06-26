@@ -13,66 +13,183 @@
         <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
-                    
-                <f:view id="enforcableCodeElementsInsSetManage">
-                   <h:outputLink value="codeSetManage.xhtml">&lt;--Return to set manager</h:outputLink>
-                    <h2>Enforceable code elements in code set: </h2>
-                   <h:messages globalOnly="true"
+
+                    <f:view id="enforcableCodeElementsInsSetManage">
+                        <h:outputLink value="codeSetManage.xhtml">&lt;--Return to set manager</h:outputLink>
+                        <h2>Enforceable code elements in code set: <h:outputText value="#{codeSetElementBB.currentCodeSet.codeSetName}"/></h2>
+                        <h:messages globalOnly="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
-                    </h:messages>
-                    <p>The following table displays Enforcable Code Elements, meaning code elements added to a municipality-specific code set with enforcement data (e.g. max penalty).</p>
-                        <h:form id="enforcableCodeElementsForm">
+                        </h:messages>
+                        <p>The following table displays Enforcable Code Elements, meaning code elements added to a 
+                            municipality-specific code set wrapped in enforcement data (e.g. max penalty).</p>
+
+                        <h:form id="enforcableCodeSetElementsForm">
                             <p:dataTable
-                            id="enforcableCodeElementTable"
-                            var="cs"
-                            value="#{codeSetElementBB.getcEEList}"
-                            selectionMode="single"
-                            selection="#{codeSetElementBB.selectedCEE}"
-                            rowKey="#{cs.codeSetElementID}"
-                            tableStyleClass="primeDataTable">
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Chapter" />
-                                </f:facet>
-                                <h:outputText value="#{cs.codeElement.ordchapterTitle}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Section" />
-                                </f:facet>
-                                <h:outputText value="#{cs.codeElement.ordsecTitle}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="SubSection" />
-                                </f:facet>
-                                <h:outputText value="#{cs.codeElement.ordSubSecTitle}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Normal Penalty" />
-                                </f:facet>
-                                <h:outputText value="#{cs.normPenalty}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Days To Comply" />
-                                </f:facet>
-                                <h:outputText value="#{cs.normDaysToComply}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Penalty Notes" />
-                                </f:facet>
-                                <h:outputText value="#{cs.penaltyNotes}"/>
-                            </p:column>
-                        </p:dataTable>
-                            
+                                id="enforcableCodeSetElementTable"
+                                var="cs"
+                                value="#{codeSetElementBB.currentCodeSet.enfCodeElementList}"
+                                selectionMode="single"
+                                selection="#{codeSetElementBB.selectedECE}"
+                                rowKey="#{cs.codeSetElementID}"
+                                tableStyleClass="primeDataTable">
+                                <p:ajax event="rowSelect" immediate="true" 
+                                        update=":updateECEForm:formMaxPenalty
+                                        :updateECEForm:eceNo
+                                        :updateECEForm:formMinPenaltyField
+                                        :updateECEForm:formNormPenaltyField
+                                        :updateECEForm:formPenaltyNotesField
+                                        :updateECEForm:formNormDaysToComplyField
+                                        :updateECEForm:formNormDaysToComplyNotesField" />
+                                <p:column width="4%">
+                                    <f:facet name="header">
+                                        <h:outputText value="No." />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.codeSetElementID}"/>
+                                </p:column>
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Chapter" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.codeElement.ordchapterTitle}"/>
+                                </p:column>
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Section" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.codeElement.ordsecTitle}"/>
+                                </p:column>
+                                <p:column width="15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="SubSection" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.codeElement.ordSubSecTitle}"/>
+                                </p:column>
+                                <p:column width="4%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Normal Penalty" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.normPenalty}"/>
+                                </p:column>
+                                <p:column width="4%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Min" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.minPenalty}"/>
+                                </p:column>
+                                <p:column width="4%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Max" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.maxPenalty}"/>
+                                </p:column>
+                                <p:column width="10%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Days To Comply" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.normDaysToComply}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Penalty Notes" />
+                                    </f:facet>
+                                    <h:outputText value="#{cs.penaltyNotes}"/>
+                                </p:column>
+                            </p:dataTable>
                         </h:form>
-                   
-                   
-                 
-                </f:view>
+
+                        <p:spacer height="15px;"/>
+
+                        <h:form id="updateECEForm">
+                            <p:fieldset toggleable="true" collapsed="false" id="eceUpdateFS"
+                                        legend="Edit enforcability data on selected element">
+                                <p>Enforcability data for code set element number (Don't touch!): </p> <p:inputText tabindex="8" id="eceNo" value="#{codeSetElementBB.selectedECE.codeSetElementID}"/> 
+                                <h:panelGrid columns="4" cellpadding="10"  
+                                             columnClasses="gridTd, gridTd, gridTd,">
+
+                                    <h:panelGroup>
+                                        <p:outputLabel for="formMaxPenalty">
+                                            <h:outputText value="Maximum Penalty in $"/>
+                                        </p:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:inputText id="formMaxPenalty" value="#{codeSetElementBB.selectedECE.maxPenalty}" 
+                                                     style="width: 50%;" tabindex="1" required="true" styleClass="inputText"/>
+                                        <h:message for="formMaxPenalty" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:outputLabel for="formMinPenaltyField">
+                                            <h:outputText value="Minimum Penalty in $"/>
+                                        </p:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:inputText id="formMinPenaltyField" value="#{codeSetElementBB.selectedECE.minPenalty}" 
+                                                     style="width: 50%;" tabindex="2" required="true" styleClass="inputText"/>
+                                        <h:message for="formMinPenaltyField" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:outputLabel for="formNormPenaltyField">
+                                            <h:outputText value="Default/Normal Penalty in $"/>
+                                        </p:outputLabel>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:inputText id="formNormPenaltyField" value="#{codeSetElementBB.selectedECE.normPenalty}" 
+                                                     style="width: 50%;" tabindex="3" required="true" styleClass="inputText"/>
+                                        <h:message for="formNormPenaltyField" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+
+                                        <p:outputLabel for="formPenaltyNotesField">
+                                            <h:outputText value="Penalty notes"/>
+                                        </p:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:inputText id="formPenaltyNotesField" value="#{codeSetElementBB.selectedECE.penaltyNotes}" 
+                                                     style="width: 100%;" tabindex="4" required="false" styleClass="inputText"/>
+                                        <h:message for="formPenaltyNotesField" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:outputLabel for="formNormDaysToComplyField">
+                                            <h:outputText value="Default days to comply"/>
+                                        </p:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:inputText id="formNormDaysToComplyField" value="#{codeSetElementBB.selectedECE.normDaysToComply}" 
+                                                     style="width: 50%;" tabindex="5" required="true" styleClass="inputText"/>
+                                        <h:message for="formNormDaysToComplyField" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:outputLabel for="formNormDaysToComplyNotesField">
+                                            <h:outputText value="Notes on days to comply"/>
+                                        </p:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:inputText id="formNormDaysToComplyNotesField" value="#{codeSetElementBB.selectedECE.daysToComplyNotes}" 
+                                                     style="width: 100%;" tabindex="6" required="false" styleClass="inputText"/>
+                                        <h:message for="formNormDaysToComplyNotesField" showDetail="false" showSummary="true" 
+                                                   warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                    </h:panelGroup>
+
+                                </h:panelGrid>
+                                <p:spacer height="15px"/>
+                                <p:commandButton 
+                                    ajax="false" tabindex="7"
+                                    value="Update Enforcability data for this element"
+                                    id="addElementToSetButton"
+                                    action="#{codeSetElementBB.updateECEData}" />
+
+                            </p:fieldset>
+                        </h:form>
+                    </f:view>
                 </div>
             </ui:define>
         </ui:composition>

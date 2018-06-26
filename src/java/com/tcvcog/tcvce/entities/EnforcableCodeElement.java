@@ -21,9 +21,9 @@ package com.tcvcog.tcvce.entities;
  *  Represents a codesetelement stated with fidelity to the ERD
  * @author Eric C. Darsow
  */
-public class CodeElementEnforcable extends CodeElement{
+public class EnforcableCodeElement extends CodeElement{
     
-    public CodeElementEnforcable(){
+    public EnforcableCodeElement(){
     
     }
     

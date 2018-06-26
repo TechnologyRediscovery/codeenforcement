@@ -13,7 +13,7 @@ import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.Citation;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.CodeViolation;
-import com.tcvcog.tcvce.entities.CodeElementEnforcable;
+import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.NoticeOfViolation;
 import com.tcvcog.tcvce.entities.Person;
@@ -39,7 +39,7 @@ public class Visit {
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
     private Citation activeCitation;
-    private CodeElementEnforcable selectedEnfCodeElement;
+    private EnforcableCodeElement selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
     private CodeElementGuideEntry currentCodeElementGuide;
@@ -166,14 +166,14 @@ public class Visit {
     /**
      * @return the selectedEnfCodeElement
      */
-    public CodeElementEnforcable getSelectedEnfCodeElement() {
+    public EnforcableCodeElement getSelectedEnfCodeElement() {
         return selectedEnfCodeElement;
     }
 
     /**
      * @param selectedEnfCodeElement the selectedEnfCodeElement to set
      */
-    public void setSelectedEnfCodeElement(CodeElementEnforcable selectedEnfCodeElement) {
+    public void setSelectedEnfCodeElement(EnforcableCodeElement selectedEnfCodeElement) {
         this.selectedEnfCodeElement = selectedEnfCodeElement;
     }
 

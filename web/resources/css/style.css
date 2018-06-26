@@ -688,3 +688,9 @@ tr.caseOpen{
     font-weight: normal;
     
 }
+
+.ui-fieldset-legend{
+    background-color: white;
+    font-weight: normal;
+    
+}
