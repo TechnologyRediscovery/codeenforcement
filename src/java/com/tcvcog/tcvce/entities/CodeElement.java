@@ -28,6 +28,7 @@ public class CodeElement {
     private int elementID;
     
     private CodeElementGuideEntry guideEntry;
+    private int guideEntryID;
     private CodeSource source;
     
     private int ordchapterNo;
@@ -263,6 +264,20 @@ public class CodeElement {
      */
     public void setGuideEntry(CodeElementGuideEntry guideEntry) {
         this.guideEntry = guideEntry;
+    }
+
+    /**
+     * @return the guideEntryID
+     */
+    public int getGuideEntryID() {
+        return guideEntryID;
+    }
+
+    /**
+     * @param guideEntryID the guideEntryID to set
+     */
+    public void setGuideEntryID(int guideEntryID) {
+        this.guideEntryID = guideEntryID;
     }
 
 

@@ -34,9 +34,15 @@
                                 tableStyleClass="primeDataTable">
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Type" />
+                                        <h:outputText value="Category" />
                                     </f:facet>
-                                    <h:outputText value="#{element.guideEntry.name}"/>
+                                    <h:outputText value="#{element.guideEntry.category}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Sub Category" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.guideEntry.subCategory}"/>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
@@ -75,15 +81,17 @@
                                     <h:outputText value="#{element.isActive}"/>
                                 </p:column>
                             </p:dataTable>
+                            
+                            <p:spacer height="15px"/>
 
                             <p:commandButton
                                 id="updateCodeElement" value="Update Selected Element"
-                                styleClass="multiButtonLineButton"
-                                action="#{codeElementListBB.moveToUpdateCodeElement}"/>
+                                styleClass="multiButtonLineButton" icon="fa fa-edit"
+                                action="#{codeElementListBB.updateSelectedCodeElement}"/>
 
                             <p:commandButton
                                 id="deleteCodeElement" value="Delete Selected Element"
-                                styleClass="multiButtonLineButton"
+                                styleClass="multiButtonLineButton" icon="fa fa-ban"
                                 actionListener="#{codeElementListBB.deleteCodeElement}"/>
 
                         </h:form>

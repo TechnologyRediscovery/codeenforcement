@@ -20,6 +20,7 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.entities.CEActionRequest;
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.Citation;
+import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
 import com.tcvcog.tcvce.entities.CodeSet;
@@ -56,6 +57,7 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     private CEActionRequest actionRequest;
     private CodeSet activeCodeSet;
     private Citation activeCitation;
+    private CodeElement activeCodeElement;
     private EnforcableCodeElement selectedEnfCodeElement;
     private CodeViolation activeCodeViolation;
     private ArrayList<CodeViolation> activeViolationList;
@@ -292,6 +294,20 @@ public class SessionBean extends BackingBeanUtils implements Serializable{
     public void setActiveMuni(Municipality activeMuni) {
         System.out.println("MissionControlBB.setActiveMuni | set: " + activeMuni.getMuniName());
         this.activeMuni = activeMuni;
+    }
+
+    /**
+     * @return the activeCodeElement
+     */
+    public CodeElement getActiveCodeElement() {
+        return activeCodeElement;
+    }
+
+    /**
+     * @param activeCodeElement the activeCodeElement to set
+     */
+    public void setActiveCodeElement(CodeElement activeCodeElement) {
+        this.activeCodeElement = activeCodeElement;
     }
     
 }

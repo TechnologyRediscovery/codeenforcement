@@ -19,6 +19,7 @@ package com.tcvcog.tcvce.application;
 
 
 import com.tcvcog.tcvce.entities.CECase;
+import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.entities.Property;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
@@ -32,6 +33,7 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
     private boolean noActiveCase;
     private boolean noActiveProperty;
     private boolean noActiveInspection;
+    private boolean noActiveSource;
     
     /**
      * Creates a new instance of NavigationBB
@@ -111,6 +113,22 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
      */
     public void setNoActiveInspection(boolean noActiveInspection) {
         this.noActiveInspection = noActiveInspection;
+    }
+
+    /**
+     * @return the noActiveSource
+     */
+    public boolean isNoActiveSource() {
+        CodeSource cs = getSessionBean().getActiveCodeSource();
+        noActiveSource = (cs == null);
+        return noActiveSource;
+    }
+
+    /**
+     * @param noActiveSource the noActiveSource to set
+     */
+    public void setNoActiveSource(boolean noActiveSource) {
+        this.noActiveSource = noActiveSource;
     }
     
     

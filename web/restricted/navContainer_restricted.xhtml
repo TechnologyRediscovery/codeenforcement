@@ -123,7 +123,7 @@
 
                             <p:submenu label="Code Enforcement" expanded="true">
                                 <p:menuitem value="Open cases" action="ceCases"  ajax="false" icon="ui-icon-close"/>
-                                <p:menuitem value="Action Requests" action="ceCases"  ajax="false" icon="ui-icon-close"/>
+                                <p:menuitem value="Action Requests" action="ceCases"  ajax="false" icon="ui-icon-close" disabled="true"/>
                                 <p:menuitem value="Court Entities" action="litigationManage"  ajax="false" icon="ui-icon-close"/>
                                 <p:menuitem value="Notice text blocks" action="textBlockManage"  ajax="false" icon="ui-icon-close"/>
                             </p:submenu>
@@ -146,23 +146,25 @@
                             <p:separator />
 
                             <p:submenu label="Occupancy">
-                                <p:menuitem value="Applications" action="occPermitApplications" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="Open inspections" action="occInspections" ajax="false" icon="ui-icon-home" />
-                                <p:menuitem value="New inspection" action="occInspectionAdd" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="Current inspection" action="occProfile" ajax="false" icon="ui-icon-arrowthick-1-s" />
-                                <p:menuitem value="Checklists"  action="checklists" ajax="false" icon="ui-icon-wrench" />
-                                <p:menuitem value="Payments" action="payments" ajax="false" icon="ui-icon-wrench" />
-                                <p:menuitem value="Fee config" action="feeManage" ajax="false" icon="ui-icon-wrench" />
-                                <p:menuitem value="Permits config"  action="occPermitTypeManage" ajax="false" icon="ui-icon-wrench" />
+                                <p:menuitem value="Applications" action="occPermitApplications" ajax="false" icon="ui-icon-document" disabled="true"/>
+                                <p:menuitem value="Open inspections" action="occInspections" ajax="false" icon="ui-icon-home" disabled="true"/>
+                                <p:menuitem value="New inspection" action="occInspectionAdd" ajax="false" icon="ui-icon-document" disabled="true"/>
+                                <p:menuitem value="Current inspection" action="occProfile" ajax="false" icon="ui-icon-arrowthick-1-s" disabled="true"/>
+                                <p:menuitem value="Checklists"  action="checklists" ajax="false" icon="ui-icon-wrench" disabled="true"/>
+                                <p:menuitem value="Payments" action="payments" ajax="false" icon="ui-icon-wrench" disabled="true"/>
+                                <p:menuitem value="Fee config" action="feeManage" ajax="false" icon="ui-icon-wrench" disabled="true"/>
+                                <p:menuitem value="Permits config"  action="occPermitTypeManage" ajax="false" icon="ui-icon-wrench" disabled="true"/>
                             </p:submenu>
 
                             <p:separator /> 
 
                             <p:submenu label="Municpal code">
                                 <p:menuitem value="Code guide" action="codeGuideView" ajax="false" icon="ui-icon-arrowthick-1-s" />
-                                <p:menuitem value="Element list" action="codeElementList" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Active code set" action="codeSetElementList" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Code sets" action="codeSetManage" ajax="false" icon="ui-icon-home" />
                                 <p:menuitem value="Code Sources" action="codeSourceManage" ajax="false" icon="ui-icon-home" />
-                                <p:menuitem value="Code Sets" action="codeSetManage" ajax="false" icon="ui-icon-home" />
+                                <p:menuitem value="Elements by source" action="codeElementList" ajax="false" icon="ui-icon-arrowthick-1-s" 
+                                            disabled="#{navigationBB.noActiveSource}"/>
                             </p:submenu>
 
                             <p:separator />

@@ -24,6 +24,7 @@ import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -37,10 +38,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     public CodeElementBB() {
     }
     
-    
+    private CodeElement currentElement;
     
     private CodeSource activeCodeSource;
-    private int formType;
     
     private int formOrdChapterNo;
     
@@ -57,6 +57,54 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     private boolean formIsActive;
     
     private String formResourceURL;
+    
+    private int formGuideEntryID;
+    
+     public String commitUpdatesToCodeElement() {
+        CodeIntegrator integrator = getCodeIntegrator();
+        
+        // elemet ID is already in our currentElementObject
+        currentElement.setOrdchapterNo(formOrdChapterNo);
+        
+        currentElement.setOrdchapterTitle(formOrdChapterTitle);
+        currentElement.setOrdSecNum(formOrdSecNum);
+        currentElement.setOrdsecTitle(formOrdSecTitle);
+        
+        currentElement.setOrdSecNum(formOrdSecNum);
+        currentElement.setOrdSubSecTitle(formOrdSubSecTitle);
+        currentElement.setOrdTechnicalText(formOrdTechnicalText);
+        
+        currentElement.setOrdHumanFriendlyText(formOrdHumanFriendlyText);
+        currentElement.setDefaultPenalty(formDefaultPenalty);
+        currentElement.setIsActive(formIsActive);
+        
+        currentElement.setResourceURL(formResourceURL);
+        currentElement.setGuideEntryID(formGuideEntryID);
+        
+        
+        try {
+            integrator.updateCodeElement(currentElement);
+            getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                                "Code element updated!", ""));
+        } catch (IntegrationException ex) {
+            System.out.println(ex.toString());
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Unable to update code element; most sincere apologies!", 
+                        "This must be corrected by the System Administrator"));
+            
+        }
+        
+        return "codeElementList";
+    }
+    
+    public void deleteCodeElement(ActionEvent event){
+        
+        
+    }
+    
+    
     
     public String insertCodeElement(){
         CodeIntegrator codeIntegrator = getCodeIntegrator();
@@ -101,6 +149,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdChapterNo
      */
     public int getFormOrdChapterNo() {
+        if(currentElement != null){
+         formOrdChapterNo = currentElement.getOrdchapterNo();
+        }
         return formOrdChapterNo;
     }
 
@@ -115,6 +166,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdChapterTitle
      */
     public String getFormOrdChapterTitle() {
+        if(currentElement != null){
+            formOrdChapterTitle = currentElement.getOrdchapterTitle();
+        }
         return formOrdChapterTitle;
     }
 
@@ -129,6 +183,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdSecNum
      */
     public String getFormOrdSecNum() {
+        if(currentElement != null){
+            formOrdSecNum = currentElement.getOrdSecNum();
+        }
         return formOrdSecNum;
     }
 
@@ -143,6 +200,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdSecTitle
      */
     public String getFormOrdSecTitle() {
+        if(currentElement != null){
+            formOrdSecTitle = currentElement.getOrdsecTitle();
+        }
         return formOrdSecTitle;
     }
 
@@ -157,6 +217,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdSubSecNum
      */
     public String getFormOrdSubSecNum() {
+        if(currentElement != null){
+            formOrdSubSecNum = currentElement.getOrdSubSecNum();
+        }
         return formOrdSubSecNum;
     }
 
@@ -171,6 +234,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdSubSecTitle
      */
     public String getFormOrdSubSecTitle() {
+        if(currentElement != null){
+         formOrdSubSecTitle = currentElement.getOrdSubSecTitle();
+        }
         return formOrdSubSecTitle;
     }
 
@@ -185,6 +251,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdTechnicalText
      */
     public String getFormOrdTechnicalText() {
+        if(currentElement != null){
+            formOrdTechnicalText = currentElement.getOrdTechnicalText();
+        }
         return formOrdTechnicalText;
     }
 
@@ -199,6 +268,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formOrdHumanFriendlyText
      */
     public String getFormOrdHumanFriendlyText() {
+        if(currentElement != null){
+            formOrdHumanFriendlyText = currentElement.getOrdHumanFriendlyText();
+        }
         return formOrdHumanFriendlyText;
     }
 
@@ -209,24 +281,15 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         this.formOrdHumanFriendlyText = formOrdHumanFriendlyText;
     }
 
-    /**
-     * @return the formDefaultPenalty
-     */
-    public double getFormDefaultPenalty() {
-        return formDefaultPenalty;
-    }
-
-    /**
-     * @param formDefaultPenalty the formDefaultPenalty to set
-     */
-    public void setFormDefaultPenalty(double formDefaultPenalty) {
-        this.formDefaultPenalty = formDefaultPenalty;
-    }
+    
 
     /**
      * @return the formIsActive
      */
     public boolean isFormIsActive() {
+        if(currentElement != null){
+            formIsActive = currentElement.isIsActive();
+        }
         return formIsActive;
     }
 
@@ -241,6 +304,9 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the formResourceURL
      */
     public String getFormResourceURL() {
+        if(currentElement != null){
+            formResourceURL = currentElement.getResourceURL();
+        }
         return formResourceURL;
     }
 
@@ -251,25 +317,11 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         this.formResourceURL = formResourceURL;
     }
 
-    /**
-     * @return the formType
-     */
-    public int getFormType() {
-        return formType;
-    }
-
-    /**
-     * @param formType the formType to set
-     */
-    public void setFormType(int formType) {
-        this.formType = formType;
-    }
 
     /**
      * @return the activeCodeSource
      */
     public CodeSource getActiveCodeSource() {
-        activeCodeSource = getSessionBean().getActiveCodeSource();
         return activeCodeSource;
     }
 
@@ -278,6 +330,35 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      */
     public void setActiveCodeSource(CodeSource activeCodeSource) {
         this.activeCodeSource = activeCodeSource;
+    }
+
+    /**
+     * @return the currentElement
+     */
+    public CodeElement getCurrentElement() {
+        currentElement = getSessionBean().getActiveCodeElement();
+        return currentElement;
+    }
+
+    /**
+     * @param currentElement the currentElement to set
+     */
+    public void setCurrentElement(CodeElement currentElement) {
+        this.currentElement = currentElement;
+    }
+
+    /**
+     * @return the formGuideEntryID
+     */
+    public int getFormGuideEntryID() {
+        return formGuideEntryID;
+    }
+
+    /**
+     * @param formGuideEntryID the formGuideEntryID to set
+     */
+    public void setFormGuideEntryID(int formGuideEntryID) {
+        this.formGuideEntryID = formGuideEntryID;
     }
     
 }

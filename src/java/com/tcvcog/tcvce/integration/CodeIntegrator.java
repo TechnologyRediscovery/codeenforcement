@@ -808,7 +808,13 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, element.getGuideEntry().getGuideEntryID());
+            if(element.getGuideEntryID() != 0){
+                stmt.setInt(1, element.getGuideEntryID());
+                
+            } else {
+                
+                stmt.setNull(1, java.sql.Types.NULL);
+            }
             
             // no source changes on element update
             //stmt.setInt(2, element.getSource().getSourceID());

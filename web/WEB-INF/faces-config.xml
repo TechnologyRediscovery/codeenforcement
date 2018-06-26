@@ -994,9 +994,23 @@
             <redirect />
         </navigation-case>
         
+        
+        <navigation-case>
+            <from-outcome>codeSetElementList</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeSetElementManage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
         <navigation-case>
             <from-outcome>codeElementAdd</from-outcome>
             <to-view-id>/restricted/cogstaff/code/codeElementAdd.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        
+        <navigation-case>
+            <from-outcome>codeElementUpdate</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeElementUpdate.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         

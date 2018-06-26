@@ -39,36 +39,17 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     public CodeElementListBB() {
         System.out.println("CodeElementListBB.CodeElementListBB | const");
     }
-    private CodeSet currentCodeSet;
     
     private CodeElement selectedElement;
     private ArrayList<CodeElement> codeElementList;
     
     private CodeSource activeCodeSource;
-    private int formType;
-    
-    private int formOrdChapterNo;
-    
-    private String formOrdChapterTitle;
-    private String formOrdSecNum;
-    private String formOrdSecTitle;
-    
-    private String formOrdSubSecNum;
-    private String formOrdSubSecTitle;
-    private String formOrdTechnicalText;
-    
-    private String formOrdHumanFriendlyText;
-    private double formDefaultPenalty;
-    private boolean formIsActive;
-    
-    private String formResourceURL;
     
     
-    public String moveToUpdateCodeElement(){
+    public String updateSelectedCodeElement(){
         System.out.println("CodeElementListBB.moveToUpdateCodeElement | selectedElement: " + selectedElement.getOrdchapterTitle());
         if(selectedElement != null){
-            
-            
+            getSessionBean().setActiveCodeElement(selectedElement);
             return "codeElementUpdate";
             
         } else {
@@ -81,48 +62,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         
     }
     
-    /**
-     * TODO: Update for code element guide entry infrastructure
-     * @return 
-     */
-    public String commitUpdatesToCodeElement() {
-        CodeElement eleToUpdate = new CodeElement();
-        eleToUpdate.setElementID(selectedElement.getElementID());
-        System.out.println("CodeElementListBB.commitUpdatesToCodeElement | formtype = "+ formType);
-        System.out.println("CodeElementListBB.commitUpdatesToCodeElement | selectedElement  = ");
-        
-        eleToUpdate.setOrdchapterNo(formOrdChapterNo);
-        
-        eleToUpdate.setOrdchapterTitle(formOrdChapterTitle);
-        eleToUpdate.setOrdSecNum(formOrdSecNum);
-        eleToUpdate.setOrdsecTitle(formOrdSecTitle);
-        
-        eleToUpdate.setOrdSecNum(formOrdSecNum);
-        eleToUpdate.setOrdSubSecTitle(formOrdSubSecTitle);
-        eleToUpdate.setOrdTechnicalText(formOrdTechnicalText);
-        
-        eleToUpdate.setOrdHumanFriendlyText(formOrdHumanFriendlyText);
-        eleToUpdate.setDefaultPenalty(formDefaultPenalty);
-        eleToUpdate.setIsActive(formIsActive);
-        
-        eleToUpdate.setResourceURL(formResourceURL);
-        
-        CodeIntegrator integrator = getCodeIntegrator();
-        try {
-            integrator.updateCodeElement(eleToUpdate);
-            getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                                "Code element updated!", ""));
-        } catch (IntegrationException ex) {
-            System.out.println(ex.toString());
-            getFacesContext().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Unable to update code element; most sincere apologies!", 
-                        "This must be corrected by the System Administrator"));
-        }
-        
-        return "codeElementList";
-    }
+   
     
     public void deleteCodeElement(ActionEvent event){
         
@@ -178,100 +118,6 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         return activeCodeSource;
     }
 
-    
-
-    /**
-     * @return the formOrdChapterNo
-     */
-    public int getFormOrdChapterNo() {
-        formOrdChapterNo = selectedElement.getOrdchapterNo();
-        return formOrdChapterNo;
-    }
-
-    /**
-     * @return the formOrdChapterTitle
-     */
-    public String getFormOrdChapterTitle() {
-        formOrdChapterTitle = selectedElement.getOrdchapterTitle();
-        return formOrdChapterTitle;
-    }
-
-    /**
-     * @return the formOrdSecNum
-     */
-    public String getFormOrdSecNum() {
-        formOrdSecNum = selectedElement.getOrdSecNum();
-        return formOrdSecNum;
-    }
-
-    /**
-     * @return the formOrdSecTitle
-     */
-    public String getFormOrdSecTitle() {
-        formOrdSecTitle = selectedElement.getOrdsecTitle();
-        return formOrdSecTitle;
-    }
-
-    /**
-     * @return the formOrdSubSecNum
-     */
-    public String getFormOrdSubSecNum() {
-        formOrdSubSecNum = selectedElement.getOrdSubSecNum();
-        return formOrdSubSecNum;
-    }
-
-    /**
-     * @return the formOrdSubSecTitle
-     */
-    public String getFormOrdSubSecTitle() {
-        formOrdSecTitle = selectedElement.getOrdSubSecTitle();
-        return formOrdSubSecTitle;
-    }
-
-    /**
-     * @return the formOrdTechnicalText
-     */
-    public String getFormOrdTechnicalText() {
-        formOrdTechnicalText = selectedElement.getOrdTechnicalText();
-        return formOrdTechnicalText;
-    }
-
-    /**
-     * @return the formOrdHumanFriendlyText
-     */
-    public String getFormOrdHumanFriendlyText() {
-        formOrdHumanFriendlyText = selectedElement.getOrdHumanFriendlyText();
-        return formOrdHumanFriendlyText;
-    }
-
-    /**
-     * @return the formDefaultPenalty
-     */
-    public double getFormDefaultPenalty() {
-        formDefaultPenalty = selectedElement.getDefaultPenalty();
-        return formDefaultPenalty;
-    }
-
-    /**
-     * @return the formIsActive
-     */
-    public boolean isFormIsActive() {
-        formIsActive = selectedElement.isIsActive();
-        return formIsActive;
-    }
-
-    
-
-    /**
-     * @return the formResourceURL
-     */
-    public String getFormResourceURL() {
-        formResourceURL = selectedElement.getResourceURL();
-        return formResourceURL;
-    }
-
-    
-
     /**
      * @param activeCodeSource the activeCodeSource to set
      */
@@ -279,102 +125,4 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         this.activeCodeSource = activeCodeSource;
     }
 
-    /**
-     * @param formType the formType to set
-     */
-    public void setFormType(int formType) {
-        this.formType = formType;
-    }
-
-    /**
-     * @param formOrdChapterNo the formOrdChapterNo to set
-     */
-    public void setFormOrdChapterNo(int formOrdChapterNo) {
-        this.formOrdChapterNo = formOrdChapterNo;
-    }
-
-    /**
-     * @param formOrdChapterTitle the formOrdChapterTitle to set
-     */
-    public void setFormOrdChapterTitle(String formOrdChapterTitle) {
-        this.formOrdChapterTitle = formOrdChapterTitle;
-    }
-
-    /**
-     * @param formOrdSecNum the formOrdSecNum to set
-     */
-    public void setFormOrdSecNum(String formOrdSecNum) {
-        this.formOrdSecNum = formOrdSecNum;
-    }
-
-    /**
-     * @param formOrdSecTitle the formOrdSecTitle to set
-     */
-    public void setFormOrdSecTitle(String formOrdSecTitle) {
-        this.formOrdSecTitle = formOrdSecTitle;
-    }
-
-    /**
-     * @param formOrdSubSecNum the formOrdSubSecNum to set
-     */
-    public void setFormOrdSubSecNum(String formOrdSubSecNum) {
-        this.formOrdSubSecNum = formOrdSubSecNum;
-    }
-
-    /**
-     * @param formOrdSubSecTitle the formOrdSubSecTitle to set
-     */
-    public void setFormOrdSubSecTitle(String formOrdSubSecTitle) {
-        this.formOrdSubSecTitle = formOrdSubSecTitle;
-    }
-
-    /**
-     * @param formOrdTechnicalText the formOrdTechnicalText to set
-     */
-    public void setFormOrdTechnicalText(String formOrdTechnicalText) {
-        this.formOrdTechnicalText = formOrdTechnicalText;
-    }
-
-    /**
-     * @param formOrdHumanFriendlyText the formOrdHumanFriendlyText to set
-     */
-    public void setFormOrdHumanFriendlyText(String formOrdHumanFriendlyText) {
-        this.formOrdHumanFriendlyText = formOrdHumanFriendlyText;
-    }
-
-    /**
-     * @param formDefaultPenalty the formDefaultPenalty to set
-     */
-    public void setFormDefaultPenalty(double formDefaultPenalty) {
-        this.formDefaultPenalty = formDefaultPenalty;
-    }
-
-    /**
-     * @param formIsActive the formIsActive to set
-     */
-    public void setFormIsActive(boolean formIsActive) {
-        this.formIsActive = formIsActive;
-    }
-
-    /**
-     * @param formResourceURL the formResourceURL to set
-     */
-    public void setFormResourceURL(String formResourceURL) {
-        this.formResourceURL = formResourceURL;
-    }
-
-    /**
-     * @return the currentCodeSet
-     */
-    public CodeSet getCurrentCodeSet() {
-        currentCodeSet = getSessionBean().getActiveCodeSet();
-        return currentCodeSet;
-    }
-
-    /**
-     * @param currentCodeSet the currentCodeSet to set
-     */
-    public void setCurrentCodeSet(CodeSet currentCodeSet) {
-        this.currentCodeSet = currentCodeSet;
-    }
 }

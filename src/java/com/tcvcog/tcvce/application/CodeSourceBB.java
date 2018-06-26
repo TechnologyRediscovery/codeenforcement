@@ -61,6 +61,9 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
     
     public String addElementToSource(){
         getSessionBean().setActiveCodeSource(selectedCodeSource);
+        // remvoe any active element so when we jump to the
+        // add page, there aren't any pre-populated element fields
+        getSessionBean().setActiveCodeElement(null);
         return "codeElementAdd";
     }
     
