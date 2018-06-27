@@ -31,6 +31,11 @@ import java.util.ArrayList;
 public class InspectedSpace extends Space implements Serializable{
     
     private ArrayList<InspectedElement> inspectedElementList;
+    private LocationDescriptor location;
+    
+    public InspectedSpace(){
+        inspectedElementList = new ArrayList<>();
+    }
 
     /**
      * @return the inspectedElementList
@@ -44,6 +49,20 @@ public class InspectedSpace extends Space implements Serializable{
      */
     public void setInspectedElementList(ArrayList<InspectedElement> inspectedElementList) {
         this.inspectedElementList = inspectedElementList;
+    }
+
+    /**
+     * @return the location
+     */
+    public LocationDescriptor getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(LocationDescriptor location) {
+        this.location = location;
     }
     
 }

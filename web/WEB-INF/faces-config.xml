@@ -528,6 +528,11 @@
             <to-view-id>/public/systemHome.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>logoutSequenceComplete</from-outcome>
+            <to-view-id>/public/exitLanding.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
 
 
@@ -748,6 +753,12 @@
         </navigation-case>
 
         <navigation-case>
+            <from-outcome>ceCaseHistory</from-outcome>
+            <to-view-id>/restricted/cogview/ceCaseHistory.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+
+        <navigation-case>
             <from-outcome>caseProfile</from-outcome>
             <to-view-id>/restricted/cogview/caseProfile.xhtml</to-view-id>
             <redirect />
@@ -765,7 +776,7 @@
         </navigation-case>
     
         <navigation-case>
-            <from-outcome>textBlockManageg</from-outcome>
+            <from-outcome>textBlockManage</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/textBlockManage.xhtml</to-view-id>
         </navigation-case>
         

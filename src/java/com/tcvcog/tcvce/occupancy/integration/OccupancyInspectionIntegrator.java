@@ -21,7 +21,7 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.PropertyUnit;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
-import com.tcvcog.tcvce.occupancy.entities.OccInspec;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
 import com.tcvcog.tcvce.occupancy.entities.OccInspecFee;
 import com.tcvcog.tcvce.occupancy.entities.OccInspecStatus;
 import com.tcvcog.tcvce.occupancy.entities.OccPermitApplication;
@@ -70,12 +70,12 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         return new ArrayList();
     }
     
-    public void updateOccInspecStatus(OccInspec oi, OccInspecStatus updatedStatus){
+    public void updateOccInspecStatus(OccupancyInspection oi, OccInspecStatus updatedStatus){
         
         
     }
     
-    public void insertOccupanyInspection(OccInspec occupancyInspection) throws IntegrationException{
+    public void insertOccupanyInspection(OccupancyInspection occupancyInspection) throws IntegrationException{
         String query = "INSERT INTO public.occupancyinspection(\n" +
                 "   inspectionid, propertyunitid, login_userid, firstinspectiondate, "
             +   "firstinspectionpass, secondinspectiondate, secondinspectionpass, "
@@ -117,7 +117,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
                 
     }
     
-    public void updateOccupancyInspection(OccInspec occInspection) throws IntegrationException {
+    public void updateOccupancyInspection(OccupancyInspection occInspection) throws IntegrationException {
         String query = "UPDATE public.occupancyinspection\n" +
                         "   SET propertyunitid=?, login_userid=?, firstinspectiondate=?, \n" +
                         "       firstinspectionpass=?, secondinspectiondate=?, secondinspectionpass=?, \n" +
@@ -162,7 +162,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         
     }
     
-    public void deleteOccupancyInspection(OccInspec occInspection) throws IntegrationException{
+    public void deleteOccupancyInspection(OccupancyInspection occInspection) throws IntegrationException{
          String query = "DELETE FROM public.occupancyinspection\n" +
                         " WHERE inspectionid=?;";
         Connection con = getPostgresCon();
@@ -184,16 +184,16 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         } // close finally
     }
     
-    private OccInspec generateOccupancyInspection(ResultSet rs) throws IntegrationException{
-        OccInspec newInspection = new OccInspec();
+    private OccupancyInspection generateOccupancyInspection(ResultSet rs) throws IntegrationException{
+        OccupancyInspection newInspection = new OccupancyInspection();
         
         try{
             newInspection.setInspectionID(rs.getInt("inspectionid"));
 //            newInspection.setPropertyUnitID(rs.getInt("propertyunitid"));
 //            newInspection.setLoginUserID(rs.getInt("login_userid"));
-            java.sql.Timestamp s = rs.getTimestamp("firstinspectiondate");
-            if(s != null){
-                newInspection.setFirstInspectionDate(s.toLocalDateTime());
+            java.sql.Timestamp stamp = rs.getTimestamp("firstinspectiondate");
+            if(stamp != null){
+                newInspection.setFirstInspectionDate(stamp.toLocalDateTime());
             } else {
                 newInspection.setFirstInspectionDate(null);
             }
@@ -214,12 +214,12 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
         return newInspection;
     }
     
-    public OccInspec getOccupancyInspection(int inspectionID){
+    public OccupancyInspection getOccupancyInspection(int inspectionID){
         
-        return new OccInspec();
+        return new OccupancyInspection();
     }
     
-    public ArrayList<OccInspec> getOccupancyInspectionList(PropertyUnit pu) throws IntegrationException{
+    public ArrayList<OccupancyInspection> getOccupancyInspectionList(PropertyUnit pu) throws IntegrationException{
         String query = "SELECT inspectionid, propertyunitid, login_userid, firstinspectiondate, \n" +
                     "       firstinspectionpass, secondinspectiondate, secondinspectionpass, \n" +
                     "       resolved, totalfeepaid, notes\n" +
@@ -227,7 +227,7 @@ public class OccupancyInspectionIntegrator extends BackingBeanUtils implements S
     Connection con = getPostgresCon();
     ResultSet rs = null;
     PreparedStatement stmt = null;
-    ArrayList<OccInspec> occupancyInspectionList = new ArrayList();
+    ArrayList<OccupancyInspection> occupancyInspectionList = new ArrayList();
     
     try{
         stmt = con.prepareStatement(query);

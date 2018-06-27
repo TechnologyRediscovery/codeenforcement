@@ -45,6 +45,7 @@ public class UserBB extends BackingBeanUtils implements Serializable {
 //    @ManagedProperty(value="#{sessionBean}")
 //    private SessionBean subclassSessionBean;
     
+    private int formUserID;
     private RoleType formRoleType;
     private RoleType[] roleTypeArray;
     private String formUsername;
@@ -65,6 +66,7 @@ public class UserBB extends BackingBeanUtils implements Serializable {
     private Date formActivityStartDate;
     private Date formActivityStopDate;
     private boolean formAccessPermitted;
+    
 
     /**
      * Creates a new instance of UserBB
@@ -90,6 +92,7 @@ public class UserBB extends BackingBeanUtils implements Serializable {
         UserIntegrator ui = getUserIntegrator();
 
         User u = new User();
+        u.setUserID(formUserID);
         u.setRoleType(formRoleType);
         u.setUsername(formUsername);
         u.setPassword(formPassword);
@@ -284,6 +287,7 @@ public class UserBB extends BackingBeanUtils implements Serializable {
      * @return the formAccessPermitted
      */
     public boolean isFormAccessPermitted() {
+        formAccessPermitted = true;
         return formAccessPermitted;
     }
 
@@ -447,6 +451,20 @@ public class UserBB extends BackingBeanUtils implements Serializable {
      */
     public void setRoleTypeArray(RoleType[] roleTypeArray) {
         this.roleTypeArray = roleTypeArray;
+    }
+
+    /**
+     * @return the formUserID
+     */
+    public int getFormUserID() {
+        return formUserID;
+    }
+
+    /**
+     * @param formUserID the formUserID to set
+     */
+    public void setFormUserID(int formUserID) {
+        this.formUserID = formUserID;
     }
 
     

@@ -35,6 +35,12 @@
                                 tableStyleClass="primeDataTable">
                                 <p:column>
                                     <f:facet name="header">
+                                        <h:outputText value="ID" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.userID}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
                                         <h:outputText value="First Name" />
                                     </f:facet>
                                     <h:outputText value="#{user.FName}"/>

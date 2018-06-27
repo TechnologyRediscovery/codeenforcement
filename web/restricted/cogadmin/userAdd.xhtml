@@ -194,12 +194,19 @@
                                      <p:inputSwitch tabindex="18" id="activeInsystemSwitch" value="#{userBB.formAccessPermitted}" onLabel="Yes" offLabel="No" />
                                 </h:panelGroup>
                                 
+                                <h:outputLabel value="UserID" for="idIT"/>
+                                <h:panelGroup>
+                                    <p:inputText id="idIT" value="#{userBB.formUserID}" 
+                                           style="width: 40px;" tabindex="19" required="true" styleClass="inputText"/>
+                                    <h:message for="idIT" showDetail="false" showSummary="true" 
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
                                 
                                 <f:facet name="footer">
                                     <h:outputLabel value="User Notes" for="notesIT"/>
                                     <h:panelGroup>
                                         <p:inputTextarea id="notesIT" value="#{userBB.formNotes}" 
-                                               style="width: 100%;" tabindex="19" required="false" styleClass="inputText"/>
+                                               style="width: 100%;" tabindex="20" required="false" styleClass="inputText"/>
                                         <h:message for="notesIT" showDetail="false" showSummary="true" 
                                         warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                                     </h:panelGroup>
@@ -211,7 +218,7 @@
                             
                             <p:spacer height="15px"/>
                             
-                            <p:commandButton ajax="false" value="Add New User" icon="fa fa-plus" action="#{userBB.commitInsert}"/>
+                            <p:commandButton ajax="false" value="Add New User" icon="fa fa-plus" tabindex="21" action="#{userBB.commitInsert}"/>
 
                         </h:form>
                     </f:view>

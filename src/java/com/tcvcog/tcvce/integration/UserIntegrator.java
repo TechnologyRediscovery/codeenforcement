@@ -111,14 +111,14 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
         Connection con = getPostgresCon();
         
         String query = "INSERT INTO public.login(\n" +
-"            userid, userrole, username, password, muni_municode, fname, lname, \n" +
+"            userrole, username, password, muni_municode, fname, lname, \n" +
 "            worktitle, phonecell, phonehome, phonework, email, address_street, \n" +
 "            address_city, address_zip, address_state, notes, activitystartdate, \n" +
-"            activitystopdate, accesspermitted)\n" +
-"    VALUES (DEFAULT, CAST (? AS role) , ?, ?, ?, ?, ?, \n" +
+"            activitystopdate, accesspermitted, userid)\n" +
+"    VALUES (CAST (? AS role) , ?, ?, ?, ?, ?, \n" +
 "            ?, ?, ?, ?, ?, ?, \n" +
 "            ?, ?, ?, ?, ?, \n" +
-"            ?, ?);";
+"            ?, ?, ?);";
         
         PreparedStatement stmt = null;
         
@@ -148,6 +148,7 @@ public class UserIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setTimestamp(18, java.sql.Timestamp
                     .valueOf(userToInsert.getActivityStopDate()));
             stmt.setBoolean(19, userToInsert.isAccessPermitted());
+            stmt.setInt(20, userToInsert.getUserID());
             
             System.out.println("UserIntegrator.insertUser | sql: " + stmt.toString());
             stmt.execute();

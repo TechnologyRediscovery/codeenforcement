@@ -18,12 +18,13 @@ package com.tcvcog.tcvce.occupancy.entities;
 
 import com.tcvcog.tcvce.entities.User;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  *
  * @author Adam Gutonski
  */
-public class OccInspec {
+public class OccupancyInspection {
     
     private int inspectionID;
     private User caseManager;
@@ -48,6 +49,8 @@ public class OccInspec {
     private String muniAuthNotes;
     
     private OccPermit permit;
+    
+    private ArrayList<Payment> payments;
 
     /**
      * @return the inspectionID
@@ -271,6 +274,20 @@ public class OccInspec {
      */
     public void setMuniAuthNotes(String muniAuthNotes) {
         this.muniAuthNotes = muniAuthNotes;
+    }
+
+    /**
+     * @return the payments
+     */
+    public ArrayList<Payment> getPayments() {
+        return payments;
+    }
+
+    /**
+     * @param payments the payments to set
+     */
+    public void setPayments(ArrayList<Payment> payments) {
+        this.payments = payments;
     }
     
     

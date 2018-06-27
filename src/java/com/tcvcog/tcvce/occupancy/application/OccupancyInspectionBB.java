@@ -23,7 +23,7 @@ import com.tcvcog.tcvce.application.BackingBeanUtils;
 import com.tcvcog.tcvce.entities.Property;
 import com.tcvcog.tcvce.entities.PropertyUnit;
 import com.tcvcog.tcvce.occupancy.integration.OccupancyInspectionIntegrator;
-import com.tcvcog.tcvce.occupancy.entities.OccInspec;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class OccupancyInspectionBB extends BackingBeanUtils implements Serializable {
     
-    private ArrayList<OccInspec> occupancyInspectionList;
-    private OccInspec selectedOccupancyInspection;
+    private ArrayList<OccupancyInspection> occupancyInspectionList;
+    private OccupancyInspection selectedOccupancyInspection;
     private int formInspectionID;
     private int formPropertyUnitID;
     private int formLoginUserID;
@@ -111,7 +111,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
 
     public void commitOccupancyInspectionUpdates(ActionEvent e){
         OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
-        OccInspec occInspection = selectedOccupancyInspection;
+        OccupancyInspection occInspection = selectedOccupancyInspection;
         
         occInspection.setInspectionID(formInspectionID);
 //        occInspection.setPropertyUnitID(formPropertyUnitID);
@@ -142,7 +142,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     }
     
     public String addOccupancyInspection(){
-        OccInspec o = new OccInspec();
+        OccupancyInspection o = new OccupancyInspection();
         OccupancyInspectionIntegrator oii =  getOccupancyInspectionIntegrator();
         
 //        o.setPropertyUnitID(formPropertyUnitID);
@@ -176,10 +176,10 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     /**
      * @return the occupancyInspectionList
      */
-    public ArrayList<OccInspec> getOccupancyInspectionList() {
+    public ArrayList<OccupancyInspection> getOccupancyInspectionList() {
         try {
             OccupancyInspectionIntegrator oii = getOccupancyInspectionIntegrator();
-            ArrayList<OccInspec> oil = oii.getOccupancyInspectionList(new PropertyUnit());
+            ArrayList<OccupancyInspection> oil = oii.getOccupancyInspectionList(new PropertyUnit());
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -197,7 +197,7 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     /**
      * @param occupancyInspectionList the occupancyInspectionList to set
      */
-    public void setOccupancyInspectionList(ArrayList<OccInspec> occupancyInspectionList) {
+    public void setOccupancyInspectionList(ArrayList<OccupancyInspection> occupancyInspectionList) {
         this.occupancyInspectionList = occupancyInspectionList;
     }
 
@@ -344,14 +344,14 @@ public class OccupancyInspectionBB extends BackingBeanUtils implements Serializa
     /**
      * @return the selectedOccupancyInspection
      */
-    public OccInspec getSelectedOccupancyInspection() {
+    public OccupancyInspection getSelectedOccupancyInspection() {
         return selectedOccupancyInspection;
     }
 
     /**
      * @param selectedOccupancyInspection the selectedOccupancyInspection to set
      */
-    public void setSelectedOccupancyInspection(OccInspec selectedOccupancyInspection) {
+    public void setSelectedOccupancyInspection(OccupancyInspection selectedOccupancyInspection) {
         this.selectedOccupancyInspection = selectedOccupancyInspection;
     }
     

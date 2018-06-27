@@ -81,7 +81,7 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
         return caseList;
     }
     
-    public ArrayList getCECasesByMuni(int muniCode) throws IntegrationException{
+    public ArrayList getOpenCECases(int muniCode) throws IntegrationException{
         
         ArrayList<CECase> caseList = new ArrayList();
         String query = "SELECT \n" +
@@ -94,7 +94,48 @@ public class CaseIntegrator extends BackingBeanUtils implements Serializable{
             "WHERE \n" +
             "  cecase.property_propertyid = property.propertyid AND\n" +
             "  property.municipality_municode = municipality.municode AND\n" +
-            "  municipality.municode = ?;";
+            "  municipality.municode = ? AND casephase <> 'Closed'::casephase;";
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, muniCode);
+            //System.out.println("CaseIntegrator.| sql: " + stmt.toString());
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                caseList.add(getCECase(rs.getInt("caseid")));
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot search for person", ex);
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        
+        return caseList;
+    }
+    public ArrayList getCECaseHistory(int muniCode) throws IntegrationException{
+        
+        ArrayList<CECase> caseList = new ArrayList();
+        String query = "SELECT \n" +
+            "  caseid, \n" +
+            "  municipality.municode\n" +
+            "FROM \n" +
+            "  public.cecase, \n" +
+            "  public.property, \n" +
+            "  public.municipality\n" +
+            "WHERE \n" +
+            "  cecase.property_propertyid = property.propertyid AND\n" +
+            "  property.municipality_municode = municipality.municode AND\n" +
+            "  municipality.municode = ? AND casephase = 'Closed'::casephase;";
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;

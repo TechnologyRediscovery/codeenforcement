@@ -17,16 +17,53 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.occupancy.coordinators;
 
+import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.entities.CodeElement;
+import com.tcvcog.tcvce.occupancy.entities.InspectedElement;
+import com.tcvcog.tcvce.occupancy.entities.InspectedSpace;
+import com.tcvcog.tcvce.occupancy.entities.LocationDescriptor;
+import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
+import com.tcvcog.tcvce.occupancy.entities.Space;
+import com.tcvcog.tcvce.occupancy.integration.ChecklistIntegrator;
+import java.io.Serializable;
+import java.util.ListIterator;
+
 /**
  *
  * @author Eric C. Darsow
  */
-public class OccupancyCoordinator {
+public class OccupancyCoordinator extends BackingBeanUtils implements Serializable {
 
     /**
      * Creates a new instance of OccupancyCoordinator
      */
     public OccupancyCoordinator() {
+    }
+    
+    public InspectedSpace getNewlyInspectedSpace(Space space, String locationDescription){
+        InspectedSpace is = new InspectedSpace();
+        LocationDescriptor ld = new LocationDescriptor();
+        ld.setLocationDescription(locationDescription);
+        ListIterator<CodeElement> elementIterator = space.getElementList().listIterator();
+        InspectedElement ie;
+        
+        while(elementIterator.hasNext()){
+            CodeElement ce = elementIterator.next();
+            ie = new InspectedElement();
+            ie.setElement(ce);
+            is.getInspectedElementList().add(ie);
+            // each element in this space gets a reference to the same LocationDescriptor object
+            is.setLocation(ld);
+        }
+        return is;
+    }
+    
+    public void saveNewlyInspectedSpace(OccupancyInspection oi, InspectedSpace is){
+        ChecklistIntegrator ci = getChecklistIntegrator();
+        
+        
+        
+        
     }
     
 }

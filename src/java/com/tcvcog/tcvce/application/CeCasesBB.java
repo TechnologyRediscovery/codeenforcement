@@ -34,6 +34,7 @@ public class CeCasesBB extends BackingBeanUtils implements Serializable{
 
     
     private ArrayList<CECase> caseList;
+    private ArrayList<CECase> caseHistoryList;
     private CECase selectedCase;
     private ArrayList<EventCase> recentEventList;
     private ArrayList<Person> muniPeopleList;
@@ -46,6 +47,7 @@ public class CeCasesBB extends BackingBeanUtils implements Serializable{
     
     public String viewCase(){
         getSessionBean().setActiveCase(selectedCase);
+        // make the property associated with a selected case the active property
         getSessionBean().setActiveProp(selectedCase.getProperty());
         return "caseProfile";
     }
@@ -59,7 +61,7 @@ public class CeCasesBB extends BackingBeanUtils implements Serializable{
         int muniCodeForFetching = getSessionBean().getActiveMuni().getMuniCode();
         
         try {
-            caseList = ci.getCECasesByMuni(muniCodeForFetching);
+            caseList = ci.getOpenCECases(muniCodeForFetching);
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -67,6 +69,27 @@ public class CeCasesBB extends BackingBeanUtils implements Serializable{
         }
         return caseList;
     }
+    
+    
+    /**
+     * @return the CaseList
+     */
+    public ArrayList<CECase> getCaseHistoryList() {
+        CaseIntegrator ci = getCaseIntegrator();
+        
+        int muniCodeForFetching = getSessionBean().getActiveMuni().getMuniCode();
+        
+        try {
+            caseList = ci.getCECaseHistory(muniCodeForFetching);
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to load cases for this municipality due to an error in the Integration Module", ""));
+        }
+        return caseList;
+    }
+    
+    
 
     /**
      * @return the recentEventList
@@ -116,6 +139,17 @@ public class CeCasesBB extends BackingBeanUtils implements Serializable{
     public void setSelectedCase(CECase selectedCase) {
         this.selectedCase = selectedCase;
     }
+
+    /**
+     * @param caseHistoryList the caseHistoryList to set
+     */
+    public void setCaseHistoryList(ArrayList<CECase> caseHistoryList) {
+        this.caseHistoryList = caseHistoryList;
+    }
+
+   
+
+    
 
    
 }

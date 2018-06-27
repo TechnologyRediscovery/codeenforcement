@@ -18,7 +18,7 @@ package com.tcvcog.tcvce.occupancy.entities;
 
 /**
  *
- * @author Adam Gutonski
+ * @author EC Darsow
  */
 public class SpaceType {
     private int spaceTypeID;

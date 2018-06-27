@@ -289,6 +289,8 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     public boolean isFormIsActive() {
         if(currentElement != null){
             formIsActive = currentElement.isIsActive();
+        } else {
+            formIsActive = true;
         }
         return formIsActive;
     }
@@ -322,6 +324,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      * @return the activeCodeSource
      */
     public CodeSource getActiveCodeSource() {
+        activeCodeSource = getSessionBean().getActiveCodeSource();
         return activeCodeSource;
     }
 
