@@ -53,7 +53,6 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
     private String formOrdTechnicalText;
     
     private String formOrdHumanFriendlyText;
-    private double formDefaultPenalty;
     private boolean formIsActive;
     
     private String formResourceURL;
@@ -75,7 +74,6 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         currentElement.setOrdTechnicalText(formOrdTechnicalText);
         
         currentElement.setOrdHumanFriendlyText(formOrdHumanFriendlyText);
-        currentElement.setDefaultPenalty(formDefaultPenalty);
         currentElement.setIsActive(formIsActive);
         
         currentElement.setResourceURL(formResourceURL);
@@ -123,7 +121,6 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         newCE.setOrdTechnicalText(formOrdTechnicalText);
         
         newCE.setOrdHumanFriendlyText(formOrdHumanFriendlyText);
-        newCE.setDefaultPenalty(formDefaultPenalty);
         newCE.setIsActive(formIsActive);
         
         newCE.setResourceURL(formResourceURL);

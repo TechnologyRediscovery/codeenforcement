@@ -92,7 +92,7 @@
 
                             <h:panelGroup>
                                 <h:outputLabel for="propCountyCode" >
-                                    <h:outputText styleClass="uiLabel" value="Address:" />
+                                    <h:outputText styleClass="uiLabel" value="County Code:" />
                                 </h:outputLabel>
                             </h:panelGroup>
                             <h:panelGroup>
@@ -112,7 +112,7 @@
 
                         <h:form id="updatePropFromProfileForm">
 
-                            <p:commandButton ajax="false" value="Update Selected Property Info" action="#{propertyProfileBB.updateProperty}"/>
+                            <p:commandButton ajax="false" value="Update Selected Property Info" action="#{propertyProfileBB.updateProperty}" disabled="true"/>
 
                         </h:form>
 
@@ -137,7 +137,7 @@
                                 submitted through the public request portal or by municipal staff.</p>
 
 
-                            <p:commandButton ajax="fakse" value="Manage Code Enforcement Request &rarr;" action="manageActionRequest"/>
+                            <p:commandButton ajax="fakse" value="Manage Code Enforcement Request &rarr;" action="manageActionRequest" disabled="true"/>
 
                             <p:spacer height="10px"/>
                             <hr/>
@@ -152,7 +152,7 @@
                             <!--Insert case table here-->
 
 
-                            <p:commandButton ajax="fakse" value="View selected case summary" action="caseSummary"/>
+                            <p:commandButton ajax="fakse" value="View selected case summary" action="caseSummary" disabled="true"/>
 
 
                             <p:spacer height="10px"/>
@@ -214,8 +214,8 @@
                             </p:dataTable>
 
 
-                            <p:commandButton ajax="false" value="Create a communication event with this person" action="communicationEvent"/>
-                            <p:commandButton ajax="false" value="View Person's profile and edit info" action="personProfile"/>
+                            <p:commandButton ajax="false" value="Create a communication event with this person" action="communicationEvent" disabled="true"/>
+                            <p:commandButton ajax="false" value="View Person's profile and edit info" action="personProfile" disabled="true"/>
 
                             <p:spacer height="10px"/>
                             <hr/>

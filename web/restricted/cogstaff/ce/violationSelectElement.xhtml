@@ -20,7 +20,7 @@
 
                         <h1>Select Violated Code Element</h1>
 
-                        <p>You are viewing enforcable code elements in your active code set: 
+                        <p>Select an enforcable code element to add to this case and then click "Add Selected Violation to current case". Your current code set is: 
                             <h:outputText value="#{sessionBean.activeCodeSet.codeSetName}"/></p>
 
                         <h:form id="selectViolatedElementForm">
@@ -32,7 +32,9 @@
                                 selectionMode="single"
                                 selection="#{violationSelectElementBB.selectedViolatedEnfElement}"
                                 rowKey="#{cse.codeSetElementID}"
-                                tableStyleClass="primeDataTable">
+                                tableStyleClass="primeDataTable"
+                                scrollable="true"
+                                scrollHeight="300">
                                 <p:column>
                                     <f:facet name="header">
                                         <h:outputText value="Chapter" />

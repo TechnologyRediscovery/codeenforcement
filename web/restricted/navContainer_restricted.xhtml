@@ -115,8 +115,8 @@
                                 <p:menuitem value="Property search" action="propertySearch" ajax="false" icon="ui-icon-disk" />
                                 <p:menuitem value="Property profile" action="#{navigationBB.gotoPropertyProfile}" ajax="false" 
                                             icon="ui-icon-disk" disabled="#{navigationBB.noActiveProperty}"/>
-                                <p:menuitem value="Person search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w" />
-                                <p:menuitem value="Owner search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w" />
+                                <p:menuitem value="Person search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w"  disabled="true"/>
+                                <p:menuitem value="Owner search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w" disabled="true"/>
                             </p:submenu>
 
                             <p:separator />
@@ -171,15 +171,15 @@
                             <p:separator />
 
                             <p:submenu label="Public">
-                                <p:menuitem value="Public portal" action="publicPortal" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="CE action request" action="ceActionRequest" ajax="false" icon="ui-icon-document" />
+                                <p:menuitem value="Public portal" action="publicPortal" ajax="false" icon="ui-icon-document" disabled="true" />
+                                <p:menuitem value="CE action request" action="ceActionRequest" ajax="false" icon="ui-icon-document" disabled="true"/>
                             </p:submenu>
 
                             <p:separator />
 
                             <p:submenu label="System">
                                 <p:menuitem value="User configuration" action="userManage" ajax="false" icon="ui-icon-document" />
-                                <p:menuitem value="Municipalities" action="muniManage" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Municipalities" action="muniManage" ajax="false" icon="ui-icon-arrowthick-1-s" disabled="true"/>
                                 <p:menuitem value="CE event config" action="eventManage" ajax="false" icon="ui-icon-arrowthick-1-s" />
                                 <p:menuitem value="Request list changes" action="selectItemListChange" ajax="false" icon="ui-icon-home" />
                                 <p:menuitem value="Bugs &amp; suggestions" action="bugReporting" ajax="false" icon="ui-icon-arrowthick-1-s" />

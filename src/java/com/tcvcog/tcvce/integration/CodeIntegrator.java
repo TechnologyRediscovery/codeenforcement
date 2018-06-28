@@ -642,7 +642,6 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 e.setOrdTechnicalText(rs.getString("ordtechnicaltext"));
                 
                 e.setOrdHumanFriendlyText(rs.getString("ordhumanfriendlytext"));
-                e.setDefaultPenalty(rs.getDouble("defaultpenalty"));
                 e.setIsActive(rs.getBoolean("isactive"));
                 
                 e.setResourceURL(rs.getString("resourceurl"));
@@ -668,7 +667,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         // note that muniCode is not returned in this query since it is specified in the WHERE
         String query = "SELECT elementid, guideentryid, codesource_sourceid, ordchapterno, \n" +
             "ordchaptertitle, ordsecnum, ordsectitle, ordsubsecnum, ordsubsectitle, \n" +
-            "ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, isactive, \n" +
+            "ordtechnicaltext, ordhumanfriendlytext, isactive, \n" +
             "resourceurl, datecreated\n" +
             "FROM public.codeelement WHERE elementid=?;";
         ResultSet rs = null;
@@ -746,12 +745,12 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                  + "elementid, guideentryid, codesource_sourceid, "
                  + "ordchapterno, ordchaptertitle, ordsecnum, "
                  + "ordsectitle, ordsubsecnum, ordsubsectitle, " 
-                 + "ordtechnicaltext, ordhumanfriendlytext, defaultpenalty, "
+                 + "ordtechnicaltext, ordhumanfriendlytext, "
                  + "isactive,  "
                  + "resourceurl, datecreated) " +
                     "    VALUES (DEFAULT, ?, ?, ?, \n" +
                     "            ?, ?, ?, ?, ?, \n" +
-                    "            ?, ?, ?, \n" +
+                    "            ?, ?, \n" +
                     "            ?, ?, \n" +
                     "            now());";
 
@@ -774,10 +773,9 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             stmt.setString(9, element.getOrdTechnicalText());
             stmt.setString(10, element.getOrdHumanFriendlyText());
-            stmt.setDouble(11, element.getDefaultPenalty());
             
-            stmt.setBoolean(12, element.isIsActive());
-            stmt.setString(13, element.getResourceURL());
+            stmt.setBoolean(11, element.isIsActive());
+            stmt.setString(12, element.getResourceURL());
             
             System.out.println("CodeIntegrator.insertCodeElement | insert statement: " + stmt.toString());
             
@@ -798,7 +796,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 "SET guideentryid=?, \n" +
                 "ordchapterno=?, ordchaptertitle=?, ordsecnum=?, ordsectitle=?, \n" +
                 "ordsubsecnum=?, ordsubsectitle=?, ordtechnicaltext=?, ordhumanfriendlytext=?, \n" +
-                "defaultpenalty=?, isactive=?, resourceurl=?, \n" +
+                "isactive=?, resourceurl=?, \n" +
                 "datecreated=now()\n" +
                 " WHERE elementid=?;";
 
@@ -829,12 +827,11 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             stmt.setString(8, element.getOrdTechnicalText());
             stmt.setString(9, element.getOrdHumanFriendlyText());
-            stmt.setDouble(10, element.getDefaultPenalty());
             
-            stmt.setBoolean(11, element.isIsActive());
-            stmt.setString(12, element.getResourceURL());
+            stmt.setBoolean(10, element.isIsActive());
+            stmt.setString(11, element.getResourceURL());
             
-            stmt.setInt(13, element.getElementID());
+            stmt.setInt(12, element.getElementID());
             
             System.out.println("CodeIntegrator.updateCodeElement | update statement: " + stmt.toString());
             

@@ -20,6 +20,7 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.User;
+import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,7 +50,15 @@ public class MissionControlBB extends BackingBeanUtils implements Serializable {
     }
     
     public String switchMuni(){
+        CodeIntegrator ci = getCodeIntegrator();
         getSessionBean().setActiveMuni(selectedMuni);
+        try {
+            getSessionBean().setActiveCodeSet(ci.getCodeSetBySetID(selectedMuni.getDefaultCodeSetID()));
+        } catch (IntegrationException ex) {
+            FacesContext facesContext = getFacesContext();
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    ex.getMessage(), ""));
+        }
         System.out.println("MissionControlBB.switchMuni | selected muni: " + selectedMuni.getMuniName());
         FacesContext facesContext = getFacesContext();
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 

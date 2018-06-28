@@ -133,6 +133,9 @@ public class EventCoordinator extends BackingBeanUtils implements Serializable{
         e.setCategory(ei.getEventCategory(Integer.parseInt(getResourceBundle(
                 Constants.EVENT_CATEGORY_BUNDLE).getString("complianceEvent"))));
         e.setEventDescription("Compliance with municipal code achieved");
+        e.setActiveEvent(true);
+        e.setDiscloseToMunicipality(true);
+        e.setDiscloseToPublic(true);
         
         ListIterator<CodeViolation> li = violationList.listIterator();
         CodeViolation cv;

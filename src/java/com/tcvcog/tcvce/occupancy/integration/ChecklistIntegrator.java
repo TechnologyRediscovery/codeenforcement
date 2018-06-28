@@ -116,10 +116,8 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
         PreparedStatement stmt = null;
 
         try {
-
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
-
             while(rs.next()){
 
             }
@@ -133,11 +131,7 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
              if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
-
     }
-    
-   
-    
     
     public void insertSpaceMetatData(Space s) throws IntegrationException{
         

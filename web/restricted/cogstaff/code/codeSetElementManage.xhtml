@@ -31,7 +31,9 @@
                                 selectionMode="single"
                                 selection="#{codeSetElementBB.selectedECE}"
                                 rowKey="#{cs.codeSetElementID}"
-                                tableStyleClass="primeDataTable">
+                                tableStyleClass="primeDataTable"
+                                scrollable="true"
+                                scrollHeight="300">
                                 <p:ajax event="rowSelect" immediate="true" 
                                         update=":updateECEForm:formMaxPenalty
                                         :updateECEForm:eceNo

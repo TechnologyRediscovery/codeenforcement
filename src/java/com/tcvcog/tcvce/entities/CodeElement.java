@@ -42,7 +42,6 @@ public class CodeElement {
     private String ordTechnicalText;
     
     private String ordHumanFriendlyText;
-    private double defaultPenalty;
     private boolean isActive;
     
     private String resourceURL;
@@ -178,20 +177,7 @@ public class CodeElement {
         this.ordHumanFriendlyText = ordHumanFriendlyText;
     }
 
-    /**
-     * @return the defaultPenalty
-     */
-    public double getDefaultPenalty() {
-        return defaultPenalty;
-    }
-
-    /**
-     * @param defaultPenalty the defaultPenalty to set
-     */
-    public void setDefaultPenalty(double defaultPenalty) {
-        this.defaultPenalty = defaultPenalty;
-    }
-
+    
     /**
      * @return the isActive
      */
