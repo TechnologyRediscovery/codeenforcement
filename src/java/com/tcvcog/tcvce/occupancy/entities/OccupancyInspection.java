@@ -29,7 +29,8 @@ public class OccupancyInspection {
     private int inspectionID;
     private User caseManager;
     
-    private ImplementedChecklist checklist;
+    private ArrayList<InspectedSpace> inspectedSpaceList;
+    private ArrayList<InspectedSpace> spacesWithFailedElements;
     
     private boolean totalFeePaid;
     
@@ -150,19 +151,7 @@ public class OccupancyInspection {
         this.occupancyInspectionNotes = occupancyInspectionNotes;
     }
 
-    /**
-     * @return the checklist
-     */
-    public ImplementedChecklist getChecklist() {
-        return checklist;
-    }
-
-    /**
-     * @param checklist the checklist to set
-     */
-    public void setChecklist(ImplementedChecklist checklist) {
-        this.checklist = checklist;
-    }
+  
 
     /**
      * @return the permit
@@ -288,6 +277,34 @@ public class OccupancyInspection {
      */
     public void setPayments(ArrayList<Payment> payments) {
         this.payments = payments;
+    }
+
+    /**
+     * @return the inspectedSpaceList
+     */
+    public ArrayList<InspectedSpace> getInspectedSpaceList() {
+        return inspectedSpaceList;
+    }
+
+    /**
+     * @param inspectedSpaceList the inspectedSpaceList to set
+     */
+    public void setInspectedSpaceList(ArrayList<InspectedSpace> inspectedSpaceList) {
+        this.inspectedSpaceList = inspectedSpaceList;
+    }
+
+    /**
+     * @return the spacesWithFailedElements
+     */
+    public ArrayList<InspectedSpace> getSpacesWithFailedElements() {
+        return spacesWithFailedElements;
+    }
+
+    /**
+     * @param spacesWithFailedElements the spacesWithFailedElements to set
+     */
+    public void setSpacesWithFailedElements(ArrayList<InspectedSpace> spacesWithFailedElements) {
+        this.spacesWithFailedElements = spacesWithFailedElements;
     }
     
     

@@ -18,6 +18,7 @@ Council of Governments, PA
 package com.tcvcog.tcvce.occupancy.coordinators;
 
 import com.tcvcog.tcvce.application.BackingBeanUtils;
+import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.occupancy.entities.InspectedElement;
 import com.tcvcog.tcvce.occupancy.entities.InspectedSpace;
@@ -40,7 +41,7 @@ public class OccupancyCoordinator extends BackingBeanUtils implements Serializab
     public OccupancyCoordinator() {
     }
     
-    public InspectedSpace getNewlyInspectedSpace(Space space, String locationDescription){
+    public InspectedSpace generateNewlyInspectedSpace(Space space, String locationDescription){
         InspectedSpace is = new InspectedSpace();
         LocationDescriptor ld = new LocationDescriptor();
         ld.setLocationDescription(locationDescription);
@@ -56,14 +57,10 @@ public class OccupancyCoordinator extends BackingBeanUtils implements Serializab
             is.setLocation(ld);
         }
         return is;
-    }
+    }    
     
-    public void saveNewlyInspectedSpace(OccupancyInspection oi, InspectedSpace is){
+    public void saveNewlyInspectedSpace(OccupancyInspection oi, InspectedSpace is) throws IntegrationException{
         ChecklistIntegrator ci = getChecklistIntegrator();
-        
-        
-        
-        
+        ci.insertNewlyInspectedSpace(oi, is);
     }
-    
 }

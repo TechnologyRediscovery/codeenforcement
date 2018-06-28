@@ -31,6 +31,7 @@ public class InspectedElement implements Serializable{
     private CodeElement element;
     private LocalDateTime complianceDate;
     private String notes;
+    private LocationDescriptor location;
 
     /**
      * @return the id
@@ -100,5 +101,19 @@ public class InspectedElement implements Serializable{
      */
     public void setElement(CodeElement element) {
         this.element = element;
+    }
+
+    /**
+     * @return the location
+     */
+    public LocationDescriptor getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(LocationDescriptor location) {
+        this.location = location;
     }
 }

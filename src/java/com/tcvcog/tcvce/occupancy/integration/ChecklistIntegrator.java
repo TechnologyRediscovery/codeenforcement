@@ -24,9 +24,9 @@ import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import com.tcvcog.tcvce.occupancy.entities.ChecklistBlueprint;
-import com.tcvcog.tcvce.occupancy.entities.ImplementedChecklist;
 import com.tcvcog.tcvce.occupancy.entities.InspectedElement;
 import com.tcvcog.tcvce.occupancy.entities.InspectedSpace;
+import com.tcvcog.tcvce.occupancy.entities.LocationDescriptor;
 import com.tcvcog.tcvce.occupancy.entities.OccupancyInspection;
 import com.tcvcog.tcvce.occupancy.entities.Space;
 import com.tcvcog.tcvce.occupancy.entities.SpaceType;
@@ -136,44 +136,7 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
 
     }
     
-    /**
-     * Extracts the spaces and their CodeElements and creates an ImplementedChecklist object
-     * for use during an actual inspection of a dwelling unit
-     * 
-     * @param bp
-     * @return the generated ImplementedChecklist in which CodeElements within each Space object
-     * can be marked pass/fail with notes, etc.
-     */
-    public ImplementedChecklist createImplementedChecklist(ChecklistBlueprint bp) throws IntegrationException{
-        
-        String query = "";
-        Connection con = getPostgresCon();
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
-
-        try {
-
-            stmt = con.prepareStatement(query);
-            rs = stmt.executeQuery();
-
-            while(rs.next()){
-
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            throw new IntegrationException("", ex);
-
-        } finally{
-             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
-             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
-             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
-        } // close finally
-
-        // temp to close
-        return new ImplementedChecklist();
-    }
-    
+   
     
     
     public void insertSpaceMetatData(Space s) throws IntegrationException{
@@ -260,6 +223,38 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         return s;
+    }
+    
+     public InspectedSpace populateInspectedSpaceMetadata(InspectedSpace is) throws IntegrationException{
+        
+        String query =  "SELECT name, spacetype\n" +
+                        "  FROM public.space WHERE spaceid = ?;";
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        
+        try {
+
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, is.getSpaceid());
+            rs = stmt.executeQuery();
+
+            while(rs.next()){
+                is.setName(rs.getString("name"));
+                is.setSpaceType(getSpaceType(rs.getInt("spacetype")));
+            }
+            
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("", ex);
+
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return is;
     }
     
     /**
@@ -588,30 +583,46 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
              if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
-
     }
     
     
-    
-    public ImplementedChecklist getImplementedChecklist(int implementedChecklistID) throws IntegrationException{
+    /**
+     * Called by the OccupancyIntegrator during the construction of an OccupancyInspection
+     * object. This method, in turn, calls the private getInspectedSpaceList method in this
+     * class to populate the actual inspection data.
+     * @param inspectionID
+     * @return a fully-baked ImplementedChecklist
+     * @throws IntegrationException 
+     */
+    public ArrayList<InspectedSpace> getInspectedSpaceList(int inspectionID) throws IntegrationException{
+        ArrayList<InspectedSpace> inspSpaceList = new ArrayList<>();
         
-        String query = "";
+        String query_spaceIDs =  "SELECT DISTINCT spaceid\n" +
+            " FROM inspectedchecklistspaceelement INNER JOIN checklistspaceelement ON (checklistspaceelementid = checklistspaceelement_id)\n" +
+            "	INNER JOIN spaceelement ON (spaceelement_id = spaceelementid)\n" +
+            "	INNER JOIN space ON (space_id = spaceid)\n" +
+            " WHERE occupancyinspection_id=?;";
+        
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
 
         try {
 
-            stmt = con.prepareStatement(query);
+            // this gets us a list of all of the spaces that have been inspected for this
+            // occupancy inspection
+            stmt = con.prepareStatement(query_spaceIDs);
+            stmt.setInt(1, inspectionID);
             rs = stmt.executeQuery();
 
+            // chugg down the list of spaceids and fetch an Inspected space for each
             while(rs.next()){
-
+                inspSpaceList.add(getInspectedSpace(inspectionID, rs.getInt("spaceid")));
             }
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new IntegrationException("", ex);
+            throw new IntegrationException("Unable to generate inspected space list, sorry!", ex);
 
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
@@ -620,45 +631,121 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
         } // close finally
 
         // temp to close
-        return new ImplementedChecklist();
-        
+        return inspSpaceList;
     }
     
-    private ArrayList<InspectedSpace> getInspectedSpaceList(ImplementedChecklist impChecklist) throws IntegrationException{
+    private InspectedSpace getInspectedSpace(int inspectionID, int spaceID) throws IntegrationException, SQLException{
         
-        String query = "";
+        // this gets us a list of inspectedchecklistspaceelements
+        String query_inspectedElementsBySpace = 
+            "SELECT inspectedchecklistspaceelementid, spaceelementid, spaceid, codeelement_id, checklist_id, compliancedate, inspected, notes, locationdescription_id\n" +
+            " FROM inspectedchecklistspaceelement INNER JOIN checklistspaceelement ON (checklistspaceelementid = checklistspaceelement_id)\n" +
+            "	INNER JOIN spaceelement ON (spaceelement_id = spaceelementid)\n" +
+            "	INNER JOIN space ON (space_id = spaceid)\n" +
+            " WHERE occupancyinspection_id=? AND spaceid = ?;";
+        
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
+        InspectedSpace is = new InspectedSpace();
+        ArrayList<InspectedElement> insElementList = new ArrayList<>();
 
         try {
-
-            stmt = con.prepareStatement(query);
+            
+            // this is a hacky way of grabbing basic space data: this process should
+            // use Polymorphism but that will have to wait until later versions
+            is = populateInspectedSpaceMetadata(is);
+            
+            stmt = con.prepareStatement(query_inspectedElementsBySpace);
+            stmt.setInt(1, inspectionID);
+            stmt.setInt(2, spaceID);
             rs = stmt.executeQuery();
 
+            // chugg down the list of spaceids and fetch an Inspected space for each
             while(rs.next()){
-
+                insElementList.add(generateInspectedElement(rs));
+                
+                // a hacky solution to space locations: overwrite the space's location for each
+                // inspected element--since they're all the same for each element
+                is.setLocation(getLocation(rs.getInt("locationdescription_id")));
             }
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new IntegrationException("", ex);
+            throw new IntegrationException("Unable to generate an inspected space, sorry!", ex);
 
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
              if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
-        
-        // temp to close
-        return new ArrayList();
-
+    
+        is.setInspectedElementList(insElementList);
+        return is;
     }
+    
+    private InspectedElement generateInspectedElement(ResultSet rs) throws SQLException, IntegrationException{
+        CodeIntegrator ci = getCodeIntegrator();
+        InspectedElement ie = new InspectedElement();
+        
+        ie.setId(rs.getInt("inspectedchecklistspaceelementid"));
+        ie.setInspected(rs.getBoolean("inspected"));
+        ie.setElement(ci.getCodeElement(rs.getInt("codeelement_id")));
+        ie.setComplianceDate(rs.getTimestamp("compliancedate").toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime());
+        ie.setNotes(rs.getString("notes"));
+        // note this is the same location object as on the InspectedSPace to allow
+        // the severing of the InspectedElement from the space without losing
+        // location specific information
+        // an UN-elegant solution
+        ie.setLocation(getLocation(rs.getInt("locationdescription_id")));
+        
+        return ie;
+    }
+    
+    public LocationDescriptor getLocation(int locationID) throws IntegrationException{
+         String query_spaceIDs =  "SELECT locationdescriptionid, description\n" +
+                                  "  FROM public.locationdescription WHERE locationdescriptionid = ?;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        LocationDescriptor loc = null;
+        try {
+
+            // this gets us a list of all of the spaces that have been inspected for this
+            // occupancy inspection
+            stmt = con.prepareStatement(query_spaceIDs);
+            stmt.setInt(1, locationID);
+            rs = stmt.executeQuery();
+
+            // chugg down the list of spaceids and fetch an Inspected space for each
+            while(rs.next()){
+                loc = new LocationDescriptor();
+                loc.setLocationID(rs.getInt("locationdescriptionid"));
+                loc.setLocationDescription(rs.getString("description"));
+                
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to generate inspected space list, sorry!", ex);
+
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+
+        return loc;
+    }
+    
     
     /**
      * Inserts an InspectedSpace to the inspectedchecklistspaceelement table which has not 
      * previously been inspected. The InspectedSpace object and its composed elements
-     * do not have an ID number generated from the DB;
+     * do not have an ID number generated from the DB yet, and these will come from the DB
+     * sequences ;
      * 
      * Remember: The db doesn't have a concept of an "inspected space", only 
      * an inspectedSpaceElement so this method will iterate over the inspected
@@ -681,6 +768,10 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
                                 "            compliancedate, notes, locationdescription_id)\n" +
                                 "    VALUES (DEFAULT, ?, ?, \n" +
                                 "            ?, ?, ?);";
+        
+        // single row formatting of query_icse
+        // SELECT DISTINCT space_id FROM checklistspaceelement INNER JOIN spaceelement ON (spaceelement_id = spaceelementid) WHERE checklist_id = 1;
+        
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -702,8 +793,8 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
             }
 
             // we have the parts we need for inserting into the inspectedchecklistspaceelement
-            stmt = con.prepareStatement(query_icse);
             // for each inspected element, build and execute and insert
+            stmt = con.prepareStatement(query_icse);
             while (inspectedElementListIterator.hasNext()) {
                 ie = inspectedElementListIterator.next();
                 stmt.setInt(1, oi.getInspectionID());
@@ -729,6 +820,14 @@ public class ChecklistIntegrator extends BackingBeanUtils implements Serializabl
             } // close finally
     }
     
+    /**
+     * For updating values on InspectedSpaces which have previously been committed with 
+     * insertNewlyInspectedSpace. 
+     * @param oi
+     * @param is
+     * @throws IntegrationException thrown for standard SQL errors and this method being 
+     * given an InspectedSpace object whose constituent members lack ID numbers for the updates.
+     */
     public void updateInspectedSpace(OccupancyInspection oi, InspectedSpace is) throws IntegrationException{
         
         String query = "";

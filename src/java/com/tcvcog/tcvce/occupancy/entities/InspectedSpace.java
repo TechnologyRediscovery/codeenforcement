@@ -17,6 +17,7 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.occupancy.entities;
 
+import com.tcvcog.tcvce.application.BackingBeanUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -28,8 +29,11 @@ import java.util.ArrayList;
  * 
  * @author Eric C. Darsow, Technology Rediscovery LLC 
  */
-public class InspectedSpace extends Space implements Serializable{
+public class InspectedSpace extends BackingBeanUtils implements Serializable{
     
+    private int spaceid;
+    private SpaceType spaceType;
+    private String name;
     private ArrayList<InspectedElement> inspectedElementList;
     private LocationDescriptor location;
     
@@ -63,6 +67,48 @@ public class InspectedSpace extends Space implements Serializable{
      */
     public void setLocation(LocationDescriptor location) {
         this.location = location;
+    }
+
+    /**
+     * @return the spaceid
+     */
+    public int getSpaceid() {
+        return spaceid;
+    }
+
+    /**
+     * @return the spaceType
+     */
+    public SpaceType getSpaceType() {
+        return spaceType;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param spaceid the spaceid to set
+     */
+    public void setSpaceid(int spaceid) {
+        this.spaceid = spaceid;
+    }
+
+    /**
+     * @param spaceType the spaceType to set
+     */
+    public void setSpaceType(SpaceType spaceType) {
+        this.spaceType = spaceType;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
 }
