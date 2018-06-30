@@ -43,8 +43,10 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
    
     private CodeSet currentCodeSet;
     
+    private ArrayList<EnforcableCodeElement> eCEList;
+    private ArrayList<EnforcableCodeElement> filteredECEList;
+    
     private EnforcableCodeElement selectedECE;
-    private ArrayList<EnforcableCodeElement> cEEList;
     
     // for editing
     private int formCodeSetElementID;
@@ -54,6 +56,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     private String formPenaltyNotes;
     private int formNormDaysToComply;
     private String formDaysToComplyNotes; 
+    private String formMuniSpecificNotes;
     
     public String updateECEData(){
         CodeIntegrator ci = getCodeIntegrator();
@@ -82,36 +85,41 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @return the cEEList
+     * @return the eCEList
      */
-    public ArrayList<EnforcableCodeElement> getcEEList() {
-        
-        CodeIntegrator integrator = getCodeIntegrator();
-        CodeSet codeSet = getSessionBean().getActiveCodeSet();
-        
-        if(codeSet != null){
-            System.out.println("CodeSetElementBB.getEceList | active code set name: " + codeSet.getCodeSetName());
-            int setID = codeSet.getCodeSetID();
+    public ArrayList<EnforcableCodeElement> geteCEList() {
+        return eCEList;
+    }
+    
+    public String nukeECE(){
+        CodeIntegrator ci = getCodeIntegrator();
+        if(selectedECE != null){
             try {
-                cEEList =  integrator.getEnforcableCodeElementList(setID);
-//                getFacesContext().addMessage(null,
-//                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
-//                                "Loaded Enforcable Code Elements for set named: " +codeSet.getCodeSetName() , ""));
-            } catch (IntegrationException ex) {
-                System.out.println(ex.toString());
+                ci.deleteEnforcableCodeElementFromCodeSet(selectedECE);
                 getFacesContext().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, 
-                                "No Enforcable Code Elements were found with SetID: " + setID, ""));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                        "Code set element number " + selectedECE.getCodeSetElementID() + " has been removed forever!", ""));
+                    
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                ex.getMessage(), ""));
             }
-        } 
-        return cEEList;
+        } else {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                            "You must select an element to nuke it!", ""));
+        }
+        
+        return "codeSetManage";
     }
 
     /**
-     * @param cEEList the cEEList to set
+     * @param eCEList the eCEList to set
      */
-    public void setcEEList(ArrayList<EnforcableCodeElement> cEEList) {
-        this.cEEList = cEEList;
+    public void seteCEList(ArrayList<EnforcableCodeElement> eCEList) {
+        this.eCEList = eCEList;
     }
 
     /**
@@ -119,6 +127,9 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      */
     public CodeSet getCurrentCodeSet() {
         currentCodeSet = getSessionBean().getActiveCodeSet();
+        if(eCEList != null){
+            eCEList = currentCodeSet.getEnfCodeElementList();
+        }
         return currentCodeSet;
     }
 
@@ -243,6 +254,34 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      */
     public void setFormDaysToComplyNotes(String formDaysToComplyNotes) {
         this.formDaysToComplyNotes = formDaysToComplyNotes;
+    }
+
+    /**
+     * @return the filteredECEList
+     */
+    public ArrayList<EnforcableCodeElement> getFilteredECEList() {
+        return filteredECEList;
+    }
+
+    /**
+     * @param filteredECEList the filteredECEList to set
+     */
+    public void setFilteredECEList(ArrayList<EnforcableCodeElement> filteredECEList) {
+        this.filteredECEList = filteredECEList;
+    }
+
+    /**
+     * @return the formMuniSpecificNotes
+     */
+    public String getFormMuniSpecificNotes() {
+        return formMuniSpecificNotes;
+    }
+
+    /**
+     * @param formMuniSpecificNotes the formMuniSpecificNotes to set
+     */
+    public void setFormMuniSpecificNotes(String formMuniSpecificNotes) {
+        this.formMuniSpecificNotes = formMuniSpecificNotes;
     }
     
     

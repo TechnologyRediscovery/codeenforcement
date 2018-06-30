@@ -36,7 +36,8 @@ public class EnforcableCodeElement extends CodeElement{
     private double normPenalty;
     private String penaltyNotes;
     private int normDaysToComply;
-    private String daysToComplyNotes; 
+    private String daysToComplyNotes;
+    private String muniSpecificNotes;
 
     /**
      * @return the maxPenalty
@@ -148,6 +149,20 @@ public class EnforcableCodeElement extends CodeElement{
      */
     public void setCodeSetElementID(int codeSetElementID) {
         this.codeSetElementID = codeSetElementID;
+    }
+
+    /**
+     * @return the muniSpecificNotes
+     */
+    public String getMuniSpecificNotes() {
+        return muniSpecificNotes;
+    }
+
+    /**
+     * @param muniSpecificNotes the muniSpecificNotes to set
+     */
+    public void setMuniSpecificNotes(String muniSpecificNotes) {
+        this.muniSpecificNotes = muniSpecificNotes;
     }
     
 }

@@ -53,7 +53,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     private TabView tabView;
     private int currentTabIndex;
 
-    private ArrayList propList;
+    private ArrayList<Property> propList;
     private String addrPart;
     
     private int violationTypeID;

@@ -33,55 +33,111 @@
                                 rowKey="#{element.elementID}"
                                 tableStyleClass="primeDataTable"
                                 scrollable="true"
-                                scrollHeight="300">
-                                <p:column>
+                                scrollHeight="300"
+                                resizableColumns="true"
+                                rowExpandMode="multiple"
+                                expandedRow="false"
+                                filteredValue="#{codeElementListBB.filteredCodeElementList}"
+                                widgetVar="codeElementListTable">
+                                
+                                <p:column width="3%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Expand"/>
+                                    </f:facet>
+                                    <p:rowToggler/>
+                                </p:column>
+                                
+                                <p:column width="3%">
+                                    <f:facet name="header">
+                                        <h:outputText value="ID#" />
+                                    </f:facet>
+                                    <h:outputText value="#{element.elementID}"/>
+                                </p:column>
+                                
+                                <p:column width="10%" sortBy="#{element.guideEntry.category}"
+                                          filterBy="#{element.guideEntry.category}">
                                     <f:facet name="header">
                                         <h:outputText value="Category" />
                                     </f:facet>
                                     <h:outputText value="#{element.guideEntry.category}"/>
                                 </p:column>
-                                <p:column>
+                                
+                                <p:column width="10%" sortBy="#{element.guideEntry.subCategory}"
+                                          filterBy="#{element.guideEntry.subCategory}">
                                     <f:facet name="header">
                                         <h:outputText value="Sub Category" />
                                     </f:facet>
                                     <h:outputText value="#{element.guideEntry.subCategory}"/>
                                 </p:column>
-                                <p:column>
+                                
+                                <p:column width="5%" sortBy="#{element.ordchapterNo}">
                                     <f:facet name="header">
-                                        <h:outputText value="Chapt. No" />
+                                        <h:outputText value="Chap"/>
                                     </f:facet>
                                     <h:outputText value="#{element.ordchapterNo}"/>
                                 </p:column>
-                                <p:column>
+                                
+                                <p:column width="15%" sortBy="#{element.ordchapterTitle}"
+                                          filterBy="#{element.ordchapterTitle}">
                                     <f:facet name="header">
-                                        <h:outputText value="Sec. No" />
+                                        <h:outputText value="Chapter"/>
+                                    </f:facet>
+                                    <h:outputText value="#{element.ordchapterTitle}"/>
+                                </p:column>
+                                
+                                <p:column width="5%" sortBy="#{element.ordSecNum}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Sec" />
                                     </f:facet>
                                     <h:outputText value="#{element.ordSecNum}"/>
                                 </p:column>
-                                <p:column>
+                                
+                                <p:column width="15%" sortBy="#{element.ordSecTitle}"
+                                          filterBy="#{element.ordSecTitle}">
                                     <f:facet name="header">
                                         <h:outputText value="Sec. Title" />
                                     </f:facet>
-                                    <h:outputText value="#{element.ordsecTitle}"/>
+                                    <h:outputText value="#{element.ordSecTitle}"/>
                                 </p:column>
-                                <p:column>
+                                
+                                <p:column width="5%" sortBy="#{element.ordSubSecNum}">
                                     <f:facet name="header">
-                                        <h:outputText value="SubSec. No" />
+                                        <h:outputText value="SubSec" />
                                     </f:facet>
                                     <h:outputText value="#{element.ordSubSecNum}"/>
                                 </p:column>
-                                <p:column>
+                                
+                                <p:column sortBy="#{element.ordSubSecTitle}" 
+                                          filterBy="#{element.ordSubSecTitle}">
                                     <f:facet name="header">
                                         <h:outputText value="SubSec. Title" />
                                     </f:facet>
                                     <h:outputText value="#{element.ordSubSecTitle}"/>
                                 </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Active?" />
-                                    </f:facet>
-                                    <h:outputText value="#{element.isActive}"/>
-                                </p:column>
+                                
+                                <p:rowExpansion>
+                                    <h:outputLabel styleClass="bold" value="Technical Text"/>
+                                    <p:spacer height="15px"/>
+                                    <div class="rowExpansion">
+                                        <h:outputText escape="false" value="#{element.ordTechnicalText}"/>
+                                    </div>
+                                    <p:spacer height="15px"/>
+                                    <h:outputLabel styleClass="bold" value="Human friendly text"/>
+                                    <div class="rowExpansion">
+                                        <h:outputText escape="false" value="#{element.ordHumanFriendlyText}"/>
+                                    </div>
+                                    <p:spacer height="15px"/>
+                                    <h:outputLabel styleClass="bold" value="Code Guide: Enforcement Tips"/>
+                                    <div class="rowExpansion">
+                                        <h:outputText escape="false" value="#{element.guideEntry.enforcementGuidelines}"/>
+                                    </div>
+                                    <p:spacer height="15px"/>
+                                    <h:outputLabel styleClass="bold" value="Code guide: Inspection Tips"/>
+                                    <div class="rowExpansion">
+                                        <h:outputText escape="false" value="#{element.guideEntry.inspectionGuidelines}"/>
+                                    </div>
+                                </p:rowExpansion>
+                                
                             </p:dataTable>
                             
                             <p:spacer height="15px"/>
@@ -92,7 +148,7 @@
                                 action="#{codeElementListBB.updateSelectedCodeElement}"/>
 
                             <p:commandButton
-                                id="deleteCodeElement" value="Delete Selected Element"
+                                id="deleteCodeElement" value="Nuke Selected Element"
                                 styleClass="multiButtonLineButton" icon="fa fa-ban"
                                 actionListener="#{codeElementListBB.deleteCodeElement}"/>
 

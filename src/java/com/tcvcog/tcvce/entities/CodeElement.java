@@ -35,7 +35,7 @@ public class CodeElement {
     
     private String ordchapterTitle;
     private String ordSecNum;
-    private String ordsecTitle;
+    private String ordSecTitle;
     
     private String ordSubSecNum;
     private String ordSubSecTitle;
@@ -108,17 +108,17 @@ public class CodeElement {
     }
 
     /**
-     * @return the ordsecTitle
+     * @return the ordSecTitle
      */
-    public String getOrdsecTitle() {
-        return ordsecTitle;
+    public String getOrdSecTitle() {
+        return ordSecTitle;
     }
 
     /**
-     * @param ordsecTitle the ordsecTitle to set
+     * @param ordSecTitle the ordSecTitle to set
      */
-    public void setOrdsecTitle(String ordsecTitle) {
-        this.ordsecTitle = ordsecTitle;
+    public void setOrdSecTitle(String ordSecTitle) {
+        this.ordSecTitle = ordSecTitle;
     }
 
     /**

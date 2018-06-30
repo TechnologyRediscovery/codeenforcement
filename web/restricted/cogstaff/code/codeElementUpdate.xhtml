@@ -154,8 +154,12 @@
                             </h:outputLabel>
 
                             <h:panelGroup>
-                                <p:inputTextarea id="cdelOrdTechnicalText" value="#{codeElementBB.formOrdTechnicalText}" 
-                                                 style="width: 100%;" tabindex="8" required="true" styleClass="inputText"/>
+                                <p:editor   id="cdelOrdTechnicalText" value="#{codeElementBB.formOrdTechnicalText}" 
+                                                    controls="bold italic underline strikethrough font size style color 
+                                                    bullets numbering center undo redo rule link removeformat outdent 
+                                                    indent link unlink copy cut paste rule alignleft center alignright"
+                                                    width="1000" required="true"
+                                                    height="200"/>
                                 <h:message for="cdelOrdTechnicalText" showDetail="true" showSummary="true" 
                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                             </h:panelGroup>
@@ -167,8 +171,12 @@
 
                             <h:panelGroup>
 
-                                <p:inputTextarea id="cdelOrdHumanFriendlyText" value="#{codeElementBB.formOrdHumanFriendlyText}" 
-                                                 style="width: 100%;" tabindex="9" required="false" styleClass="inputText"/>
+                                <p:editor   id="cdelOrdHumanFriendlyText" value="#{codeElementBB.formOrdHumanFriendlyText}" 
+                                                    controls="bold italic underline strikethrough font size style color 
+                                                    bullets numbering center undo redo rule link removeformat outdent 
+                                                    indent link unlink copy cut paste rule alignleft center alignright"
+                                                    width="1000" required="true"
+                                                    height="200"/>
                                 <h:message for="cdelOrdHumanFriendlyText" showDetail="true" showSummary="true" 
                                            warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
                             </h:panelGroup>

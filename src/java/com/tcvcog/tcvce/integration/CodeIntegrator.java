@@ -29,15 +29,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.ActionSource;
 
 /**
  *
@@ -396,10 +392,10 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         String query = "INSERT INTO public.codesetelement(\n" +
                     "codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, \n" +
                     "elementminpenalty, elementnormpenalty, penaltynotes, normdaystocomply, \n" +
-                    "daystocomplynotes)\n" +
+                    "daystocomplynotes, munispecificnotes)\n" +
                     " VALUES (DEFAULT, ?, ?, ?, \n" +
                     "?, ?, ?, ?, \n" +
-                    "?);";
+                    "?, ?);";
  
         try {
             con = getPostgresCon();
@@ -412,6 +408,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setString(6, enforcableCodeElement.getPenaltyNotes());
             stmt.setInt(7, enforcableCodeElement.getNormDaysToComply());
             stmt.setString(8, enforcableCodeElement.getDaysToComplyNotes());
+            stmt.setString(9, enforcableCodeElement.getMuniSpecificNotes());
             System.out.println("CodeIntegrator.addCodeElementToCodeSet | ece insert: " + stmt.toString());
             
             stmt.execute();
@@ -431,7 +428,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         Connection con = null;
         String query =  "UPDATE public.codesetelement\n" +
                         "   SET elementmaxpenalty=?, elementminpenalty=?, elementnormpenalty=?, \n" +
-                        "       penaltynotes=?, normdaystocomply=?, daystocomplynotes=?\n" +
+                        "       penaltynotes=?, normdaystocomply=?, daystocomplynotes=?, munispecificnotes=?\n" +
                         " WHERE codesetelementid=?;";
         try {
             con = getPostgresCon();
@@ -442,7 +439,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setString(4, enforcableCodeElement.getPenaltyNotes());
             stmt.setInt(5, enforcableCodeElement.getNormDaysToComply());
             stmt.setString(6, enforcableCodeElement.getDaysToComplyNotes());
-            stmt.setInt(7, enforcableCodeElement.getCodeSetElementID());
+            stmt.setString(7, enforcableCodeElement.getMuniSpecificNotes());
+            stmt.setInt(8, enforcableCodeElement.getCodeSetElementID());
             System.out.println("CodeIntegrator.updateEnforcableCodeElement | ece update: " + stmt.toString());
             
             stmt.execute();
@@ -466,6 +464,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
             stmt.setInt(1, ece.getCodeSetElementID());
+            System.out.println("CodeIntegrator.deleteEnforcableCodeElementFromCodeSet | stmt: " + stmt.toString());
             stmt.execute();
             
         } catch (SQLException ex) {
@@ -521,12 +520,12 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @throws IntegrationException 
      */
     public EnforcableCodeElement getEnforcableCodeElement(int codeSetElementID) throws IntegrationException{
-        EnforcableCodeElement newEce = new EnforcableCodeElement();
+        EnforcableCodeElement newEce = null;
         PreparedStatement stmt = null;
         Connection con = null;
         String query = "SELECT codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, \n" +
                 " elementminpenalty, elementnormpenalty, penaltynotes, normdaystocomply, \n" +
-                " daystocomplynotes\n" +
+                " daystocomplynotes, munispecificnotes\n" +
                 " FROM public.codesetelement WHERE codesetelementid=?;";
         ResultSet rs = null;
  
@@ -536,15 +535,9 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setInt(1, codeSetElementID);
             rs = stmt.executeQuery();
             while(rs.next()){
+                newEce = generateEnforcableCodeElement(rs);
                 
-                newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
-                newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
-                newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
-                newEce.setMinPenalty(rs.getInt("elementminpenalty"));
-                newEce.setNormPenalty(rs.getInt("elementnormpenalty"));
-                newEce.setPenaltyNotes(rs.getString("penaltynotes"));
-                newEce.setNormDaysToComply(rs.getInt("normdaystocomply"));
-                newEce.setDaysToComplyNotes(rs.getString("daystocomplynotes"));
+                
             }
             
         } catch (SQLException ex) {
@@ -573,7 +566,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         Connection con = null;
         String query = "SELECT codesetelementid, codeset_codesetid, codelement_elementid, elementmaxpenalty, \n" +
                 " elementminpenalty, elementnormpenalty, penaltynotes, normdaystocomply, \n" +
-                " daystocomplynotes\n" +
+                " daystocomplynotes, munispecificnotes\n" +
                 " FROM public.codesetelement where codeset_codesetid=?;";
         ResultSet rs = null;
         ArrayList<EnforcableCodeElement> eceList = new ArrayList();
@@ -585,18 +578,8 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             
             while(rs.next()){
-                EnforcableCodeElement newEce = new EnforcableCodeElement();
-                // start with the base code element
-                newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
                 
-                newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
-                newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
-                newEce.setMinPenalty(rs.getInt("elementminpenalty"));
-                newEce.setNormPenalty(rs.getInt("elementnormpenalty"));
-                newEce.setPenaltyNotes(rs.getString("penaltynotes"));
-                newEce.setNormDaysToComply(rs.getInt("normdaystocomply"));
-                newEce.setDaysToComplyNotes(rs.getString("daystocomplynotes"));
-                eceList.add(newEce);
+                eceList.add(generateEnforcableCodeElement(rs));
                 
             }
         } catch (SQLException ex) {
@@ -611,6 +594,21 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         return eceList;
     }
     
+    private EnforcableCodeElement generateEnforcableCodeElement(ResultSet rs) throws SQLException, IntegrationException{
+        
+        EnforcableCodeElement newEce = new EnforcableCodeElement();
+        newEce.setCodeSetElementID(rs.getInt("codesetelementid"));
+        newEce.setCodeElement(getCodeElement(rs.getInt("codelement_elementid")));
+        newEce.setMaxPenalty(rs.getInt("elementmaxpenalty"));
+        newEce.setMinPenalty(rs.getInt("elementminpenalty"));
+        newEce.setNormPenalty(rs.getInt("elementnormpenalty"));
+        newEce.setPenaltyNotes(rs.getString("penaltynotes"));
+        newEce.setNormDaysToComply(rs.getInt("normdaystocomply"));
+        newEce.setDaysToComplyNotes(rs.getString("daystocomplynotes"));
+        newEce.setMuniSpecificNotes(rs.getString("munispecificnotes"));
+        return newEce;
+    }
+    
     /**
      * Internal Utility method for loading up a CodeElement object given
      * a result set. Used by all sorts of CodeElement related methods
@@ -621,13 +619,18 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * @param e an empty CodeElement. Client class is responsible for instantiation
      * @return a populated CodeElement extracted from that row in the ResultSet
      */
-    private CodeElement GenerateCodeElement(ResultSet rs, CodeElement e) throws SQLException, IntegrationException{
+    private CodeElement generateCodeElement(ResultSet rs, CodeElement e) throws SQLException, IntegrationException{
                 
                 // to ease the eyes, line spacing corresponds to the field spacing in CodeElement
         
                 e.setElementID(rs.getInt("elementid"));
                 
-                e.setGuideEntry(getCodeElementGuideEntry(rs.getInt("guideentryid")));
+                if(rs.getInt("guideentryid") != 0){
+                    e.setGuideEntry(getCodeElementGuideEntry(rs.getInt("guideentryid")));
+                    
+                } else {
+                    e.setGuideEntry(null);
+                }
                 
                 e.setSource(getCodeSource(rs.getInt("codesource_sourceid")));
                 
@@ -635,7 +638,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
                 
                 e.setOrdchapterTitle(rs.getString("ordchaptertitle"));
                 e.setOrdSecNum(rs.getString("ordsecnum"));
-                e.setOrdsecTitle(rs.getString("ordsectitle"));
+                e.setOrdSecTitle(rs.getString("ordsectitle"));
                 
                 e.setOrdSubSecNum(rs.getString("ordsubsecnum"));
                 e.setOrdSubSecTitle(rs.getString("ordsubsectitle"));
@@ -680,7 +683,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             
             // this query will only return 1 row since the WHERE clause selects from an PK column
             while(rs.next()){
-                newCodeElement = GenerateCodeElement(rs, newCodeElement);
+                newCodeElement = generateCodeElement(rs, newCodeElement);
                  
             }
         } catch (SQLException ex) {
@@ -742,13 +745,13 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     
     public void insertCodeElement(CodeElement element) throws IntegrationException{
          String query = "INSERT INTO public.codeelement( " 
-                 + "elementid, guideentryid, codesource_sourceid, "
+                 + "elementid, codesource_sourceid, "
                  + "ordchapterno, ordchaptertitle, ordsecnum, "
                  + "ordsectitle, ordsubsecnum, ordsubsectitle, " 
                  + "ordtechnicaltext, ordhumanfriendlytext, "
                  + "isactive,  "
                  + "resourceurl, datecreated) " +
-                    "    VALUES (DEFAULT, ?, ?, ?, \n" +
+                    "    VALUES (DEFAULT, ?, ?, \n" +
                     "            ?, ?, ?, ?, ?, \n" +
                     "            ?, ?, \n" +
                     "            ?, ?, \n" +
@@ -760,22 +763,22 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            stmt.setInt(1, element.getGuideEntry().getGuideEntryID());
-            stmt.setInt(2, element.getSource().getSourceID());
             
-            stmt.setInt(3, element.getOrdchapterNo());
-            stmt.setString(4, element.getOrdchapterTitle());
-            stmt.setString(5, element.getOrdSecNum());
+            stmt.setInt(1, element.getSource().getSourceID());
             
-            stmt.setString(6, element.getOrdsecTitle());
-            stmt.setString(7, element.getOrdSubSecNum());
-            stmt.setString(8, element.getOrdSubSecTitle());
+            stmt.setInt(2, element.getOrdchapterNo());
+            stmt.setString(3, element.getOrdchapterTitle());
+            stmt.setString(4, element.getOrdSecNum());
             
-            stmt.setString(9, element.getOrdTechnicalText());
-            stmt.setString(10, element.getOrdHumanFriendlyText());
+            stmt.setString(5, element.getOrdSecTitle());
+            stmt.setString(6, element.getOrdSubSecNum());
+            stmt.setString(7, element.getOrdSubSecTitle());
             
-            stmt.setBoolean(11, element.isIsActive());
-            stmt.setString(12, element.getResourceURL());
+            stmt.setString(8, element.getOrdTechnicalText());
+            stmt.setString(9, element.getOrdHumanFriendlyText());
+            
+            stmt.setBoolean(10, element.isIsActive());
+            stmt.setString(11, element.getResourceURL());
             
             System.out.println("CodeIntegrator.insertCodeElement | insert statement: " + stmt.toString());
             
@@ -793,8 +796,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
     public void updateCodeElement(CodeElement element) throws IntegrationException{
         System.out.println("CodeIntegrator.udpateCodeElement | element to insert chapter name: " + element.getOrdchapterTitle());
           String query = "UPDATE public.codeelement\n" +
-                "SET guideentryid=?, \n" +
-                "ordchapterno=?, ordchaptertitle=?, ordsecnum=?, ordsectitle=?, \n" +
+                "SET ordchapterno=?, ordchaptertitle=?, ordsecnum=?, ordsectitle=?, \n" +
                 "ordsubsecnum=?, ordsubsectitle=?, ordtechnicaltext=?, ordhumanfriendlytext=?, \n" +
                 "isactive=?, resourceurl=?, \n" +
                 "datecreated=now()\n" +
@@ -806,32 +808,26 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
          try {
             con = getPostgresCon();
             stmt = con.prepareStatement(query);
-            if(element.getGuideEntryID() != 0){
-                stmt.setInt(1, element.getGuideEntryID());
-                
-            } else {
-                
-                stmt.setNull(1, java.sql.Types.NULL);
-            }
+           
             
             // no source changes on element update
             //stmt.setInt(2, element.getSource().getSourceID());
             
-            stmt.setInt(2, element.getOrdchapterNo());
-            stmt.setString(3, element.getOrdchapterTitle());
-            stmt.setString(4, element.getOrdSecNum());
+            stmt.setInt(1, element.getOrdchapterNo());
+            stmt.setString(2, element.getOrdchapterTitle());
+            stmt.setString(3, element.getOrdSecNum());
             
-            stmt.setString(5, element.getOrdsecTitle());
-            stmt.setString(6, element.getOrdSubSecNum());
-            stmt.setString(7, element.getOrdSubSecTitle());
+            stmt.setString(4, element.getOrdSecTitle());
+            stmt.setString(5, element.getOrdSubSecNum());
+            stmt.setString(6, element.getOrdSubSecTitle());
             
-            stmt.setString(8, element.getOrdTechnicalText());
-            stmt.setString(9, element.getOrdHumanFriendlyText());
+            stmt.setString(7, element.getOrdTechnicalText());
+            stmt.setString(8, element.getOrdHumanFriendlyText());
             
-            stmt.setBoolean(10, element.isIsActive());
-            stmt.setString(11, element.getResourceURL());
+            stmt.setBoolean(9, element.isIsActive());
+            stmt.setString(10, element.getResourceURL());
             
-            stmt.setInt(12, element.getElementID());
+            stmt.setInt(11, element.getElementID());
             
             System.out.println("CodeIntegrator.updateCodeElement | update statement: " + stmt.toString());
             

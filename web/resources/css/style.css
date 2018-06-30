@@ -423,6 +423,27 @@ div.headerLinkCont{
 /***************** CLOSE TEXT AND SPANS ***********************/
 
 
+/* --------------- DIVS---------------------------*/
+
+.rowExpansion{
+    white-space: normal;
+    overflow-wrap: normal;
+}
+
+.outlinedBox{
+    margin: 15px;
+    border: thin solid #4774A0;
+    padding: 10px;
+}
+
+
+
+
+/* ****************** CLOSE DIVS ************************/
+
+
+
+
 /* --------------- IMAGES ---------------------------*/
 
 
@@ -471,13 +492,18 @@ div.ccBox{
 }
 
 
-/* ------------------TABLE STYLES ----------------------/
+
+
+
+/* ------------------TABLE STYLES ----------------------*/
 
 
 
 
 table.primeDataTable td{
     font-size: small;
+    white-space: normal;
+    overflow-wrap: normal;
 }
 
 .primeDataTable{
@@ -571,6 +597,16 @@ td.userBarTd{
 }
 
 
+.buttonOwnLine{
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    clear: left;
+/*    color: blue;
+    background-color: green;*/
+}
+
+
 
 /* ****************** CLOSE BUTTON STYLES ********************/
 
@@ -594,14 +630,6 @@ a.outputLink{
     margin-bottom: 10px;
 }
 
-.buttonOwnLine{
-    display: block;
-    margin-bottom: 10px;
-    margin-top: 5px;
-    clear: left;
-/*    color: blue;
-    background-color: green;*/
-}
 
 .textArea{
     width: 400px;

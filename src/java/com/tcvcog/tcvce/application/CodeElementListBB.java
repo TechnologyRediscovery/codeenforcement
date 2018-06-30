@@ -42,8 +42,27 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
     
     private CodeElement selectedElement;
     private ArrayList<CodeElement> codeElementList;
+    private ArrayList<CodeElement> filteredCodeElementList;
+    
+    
     
     private CodeSource activeCodeSource;
+    
+    private ArrayList<CodeElement> loadCodeElementList(){
+        ArrayList<CodeElement> elList = null;
+        CodeSource source = getSessionBean().getActiveCodeSource();
+        CodeIntegrator codeIntegrator = getCodeIntegrator();
+        try {
+            elList = codeIntegrator.getCodeElements(source.getSourceID());
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to populate list of code elements, sorry!", 
+                            "This error will require administrator attention"));
+        }
+        return elList;
+        
+    }
     
     
     public String updateSelectedCodeElement(){
@@ -69,6 +88,26 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         
     }
     
+    /**
+     * Test sorting method: not working as of 28 June 18 -- used the PrimeFaces
+     * documentation as a guide but this doesn't get us there
+     * @param ob1
+     * @param ob2
+     * @return -1 ob1 < ob2, 0 ob1==ob2, 1 if ob1 > ob2
+     */
+    public int sortByChapter(Object ob1, Object ob2){
+        CodeElement ele1 = (CodeElement) ob1;
+        CodeElement ele2 = (CodeElement) ob2;
+        
+        if(ele1.getOrdchapterNo() < ele2.getOrdchapterNo()){
+            return -1;
+        } else if(ele1.getOrdchapterNo() == ele2.getOrdchapterNo()){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+    
     
 
     /**
@@ -89,18 +128,9 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
      * @return the codeElementList
      */
     public ArrayList<CodeElement> getCodeElementList() {
-        
-        CodeSource source = getSessionBean().getActiveCodeSource();
-        CodeIntegrator codeIntegrator = getCodeIntegrator();
-        try {
-            codeElementList = codeIntegrator.getCodeElements(source.getSourceID());
-        } catch (IntegrationException ex) {
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to populate list of code elements, sorry!", 
-                            "This error will require administrator attention"));
-        }
-        
+        if(codeElementList == null){
+            codeElementList = loadCodeElementList();
+        } 
         return codeElementList;
     }
 
@@ -123,6 +153,20 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
      */
     public void setActiveCodeSource(CodeSource activeCodeSource) {
         this.activeCodeSource = activeCodeSource;
+    }
+
+    /**
+     * @return the filteredCodeElementList
+     */
+    public ArrayList<CodeElement> getFilteredCodeElementList() {
+        return filteredCodeElementList;
+    }
+
+    /**
+     * @param filteredCodeElementList the filteredCodeElementList to set
+     */
+    public void setFilteredCodeElementList(ArrayList<CodeElement> filteredCodeElementList) {
+        this.filteredCodeElementList = filteredCodeElementList;
     }
 
 }

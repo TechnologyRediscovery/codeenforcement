@@ -67,7 +67,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         
         currentElement.setOrdchapterTitle(formOrdChapterTitle);
         currentElement.setOrdSecNum(formOrdSecNum);
-        currentElement.setOrdsecTitle(formOrdSecTitle);
+        currentElement.setOrdSecTitle(formOrdSecTitle);
         
         currentElement.setOrdSecNum(formOrdSecNum);
         currentElement.setOrdSubSecTitle(formOrdSubSecTitle);
@@ -114,7 +114,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
         
         newCE.setOrdchapterTitle(formOrdChapterTitle);
         newCE.setOrdSecNum(formOrdSecNum);
-        newCE.setOrdsecTitle(formOrdSecTitle);
+        newCE.setOrdSecTitle(formOrdSecTitle);
         
         newCE.setOrdSubSecNum(formOrdSecNum);
         newCE.setOrdSubSecTitle(formOrdSubSecTitle);
@@ -198,7 +198,7 @@ public class CodeElementBB extends BackingBeanUtils implements Serializable{
      */
     public String getFormOrdSecTitle() {
         if(currentElement != null){
-            formOrdSecTitle = currentElement.getOrdsecTitle();
+            formOrdSecTitle = currentElement.getOrdSecTitle();
         }
         return formOrdSecTitle;
     }

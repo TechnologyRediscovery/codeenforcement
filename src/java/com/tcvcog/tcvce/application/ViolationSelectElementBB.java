@@ -36,6 +36,7 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
 
     private EnforcableCodeElement selectedViolatedEnfElement;
     private ArrayList<EnforcableCodeElement> enfElementList;
+    private ArrayList<EnforcableCodeElement> filteredElementList;
     private CodeSet currentCodeSet;
 
     /**
@@ -126,6 +127,20 @@ public class ViolationSelectElementBB extends BackingBeanUtils implements Serial
      */
     public void setCurrentCodeSet(CodeSet currentCodeSet) {
         this.currentCodeSet = currentCodeSet;
+    }
+
+    /**
+     * @return the filteredElementList
+     */
+    public ArrayList<EnforcableCodeElement> getFilteredElementList() {
+        return filteredElementList;
+    }
+
+    /**
+     * @param filteredElementList the filteredElementList to set
+     */
+    public void setFilteredElementList(ArrayList<EnforcableCodeElement> filteredElementList) {
+        this.filteredElementList = filteredElementList;
     }
 
 }
