@@ -12,19 +12,185 @@
     <h:body>
         <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
-                <f:view id="NAME_ME">
-                    
-                    <div class="mainContainer">
-                        <h1>Text block manager</h1>
-                        
-                        <h:outputText value="Under construction!"/>
+                <f:view id="textBlockManageView">
+                     <div class="mainContainer">
+                        <h:messages globalOnly="true" showDetail="true" showSummary="true"
+                                    warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
+                        </h:messages>
+                        <h1>Manage Notice of violation text blocks</h1>
 
-                        <h:form id="NAME_ME">
+                        <h:form id="textBlockTableForm">
 
-                         
+                            <h2>Existing text blocks</h2>
+
+                            <p><span style="font-style: italic">A text block is a
+                                paragraph or so of formatted text that can be inserted into
+                                a notice of violation. This feature allows for the storage of
+                                stock text in the database, sharable by all users--obviating 
+                                the need for tedious copying and pasting from a local document.</span></p>
+
+                            <p:spacer height="15px"/>
+                            <p:dataTable
+                                id="textBlockTable"
+                                var="block"
+                                value="#{textBlockBB.blockList}"
+                                selectionMode="single"
+                                selection="#{textBlockBB.selectedBlock}"
+                                rowKey="#{block.blockID}"
+                                tableStyleClass="primeDataTable"
+                                scrollable="true"
+                                scrollHeight="300"
+                                resizableColumns="true"
+                                rowExpandMode="multiple"
+                                expandedRow="false"
+                                filteredValue="#{textBlockBB.filteredBlockList}"
+                                widgetVar="textBlockTableWidgetVar"
+                                tabindex="1">
+                                
+                                <p:column width="3%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Exp"/>
+                                    </f:facet>
+                                    <p:rowToggler/>
+                                </p:column>
+                                
+                                <p:column width="3%">
+                                    <f:facet name="header">
+                                        <h:outputText value="ID#" />
+                                    </f:facet>
+                                    <h:outputText value="#{block.blockID}"/>
+                                </p:column>
+                                
+                                <p:column width="10%" sortBy="#{block.muni.muniName}"
+                                          filterBy="#{block.muni.muniName}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Municipality" />
+                                    </f:facet>
+                                    <h:outputText value="#{block.muni.muniName}"/>
+                                </p:column>
+                                
+                                <p:column width="10%" sortBy="#{block.textBlockCategoryTitle}"
+                                          filterBy="#{block.textBlockCategoryTitle}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Category" />
+                                    </f:facet>
+                                    <h:outputText value="#{block.textBlockCategoryTitle}"/>
+                                </p:column>
+                                
+                                <p:column width="5%" sortBy="#{block.textBlockName}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Block Name"/>
+                                    </f:facet>
+                                    <h:outputText value="#{block.textBlockName}"/>
+                                </p:column>
+                                <p:rowExpansion>
+                                    <h:outputLabel styleClass="bold" value="Block text"/>
+                                    <p:spacer height="15px"/>
+                                    <div class="rowExpansion">
+                                        <h:outputText escape="false" value="#{block.textBlockText}"/>
+                                    </div>
+                                </p:rowExpansion>
+                            </p:dataTable>
+                            
+                            <p:commandButton 
+                                id="updateBlockButton" ajax="false" icon="fa fa-edit"
+                                value="Update selected text block" tabindex="2" update=""
+                                action="#{codeSetBB.manageCodeSetElements}"/>
+
+                            <p:commandButton 
+                                id="codeSetBuilderButton" ajax="false" icon="fa fa-bomb"
+                                value="Nuke selected text block" tabindex="3"
+                                action="#{textBlockBB.nukeTextBlock}"/>
+
+                            <p:spacer height="10"/>
+                            <hr/>
+                            <p:spacer height="10"/>
+
+                            <h2>Update Text Block</h2>
+
+                            <h:outputText value="Code set ID: #{textBlockBB.selectedBlock.blockID}" id="selectedBlockOT" />
+
+                            <p:spacer height="15"/>
+
+                            <p:outputLabel for="blockNameIT">
+                                <h:outputText value="Block name"/>
+                            </p:outputLabel>
+
+                            <p:inputText id="blockNameIT" value="#{textBlockBB.selectedBlock.textBlockName}" 
+                                         style="width: 20%;" tabindex="4" required="true" styleClass="inputText"/>
+                            <h:message for="blockNameIT" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <p:spacer height="15"/>
+
+                            <p:outputLabel for="selectedCodeSetDesc">
+                                <h:outputText value="Description"/>
+                            </p:outputLabel>
+
+                            <p:inputText id="selectedCodeSetDesc" value="#{codeSetBB.formCodeSetDescription}" 
+                                         style="width: 90%;" tabindex="5" required="true" styleClass="inputText"/>
+                            <h:message for="selectedCodeSetDesc" showDetail="false" showSummary="true" 
+                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                            <p class="note">Moving an existing code set to a new municipality must be done on the "back end" by an administrator.</p>
+
+                            <p:commandButton 
+                                id="updatSet" 
+                                value="Commit updates to code set" 
+                                ajax="false" icon="fa fa-check"
+                                styleClass="buttonOwnLine" tabindex="6"
+                                actionListener="#{codeSetBB.commitUpdatesToCodeSet}"/>
 
                         </h:form>
-                        
+
+                        <p:spacer height="10"/>
+                        <hr/>
+                        <p:spacer height="10"/>
+                        <h2>Add a new code set</h2>
+
+                        <h:form id="addNewCodeSet">
+                            <p:fieldset legend="Add new code set"
+                                        toggleable="true"
+                                        collapsed="false">
+
+                                <p:selectOneMenu 
+                                    id="muni" tabindex="7"
+                                    value="#{codeSetBB.formNewMuniCode}"
+                                    style="display: block; clear: right;">
+                                    <f:selectItems value="#{codeSetBB.muniMap}"/>
+                                </p:selectOneMenu>
+
+                                <p:spacer height="15px;"/>
+
+                                <p:outputLabel for="newCodeSetName">
+                                    <h:outputText value="New Code Set Name"/>
+                                </p:outputLabel>
+
+                                <p:inputText id="newCodeSetName" value="#{codeSetBB.formNewCodeSetName}" 
+                                             style="width: 50%;" tabindex="8" required="true" styleClass="inputText"/>
+                                <h:message for="newCodeSetName" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                <p:spacer height="15px;"/>
+
+                                <p:outputLabel for="newCodeSetDescription">
+                                    <h:outputText value="New Code Set Description"/>
+                                </p:outputLabel>
+                                <p:inputText id="newCodeSetDescription" value="#{codeSetBB.formNewCodeSetDescription}" 
+                                             style="width: 50%;" tabindex="9" required="true" styleClass="inputText"/>
+                                <h:message for="newCodeSetDescription" showDetail="false" showSummary="true" 
+                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+
+                                <p:spacer height="15px;"/>
+
+                                <p:commandButton
+                                    id="newCodeSet" icon="fa fa-plus" tabindex="10"
+                                    value="Add new set" ajax="false"
+                                    styleClass="buttonOwnLine" update="codeSetSelectOneLB"
+                                    actionListener="#{codeSetBB.addNewCodeSet}"/>
+                            </p:fieldset>
+                        </h:form>
+                    </div>
                         
 
 

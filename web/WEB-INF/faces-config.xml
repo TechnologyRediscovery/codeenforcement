@@ -778,6 +778,7 @@
         <navigation-case>
             <from-outcome>textBlockManage</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/textBlockManage.xhtml</to-view-id>
+            <redirect/>
         </navigation-case>
         
         
@@ -1025,10 +1026,15 @@
             <redirect />
         </navigation-case>
         
-    </navigation-rule>    
+        <navigation-case>
+            <from-outcome>codeGuideLink</from-outcome>
+            <to-view-id>/restricted/cogstaff/code/codeGuideLink.xhtml</to-view-id>
+        </navigation-case>
         
+    </navigation-rule>    
+
     <navigation-rule>
-        <from-view-id>/restricted/cogstaff/code/codeSourceAddUpdate.xhtml</from-view-id>
+        <from-view-id>/restricted/cogstaff/code/</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
             <to-view-id>/restricted/cogstaff/code/codeSourceManage.xhtml</to-view-id>
@@ -1112,6 +1118,11 @@
     <managed-bean>
         <managed-bean-name>ceActionRequestsBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.CeActionRequestsBB</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>textBlockBB</managed-bean-name>
+        <managed-bean-class>com.tcvcog.tcvce.application.TextBlockBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

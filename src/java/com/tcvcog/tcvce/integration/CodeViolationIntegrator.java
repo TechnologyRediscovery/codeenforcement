@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -467,6 +468,34 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         return cvList;
+    }
+    
+    public HashMap<String, Integer> getTextBlockCategoryMap() throws IntegrationException{
+        String query =  "SELECT categoryid, cateogrytitle\n" +
+                        "  FROM public.textblockcategory;";
+        HashMap<String, Integer> categoryMap = new HashMap<>();
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(query);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                categoryMap.put(rs.getString("categorytitle"), rs.getInt("categoryid"));
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Cannot fetch code violation by ID, sorry.", ex);
+
+        } finally {
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return categoryMap;
     }
     
     private TextBlock generateTextBlock(ResultSet rs) throws SQLException, IntegrationException{

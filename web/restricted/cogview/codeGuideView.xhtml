@@ -27,8 +27,12 @@
                             <p>The category and sub-category of the code guide entries is also a handy way to organize
                             and search through the code base.</p>
                             
+                            
                             <p:commandButton ajax="false" value="Create new guide entry" 
                                              action="#{codeElementGuideBB.addNewCodeGuideEntry}" icon="fa fa-plus"/>
+                            
+                            <p:commandButton ajax="false" value="Link code elements to guide entries through code source manage page" 
+                                             action="codeSourceManage" icon="fa fa-link"/>
                             
                             <p:spacer height="15px"/>
                             

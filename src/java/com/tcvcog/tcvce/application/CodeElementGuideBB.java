@@ -18,10 +18,16 @@ Council of Governments, PA
 package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.CodeElement;
 import com.tcvcog.tcvce.entities.CodeElementGuideEntry;
+import com.tcvcog.tcvce.entities.CodeSource;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -32,7 +38,18 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
       
     private CodeElementGuideEntry currentGuideEntry;
     private ArrayList<CodeElementGuideEntry> entryList;
+    private ArrayList<CodeElementGuideEntry> filteredEntryList;
+    
     private CodeElementGuideEntry selectedGuideEntry;
+    
+    private CodeSource currentSource;
+    
+    
+    private ArrayList<CodeElement> elementList;
+    private ArrayList<CodeElement> filteredElementList;
+    // no selected elements I don't think
+    private CodeElement selectedElement;
+    
     
     
     /**
@@ -41,7 +58,55 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
     public CodeElementGuideBB() {
     }
     
+    
+    public String updateCodeGuideLinks(){
+        CodeIntegrator ci = getCodeIntegrator();
+        ListIterator<CodeElement> eleIterator = elementList.listIterator();
+        CodeElement ce;
+        int guideEntryID;
+        
+        while(eleIterator.hasNext()){
+            ce = eleIterator.next();
+            guideEntryID = ce.getGuideEntryID();
+            if(guideEntryID != 0){
+                try {
+                    ci.linkElementToCodeGuideEntry(ce, guideEntryID );
+                    getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Linked guide entry ID " 
+                                + guideEntryID + " to element ID " + ce.getElementID(), ""));
+                } catch (IntegrationException ex) {
+                    getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+                }
+            }
+        }
+        
+        return "";
+    }
    
+    
+    private ArrayList<CodeElement> loadCodeElementList(){
+        ArrayList<CodeElement> elList = null;
+        CodeSource source = getSessionBean().getActiveCodeSource();
+        CodeIntegrator codeIntegrator = getCodeIntegrator();
+        try {
+            elList = codeIntegrator.getCodeElements(source.getSourceID());
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Unable to populate list of code elements, sorry!", 
+                            "This error will require administrator attention"));
+        }
+        return elList;
+        
+    }
+    
+     public ArrayList<CodeElement> getElementList() {
+        if(elementList == null){
+            elementList = loadCodeElementList();
+        } 
+        return elementList;
+    }
     
     public String deleteCodeElementGuideEntry(){
         if(selectedGuideEntry != null){
@@ -100,11 +165,14 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
      * @return the entryList
      */
     public ArrayList<CodeElementGuideEntry> getEntryList() {
+        System.out.println("CodeElementGuideBB.getEntryList");
         CodeIntegrator ci = getCodeIntegrator();
-        try {
-            entryList = ci.getCodeElementGuideEntries();
-        } catch (IntegrationException ex) {
-            System.out.println("CodeElementGuideBB.getEntryList | " + ex.getMessage());
+        if(entryList == null){
+            try {
+                entryList = ci.getCodeElementGuideEntries();
+            } catch (IntegrationException ex) {
+                System.out.println("CodeElementGuideBB.getEntryList | " + ex.getMessage());
+            }
         }
         return entryList;
     }
@@ -137,6 +205,72 @@ public class CodeElementGuideBB extends BackingBeanUtils implements Serializable
      */
     public void setSelectedGuideEntry(CodeElementGuideEntry selectedGuideEntry) {
         this.selectedGuideEntry = selectedGuideEntry;
+    }
+
+    /**
+     * @return the filteredEntryList
+     */
+    public ArrayList<CodeElementGuideEntry> getFilteredEntryList() {
+        return filteredEntryList;
+    }
+
+    /**
+     * @param filteredEntryList the filteredEntryList to set
+     */
+    public void setFilteredEntryList(ArrayList<CodeElementGuideEntry> filteredEntryList) {
+        this.filteredEntryList = filteredEntryList;
+    }
+
+
+    /**
+     * @return the selectedElement
+     */
+    public CodeElement getSelectedElement() {
+        return selectedElement;
+    }
+
+    /**
+     * @param selectedElement the selectedElement to set
+     */
+    public void setSelectedElement(CodeElement selectedElement) {
+        this.selectedElement = selectedElement;
+    }
+
+   
+    /**
+     * @param elementList the elementList to set
+     */
+    public void setElementList(ArrayList<CodeElement> elementList) {
+        this.elementList = elementList;
+    }
+
+    /**
+     * @return the filteredElementList
+     */
+    public ArrayList<CodeElement> getFilteredElementList() {
+        return filteredElementList;
+    }
+
+    /**
+     * @param filteredElementList the filteredElementList to set
+     */
+    public void setFilteredElementList(ArrayList<CodeElement> filteredElementList) {
+        this.filteredElementList = filteredElementList;
+    }
+
+    /**
+     * @return the currentSource
+     */
+    public CodeSource getCurrentSource() {
+        currentSource = getSessionBean().getActiveCodeSource();
+        return currentSource;
+    }
+
+    /**
+     * @param currentSource the currentSource to set
+     */
+    public void setCurrentSource(CodeSource currentSource) {
+        this.currentSource = currentSource;
     }
 
    

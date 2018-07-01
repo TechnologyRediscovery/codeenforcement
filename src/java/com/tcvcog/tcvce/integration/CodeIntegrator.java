@@ -65,7 +65,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
      * 
      * @throws SQLException 
      */
-    private CodeSource populateCodeSourceFromRS(ResultSet rs, CodeSource source) throws SQLException{
+    private CodeSource populateCodeSourceMetatdataFromRS(ResultSet rs, CodeSource source) throws SQLException{
         
         
         source.setSourceID(rs.getInt(1));
@@ -103,7 +103,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setInt(1, sourceID);
             rs = stmt.executeQuery();
             while(rs.next()){
-                populateCodeSourceFromRS(rs, source);
+                populateCodeSourceMetatdataFromRS(rs, source);
 
             }
             
@@ -245,7 +245,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
             while(rs.next()){
-                source = populateCodeSourceFromRS(rs, new CodeSource());
+                source = populateCodeSourceMetatdataFromRS(rs, new CodeSource());
                 if(source != null){
                     // figure out about this possible dereferencing warning
                     codeSources.add(source);
@@ -625,9 +625,9 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         
                 e.setElementID(rs.getInt("elementid"));
                 
+                e.setGuideEntryID(rs.getInt("guideentryid"));
                 if(rs.getInt("guideentryid") != 0){
                     e.setGuideEntry(getCodeElementGuideEntry(rs.getInt("guideentryid")));
-                    
                 } else {
                     e.setGuideEntry(null);
                 }
@@ -992,6 +992,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             while(rs.next()){
                 cege = generateCodeElementGuideEntry(rs);
+                System.out.println("CodeIntegrator.getCodeElementGuideEntry | retrievd " + cege.getGuideEntryID());
             }
              
         } catch (SQLException ex) { 
@@ -1026,6 +1027,7 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
             rs = stmt.executeQuery();
             while(rs.next()){
                 cegelist.add(generateCodeElementGuideEntry(rs));
+                System.out.println("CodeIntegrator.getCodeElementGuideEntries | retrieved Entry");
                 
             }
              
@@ -1050,6 +1052,29 @@ public class CodeIntegrator extends BackingBeanUtils implements Serializable {
         cege.setInspectionGuidelines(rs.getString("inspectionguidelines"));
         cege.setPriority(rs.getBoolean("priority"));
         return cege;
+    }
+    
+    public void linkElementToCodeGuideEntry(CodeElement element, int codeGuideEntryID) throws IntegrationException{
+        String query =  "update codeelement set guideentryid = ? where elementid = ?;";
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+         try {
+            con = getPostgresCon();
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, codeGuideEntryID);
+            stmt.setInt(2, element.getElementID());
+            stmt.execute();
+             
+        } catch (SQLException ex) { 
+             System.out.println(ex.toString());
+             throw new IntegrationException("Unable to link element id " + element.getElementID() 
+                     + " to guide entry with ID of " + codeGuideEntryID 
+                     + ". Make sure your guide entry ID exists in the CodeGuide.", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+        } // close finally
     }
     
 } // close class

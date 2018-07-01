@@ -74,7 +74,7 @@ public class CodeElementListBB extends BackingBeanUtils implements Serializable 
         } else {
             getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Hark--No elemented selected. Please click on a code element first.", ""));
+                            "Hark--No elemented selected. Please click on a code element fi rst.", ""));
             return null;
         }
         

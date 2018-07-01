@@ -71,6 +71,12 @@ public class CodeSourceBB extends BackingBeanUtils implements Serializable{
         getSessionBean().setActiveCodeSource(selectedCodeSource);
         return "codeElementList";
     }
+    
+    public String linkElementsToCodeGuide(){
+        getSessionBean().setActiveCodeSource(selectedCodeSource);
+        return "codeGuideLink";
+    }
+    
 
     /**
      * @return the sourceID
