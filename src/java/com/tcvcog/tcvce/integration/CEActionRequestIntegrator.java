@@ -47,7 +47,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
 "            muniinternalnotes, publicexternalnotes)\n" +
 "    VALUES (DEFAULT, ?, ?, ?, \n" +
 "            ?, ?, ?, \n" +
-"            now(), ?, ?, ?, \n" + //call to now() is for current record timestamp
+"            now(), ?, ?, ?, \n" + 
 "            ?, ?, ?, ?, \n" +
 "            ?, ?);");
         
@@ -71,6 +71,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
             
             stmt.setInt(4, actionRequest.getIssueType_issueTypeID());
             stmt.setInt(5, actionRequest.getPersonID());
+            // case ID is null since the request hasn't been assigned to a case yet
             stmt.setNull(6, java.sql.Types.NULL); // 0 is the int version of null
             
             // time stamp of entry is created with postegres's now()

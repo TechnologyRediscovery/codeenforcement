@@ -13,7 +13,7 @@
         <ui:composition template="../../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <f:view id="textBlockManageView">
-                     <div class="mainContainer">
+                    <div class="mainContainer">
                         <h:messages globalOnly="true" showDetail="true" showSummary="true"
                                     warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError">
                         </h:messages>
@@ -24,12 +24,13 @@
                             <h2>Existing text blocks</h2>
 
                             <p><span style="font-style: italic">A text block is a
-                                paragraph or so of formatted text that can be inserted into
-                                a notice of violation. This feature allows for the storage of
-                                stock text in the database, sharable by all users--obviating 
-                                the need for tedious copying and pasting from a local document.</span></p>
+                                    paragraph or so of formatted text that can be inserted into
+                                    a notice of violation. This feature allows for the storage of
+                                    stock text in the database, sharable by all users--obviating 
+                                    the need for tedious copying and pasting from a local document.</span></p>
 
                             <p:spacer height="15px"/>
+                            
                             <p:dataTable
                                 id="textBlockTable"
                                 var="block"
@@ -39,7 +40,7 @@
                                 rowKey="#{block.blockID}"
                                 tableStyleClass="primeDataTable"
                                 scrollable="true"
-                                scrollHeight="300"
+                                scrollHeight="150"
                                 resizableColumns="true"
                                 rowExpandMode="multiple"
                                 expandedRow="false"
@@ -47,37 +48,43 @@
                                 widgetVar="textBlockTableWidgetVar"
                                 tabindex="1">
                                 
+                                <p:ajax event="rowSelect" immediate="true" 
+                                        update=":updateTextBlockForm:selectedBlockOT
+                                        :updateTextBlockForm:tbcat
+                                        :updateTextBlockForm:blockNameIT
+                                        :updateTextBlockForm:updateTextBlockTextEditor"/>
+
                                 <p:column width="3%">
                                     <f:facet name="header">
                                         <h:outputText value="Exp"/>
                                     </f:facet>
                                     <p:rowToggler/>
                                 </p:column>
-                                
+
                                 <p:column width="3%">
                                     <f:facet name="header">
                                         <h:outputText value="ID#" />
                                     </f:facet>
                                     <h:outputText value="#{block.blockID}"/>
                                 </p:column>
-                                
-                                <p:column width="10%" sortBy="#{block.muni.muniName}"
+
+                                <p:column width="20%" sortBy="#{block.muni.muniName}"
                                           filterBy="#{block.muni.muniName}">
                                     <f:facet name="header">
                                         <h:outputText value="Municipality" />
                                     </f:facet>
                                     <h:outputText value="#{block.muni.muniName}"/>
                                 </p:column>
-                                
-                                <p:column width="10%" sortBy="#{block.textBlockCategoryTitle}"
+
+                                <p:column width="20%" sortBy="#{block.textBlockCategoryTitle}"
                                           filterBy="#{block.textBlockCategoryTitle}">
                                     <f:facet name="header">
                                         <h:outputText value="Category" />
                                     </f:facet>
                                     <h:outputText value="#{block.textBlockCategoryTitle}"/>
                                 </p:column>
-                                
-                                <p:column width="5%" sortBy="#{block.textBlockName}">
+
+                                <p:column sortBy="#{block.textBlockName}">
                                     <f:facet name="header">
                                         <h:outputText value="Block Name"/>
                                     </f:facet>
@@ -91,112 +98,162 @@
                                     </div>
                                 </p:rowExpansion>
                             </p:dataTable>
-                            
-                            <p:commandButton 
-                                id="updateBlockButton" ajax="false" icon="fa fa-edit"
-                                value="Update selected text block" tabindex="2" update=""
-                                action="#{codeSetBB.manageCodeSetElements}"/>
+
 
                             <p:commandButton 
-                                id="codeSetBuilderButton" ajax="false" icon="fa fa-bomb"
+                                id="nukeTextBlockButton" ajax="false" icon="fa fa-bomb"
                                 value="Nuke selected text block" tabindex="3"
                                 action="#{textBlockBB.nukeTextBlock}"/>
+                        </h:form>
 
                             <p:spacer height="10"/>
                             <hr/>
                             <p:spacer height="10"/>
 
                             <h2>Update Text Block</h2>
+                            <h:form id="updateTextBlockForm">
 
-                            <h:outputText value="Code set ID: #{textBlockBB.selectedBlock.blockID}" id="selectedBlockOT" />
+                            <h:panelGrid columns="4" border="0" 
+                                         cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
+                                         footerClass="gridFooter">
+
+
+                                <h:outputText value="Code set ID: #{textBlockBB.selectedBlock.blockID}" id="selectedBlockOT" />
+
+                                <p:outputLabel for="tbcat">
+                                    <h:outputText value="Text block category"/>
+                                </p:outputLabel>
+                                <h:panelGroup>
+                                    <p:selectOneMenu 
+                                        id="tbcat" tabindex="7"
+                                        value="#{textBlockBB.selectedBlock.textBlockCategoryID}"
+                                        style="display: block; clear: right;">
+                                        <f:selectItems value="#{textBlockBB.categoryList}"/>
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+                                <p:outputLabel for="muniSelectMenuUpdate">
+                                    <h:outputText value="Municipality"/>
+                                </p:outputLabel>
+                                <h:panelGroup>
+                                    <p:selectOneMenu id="muniSelectMenuUpdate" tabindex="5" value="#{textBlockBB.selectedBlock.muni}">
+                                        <f:converter converterId="muniConverter"/>
+                                        <f:selectItems id="muniNameList" value="#{textBlockBB.muniListObj}" var="m" itemValue="#{m}" itemLabel="#{m.muniName}" />
+                                    </p:selectOneMenu>
+                                    <h:message for="muniSelectMenuUpdate" showDetail="true" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+
+
+                                <p:outputLabel for="blockNameIT">
+                                    <h:outputText value="Block name"/>
+                                </p:outputLabel>
+
+                                <h:panelGroup>
+
+                                    <p:inputText id="blockNameIT" value="#{textBlockBB.selectedBlock.textBlockName}" 
+                                                 style="width: 20%;" tabindex="4" required="true" styleClass="inputText"/>
+                                    <h:message for="blockNameIT" showDetail="false" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
+
+
+                                <f:facet name="footer">
+                                    <p:outputLabel for="updateTextBlockTextEditor">
+                                        <h:outputText value="Text of text block"/>
+                                    </p:outputLabel>
+                                    <p:editor  id="updateTextBlockTextEditor"  value="#{textBlockBB.selectedBlock.textBlockText}" 
+                                               controls="bold italic underline strikethrough font size style color 
+                                               bullets numbering center undo redo rule link removeformat outdent 
+                                               indent link unlink copy cut paste rule alignleft center alignright"
+                                               width="1000" 
+                                               height="200"/>
+                                    <h:message for="updateTextBlockTextEditor" showDetail="false" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </f:facet>   
+
+                            </h:panelGrid>
 
                             <p:spacer height="15"/>
-
-                            <p:outputLabel for="blockNameIT">
-                                <h:outputText value="Block name"/>
-                            </p:outputLabel>
-
-                            <p:inputText id="blockNameIT" value="#{textBlockBB.selectedBlock.textBlockName}" 
-                                         style="width: 20%;" tabindex="4" required="true" styleClass="inputText"/>
-                            <h:message for="blockNameIT" showDetail="false" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-
-                            <p:spacer height="15"/>
-
-                            <p:outputLabel for="selectedCodeSetDesc">
-                                <h:outputText value="Description"/>
-                            </p:outputLabel>
-
-                            <p:inputText id="selectedCodeSetDesc" value="#{codeSetBB.formCodeSetDescription}" 
-                                         style="width: 90%;" tabindex="5" required="true" styleClass="inputText"/>
-                            <h:message for="selectedCodeSetDesc" showDetail="false" showSummary="true" 
-                                       warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
-
-                            <p class="note">Moving an existing code set to a new municipality must be done on the "back end" by an administrator.</p>
 
                             <p:commandButton 
-                                id="updatSet" 
+                                id="updatSetButton" 
                                 value="Commit updates to code set" 
                                 ajax="false" icon="fa fa-check"
                                 styleClass="buttonOwnLine" tabindex="6"
-                                actionListener="#{codeSetBB.commitUpdatesToCodeSet}"/>
+                                actionListener="#{textBlockBB.updateTextBlock}"/>
 
                         </h:form>
 
                         <p:spacer height="10"/>
                         <hr/>
                         <p:spacer height="10"/>
-                        <h2>Add a new code set</h2>
+                        <h2>Add a new text block</h2>
+                        <h:form id="addNewBlockForm">
+                                   <h:panelGrid columns="4" border="0" 
+                                         cellpadding="5" columnClasses="gridTd, gridTd, gridTd, gridTd,"
+                                         footerClass="gridFooter">
 
-                        <h:form id="addNewCodeSet">
-                            <p:fieldset legend="Add new code set"
-                                        toggleable="true"
-                                        collapsed="false">
 
-                                <p:selectOneMenu 
-                                    id="muni" tabindex="7"
-                                    value="#{codeSetBB.formNewMuniCode}"
-                                    style="display: block; clear: right;">
-                                    <f:selectItems value="#{codeSetBB.muniMap}"/>
-                                </p:selectOneMenu>
+                                <p:outputLabel for="tbcatadd">
+                                    <h:outputText value="Text block category"/>
+                                </p:outputLabel>
+                                <h:panelGroup>
+                                    <p:selectOneMenu 
+                                        id="tbcatadd" tabindex="7"
+                                        value="#{textBlockBB.formCategoryID}"
+                                        style="display: block; clear: right;">
+                                        <f:selectItems value="#{textBlockBB.categoryList}"/>
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
 
-                                <p:spacer height="15px;"/>
+                                <p:outputLabel for="muniSelectMenuadd">
+                                    <h:outputText value="Municipality"/>
+                                </p:outputLabel>
+                                <h:panelGroup>
+                                    <p:selectOneMenu id="muniSelectMenuadd" tabindex="5" value="#{textBlockBB.formMuni}">
+                                        <f:converter converterId="muniConverter"/>
+                                        <f:selectItems id="muniNameList" value="#{textBlockBB.muniListObj}" var="m" itemValue="#{m}" itemLabel="#{m.muniName}" />
+                                    </p:selectOneMenu>
+                                    <h:message for="muniSelectMenuadd" showDetail="true" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
 
-                                <p:outputLabel for="newCodeSetName">
-                                    <h:outputText value="New Code Set Name"/>
+
+                                <p:outputLabel for="blockNameITadd">
+                                    <h:outputText value="Block name"/>
                                 </p:outputLabel>
 
-                                <p:inputText id="newCodeSetName" value="#{codeSetBB.formNewCodeSetName}" 
-                                             style="width: 50%;" tabindex="8" required="true" styleClass="inputText"/>
-                                <h:message for="newCodeSetName" showDetail="false" showSummary="true" 
-                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                <h:panelGroup>
 
-                                <p:spacer height="15px;"/>
+                                    <p:inputText id="blockNameITadd" value="#{textBlockBB.formBlockName}" 
+                                                 style="width: 20%;" tabindex="4" required="true" styleClass="inputText"/>
+                                    <h:message for="blockNameIT" showDetail="false" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </h:panelGroup>
 
-                                <p:outputLabel for="newCodeSetDescription">
-                                    <h:outputText value="New Code Set Description"/>
-                                </p:outputLabel>
-                                <p:inputText id="newCodeSetDescription" value="#{codeSetBB.formNewCodeSetDescription}" 
-                                             style="width: 50%;" tabindex="9" required="true" styleClass="inputText"/>
-                                <h:message for="newCodeSetDescription" showDetail="false" showSummary="true" 
-                                           warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
 
-                                <p:spacer height="15px;"/>
+                                <f:facet name="footer">
+                                    <p:outputLabel for="updateTextBlockTextEditoradd">
+                                        <h:outputText value="Text of text block"/>
+                                    </p:outputLabel>
+                                    <p:editor  id="updateTextBlockTextEditoradd"  value="#{textBlockBB.formBlockText}" 
+                                               controls="bold italic underline strikethrough font size style color 
+                                               bullets numbering center undo redo rule link removeformat outdent 
+                                               indent link unlink copy cut paste rule alignleft center alignright"
+                                               width="1000" 
+                                               height="200"/>
+                                    <h:message for="updateTextBlockTextEditoradd" showDetail="false" showSummary="true" 
+                                               warnClass="msgWarn" infoClass="msgInfo" fatalClass="msgFatal" errorClass="msgError" />
+                                </f:facet>   
 
+                            </h:panelGrid>
                                 <p:commandButton
-                                    id="newCodeSet" icon="fa fa-plus" tabindex="10"
-                                    value="Add new set" ajax="false"
-                                    styleClass="buttonOwnLine" update="codeSetSelectOneLB"
-                                    actionListener="#{codeSetBB.addNewCodeSet}"/>
-                            </p:fieldset>
+                                id="newCodeSet" icon="fa fa-plus" tabindex="10"
+                                value="Add new text block" ajax="false"
+                                styleClass="buttonOwnLine" 
+                                action="#{textBlockBB.addNewTextBlock}"/>
                         </h:form>
-                    </div>
-                        
-
-
-
-
-
                     </div>
                 </f:view>
             </ui:define>

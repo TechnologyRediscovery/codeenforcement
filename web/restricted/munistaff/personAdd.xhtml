@@ -10,7 +10,7 @@
         <title>Add Person</title>
     </h:head>
     <h:body>
-        <ui:composition template="../../navContainer_restricted.xhtml">
+        <ui:composition template="../navContainer_restricted.xhtml">
             <ui:define name="content">
                 <div class="mainContainer">
                     <h:messages globalOnly="true" showDetail="true" showSummary="true"
@@ -187,19 +187,19 @@
                                     
                                 </f:facet>
                                 
+                            </h:panelGrid>
                                 <p:spacer height="15"/>
                                 
                                 <p:outputLabel for="connectToActivePropSwitch">
-                                    <h:outputText value="Associate new person with #{personAddBB.activeProp.address}"/>
+                                    <h:outputText value="Associate new person with your active property: #{sessionBean.activeProp.address}?"/>
                                 </p:outputLabel>
                                 
                                 <p:inputSwitch id="connectToActivePropSwitch" value="#{personAddBB.formConnectToActiveProperty}" onLabel="Yes" offLabel="No" tabindex="15"/>
                                 
                                 <p:spacer height="15"/>
                                 
-                            </h:panelGrid>
                             <p:spacer height="10px"/>
-                            <p:commandButton ajax="false" value="Add Person" action="#{personAddBB.addPerson}" />
+                            <p:commandButton ajax="false" value="Add Person" action="#{personAddBB.addPerson}" icon="fa fa-plus"/>
                         </h:form>
                     </f:view>
                 </div>

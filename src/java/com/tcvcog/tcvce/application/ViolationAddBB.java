@@ -75,7 +75,7 @@ public class ViolationAddBB extends BackingBeanUtils implements Serializable {
              getFacesContext().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, 
                             "Success! Violation added.", ""));
-            return "caseProfile";
+            return "caseViolations";
         } catch (IntegrationException ex) {
             System.out.println(ex);
              getFacesContext().addMessage(null,

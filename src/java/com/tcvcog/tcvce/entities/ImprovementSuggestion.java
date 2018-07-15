@@ -18,6 +18,7 @@ Council of Governments, PA
 package com.tcvcog.tcvce.entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -27,10 +28,14 @@ public class ImprovementSuggestion {
     private int suggestionID;
     private User submitter;
     private int improvementTypeID;
+    private String improvementTypeStr;
     private String reply;
     private String suggestionText;
     private int statusID;
+    private String statusStr;
     private LocalDateTime submissionTimeStamp;
+    // generated from submissionTiemStamp
+    private String prettySubmissionTimeStamp;
 
     /**
      * @return the suggestionID
@@ -128,6 +133,43 @@ public class ImprovementSuggestion {
      */
     public void setSubmissionTimeStamp(LocalDateTime submissionTimeStamp) {
         this.submissionTimeStamp = submissionTimeStamp;
+    }
+
+    /**
+     * @return the improvementTypeStr
+     */
+    public String getImprovementTypeStr() {
+        return improvementTypeStr;
+    }
+
+    /**
+     * @return the statusStr
+     */
+    public String getStatusStr() {
+        return statusStr;
+    }
+
+    /**
+     * @param improvementTypeStr the improvementTypeStr to set
+     */
+    public void setImprovementTypeStr(String improvementTypeStr) {
+        this.improvementTypeStr = improvementTypeStr;
+    }
+
+    /**
+     * @param statusStr the statusStr to set
+     */
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
+    }
+
+    /**
+     * @return the prettySubmissionTimeStamp
+     */
+    public String getPrettySubmissionTimeStamp() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy, HH:mm");
+        prettySubmissionTimeStamp = submissionTimeStamp.format(formatter); 
+        return prettySubmissionTimeStamp;
     }
     
 }

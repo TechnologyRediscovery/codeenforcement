@@ -63,7 +63,6 @@ public class SystemIntegrator extends BackingBeanUtils implements Serializable {
             stmt.setInt(3, is.getStatusID());
             stmt.setInt(4, is.getSubmitter().getUserID());
             System.out.println("PersonIntegrator.getPersonListByPropertyID | sql: " + stmt.toString());
-
             stmt.execute();
 
         } catch (SQLException ex) {
@@ -74,8 +73,51 @@ public class SystemIntegrator extends BackingBeanUtils implements Serializable {
             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
     }
-        
     
+    public ArrayList<ImprovementSuggestion> getImprovementSuggestions() throws IntegrationException{
+        ArrayList<ImprovementSuggestion> impList = new ArrayList<>();
+        
+        String query =  "SELECT improvementid, improvementtypeid, improvementsuggestiontext, \n" +
+                        "       improvementreply, statusid, statustitle, typetitle, submitterid, submissiontimestamp\n" +
+                        "  FROM public.improvementsuggestion INNER JOIN improvementstatus USING (statusid)\n" +
+                        "  INNER JOIN improvementtype ON improvementtypeid = typeid;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            stmt = con.prepareStatement(query);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                impList.add(generateImprovementSuggestion(rs));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to build property unit list due to an DB integration error", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return impList;
+    }
+    
+    public ImprovementSuggestion generateImprovementSuggestion(ResultSet rs) throws SQLException, IntegrationException{
+        UserIntegrator ui = getUserIntegrator();
+        ImprovementSuggestion is = new ImprovementSuggestion();
+        is.setSuggestionID(rs.getInt("improvementid"));
+        is.setSubmitter(ui.getUser(rs.getInt("submitterid")));
+        is.setImprovementTypeID(rs.getInt("improvementtypeid"));
+        is.setImprovementTypeStr(rs.getString("typetitle"));
+        is.setReply(rs.getString("improvementreply"));
+        is.setStatusID(rs.getInt("statusid"));
+        is.setStatusStr(rs.getString("statustitle"));
+        is.setSuggestionText(rs.getString("improvementsuggestiontext"));
+        is.setSubmissionTimeStamp(rs.getTimestamp("submissiontimestamp").toLocalDateTime());
+        return is;
+    }
+        
     public void insertListChangeRequest(ListChangeRequest lcr) throws IntegrationException{
         
         Connection con = getPostgresCon();

@@ -465,7 +465,9 @@ public class PersonUpdateBB extends BackingBeanUtils implements Serializable{
      * @return the formExpiryDate
      */
     public java.util.Date getFormExpiryDate() {
-         formExpiryDate = Date.from(currentPerson.getExpiryDate().atZone(ZoneId.systemDefault()).toInstant());
+        if(currentPerson.getExpiryDate() != null){
+            formExpiryDate = Date.from(currentPerson.getExpiryDate().atZone(ZoneId.systemDefault()).toInstant());
+        }
         return formExpiryDate;
     }
 

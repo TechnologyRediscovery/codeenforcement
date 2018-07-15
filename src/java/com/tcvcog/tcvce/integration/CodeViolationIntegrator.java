@@ -471,7 +471,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
     }
     
     public HashMap<String, Integer> getTextBlockCategoryMap() throws IntegrationException{
-        String query =  "SELECT categoryid, cateogrytitle\n" +
+        String query =  "SELECT categoryid, categorytitle\n" +
                         "  FROM public.textblockcategory;";
         HashMap<String, Integer> categoryMap = new HashMap<>();
         Connection con = getPostgresCon();
@@ -504,7 +504,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
         
         tb.setBlockID(rs.getInt("blockid"));
         tb.setTextBlockCategoryID(rs.getInt("categoryid"));
-        tb.setTextBlockCategoryTitle("categoryTitle");
+        tb.setTextBlockCategoryTitle(rs.getString("categorytitle"));
         tb.setMuni(mi.getMuniFromMuniCode(rs.getInt("muni_municode")));
         tb.setTextBlockName(rs.getString("blockname"));
         tb.setTextBlockText(rs.getString("blocktext"));
@@ -514,7 +514,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
     
      public TextBlock getTextBlock(int blockID) throws IntegrationException{
          
-        String query =  "SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, cateogrytitle\n" +
+        String query =  "SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, categorytitle\n" +
                         "  FROM public.textblock INNER JOIN public.textblockcategory " + 
                         "  ON textblockcategory.categoryid=textblock.blockcategory_catid\n" +
                         "  WHERE blockid=?;";
@@ -549,7 +549,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
      }
      
      public ArrayList<TextBlock> getTextBlocks(Municipality m) throws IntegrationException{
-        String query =    "  SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, cateogrytitle\n" +
+        String query =    "  SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, categorytitle\n" +
                             "  FROM public.textblock INNER JOIN public.textblockcategory ON textblockcategory.categoryid=textblock.blockcategory_catid\n" +
                             "  WHERE muni_municode=?;";
         PreparedStatement stmt = null;
@@ -557,6 +557,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
         Connection con = null;
         ArrayList<TextBlock> ll = new ArrayList();
         TextBlock tb = null;
+        
         
         try {
             con = getPostgresCon();
@@ -586,7 +587,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
      }
      
      public ArrayList<TextBlock> getAllTextBlocks() throws IntegrationException{
-        String query =    "  SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, cateogrytitle\n" +
+        String query =    "  SELECT blockid, blockcategory_catid, muni_municode, blockname, blocktext, categoryid, categorytitle\n" +
                           "  FROM public.textblock INNER JOIN public.textblockcategory "
                         + "  ON textblockcategory.categoryid=textblock.blockcategory_catid;";
         PreparedStatement stmt = null;
@@ -622,7 +623,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
      public void insertTextBlock(TextBlock tb) throws IntegrationException{
         String query =  "INSERT INTO public.textblock(\n" +
                         " blockid, blockcategory_catid, muni_municode, blockname, blocktext)\n" +
-                        " VALUES (now(), ?, ?, ?, ?);";
+                        " VALUES (DEFAULT, ?, ?, ?, ?);";
         PreparedStatement stmt = null;
         Connection con = null;
         
@@ -640,7 +641,7 @@ public class CodeViolationIntegrator extends BackingBeanUtils implements Seriali
             
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            throw new IntegrationException("Text Block Integration Module: cannot insert text block into DB", ex);
+            throw new IntegrationException("Text Block Integration Module: cannot insert text block into DB, sorry", ex);
             
         } finally{
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }

@@ -34,6 +34,7 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
 
     private ArrayList<Person> personList;
     private Person selectedPerson;
+    private ArrayList<Person> filteredPersonList;
     
     private String formFName;
     private String formLName;
@@ -184,6 +185,20 @@ public class PersonBB extends BackingBeanUtils implements Serializable{
      */
     public void setSelectedPerson(Person selectedPerson) {
         this.selectedPerson = selectedPerson;
+    }
+
+    /**
+     * @return the filteredPersonList
+     */
+    public ArrayList<Person> getFilteredPersonList() {
+        return filteredPersonList;
+    }
+
+    /**
+     * @param filteredPersonList the filteredPersonList to set
+     */
+    public void setFilteredPersonList(ArrayList<Person> filteredPersonList) {
+        this.filteredPersonList = filteredPersonList;
     }
     
 }

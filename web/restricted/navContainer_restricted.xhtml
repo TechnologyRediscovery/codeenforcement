@@ -115,8 +115,10 @@
                                 <p:menuitem value="Property search" action="propertySearch" ajax="false" icon="ui-icon-disk" />
                                 <p:menuitem value="Property profile" action="#{navigationBB.gotoPropertyProfile}" ajax="false" 
                                             icon="ui-icon-disk" disabled="#{navigationBB.noActiveProperty}"/>
-                                <p:menuitem value="Person search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w"  disabled="true"/>
-                                <p:menuitem value="Owner search" action="personManage"  ajax="false" icon="ui-icon-arrowrefresh-1-w" disabled="true"/>
+                                <p:menuitem value="Person search" action="personSearch"  ajax="false" icon="ui-icon-arrowrefresh-1-w" />
+                                <p:menuitem value="Person profile" action="#{navigationBB.gotoPersonProfile}"  ajax="false" 
+                                            icon="ui-icon-arrowrefresh-1-w" disabled="#{navigationBB.noActivePerson}"/>
+                                <p:menuitem value="New person" action="personAdd"  ajax="false" icon="ui-icon-arrowrefresh-1-w" />
                             </p:submenu>
 
                             <p:separator />
@@ -171,8 +173,8 @@
                             <p:separator />
 
                             <p:submenu label="Public">
-                                <p:menuitem value="Public portal" action="publicPortal" ajax="false" icon="ui-icon-document" disabled="true" />
-                                <p:menuitem value="CE action request" action="ceActionRequest" ajax="false" icon="ui-icon-document" disabled="true"/>
+                                <p:menuitem value="Public Dashboard" action="publicPortal" ajax="false" icon="ui-icon-document" />
+                                <p:menuitem value="Submit CE Action Request" action="ceActionRequest" ajax="false" icon="ui-icon-document"/>
                             </p:submenu>
 
                             <p:separator />
@@ -182,7 +184,8 @@
                                 <p:menuitem value="Municipalities" action="muniManage" ajax="false" icon="ui-icon-arrowthick-1-s" disabled="true"/>
                                 <p:menuitem value="CE event config" action="eventManage" ajax="false" icon="ui-icon-arrowthick-1-s" />
                                 <p:menuitem value="Request list changes" action="selectItemListChange" ajax="false" icon="ui-icon-home" />
-                                <p:menuitem value="Bugs &amp; suggestions" action="bugReporting" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="Report a bug" action="bugReporting" ajax="false" icon="ui-icon-arrowthick-1-s" />
+                                <p:menuitem value="View bug list" action="ticketListing" ajax="false" icon="ui-icon-arrowthick-1-s" />
                             </p:submenu>
                         </p:panelMenu>
                     </h:form>

@@ -130,7 +130,7 @@ public class PersonAddBB extends BackingBeanUtils implements Serializable {
             return "";
         }
         
-        return "personManage";
+        return "personSearch";
     }
 
     /**
@@ -402,7 +402,7 @@ public class PersonAddBB extends BackingBeanUtils implements Serializable {
      */
     public boolean isFormConnectToActiveProperty() {
         // default value
-        formConnectToActiveProperty = true;
+        formConnectToActiveProperty = false;
         return formConnectToActiveProperty;
     }
 

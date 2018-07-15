@@ -23,6 +23,7 @@ import com.tcvcog.tcvce.entities.ImprovementSuggestion;
 import com.tcvcog.tcvce.entities.ListChangeRequest;
 import com.tcvcog.tcvce.integration.SystemIntegrator;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +40,9 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
     private String systemImprovementTicketRText;
     private int selectedImprovementType;
     private HashMap<String, Integer> improvementTypeMap;
+    
+    private ArrayList<ImprovementSuggestion> impList;
+    private ArrayList<ImprovementSuggestion> filteredImpList;
     
     
     /**
@@ -67,14 +71,14 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
             getFacesContext().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, 
                    "Suggesetion Submitted! Thanks!",""));
+            return "ticketListing";
         } catch (IntegrationException ex) {
             getFacesContext().addMessage(null,
                  new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                     ex.getLocalizedMessage(), 
                     "Unable to log bug--which is a bug itself! Crazy! This issue will need to be addressed by the system admin, sorry"));
         }
-        
-        return "missionControl";
+        return "";
     }
     
     public String submitListItemChange(){
@@ -83,6 +87,10 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
         lcr.setChangeRequestText(listItemChangeRequestRText);
         try {
             si.insertListChangeRequest(lcr);
+            getFacesContext().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                   "Change request submitted! Thanks!",""));
+            return "missionControl";
         } catch (IntegrationException ex) {
             System.out.println(ex.toString());
             getFacesContext().addMessage(null,
@@ -90,8 +98,8 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
                          ex.getLocalizedMessage(), 
                          "This issue will need to be addressed by the system admin, sorry"));
         }
+        return "";
         
-        return "missionControl";
     }
     
     /**
@@ -154,6 +162,42 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
      */
     public void setImprovementTypeMap(HashMap<String, Integer> improvementTypeMap) {
         this.improvementTypeMap = improvementTypeMap;
+    }
+
+    /**
+     * @return the impList
+     */
+    public ArrayList<ImprovementSuggestion> getImpList() {
+        SystemIntegrator si = getSystemIntegrator();
+        if(impList == null){
+            try {
+                impList = si.getImprovementSuggestions();
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+            }
+        }
+        return impList;
+    }
+
+    /**
+     * @param impList the impList to set
+     */
+    public void setImpList(ArrayList<ImprovementSuggestion> impList) {
+        this.impList = impList;
+    }
+
+    /**
+     * @return the filteredImpList
+     */
+    public ArrayList<ImprovementSuggestion> getFilteredImpList() {
+        return filteredImpList;
+    }
+
+    /**
+     * @param filteredImpList the filteredImpList to set
+     */
+    public void setFilteredImpList(ArrayList<ImprovementSuggestion> filteredImpList) {
+        this.filteredImpList = filteredImpList;
     }
     
     

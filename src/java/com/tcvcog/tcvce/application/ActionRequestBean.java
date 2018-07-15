@@ -16,7 +16,6 @@
  */
 package com.tcvcog.tcvce.application;
 
-
 import com.tcvcog.tcvce.domain.IntegrationException;
 import java.util.Date;
 import java.io.Serializable;
@@ -35,12 +34,10 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
-import com.tcvcog.tcvce.application.SessionBean;
 /**
  *
  * @author cedba
  */
-
 
 public class ActionRequestBean extends BackingBeanUtils implements Serializable{
     
@@ -108,6 +105,14 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      */
     public String submitActionRequest() {
         
+        CEActionRequestIntegrator integrator = getcEActionRequestIntegrator();
+        
+        // start by pulling the person fields and sending them to be entered
+        // into db as a person. The ID of this person is returned, and used in our
+        // insertion of the action request as a whole. 
+        
+        // LT goal: bundle these into a transaction that is rolled back if either 
+        // the person or the request bounces
         int personID = storeActionRequestorPerson();
         
         currentRequest = new CEActionRequest();
@@ -134,9 +139,6 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         currentRequest.setIsUrgent(form_isUrgent);
         // note that the time stamp is applied by the integration layer
         // with a simple call to the backing bean getTimeStamp method
-        
-    
-        CEActionRequestIntegrator integrator = getcEActionRequestIntegrator();
 
         try { 
             // send the request into the DB
@@ -155,7 +157,6 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
                             "Unable write request into the database, our apologies!", 
                             "Please call your municipal office and report your concern by phone."));
             return "";
-            
         }
         return "success";
     }
@@ -178,21 +179,13 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         getSessionBean().setActionRequest(actionRequest);
     } // close method
     
-    
-    public String refreshPage(){
-        return "";
-    }
-    
-    
     /**
      * Coordinates the active tab index based on the status of various
      * form fields. it's not pretty, but it's functional
      */
     private void manageTabs(){
-        System.out.println("ActionRequestBean | manageTab | prop: "
-        + selectedProperty);
-        System.out.println("ActionRequestBean | manageTab | lname: "
-        + form_requestorLName);
+        System.out.println("ActionRequestBean | manageTab | prop: " + selectedProperty);
+        System.out.println("ActionRequestBean | manageTab | lname: " + form_requestorLName);
         System.out.println("ActionRequestBean | violationType ID: " + violationTypeID);
         
         // check for first tab completed
@@ -219,13 +212,13 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         }
         if(tabView != null){
           tabView.setActiveIndex(currentTabIndex);
-            
         }
     }
     
     public int storeActionRequestorPerson(){
+        PersonIntegrator personIntegrator = getPersonIntegrator();
         
-        int publicCC = 0;
+        int insertedPersonID = 0;
         currentPerson = new Person();
         
         currentPerson.setPersonType(submittingPersonType);
@@ -254,10 +247,9 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
         // the insertion of this person will be timestamped
         // by the integrator class
         
-        PersonIntegrator personIntegrator = getPersonIntegrator();
         
         try {
-            publicCC = personIntegrator.insertPerson(currentPerson);
+            insertedPersonID = personIntegrator.insertPerson(currentPerson);
         } catch (IntegrationException ex) {
              System.out.println(ex.toString());
                getFacesContext().addMessage(null,
@@ -275,9 +267,9 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
                             "You might call your municipal office to report this error and make a request over the phone. "
                                     + "You can also phone the Turtle Creek COG's tecnical support specialist, Eric Darsow, at 412.840.3020 and leave a message"));
         }
-        manageTabs();
+//        manageTabs();
         
-        return publicCC;
+        return insertedPersonID;
         
     } // close storePerson 
     

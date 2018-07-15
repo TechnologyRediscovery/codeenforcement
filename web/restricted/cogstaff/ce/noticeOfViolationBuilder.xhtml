@@ -93,11 +93,14 @@
                                 enter the Person's ID number in the box below and toggle option switch to "Add from ID". 
                                 You can open the Persons's search page by "right-clicking" the link to "Persons" 
                                 on the left sidebar and opening that page in its own browser tab.</p>
+                                
                         
                             <p:inputSwitch id="addPersonByIdIS" value="#{noticeOfViolationBB.addPersonByID}" 
                                            onLabel="Add by ID" offLabel="Add from data table" />
                             
-                            <p:spacer height="15px"/>
+                            <p:spacer height="5px"/>
+                            <h:commandLink  target="_blank" action="personSearch" value="Open person search in new tab"/>
+                            <p:spacer height="5px"/>
                             
                             <h:outputLabel for="personIDIT" value="Person ID Number: "/>
                             

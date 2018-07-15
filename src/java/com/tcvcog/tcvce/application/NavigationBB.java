@@ -20,6 +20,7 @@ package com.tcvcog.tcvce.application;
 
 import com.tcvcog.tcvce.entities.CECase;
 import com.tcvcog.tcvce.entities.CodeSource;
+import com.tcvcog.tcvce.entities.Person;
 import com.tcvcog.tcvce.entities.Property;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
@@ -30,10 +31,12 @@ import javax.faces.application.FacesMessage;
  */
 public class NavigationBB extends BackingBeanUtils implements Serializable {
 
+    private boolean noActiveUser;
     private boolean noActiveCase;
     private boolean noActiveProperty;
     private boolean noActiveInspection;
     private boolean noActiveSource;
+    private boolean noActivePerson;
     
     /**
      * Creates a new instance of NavigationBB
@@ -67,7 +70,17 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
         
     }
     
-    
+    public String gotoPersonProfile(){
+        if(getSessionBean().getActivePerson()!= null ){
+            return "personProfile";
+        } else{
+             getFacesContext().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "No active case! Please select a case from the list below and re-attempt navigation",
+                        ""));
+            return "personSearch";
+        }
+    }
     
     /**
      * @return the noActiveCase
@@ -129,6 +142,38 @@ public class NavigationBB extends BackingBeanUtils implements Serializable {
      */
     public void setNoActiveSource(boolean noActiveSource) {
         this.noActiveSource = noActiveSource;
+    }
+
+    /**
+     * @return the noActivePerson
+     */
+    public boolean isNoActivePerson() {
+        Person p = getSessionBean().getActivePerson();
+        noActivePerson = (p == null);
+        return noActivePerson;
+    }
+
+    /**
+     * @param noActivePerson the noActivePerson to set
+     */
+    public void setNoActivePerson(boolean noActivePerson) {
+        this.noActivePerson = noActivePerson;
+    }
+
+    /**
+     * @return the noActiveUser
+     */
+    public boolean isNoActiveUser() {
+        SessionBean sb = getSessionBean();
+        noActiveUser = (sb.getActiveUser() == null); 
+        return noActiveUser;
+    }
+
+    /**
+     * @param noActiveUser the noActiveUser to set
+     */
+    public void setNoActiveUser(boolean noActiveUser) {
+        this.noActiveUser = noActiveUser;
     }
     
     

@@ -16,26 +16,7 @@
  */
 package com.tcvcog.tcvce.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import org.primefaces.component.tabview.TabView;
-
-
-/**
- * Models the entity: code enforcement action request. 
- * This object blends data from several database tables to create
- * a conceptual model of a single request.
- * 
- * The jsf page for submitting a request act on an ActionRequest object
- * and will edit the values of member varibles
- * on this object and can then ask for the request to be read into the DB.
- * 
- * A reference to an ActionRequest object will be attached to the 
- * Visit object such that both public and logged in users will have access
- * to an ActionRequest to do with as they please (print, etc.)
- * @author Eric Darsow
- */
 
 /**
  * Models the entity: code enforcement action request.This object blends data from several database tables to create
@@ -56,16 +37,12 @@ public class CEActionRequest {
     // for the full case model
     //private RequestStatus requestStatus;
     
-    
-    
     private int requestID;
     private int requestPublicCC;
 
     private Municipality muni;
     private int personID;
     private Person actionRequestorPerson;
-    
-
 
     private Property requestProperty;
    

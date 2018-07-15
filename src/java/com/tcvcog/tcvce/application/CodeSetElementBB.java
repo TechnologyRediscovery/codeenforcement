@@ -21,6 +21,7 @@ package com.tcvcog.tcvce.application;
 import com.tcvcog.tcvce.domain.IntegrationException;
 import com.tcvcog.tcvce.entities.CodeSet;
 import com.tcvcog.tcvce.entities.EnforcableCodeElement;
+import com.tcvcog.tcvce.entities.TextBlock;
 import com.tcvcog.tcvce.integration.CodeIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class CodeSetElementBB extends BackingBeanUtils implements Serializable{
      * @return the selectedECE
      */
     public EnforcableCodeElement getSelectedECE() {
+        
         return selectedECE;
     }
 

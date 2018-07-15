@@ -159,7 +159,6 @@ public class NoticeOfViolationBB extends BackingBeanUtils implements Serializabl
             sb.append(" - ");
             sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdSubSecTitle());
             sb.append("<br><br>");
-            sb.append("Ordinance Technical Text:");
             sb.append(cv.getViolatedEnfElement().getCodeElement().getOrdTechnicalText());
             sb.append("<br>");
         } //close while

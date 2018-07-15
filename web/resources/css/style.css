@@ -158,7 +158,7 @@ a.sblink:visited{
 }
 
 a.sblink:hover{
-    color:white;
+    color:gray;
 }
 
 
@@ -722,3 +722,10 @@ tr.caseOpen{
     font-weight: normal;
     
 }
+
+/* tab views */
+.ui-tabs-nav{
+    color:black;
+    background-color: green;
+}
+

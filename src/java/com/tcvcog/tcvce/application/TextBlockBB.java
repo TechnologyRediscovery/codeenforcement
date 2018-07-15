@@ -17,10 +17,17 @@ Council of Governments, PA
  */
 package com.tcvcog.tcvce.application;
 
+import com.tcvcog.tcvce.domain.IntegrationException;
+import com.tcvcog.tcvce.entities.Municipality;
 import com.tcvcog.tcvce.entities.TextBlock;
+import com.tcvcog.tcvce.integration.CodeViolationIntegrator;
+import com.tcvcog.tcvce.integration.MunicipalityIntegrator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -34,12 +41,14 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
     private TextBlock selectedBlock;
     
     private HashMap<String, Integer> categoryList;
-    private int selectedCategoryID;
-    private HashMap<String, Integer> muniList;
-    private int selectedMuniID;
+    
+    private ArrayList<Municipality> muniListObj;
+    private Municipality formMuni;
     
     private String formBlockName;
     private String formBlockText;
+    private int formCategoryID;
+    
     
     /**
      * Creates a new instance of TextBlockBB
@@ -48,22 +57,69 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
     }
     
     public String updateTextBlock(){
-        
-        return "";
-    }
-    
-    public String commitUpdatesToTextBlock(){
-        
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        if(selectedBlock != null){
+            try {
+                cvi.updateTextBlock(selectedBlock);
+                 getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,  
+                            "Success! Updated text block id " + selectedBlock.getBlockID(), ""));
+            } catch (IntegrationException ex) {
+                 getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,  
+                            "Please select a text block and try again", ""));
+            }
+        } else {
+             getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                            "Please select a text block and try again", ""));
+            
+        }
+        // clear block list so the page reload forces a DB SELECT 
+        blockList = null;
         return "";
     }
     
     public String addNewTextBlock(){
-        
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        TextBlock newBlock = new TextBlock();
+        newBlock.setMuni(formMuni);
+        newBlock.setTextBlockCategoryID(formCategoryID);
+        newBlock.setTextBlockName(formBlockName);
+        newBlock.setTextBlockText(formBlockText);
+        try {
+            cvi.insertTextBlock(newBlock);
+            getFacesContext().addMessage(null,
+               new FacesMessage(FacesMessage.SEVERITY_INFO,  
+                       "Success! Added a new text block named " + formBlockName + "to the db!", ""));
+        } catch (IntegrationException ex) {
+            getFacesContext().addMessage(null,
+               new FacesMessage(FacesMessage.SEVERITY_ERROR,  
+                       ex.getMessage(), ""));
+            
+        }
+        blockList = null;
         return "";
     }
     
     public String nukeTextBlock(){
-        
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        if(selectedBlock != null){
+            try {
+                cvi.deleteTextBlock(selectedBlock);
+                 getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,  
+                            "Success! Nuked block id " + selectedBlock.getBlockID(), ""));
+            } catch (IntegrationException ex) {
+                 getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,  ex.getMessage(), ""));
+            }
+        } else {
+             getFacesContext().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                            "Please select a text block and try again", ""));
+        }
+        blockList = null;
         return "";
     }
 
@@ -71,6 +127,14 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
      * @return the blockList
      */
     public ArrayList<TextBlock> getBlockList() {
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        if(blockList == null){
+            try {
+                blockList = cvi.getAllTextBlocks();
+            } catch (IntegrationException ex) {
+                System.out.println(ex);
+            }
+        }
         return blockList;
     }
 
@@ -85,6 +149,9 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
      * @return the selectedBlock
      */
     public TextBlock getSelectedBlock() {
+        if(selectedBlock == null){
+            selectedBlock = new TextBlock();
+        }
         return selectedBlock;
     }
 
@@ -92,29 +159,24 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
      * @return the categoryList
      */
     public HashMap<String, Integer> getCategoryList() {
+        CodeViolationIntegrator cvi = getCodeViolationIntegrator();
+        try {
+            categoryList = cvi.getTextBlockCategoryMap();
+            System.out.println("TextBlockBB.getCategoryMap | isempty: " + categoryList.isEmpty());
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
         return categoryList;
     }
 
     /**
-     * @return the selectedCategoryID
+     * @return the formCategoryID
      */
-    public int getSelectedCategoryID() {
-        return selectedCategoryID;
+    public int getFormCategoryID() {
+        return formCategoryID;
     }
 
-    /**
-     * @return the muniList
-     */
-    public HashMap<String, Integer> getMuniList() {
-        return muniList;
-    }
-
-    /**
-     * @return the selectedMuniID
-     */
-    public int getSelectedMuniID() {
-        return selectedMuniID;
-    }
+   
 
     /**
      * @return the formBlockName
@@ -159,25 +221,13 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
     }
 
     /**
-     * @param selectedCategoryID the selectedCategoryID to set
+     * @param formCategoryID the formCategoryID to set
      */
-    public void setSelectedCategoryID(int selectedCategoryID) {
-        this.selectedCategoryID = selectedCategoryID;
+    public void setFormCategoryID(int formCategoryID) {
+        this.formCategoryID = formCategoryID;
     }
 
-    /**
-     * @param muniList the muniList to set
-     */
-    public void setMuniList(HashMap<String, Integer> muniList) {
-        this.muniList = muniList;
-    }
-
-    /**
-     * @param selectedMuniID the selectedMuniID to set
-     */
-    public void setSelectedMuniID(int selectedMuniID) {
-        this.selectedMuniID = selectedMuniID;
-    }
+   
 
     /**
      * @param formBlockName the formBlockName to set
@@ -191,6 +241,41 @@ public class TextBlockBB extends BackingBeanUtils implements Serializable{
      */
     public void setFormBlockText(String formBlockText) {
         this.formBlockText = formBlockText;
+    }
+
+    /**
+     * @return the formMuni
+     */
+    public Municipality getFormMuni() {
+        return formMuni;
+    }
+
+    /**
+     * @param formMuni the formMuni to set
+     */
+    public void setFormMuni(Municipality formMuni) {
+        this.formMuni = formMuni;
+    }
+
+    /**
+     * @return the muniListObj
+     */
+    public ArrayList<Municipality> getMuniListObj() {
+        MunicipalityIntegrator mi = getMunicipalityIntegrator();
+        try {
+            muniListObj = mi.getCompleteMuniList();
+            System.out.println("TextBlockBB.getMuniListObj | list size: " + muniListObj.size());
+        } catch (IntegrationException ex) {
+            System.out.println(ex);
+        }
+        return muniListObj;
+    }
+
+    /**
+     * @param muniListObj the muniListObj to set
+     */
+    public void setMuniListObj(ArrayList<Municipality> muniListObj) {
+        this.muniListObj = muniListObj;
     }
     
 }
