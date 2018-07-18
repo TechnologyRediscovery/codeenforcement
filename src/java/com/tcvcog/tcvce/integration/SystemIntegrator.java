@@ -74,20 +74,21 @@ public class SystemIntegrator extends BackingBeanUtils implements Serializable {
         } // close finally
     }
     
-    public ArrayList<ImprovementSuggestion> getImprovementSuggestions() throws IntegrationException{
-        ArrayList<ImprovementSuggestion> impList = new ArrayList<>();
-        
-        String query =  "SELECT improvementid, improvementtypeid, improvementsuggestiontext, \n" +
+    final String impSugQuery =  "SELECT improvementid, improvementtypeid, improvementsuggestiontext, \n" +
                         "       improvementreply, statusid, statustitle, typetitle, submitterid, submissiontimestamp\n" +
                         "  FROM public.improvementsuggestion INNER JOIN improvementstatus USING (statusid)\n" +
                         "  INNER JOIN improvementtype ON improvementtypeid = typeid;";
+        
+    
+    public ArrayList<ImprovementSuggestion> getImprovementSuggestions() throws IntegrationException{
+        ArrayList<ImprovementSuggestion> impList = new ArrayList<>();
         
         Connection con = getPostgresCon();
         ResultSet rs = null;
         PreparedStatement stmt = null;
  
         try {
-            stmt = con.prepareStatement(query);
+            stmt = con.prepareStatement(impSugQuery);
             rs = stmt.executeQuery();
             while(rs.next()){
                 impList.add(generateImprovementSuggestion(rs));
@@ -101,6 +102,26 @@ public class SystemIntegrator extends BackingBeanUtils implements Serializable {
              if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
         } // close finally
         return impList;
+    }
+    
+    public ResultSet getImprovementSuggestionsRS() throws IntegrationException{
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            stmt = con.prepareStatement(impSugQuery);
+            rs = stmt.executeQuery();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            throw new IntegrationException("Unable to build property unit list due to an DB integration error", ex);
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+//             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        return rs;
     }
     
     public ImprovementSuggestion generateImprovementSuggestion(ResultSet rs) throws SQLException, IntegrationException{

@@ -18,4 +18,4 @@ TODO per page pass:
         <managed-bean-name>sessionBean</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.SessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>fire

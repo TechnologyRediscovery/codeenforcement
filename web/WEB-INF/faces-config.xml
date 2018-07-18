@@ -241,14 +241,6 @@
         <managed-bean-class>com.tcvcog.tcvce.application.CodeSetElementBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
-    
-    <managed-bean>
-        <description>Backing bean for request management</description>
-        <managed-bean-name>manageARequestBean</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.ManageARequestBean</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
   
     <managed-bean>
         <description>Models a request for code enforcement action</description>
@@ -260,9 +252,9 @@
     <managed-bean>
         <description>Provides backing bean utilities for the action requestmanagement.xhtml page</description>
         <managed-bean-name>requestManagementBean</managed-bean-name>
-        <managed-bean-class>com.tcvcog.tcvce.application.RequestManagementBean</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>com.tcvcog.tcvce.application.RequestManagementBB</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
     
     <managed-bean>
         <description>Backing bean for the action request checking form and results page.</description>
@@ -371,12 +363,6 @@
     <managed-bean>
         <managed-bean-name>userUpdateBB</managed-bean-name>
         <managed-bean-class>com.tcvcog.tcvce.application.UserUpdateBB</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>actionRequestManageBB</managed-bean-name>
-        <managed-bean-class>ActionRequestManageBB.ActionRequestManageBB</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     
@@ -608,11 +594,7 @@
     
     <navigation-rule>
         <from-view-id>/restricted/cogview/ceCases.xhtml</from-view-id>
-        <navigation-case>
-            <from-action>#{ceCasesBB.viewSelectedActionRequest}</from-action>
-            <from-outcome>actionRequestManage</from-outcome>
-            <to-view-id>/restricted/ce/actionRequestManage.xhtml</to-view-id>
-        </navigation-case>
+        
         <navigation-case>
             <from-action>#{ceCasesBB.viewCase}</from-action>
             <from-outcome>caseProfile</from-outcome>
@@ -790,7 +772,7 @@
 
         <navigation-case>
             <from-outcome>ceActionRequests</from-outcome>
-            <to-view-id>/restricted/cogview/ceActionRequests.xhtml</to-view-id>
+            <to-view-id>/restricted/muniview/ceActionRequests.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     
@@ -804,7 +786,6 @@
             <to-view-id>/restricted/cogstaff/ce/textBlockManage.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        
         
         <navigation-case>
             <from-outcome>caseCitations</from-outcome>
@@ -864,6 +845,15 @@
             <from-outcome>manageRequest</from-outcome>
             <to-view-id>/restricted/cogstaff/ce/mangeActionRequest.xhtml</to-view-id>
             <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/restricted/muniview/ceActionRequests.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{ceActionRequestsBB.viewSelectedActionRequest}</from-action>
+            <from-outcome>actionRequestManage</from-outcome>
+            <to-view-id>/restricted/cogstaff/ce/actionRequestManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 

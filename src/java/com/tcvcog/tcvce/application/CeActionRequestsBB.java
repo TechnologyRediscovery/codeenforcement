@@ -43,24 +43,22 @@ public class CeActionRequestsBB extends BackingBeanUtils implements Serializable
      */
     public ArrayList<CEActionRequest> getRequestList() {
         CEActionRequestIntegrator ari = getcEActionRequestIntegrator();
-        
-        try {
-            requestList = ari.getCEActionRequestList(getSessionBean().getActiveMuni().getMuniCode());
-        } catch (IntegrationException ex) {
-            getFacesContext().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                            "Unable to load action requests due to an error in the Integration Module", ""));
+        if(requestList == null){
+            try {
+                requestList = ari.getCEActionRequestList(getSessionBean().getActiveMuni().getMuniCode());
+            } catch (IntegrationException ex) {
+                getFacesContext().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                "Unable to load action requests due to an error in the Integration Module", ""));
+            }
         }
         return requestList;
     }
 
      public String viewSelectedActionRequest(){
-        
+        System.out.println("CeActionRequestsBB.viewSelectedActionRequest");
         getSessionBean().setActionRequest(selectedRequest);
-        
         return "actionRequestManage";
-        
-        
     }
 
     /**

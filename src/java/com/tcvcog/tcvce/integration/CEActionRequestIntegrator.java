@@ -98,7 +98,7 @@ public class CEActionRequestIntegrator extends BackingBeanUtils implements Seria
              if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
         } // close finally
         
-    } // close submitActionRequest
+    } 
     
     private StringBuilder getSelectActionRequestSQLStatement(int requestID){
         

@@ -1,10 +1,13 @@
+#!/usr/bin/env python2
+
 import itertools
 import psycopg2
 import csv_utils
 import re
+import csv
+import codecs
 
-TABLES_TO_LOAD = (
-    # 'municipality',
+ # 'municipality',
     # 'owner',
     # 'propertyAgent',
     # 'codeofficer',
@@ -12,7 +15,9 @@ TABLES_TO_LOAD = (
     # 'codeEnfCase',
     # 'codeEnfEvent',
     # 'inspecChecklist',
-    'code_violation'
+
+TABLES_TO_LOAD = (
+    'code_violation',
 )
 
 CSV_FILE_ENCODING = 'utf-8'
@@ -20,8 +25,10 @@ CSV_DELIMITER = '|'
 
 
 def main():
+    global VIOLATION_LOG_FILE
+    VIOLATION_LOG_FILE = 'output/violationerrors.txt'
     num_of_tables_to_load = len(TABLES_TO_LOAD)
-    print 'Starting the loading process for %d tables' % num_of_tables_to_load
+    print 'TEST Starting the loading process for %d tables' % num_of_tables_to_load
     db_conn = get_db_conn()
     for i,table in enumerate(TABLES_TO_LOAD, start=1):
         print '[%d/%d] Loading table %s' % (i, num_of_tables_to_load, table)
@@ -49,44 +56,71 @@ def load_table(table):
     TABLE_FUNCTION_MAPPING[table]()
 
 def import_code_violation():
+    print 'importing code violations'
     csv_file = 'code_violation_cleaned.csv'
+    # csv_file = 'testviolations.csv'
     #816 is churchill
-    currentmuni = 816
-    codesource = 18
-    defaultch = 1
-    # db_conn = get_db_conn()
-    # cursor = db_conn.cursor()
+    currentmuni = 953
+    codesource = 26
+    defaultch = 0
+    db_conn = get_db_conn()
+    cursor = db_conn.cursor()
     # Using a hard-coded role description
     sql_command = """
         INSERT INTO public.codeelement(
             elementid, codesource_sourceid, ordchapterno, ordchaptertitle, 
             ordsecnum, ordsectitle, ordsubsecnum, ordsubsectitle, ordtechnicaltext, 
-            ordhumanfriendlytext, isactive, resourceurl, datecreated, guideentryid)
-    VALUES (DEFAULT, ?, ?, ?, 
-            ?, ?, ?, ?, ?, 
-            ?, ?, ?, ?, ?);
+            ordhumanfriendlytext, isactive, resourceurl, datecreated, guideentryid, notes, legacyid)
+    VALUES (DEFAULT, %(codesource_sourceid)s, %(ordchapterno)s, NULL, 
+            %(ordsecnum)s, NULL, %(ordsubsecnum)s, %(ordsubsectitle)s, %(ordtechnicaltext)s, 
+            NULL, CAST (%(isactive)s AS boolean), NULL, now(), NULL, %(notes)s, CAST(%(legacyid)s AS integer));
 
     """
+    rowdict = {}
     # Read CSV file with original Access Data
     with open(csv_file, 'r') as infile:
         reader = csv_utils.UnicodeReader(infile, delimiter=CSV_DELIMITER)
         # Ignore header
         reader.next()
         for row in reader:
-            if row[2]==currentmuni and row[3] != 'None' and row[4] != 'None':
-                rowdict = {}
-                rowdict['elementid'] = int(row[1]) + 1000
+            muni = int(row[1])
+            if muni == currentmuni:
+                print '****************'
+                print row[0]
+                # rowdict['elementid'] = int(row[0]) + 1000
                 rowdict['codesource_sourceid'] = codesource
-                rawcodenum = row[3]
-                exp = re.compile(r'(\d+)[\.-](\d+[.-]?\d*)\s(.*)')
-                m = re.search(exp, rawcodenum)
-                print m.group(1)
-                print m.group(2)
-                print m.group(3)
-                # rowdict['defaultch'] = 1 
-            # Insert the data to the Postgres table
-            # cursor.execute(sql_command, (officer_id, first_name, last_name))
+                rowdict['ordchapterno'] = defaultch
+                rawcodenum = row[2]
+                exp = re.compile(r'(\d+)[\.-](\d+[\.-]?\w*[\.]?)\s+(.*)')
+                # this exp is specific for separating out churchill specific ordinances which only use a - delimiter
+                # exp = re.compile(r'(\d+).(\d+[\.-]?\w*[\.]?)\s+(.*)')
+                m = re.search(exp,rawcodenum)
+                if m:
+                    rowdict['ordsecnum'] = m.group(1)
+                    print rowdict['ordsecnum']
+                    rowdict['ordsubsecnum'] = m.group(2)
+                    print rowdict['ordsubsecnum']
+                    rowdict['ordsubsectitle'] = m.group(3)
+                    print rowdict['ordsubsectitle'] 
+                    rowdict['ordtechnicaltext'] = row[3]
+                    rowdict['isactive'] = row[4].upper()
+                    rowdict['notes'] = 'pulled from legacy system on 16JUL18'
+                    rowdict['legacyid'] = row[0]
 
+                    # Insert the data to the Postgres table
+                    cursor.execute(sql_command, rowdict)
+                    db_conn.commit()
+                else:
+                    logerrorviolation(row)
+                    print "no match"
+                    rowdict['ordsecnum'] = 'NULL'
+                    rowdict['ordsubsecnum'] = 'NULL'
+                    rowdict['ordsubsectitle'] = 'NULL'
+
+def logerrorviolation(malformedrow):
+    with open(VIOLATION_LOG_FILE, 'ab') as outfile:
+        writer = csv_utils.UnicodeWriter(outfile, delimiter="|", encoding=CSV_FILE_ENCODING)
+        writer.writerow(malformedrow)
 
 def import_municipality():
     table_name = 'municipality'
@@ -195,9 +229,10 @@ def get_db_conn():
         return db_conn
     db_conn = psycopg2.connect(
         database="cogdb",
-        user="cogdba",
+        user="sylvia",
         password="c0d3",
-        host="localhost"
+        host="localhost",
+        port=20000
     )
     return db_conn
 

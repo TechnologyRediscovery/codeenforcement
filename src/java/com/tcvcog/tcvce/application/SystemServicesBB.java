@@ -23,10 +23,12 @@ import com.tcvcog.tcvce.entities.ImprovementSuggestion;
 import com.tcvcog.tcvce.entities.ListChangeRequest;
 import com.tcvcog.tcvce.integration.SystemIntegrator;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 
 /**
@@ -44,11 +46,24 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
     private ArrayList<ImprovementSuggestion> impList;
     private ArrayList<ImprovementSuggestion> filteredImpList;
     
+    private ResultSet impSugs;
+    
     
     /**
      * Creates a new instance of SystemServicesBB
      */
     public SystemServicesBB() {
+    }
+    
+    public String closeRS(){
+        if(impSugs != null){
+            try {
+                impSugs.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        return "missionControl";
     }
 
     public String submitImprovementSuggestion(){
@@ -198,6 +213,49 @@ public class SystemServicesBB extends BackingBeanUtils implements Serializable{
      */
     public void setFilteredImpList(ArrayList<ImprovementSuggestion> filteredImpList) {
         this.filteredImpList = filteredImpList;
+    }
+
+    /**
+     * @return the impSugs
+     */
+    public ResultSet getImpSugs() {
+        String impSugQuery =  "SELECT improvementid, improvementtypeid, improvementsuggestiontext, \n" +
+                        "       improvementreply, statusid, statustitle, typetitle, submitterid, submissiontimestamp\n" +
+                        "  FROM public.improvementsuggestion INNER JOIN improvementstatus USING (statusid)\n" +
+                        "  INNER JOIN improvementtype ON improvementtypeid = typeid;";
+        
+        Connection con = getPostgresCon();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+ 
+        try {
+            stmt = con.prepareStatement(impSugQuery);
+            rs = stmt.executeQuery();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            
+        } finally{
+             if (con != null) { try { con.close(); } catch (SQLException e) { /* ignored */} }
+             if (stmt != null) { try { stmt.close(); } catch (SQLException e) { /* ignored */} }
+//             if (rs != null) { try { rs.close(); } catch (SQLException ex) { /* ignored */ } }
+        } // close finally
+        impSugs = rs;
+        
+//        SystemIntegrator si = getSystemIntegrator();
+//        try {
+//            impSugs = si.getImprovementSuggestionsRS();
+//        } catch (IntegrationException ex) {
+//            System.out.println(ex);
+//        }
+        return impSugs;
+    }
+
+    /**
+     * @param impSugs the impSugs to set
+     */
+    public void setImpSugs(ResultSet impSugs) {
+        this.impSugs = impSugs;
     }
     
     

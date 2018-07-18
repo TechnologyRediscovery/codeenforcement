@@ -105,6 +105,7 @@ public class ActionRequestBean extends BackingBeanUtils implements Serializable{
      */
     public String submitActionRequest() {
         
+        
         CEActionRequestIntegrator integrator = getcEActionRequestIntegrator();
         
         // start by pulling the person fields and sending them to be entered
